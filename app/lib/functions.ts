@@ -1,6 +1,6 @@
+// Some convience stuff until the new server functions drop :D
+
 import { z } from "zod";
-import { getHeaders } from "vinxi/http";
-import { setResponseStatus, setResponseHeader } from "vinxi/http";
 
 export type FlattenedError<T> = {
   fieldErrors: { [K in keyof T]?: string[] };
@@ -14,7 +14,7 @@ export class ValidationError<T> extends Error {
   }
 }
 
-export function createActionClient() {
+export function createValidationClient() {
   return {
     input: <T extends z.ZodType>(schema: T) => ({
       handler:
@@ -23,20 +23,19 @@ export function createActionClient() {
           rawInput: z.input<T>
         ): Promise<[R, null] | [null, FlattenedError<z.infer<T>>]> => {
           try {
-            const parsedInput = schema.parse(rawInput);
+            const parsedInput = await schema.parseAsync(rawInput);
             const result = await fn({ parsedInput });
             return [result, null];
           } catch (error) {
             if (error instanceof z.ZodError) {
-              console.log("abc");
-              setResponseStatus(202);
-              return [null, error.flatten()];
+              return new Response(JSON.stringify([null, error.flatten()]), {
+                status: 400,
+              }) as unknown as [null, FlattenedError<z.infer<T>>];
             }
             if (error instanceof ValidationError) {
-              console.log("def");
-              setResponseStatus(202);
-              setResponseHeader("Test", "abc");
-              return [null, error.errors];
+              return new Response(JSON.stringify([null, error.errors]), {
+                status: 400,
+              }) as unknown as [null, FlattenedError<z.infer<T>>];
             }
             throw error;
           }
@@ -68,4 +67,4 @@ export function fieldValidationError<T extends z.ZodType>(
   });
 }
 
-export const actionClient = createActionClient();
+export const validationClient = createValidationClient();

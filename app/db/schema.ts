@@ -1,4 +1,5 @@
-import { integer } from "drizzle-orm/sqlite-core";
+export * from "@/app/auth/auth-tables";
+
 import { text } from "drizzle-orm/sqlite-core";
 import { sqliteTable } from "drizzle-orm/sqlite-core";
 import { dateTableFields } from "./fields";

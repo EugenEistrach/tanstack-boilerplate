@@ -29,6 +29,11 @@
           "level": "error",
           "fix": "safe"
         }
+      },
+      "complexity": {
+        "useLiteralKeys": {
+          "level": "off"
+        }
       }
     }
   },

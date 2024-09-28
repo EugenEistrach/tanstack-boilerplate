@@ -1,12 +1,11 @@
-import * as fs from "node:fs";
-import { createFileRoute, useRouter } from "@tanstack/react-router";
-import { createServerFn } from "@tanstack/start";
+import { createFileRoute, redirect, useRouter } from "@tanstack/react-router";
+import { createServerFn, useServerFn } from "@tanstack/start";
 import { Button } from "@/app/components/ui/button";
-import { db } from "../db";
-import { note } from "../db/schema";
+import { db } from "@/app/db";
+import { note } from "@/app/db/schema";
 
 import { z } from "zod";
-import { actionClient } from "@/app/functions";
+import { validationClient } from "@/app/lib/functions";
 import {
   queryOptions,
   useMutation,
@@ -18,21 +17,30 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/app/components/ui/input";
 import { Card, CardContent } from "@/app/components/ui/card";
 
+const validateContentAsync = createServerFn("POST", async (content: string) => {
+  return content !== "error";
+});
+
 const getNotes = createServerFn("GET", () => {
   console.log("getNotes");
   return db.query.note.findMany();
 });
 
 const noteSchema = z.object({
-  content: z.string().min(1),
+  content: z.string().min(1).refine(validateContentAsync),
 });
 
 const createNote = createServerFn(
   "POST",
-  actionClient
+  validationClient
     .input(noteSchema)
     .handler(async ({ parsedInput: { content } }) => {
-      return db.insert(note).values({ content }).returning();
+      if (content === "redirect") {
+        throw redirect({
+          to: "/test",
+        });
+      }
+      return db.insert(note).values({ content }).returning().get();
     })
 );
 
@@ -42,7 +50,7 @@ const notesQueryOptions = () =>
     queryFn: () => getNotes(),
   });
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/dashboard/_authenticated/")({
   component: Home,
   loader: async ({ context }) =>
     await context.queryClient.ensureQueryData(notesQueryOptions()),
@@ -55,7 +63,7 @@ function Home() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValidating, isLoading, ...rest },
     reset,
   } = useForm({
     resolver: zodResolver(noteSchema),
@@ -64,10 +72,12 @@ function Home() {
     },
   });
 
+  console.log(rest);
+
   const createNoteMutation = useMutation({
-    mutationFn: createNote,
+    mutationFn: useServerFn(createNote),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["notes"] });
+      queryClient.invalidateQueries(notesQueryOptions());
       reset();
     },
   });
@@ -85,7 +95,12 @@ function Home() {
             placeholder="Enter note content"
             className="flex-grow"
           />
-          <Button type="submit">Submit</Button>
+          <Button
+            type="submit"
+            disabled={isValidating || createNoteMutation.isPending}
+          >
+            Submit
+          </Button>
         </div>
         {errors.content && (
           <p className="text-red-500 text-sm mt-1">{errors.content.message}</p>

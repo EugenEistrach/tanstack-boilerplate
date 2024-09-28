@@ -11,6 +11,9 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 // @ts-ignore
 import appCss from "@/app/styles/globals.css?url";
 import type { QueryClient } from "@tanstack/react-query";
+import { getSession } from "@/app/auth/auth-session";
+import { ThemeProvider } from "next-themes";
+import { ThemeToggle } from "../components/ui/theme-toggle";
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
@@ -40,9 +43,14 @@ export const Route = createRootRouteWithContext<{
     },
   ],
   component: RootComponent,
+  beforeLoad: async () => {
+    const { session, user } = await getSession();
+    return { session, user };
+  },
 });
 
 function RootComponent() {
+  const { user } = Route.useRouteContext();
   return (
     <RootDocument>
       <Outlet />
@@ -57,7 +65,10 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <Meta />
       </Head>
       <Body>
-        <div className="font-sans">{children}</div>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <ThemeToggle />
+          <div className="font-sans">{children}</div>
+        </ThemeProvider>
         <ScrollRestoration />
         <TanStackRouterDevtools position="bottom-right" />
         <ReactQueryDevtools buttonPosition="bottom-left" />
