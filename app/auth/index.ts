@@ -1,9 +1,9 @@
 import { Lucia } from "lucia";
 import { DrizzleSQLiteAdapter } from "@lucia-auth/adapter-drizzle";
 import { db } from "../db";
-import { sessionTable, userTable } from "./auth-tables";
+import { sessions, users } from "./auth-tables";
 
-const adapter = new DrizzleSQLiteAdapter(db, sessionTable, userTable);
+const adapter = new DrizzleSQLiteAdapter(db, sessions, users);
 
 export const lucia = new Lucia(adapter, {
   sessionCookie: {
@@ -14,9 +14,10 @@ export const lucia = new Lucia(adapter, {
   },
   getUserAttributes: (attributes) => {
     return {
-      // attributes has the type of DatabaseUserAttributes
       email: attributes.email,
       avatarUrl: attributes.avatarUrl,
+      defaultTeamId: attributes.defaultTeamId,
+      name: attributes.name,
     };
   },
 });
@@ -31,4 +32,6 @@ declare module "lucia" {
 interface DatabaseUserAttributes {
   email: string;
   avatarUrl?: string;
+  name?: string;
+  defaultTeamId?: string;
 }

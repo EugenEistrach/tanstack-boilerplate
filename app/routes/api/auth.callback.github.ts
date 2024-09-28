@@ -1,6 +1,6 @@
 import { lucia } from "@/app/auth";
 import { db } from "@/app/db";
-import { oAuthAccountTable, userTable } from "@/app/db/schema";
+import { ssoProviders, users } from "@/app/db/schema";
 import { env } from "@/app/lib/env";
 import { createAPIFileRoute } from "@tanstack/start/api";
 import { generateState, GitHub, OAuth2RequestError } from "arctic";
@@ -87,10 +87,10 @@ export const Route = createAPIFileRoute("/api/auth/callback/github")({
         throw new Error("Email not verified");
       }
 
-      const existingProvider = await db.query.oAuthAccountTable.findFirst({
+      const existingProvider = await db.query.ssoProviders.findFirst({
         where: and(
-          eq(oAuthAccountTable.provider, "github"),
-          eq(oAuthAccountTable.providerAccountId, id.toString())
+          eq(ssoProviders.provider, "github"),
+          eq(ssoProviders.providerAccountId, id.toString())
         ),
       });
 
@@ -115,8 +115,8 @@ export const Route = createAPIFileRoute("/api/auth/callback/github")({
         });
       }
 
-      const existingUser = await db.query.userTable.findFirst({
-        where: eq(userTable.email, primary.email),
+      const existingUser = await db.query.users.findFirst({
+        where: eq(users.email, primary.email),
       });
 
       if (existingUser) {
@@ -129,7 +129,7 @@ export const Route = createAPIFileRoute("/api/auth/callback/github")({
           sessionCookie.attributes
         );
 
-        db.insert(oAuthAccountTable)
+        db.insert(ssoProviders)
           .values({
             userId: existingUser.id,
             provider: "github",
@@ -145,14 +145,26 @@ export const Route = createAPIFileRoute("/api/auth/callback/github")({
         });
       }
 
-      const newUser = db
-        .insert(userTable)
-        .values({
-          email: primary.email,
-          avatarUrl: avatar_url ?? null,
-        })
-        .returning()
-        .get();
+      const newUser = await db.transaction(async (tx) => {
+        const newUser = tx
+          .insert(users)
+          .values({
+            email: primary.email,
+            avatarUrl: avatar_url ?? null,
+          })
+          .returning()
+          .get();
+
+        tx.insert(ssoProviders)
+          .values({
+            userId: newUser.id,
+            provider: "github",
+            providerAccountId: id.toString(),
+          })
+          .run();
+
+        return newUser;
+      });
 
       const luciaSession = await lucia.createSession(newUser.id, {});
       const sessionCookie = lucia.createSessionCookie(luciaSession.id);
@@ -162,14 +174,6 @@ export const Route = createAPIFileRoute("/api/auth/callback/github")({
         sessionCookie.value,
         sessionCookie.attributes
       );
-
-      db.insert(oAuthAccountTable)
-        .values({
-          userId: newUser.id,
-          provider: "github",
-          providerAccountId: id.toString(),
-        })
-        .run();
 
       return new Response(null, {
         status: 302,

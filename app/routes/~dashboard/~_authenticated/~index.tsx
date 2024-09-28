@@ -72,8 +72,6 @@ function Home() {
     },
   });
 
-  console.log(rest);
-
   const createNoteMutation = useMutation({
     mutationFn: useServerFn(createNote),
     onSuccess: () => {

@@ -10,7 +10,9 @@ export function useOptionalAuth() {
 
 export function useAuth() {
   const router = useRouter();
-  const { user, session } = useOptionalAuth();
+  const { user, session } = useRouteContext({
+    from: "/dashboard/_authenticated",
+  });
 
   if (!user && !session) {
     throw redirect({

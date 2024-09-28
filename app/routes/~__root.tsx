@@ -1,6 +1,7 @@
 import {
   createRootRoute,
   createRootRouteWithContext,
+  redirect,
 } from "@tanstack/react-router";
 import { Outlet, ScrollRestoration } from "@tanstack/react-router";
 import { Body, Head, Html, Meta, Scripts } from "@tanstack/start";
@@ -11,7 +12,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 // @ts-ignore
 import appCss from "@/app/styles/globals.css?url";
 import type { QueryClient } from "@tanstack/react-query";
-import { getSession } from "@/app/auth/auth-session";
+import { getAuthSession } from "@/app/auth/auth-session";
 import { ThemeProvider } from "next-themes";
 import { ThemeToggle } from "../components/ui/theme-toggle";
 
@@ -34,17 +35,17 @@ export const Route = createRootRouteWithContext<{
     { rel: "stylesheet", href: appCss },
     {
       rel: "preload",
-      href: "https://api.fontshare.com/v2/css?f[]=clash-display@1&display=swap",
+      href: "https://api.fontshare.com/v2/css?f[]=satoshi@300,301,400,401,500,501,700,701,900,901,1,2&display=swap",
       as: "style",
     },
     {
       rel: "stylesheet",
-      href: "https://api.fontshare.com/v2/css?f[]=clash-display@1&display=swap",
+      href: "https://api.fontshare.com/v2/css?f[]=satoshi@300,301,400,401,500,501,700,701,900,901,1,2&display=swap",
     },
   ],
   component: RootComponent,
   beforeLoad: async () => {
-    const { session, user } = await getSession();
+    const { session, user } = await getAuthSession();
     return { session, user };
   },
 });
@@ -66,7 +67,6 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </Head>
       <Body>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <ThemeToggle />
           <div className="font-sans">{children}</div>
         </ThemeProvider>
         <ScrollRestoration />

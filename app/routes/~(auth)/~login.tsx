@@ -6,10 +6,17 @@ import {
   CardHeader,
   CardTitle,
 } from "@/app/components/ui/card";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { z } from "zod";
 
-export const Route = createFileRoute("/(auth)/login/")({
+export const Route = createFileRoute("/(auth)/login")({
+  beforeLoad: ({ context }) => {
+    if (context.user) {
+      throw redirect({
+        to: "/dashboard",
+      });
+    }
+  },
   validateSearch: z.object({
     redirectTo: z.string().optional(),
   }),
