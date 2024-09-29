@@ -10,7 +10,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/app/components/ui/card";
-import { CheckIcon, BoxIcon } from "@radix-ui/react-icons";
+import { CheckIcon, BoxIcon, InfoCircledIcon } from "@radix-ui/react-icons";
+import { Alert, AlertDescription, AlertTitle } from "@/app/components/ui/alert";
 
 export const Route = createFileRoute("/(landing-page)/")({
   component: LandingPage,
@@ -21,6 +22,16 @@ function LandingPage() {
 
   return (
     <div className="flex flex-col min-h-screen">
+      <Alert className="rounded-none bg-blue-100 dark:bg-blue-900 border-blue-200 dark:border-blue-800">
+        <InfoCircledIcon className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+        <AlertTitle className="text-blue-800 dark:text-blue-200">
+          AI-Generated Content
+        </AlertTitle>
+        <AlertDescription className="text-blue-700 dark:text-blue-300">
+          This landing page content is AI-generated and for demonstration
+          purposes only. The actual features and functionality may vary.
+        </AlertDescription>
+      </Alert>
       <header className="px-4 lg:px-6 h-14 flex items-center">
         <Link className="flex items-center justify-center" to="/">
           <span className="sr-only">SaaS Boilerplate</span>
@@ -53,11 +64,11 @@ function LandingPage() {
             <div className="flex flex-col items-center space-y-4 text-center">
               <div className="space-y-2">
                 <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
-                  Your Ultimate SaaS Solution
+                  Tanstack Boilerplate
                 </h1>
                 <p className="mx-auto max-w-[700px] md:text-xl text-muted-foreground">
-                  Streamline your workflow, boost productivity, and scale your
-                  business with our powerful SaaS platform.
+                  A personal boilerplate to jumpstart new Node.js projects with
+                  modern web technologies.
                 </p>
               </div>
               <div className="space-x-4">
@@ -82,30 +93,33 @@ function LandingPage() {
             <div className="grid gap-6 lg:grid-cols-3 lg:gap-12">
               {[
                 {
+                  title: "Tanstack Stack",
+                  description:
+                    "Includes Tanstack Start, Router, and Query for a seamless development experience.",
+                },
+                {
+                  title: "UI Components",
+                  description:
+                    "Shadcn UI and Tailwind CSS for beautiful, responsive designs.",
+                },
+                {
                   title: "Authentication",
-                  description: "Secure user authentication and authorization.",
-                },
-                {
-                  title: "Database Integration",
-                  description: "Seamless integration with popular databases.",
-                },
-                {
-                  title: "API Routes",
                   description:
-                    "Easy-to-use API routes for backend functionality.",
+                    "Lucia Auth with GitHub and Discord SSO integration.",
                 },
                 {
-                  title: "Responsive Design",
-                  description: "Fully responsive design for all devices.",
-                },
-                {
-                  title: "Testing Setup",
-                  description: "Comprehensive testing setup for reliable code.",
-                },
-                {
-                  title: "Deployment Ready",
+                  title: "Database & ORM",
                   description:
-                    "Ready for deployment with minimal configuration.",
+                    "SQLite database with Drizzle ORM for efficient data management.",
+                },
+                {
+                  title: "Email Integration",
+                  description:
+                    "Resend and React Email for handling email communications.",
+                },
+                {
+                  title: "Background Processing",
+                  description: "Cron jobs and background tasks with BullMQ.",
                 },
               ].map((feature) => (
                 <Card key={feature.title}>
@@ -173,17 +187,16 @@ function LandingPage() {
             <div className="flex flex-col items-center space-y-4 text-center">
               <div className="space-y-2">
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-                  Ready to Get Started?
+                  Ready to Start Your Project?
                 </h2>
                 <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
-                  Join thousands of satisfied users and take your business to
-                  the next level.
+                  Jumpstart your development with this feature-rich boilerplate.
                 </p>
               </div>
               <div className="space-x-4">
                 <Button asChild>
                   <Link to={user ? "/dashboard" : "/login"}>
-                    {user ? "Go to App" : "Get Started"}
+                    {user ? "Go to Dashboard" : "Get Started"}
                   </Link>
                 </Button>
               </div>
@@ -193,7 +206,8 @@ function LandingPage() {
       </main>
       <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
         <p className="text-xs text-muted-foreground">
-          © {new Date().getFullYear()} SaaS Boilerplate. All rights reserved.
+          © {new Date().getFullYear()} Tanstack Boilerplate. All rights
+          reserved.
         </p>
         <nav className="sm:ml-auto flex gap-4 sm:gap-6 items-center">
           <a className="text-xs hover:underline underline-offset-4" href="/">
