@@ -55,6 +55,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.2",
+    "@flydotio/dockerfile": "^0.5.9",
     "@tanstack/router-devtools": "^1.58.12",
     "@types/better-sqlite3": "^7.6.11",
     "@types/react": "^18.3.10",

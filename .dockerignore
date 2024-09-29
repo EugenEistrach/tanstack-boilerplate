@@ -1,0 +1,11 @@
+node_modules
+
+.history
+.output
+.vinxi
+
+*.env
+*.sqlite
+*.sqlite-journal
+*.sqlite-shm
+*.sqlite-wal
