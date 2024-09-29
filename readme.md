@@ -4,6 +4,21 @@ This is a personal boilerplate to jumpstart new projects.
 
 **It's node only and will not work for serverless deployments, as this requires a long running server for things like cron jobs and sockets.**
 
+For the app to work, the following environment variables need to be set:
+
+```
+SESSION_SECRET=
+REDIS_URL=
+
+# Optional:
+GITHUB_CLIENT_ID=
+GITHUB_CLIENT_SECRET=
+DISCORD_CLIENT_ID=
+DISCORD_CLIENT_SECRET=
+RESEND_API_KEY=
+EMAIL_FROM=
+```
+
 ## Already done
 
 - Tanstack Start, Router, Query
@@ -11,26 +26,29 @@ This is a personal boilerplate to jumpstart new projects.
 - Tailwind CSS
 - Light & Dark mode (next-themes <- yes this works here too, as its not using next specific APIs)
 - Lucia Auth (github & discord sso)
-- Simple onboarding flow after first signup (to set name & team name)
+- Simple onboarding flow after first signup (to set name)
+- simple role and permission system
 - SQLite
 - Drizzle ORM
 - Emails (Resend & React Email)
 - Cron jobs & background jobs (BullMQ)
+- react hook form (still evaluating if tanstack form could be used instead)
+- fly.io deployment (see deployments.md for more info)
 
 ## TODO:
 
-- [ ] docker deployment
 - [ ] magic links & otp
 - [ ] stripe
-- [ ] rbac and proper multi-tenancy
 - [ ] file uploads
 - [ ] i18n
-- [ ] feature flags
-- [ ] logging
 - [ ] notifications
 - [ ] data tables example
-- [ ] playwright tests
 - [ ] sentry
+- [ ] playwright tests
+- [ ] proper documentation
+
+## Exploring (not sure if this will be added)
+
+- [ ] feature flags
 - [ ] logging
 - [ ] analytics
-- [ ] proper documentation

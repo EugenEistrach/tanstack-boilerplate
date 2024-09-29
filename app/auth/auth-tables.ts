@@ -1,87 +1,149 @@
 import {
   index,
   integer,
+  primaryKey,
   sqliteTable,
   text,
   unique,
+  uniqueIndex,
 } from "drizzle-orm/sqlite-core";
 import { relations } from "drizzle-orm";
 import { dateTableFields } from "../db/fields";
 import { cuid } from "../lib/utils";
+import { accesses, actions, resources, roles } from "./auth-permissions";
 
-export const users = sqliteTable("user", {
+export const userTable = sqliteTable("user", {
   id: text("id")
     .primaryKey()
     .$default(() => cuid()),
   email: text("email").notNull(),
   avatarUrl: text("avatar_url"),
 
-  defaultTeamId: text("default_team_id").references(() => teams.id),
   name: text("name"),
   ...dateTableFields,
 });
 
-export const teams = sqliteTable("team", {
+export const usersRelations = relations(userTable, ({ many, one }) => ({
+  sessions: many(sessionTable),
+  oAuthAccounts: many(ssoProviderTable),
+  usersToRoles: many(userToRoleTable),
+}));
+
+export const roleTable = sqliteTable("role", {
   id: text("id")
     .primaryKey()
     .$default(() => cuid()),
-  name: text("name").notNull(),
-  createdAt: integer("created_at", { mode: "timestamp" }).$default(
-    () => new Date()
-  ),
-  updatedAt: integer("updated_at", { mode: "timestamp" })
-    .$default(() => new Date())
-    .$onUpdate(() => new Date()),
+  name: text("name", { enum: roles }).notNull().unique(),
+  description: text("description"),
+  ...dateTableFields,
 });
 
-export const teamMembers = sqliteTable(
-  "team_member",
+export const rolesRelations = relations(roleTable, ({ many }) => ({
+  usersToRoles: many(userToRoleTable),
+  rolesToPermissions: many(roleToPermissionTable),
+}));
+
+export const permissionTable = sqliteTable(
+  "permission",
   {
     id: text("id")
       .primaryKey()
       .$default(() => cuid()),
-    teamId: text("team_id")
-      .references(() => teams.id)
-      .notNull(),
-    userId: text("user_id")
-      .references(() => users.id)
-      .notNull(),
+    action: text("action", {
+      enum: actions,
+    }).notNull(),
+    resource: text("resource", { enum: resources }).notNull(),
+    access: text("access", { enum: accesses }).notNull(),
 
-    createdAt: integer("created_at", { mode: "timestamp" }).$default(
-      () => new Date()
-    ),
-    updatedAt: integer("updated_at", { mode: "timestamp" })
-      .$default(() => new Date())
-      .$onUpdate(() => new Date()),
+    description: text("description"),
+    ...dateTableFields,
   },
   (table) => ({
-    teamUserUnique: unique().on(table.teamId, table.userId),
+    actionResourceAccessIdx: unique("action_resource_access_unique").on(
+      table.action,
+      table.resource,
+      table.access
+    ),
   })
 );
 
-export const userRelations = relations(users, ({ many }) => ({
-  sessions: many(sessions),
-  oAuthAccounts: many(ssoProviders),
+export const permissionsRelations = relations(permissionTable, ({ many }) => ({
+  rolesToPermissions: many(roleToPermissionTable),
 }));
 
-export const sessions = sqliteTable("session", {
+export const userToRoleTable = sqliteTable(
+  "user_to_role",
+  {
+    userId: text("user_id")
+      .notNull()
+      .references(() => userTable.id),
+    roleId: text("role_id")
+      .notNull()
+      .references(() => roleTable.id),
+  },
+  (table) => ({
+    pk: primaryKey({ columns: [table.userId, table.roleId] }),
+  })
+);
+
+export const usersToRolesRelations = relations(userToRoleTable, ({ one }) => ({
+  user: one(userTable, {
+    fields: [userToRoleTable.userId],
+    references: [userTable.id],
+  }),
+  role: one(roleTable, {
+    fields: [userToRoleTable.roleId],
+    references: [roleTable.id],
+  }),
+}));
+
+export const roleToPermissionTable = sqliteTable(
+  "role_to_permission",
+  {
+    roleId: text("role_id")
+      .notNull()
+      .references(() => roleTable.id),
+    permissionId: text("permission_id")
+      .notNull()
+      .references(() => permissionTable.id),
+  },
+  (table) => ({
+    pk: primaryKey({ columns: [table.roleId, table.permissionId] }),
+  })
+);
+
+export const rolesToPermissionsRelations = relations(
+  roleToPermissionTable,
+  ({ one }) => ({
+    role: one(roleTable, {
+      fields: [roleToPermissionTable.roleId],
+      references: [roleTable.id],
+    }),
+    permission: one(permissionTable, {
+      fields: [roleToPermissionTable.permissionId],
+      references: [permissionTable.id],
+    }),
+  })
+);
+
+export const sessionTable = sqliteTable("session", {
   id: text("id").primaryKey(),
   userId: text("user_id")
     .notNull()
-    .references(() => users.id),
+    .references(() => userTable.id),
   expiresAt: integer("expires_at").notNull(),
 
   ...dateTableFields,
 });
 
-export const sessionRelations = relations(sessions, ({ one }) => ({
-  user: one(users, {
-    fields: [sessions.userId],
-    references: [users.id],
+export const sessionsRelations = relations(sessionTable, ({ one }) => ({
+  user: one(userTable, {
+    fields: [sessionTable.userId],
+    references: [userTable.id],
   }),
 }));
 
-export const ssoProviders = sqliteTable(
+export const ssoProviderTable = sqliteTable(
   "oauth_account",
   {
     id: text("id")
@@ -89,7 +151,7 @@ export const ssoProviders = sqliteTable(
       .$default(() => cuid()),
     userId: text("user_id")
       .notNull()
-      .references(() => users.id),
+      .references(() => userTable.id),
     provider: text("provider", { enum: ["github", "discord"] }).notNull(),
     providerAccountId: text("provider_account_id").notNull(),
 
@@ -103,9 +165,9 @@ export const ssoProviders = sqliteTable(
   })
 );
 
-export const ssoProvidersRelations = relations(ssoProviders, ({ one }) => ({
-  user: one(users, {
-    fields: [ssoProviders.userId],
-    references: [users.id],
+export const ssoProvidersRelations = relations(ssoProviderTable, ({ one }) => ({
+  user: one(userTable, {
+    fields: [ssoProviderTable.userId],
+    references: [userTable.id],
   }),
 }));

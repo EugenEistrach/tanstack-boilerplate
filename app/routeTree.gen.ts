@@ -18,6 +18,7 @@ import { Route as DashboardAuthenticatedImport } from './routes/~dashboard/~_aut
 import { Route as authOnboardingImport } from './routes/~(auth)/~onboarding'
 import { Route as authLoginImport } from './routes/~(auth)/~login'
 import { Route as landingPageIndexImport } from './routes/~(landing-page)/~index'
+import { Route as DashboardAuthenticatedNotesImport } from './routes/~dashboard/~_authenticated/~notes'
 import { Route as DashboardAuthenticatedIndexImport } from './routes/~dashboard/~_authenticated/~index'
 
 // Create Virtual Routes
@@ -55,6 +56,12 @@ const landingPageIndexRoute = landingPageIndexImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
 } as any)
+
+const DashboardAuthenticatedNotesRoute =
+  DashboardAuthenticatedNotesImport.update({
+    path: '/notes',
+    getParentRoute: () => DashboardAuthenticatedRoute,
+  } as any)
 
 const DashboardAuthenticatedIndexRoute =
   DashboardAuthenticatedIndexImport.update({
@@ -115,6 +122,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardAuthenticatedIndexImport
       parentRoute: typeof DashboardAuthenticatedImport
     }
+    '/dashboard/_authenticated/notes': {
+      id: '/dashboard/_authenticated/notes'
+      path: '/notes'
+      fullPath: '/dashboard/notes'
+      preLoaderRoute: typeof DashboardAuthenticatedNotesImport
+      parentRoute: typeof DashboardAuthenticatedImport
+    }
   }
 }
 
@@ -122,11 +136,13 @@ declare module '@tanstack/react-router' {
 
 interface DashboardAuthenticatedRouteChildren {
   DashboardAuthenticatedIndexRoute: typeof DashboardAuthenticatedIndexRoute
+  DashboardAuthenticatedNotesRoute: typeof DashboardAuthenticatedNotesRoute
 }
 
 const DashboardAuthenticatedRouteChildren: DashboardAuthenticatedRouteChildren =
   {
     DashboardAuthenticatedIndexRoute: DashboardAuthenticatedIndexRoute,
+    DashboardAuthenticatedNotesRoute: DashboardAuthenticatedNotesRoute,
   }
 
 const DashboardAuthenticatedRouteWithChildren =
@@ -153,6 +169,7 @@ export interface FileRoutesByFullPath {
   '/onboarding': typeof authOnboardingRoute
   '/dashboard': typeof DashboardAuthenticatedRouteWithChildren
   '/dashboard/': typeof DashboardAuthenticatedIndexRoute
+  '/dashboard/notes': typeof DashboardAuthenticatedNotesRoute
 }
 
 export interface FileRoutesByTo {
@@ -161,6 +178,7 @@ export interface FileRoutesByTo {
   '/login': typeof authLoginRoute
   '/onboarding': typeof authOnboardingRoute
   '/dashboard': typeof DashboardAuthenticatedIndexRoute
+  '/dashboard/notes': typeof DashboardAuthenticatedNotesRoute
 }
 
 export interface FileRoutesById {
@@ -172,6 +190,7 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardRouteWithChildren
   '/dashboard/_authenticated': typeof DashboardAuthenticatedRouteWithChildren
   '/dashboard/_authenticated/': typeof DashboardAuthenticatedIndexRoute
+  '/dashboard/_authenticated/notes': typeof DashboardAuthenticatedNotesRoute
 }
 
 export interface FileRouteTypes {
@@ -183,8 +202,15 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/dashboard'
     | '/dashboard/'
+    | '/dashboard/notes'
   fileRoutesByTo: FileRoutesByTo
-  to: '/test' | '/' | '/login' | '/onboarding' | '/dashboard'
+  to:
+    | '/test'
+    | '/'
+    | '/login'
+    | '/onboarding'
+    | '/dashboard'
+    | '/dashboard/notes'
   id:
     | '__root__'
     | '/test'
@@ -194,6 +220,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/dashboard/_authenticated'
     | '/dashboard/_authenticated/'
+    | '/dashboard/_authenticated/notes'
   fileRoutesById: FileRoutesById
 }
 
@@ -254,11 +281,16 @@ export const routeTree = rootRoute
       "filePath": "~dashboard/~_authenticated.tsx",
       "parent": "/dashboard",
       "children": [
-        "/dashboard/_authenticated/"
+        "/dashboard/_authenticated/",
+        "/dashboard/_authenticated/notes"
       ]
     },
     "/dashboard/_authenticated/": {
       "filePath": "~dashboard/~_authenticated/~index.tsx",
+      "parent": "/dashboard/_authenticated"
+    },
+    "/dashboard/_authenticated/notes": {
+      "filePath": "~dashboard/~_authenticated/~notes.tsx",
       "parent": "/dashboard/_authenticated"
     }
   }

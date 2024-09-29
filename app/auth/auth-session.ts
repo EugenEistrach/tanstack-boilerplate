@@ -2,6 +2,7 @@ import { createServerFn } from "@tanstack/start";
 import { getCookie, setCookie, useSession } from "vinxi/http";
 import { lucia } from ".";
 import { redirect } from "@tanstack/react-router";
+import type { Permission, Role } from "./auth-permissions";
 
 export const getAuthSession = createServerFn("GET", async () => {
   const sessionId = getCookie("auth_session");
@@ -29,9 +30,28 @@ export const requireInitialAuthSession = createServerFn("GET", async () => {
 export const requireAuthSession = createServerFn("GET", async () => {
   const { user, session } = await getAuthSession();
   if (!user || !session) throw redirect({ to: "/login" });
-  if (!user.defaultTeamId || !user.name) throw redirect({ to: "/onboarding" });
+  if (!user.roles.includes("user")) throw redirect({ to: "/onboarding" });
   return { user, session };
 });
+
+export const requireUserWithRole = createServerFn("GET", async (role: Role) => {
+  const { user } = await requireAuthSession();
+
+  if (!user.roles.includes(role))
+    throw new Error("User does not have the required role");
+  return user;
+});
+
+export const requireUserWithPermission = createServerFn(
+  "GET",
+  async (permission: Permission) => {
+    const { user } = await requireAuthSession();
+
+    if (!user.permissions.includes(permission))
+      throw new Error("User does not have the required permission");
+    return user;
+  }
+);
 
 export const destroyAuthSession = createServerFn("POST", async (_, ctx) => {
   const sessionId = getCookie("auth_session");

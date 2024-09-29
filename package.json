@@ -7,12 +7,14 @@
     "dev:email": "email dev --port 3002 --dir ./app/email/templates",
     "build": "vinxi build",
     "start": "node -r dotenv/config .output/server/index.mjs",
+    "start-with-reset": "pnpm db:reset && pnpm start",
     "db:migrate": "drizzle-kit migrate",
     "db:generate": "drizzle-kit generate",
     "db:studio": "drizzle-kit studio",
     "db:clear": "tsx ./scripts/clear-db.ts",
     "db:seed": "tsx ./scripts/seed-db.ts",
-    "db:reset": "pnpm db:clear && pnpm db:migrate && pnpm db:seed"
+    "db:reset": "pnpm db:clear && pnpm db:migrate && pnpm db:seed",
+    "db:create-seed-sql": "tsx ./scripts/create-seed-sql.ts"
   },
   "keywords": [],
   "author": "",

@@ -1,6 +1,6 @@
 import { lucia } from "@/app/auth";
 import { db } from "@/app/db";
-import { ssoProviders, users } from "@/app/db/schema";
+import { ssoProviderTable, userTable } from "@/app/db/schema";
 import { env } from "@/app/lib/env";
 import { createAPIFileRoute } from "@tanstack/start/api";
 import { generateState, GitHub, OAuth2RequestError } from "arctic";
@@ -87,10 +87,10 @@ export const Route = createAPIFileRoute("/api/auth/callback/github")({
         throw new Error("Email not verified");
       }
 
-      const existingProvider = await db.query.ssoProviders.findFirst({
+      const existingProvider = await db.query.ssoProviderTable.findFirst({
         where: and(
-          eq(ssoProviders.provider, "github"),
-          eq(ssoProviders.providerAccountId, id.toString())
+          eq(ssoProviderTable.provider, "github"),
+          eq(ssoProviderTable.providerAccountId, id.toString())
         ),
       });
 
@@ -115,8 +115,8 @@ export const Route = createAPIFileRoute("/api/auth/callback/github")({
         });
       }
 
-      const existingUser = await db.query.users.findFirst({
-        where: eq(users.email, primary.email),
+      const existingUser = await db.query.userTable.findFirst({
+        where: eq(userTable.email, primary.email),
       });
 
       if (existingUser) {
@@ -129,7 +129,7 @@ export const Route = createAPIFileRoute("/api/auth/callback/github")({
           sessionCookie.attributes
         );
 
-        db.insert(ssoProviders)
+        db.insert(ssoProviderTable)
           .values({
             userId: existingUser.id,
             provider: "github",
@@ -147,7 +147,7 @@ export const Route = createAPIFileRoute("/api/auth/callback/github")({
 
       const newUser = await db.transaction(async (tx) => {
         const newUser = tx
-          .insert(users)
+          .insert(userTable)
           .values({
             email: primary.email,
             avatarUrl: avatar_url ?? null,
@@ -155,7 +155,7 @@ export const Route = createAPIFileRoute("/api/auth/callback/github")({
           .returning()
           .get();
 
-        tx.insert(ssoProviders)
+        tx.insert(ssoProviderTable)
           .values({
             userId: newUser.id,
             provider: "github",

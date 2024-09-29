@@ -11,11 +11,10 @@ export const Route = createFileRoute("/dashboard/_authenticated")({
       });
     }
 
-    const defaultTeamId = context.user.defaultTeamId;
     const name = context.user.name;
 
-    // if user does not have a default team, redirect to onboarding
-    if (!defaultTeamId || !name) {
+    // if user does not have the "user" role, redirect to onboarding
+    if (!context.user.roles.includes("user") || !name) {
       throw redirect({
         to: "/onboarding",
         search: { redirectTo: location.pathname },
@@ -25,7 +24,6 @@ export const Route = createFileRoute("/dashboard/_authenticated")({
     return {
       user: {
         ...context.user,
-        defaultTeamId,
         name,
       },
     };

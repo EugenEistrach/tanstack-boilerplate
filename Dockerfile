@@ -51,4 +51,6 @@ VOLUME /data
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 3000
 ENV DATABASE_URL="/data/sqlite.db"
-CMD [ "pnpm", "run", "start" ]
+
+# Change to "start" in real production
+CMD [ "pnpm", "run", "start-with-reset" ]

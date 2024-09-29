@@ -1,4 +1,4 @@
-import { createFileRoute, redirect, useRouter } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -22,7 +22,7 @@ import {
 } from "@/app/components/ui/form";
 import { createServerFn, useServerFn } from "@tanstack/start";
 import { db } from "@/app/db";
-import { users, teams } from "@/app/db/schema";
+import { roleTable, userTable, userToRoleTable } from "@/app/db/schema";
 import { useMutation } from "@tanstack/react-query";
 import { validationClient } from "@/app/lib/functions";
 import { requireInitialAuthSession } from "@/app/auth/auth-session";
@@ -32,12 +32,9 @@ const formSchema = z.object({
   name: z.string().min(1, {
     message: "Name is required.",
   }),
-  teamName: z.string().min(1, {
-    message: "Team name is required.",
-  }),
 });
 
-const updateUserAndCreateTeam = createServerFn(
+const updateUser = createServerFn(
   "POST",
   validationClient
     .input(
@@ -45,20 +42,33 @@ const updateUserAndCreateTeam = createServerFn(
         redirectTo: z.string().optional(),
       })
     )
-    .handler(async ({ parsedInput: { name, teamName, redirectTo } }) => {
+    .handler(async ({ parsedInput: { name, redirectTo } }) => {
       const { user } = await requireInitialAuthSession();
 
       await db.transaction(async (tx) => {
-        const newTeam = tx
-          .insert(teams)
-          .values({ name: teamName })
-          .returning()
+        tx.update(userTable)
+          .set({
+            name,
+          })
+          .where(eq(userTable.id, user.id))
+          .execute();
+
+        const userRole = tx
+          .select()
+          .from(roleTable)
+          .where(eq(roleTable.name, "user"))
           .get();
 
-        tx.update(users)
-          .set({ name, defaultTeamId: newTeam.id })
-          .where(eq(users.id, user.id))
-          .run();
+        if (!userRole) {
+          throw new Error("User role not found. Was database seeded?");
+        }
+
+        tx.insert(userToRoleTable)
+          .values({
+            userId: user.id,
+            roleId: userRole.id,
+          })
+          .execute();
       });
 
       throw redirect({
@@ -81,7 +91,7 @@ export const Route = createFileRoute("/(auth)/onboarding")({
       });
     }
 
-    if (context.user.defaultTeamId && context.user.name) {
+    if (context.user.roles.includes("user") && context.user.name) {
       throw redirect({
         to: search.redirectTo || "/dashboard",
       });
@@ -100,12 +110,11 @@ function Onboarding() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      teamName: "",
     },
   });
 
   const updateUserMutation = useMutation({
-    mutationFn: useServerFn(updateUserAndCreateTeam),
+    mutationFn: useServerFn(updateUser),
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -134,19 +143,6 @@ function Onboarding() {
                     <FormLabel>What's your name?</FormLabel>
                     <FormControl>
                       <Input placeholder="Enter your name" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="teamName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>What's your team name?</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Enter your team name" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

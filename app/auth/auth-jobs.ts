@@ -1,7 +1,7 @@
 import { Queue, Worker } from "bullmq";
 import { jobConfig } from "../jobs";
 import { lucia } from ".";
-import { sessions } from "./auth-tables";
+import { sessionTable } from "./auth-tables";
 import { db } from "../db";
 import { sql } from "drizzle-orm";
 
@@ -12,12 +12,12 @@ const sessionCleanupWorker = new Worker(
     console.log("session-cleanup");
     const currentCount = db
       .select({ count: sql<number>`count(*)` })
-      .from(sessions)
+      .from(sessionTable)
       .get();
     await lucia.deleteExpiredSessions();
     const newCount = db
       .select({ count: sql<number>`count(*)` })
-      .from(sessions)
+      .from(sessionTable)
       .get();
 
     const diff = (currentCount?.count ?? 0) - (newCount?.count ?? 0);

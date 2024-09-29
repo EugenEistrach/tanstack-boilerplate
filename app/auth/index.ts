@@ -1,9 +1,11 @@
 import { Lucia } from "lucia";
 import { DrizzleSQLiteAdapter } from "@lucia-auth/adapter-drizzle";
 import { db } from "../db";
-import { sessions, users } from "./auth-tables";
+import { sessionTable, userTable } from "./auth-tables";
+import type { Permission, Role } from "./auth-permissions";
+import { eq } from "drizzle-orm";
 
-const adapter = new DrizzleSQLiteAdapter(db, sessions, users);
+const adapter = new DrizzleSQLiteAdapter(db, sessionTable, userTable);
 
 export const lucia = new Lucia(adapter, {
   sessionCookie: {
@@ -13,11 +15,47 @@ export const lucia = new Lucia(adapter, {
     },
   },
   getUserAttributes: (attributes) => {
+    const user = db.query.userTable
+      .findFirst({
+        with: {
+          usersToRoles: {
+            with: {
+              role: {
+                with: {
+                  rolesToPermissions: {
+                    with: {
+                      permission: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+        where: eq(userTable.email, attributes.email),
+      })
+      .sync();
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const roles = user.usersToRoles.map((userToRole) => userToRole.role.name);
+    const permissions = new Set(
+      user.usersToRoles.flatMap((userToRole) =>
+        userToRole.role.rolesToPermissions.map(
+          (roleToPermission) =>
+            `${roleToPermission.permission.resource}:${roleToPermission.permission.action}:${roleToPermission.permission.access}` satisfies Permission
+        )
+      )
+    );
+
     return {
       email: attributes.email,
       avatarUrl: attributes.avatarUrl,
-      defaultTeamId: attributes.defaultTeamId,
       name: attributes.name,
+      roles: roles,
+      permissions: [...permissions],
     };
   },
 });
@@ -33,5 +71,4 @@ interface DatabaseUserAttributes {
   email: string;
   avatarUrl?: string;
   name?: string;
-  defaultTeamId?: string;
 }

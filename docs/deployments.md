@@ -2,7 +2,8 @@
 
 ## Docker (self-hosted for example)
 
-TODO:
+This can be deployed to any platform that supports docker.
+Check the `Dockerfile` for reference.
 
 ## Fly.io
 
