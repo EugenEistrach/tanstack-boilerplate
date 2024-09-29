@@ -1,4 +1,4 @@
-// Some convience stuff until the new server functions drop :D
+// Some convenience stuff until the new server functions drop :D
 
 import { z } from "zod";
 

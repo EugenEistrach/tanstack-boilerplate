@@ -17,7 +17,13 @@ migrate(db, {
 console.log("DB migrated");
 
 console.log("Schedule jobs");
-await scheduleSessionCleanup();
+scheduleSessionCleanup()
+  .then(() => {
+    console.log("Jobs scheduled");
+  })
+  .catch((error) => {
+    console.error("Error scheduling jobs", error);
+  });
 
 export default createStartHandler({
   createRouter,
