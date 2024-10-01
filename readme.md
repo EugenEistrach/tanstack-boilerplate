@@ -52,3 +52,13 @@ EMAIL_FROM=
 - [ ] feature flags
 - [ ] logging
 - [ ] analytics
+
+## Development
+
+Clone the repo using degit and run setup:
+
+```
+pnpm dlx degit EugenEistrach/tanstack-boilerplate my-project
+cd my-project
+node scripts/setup.js
+```
