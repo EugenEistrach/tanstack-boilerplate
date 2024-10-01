@@ -62,3 +62,9 @@ pnpm dlx degit EugenEistrach/tanstack-boilerplate my-project
 cd my-project
 node scripts/setup.js
 ```
+
+Start the dev server:
+
+```
+pnpm dev
+```

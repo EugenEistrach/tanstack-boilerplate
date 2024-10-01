@@ -68,35 +68,43 @@ db.transaction((tx) => {
     .get();
   console.log("Created User role");
 
-  const adminPermissions = tx
-    .insert(roleToPermissionTable)
-    .values(
-      insertedPermissions
-        .filter((permission) => permission.access === "any")
-        .map((permission) => ({
-          roleId: adminRole.id,
-          permissionId: permission.id,
-        }))
-    )
-    .onConflictDoNothing()
-    .returning()
-    .all();
-  console.log(`Assigned ${adminPermissions.length} permissions to Admin role`);
+  const adminPermissionsToInsert = insertedPermissions
+    .filter((permission) => permission.access === "any")
+    .map((permission) => ({
+      roleId: adminRole.id,
+      permissionId: permission.id,
+    }));
 
-  const userPermissions = tx
-    .insert(roleToPermissionTable)
-    .values(
-      insertedPermissions
-        .filter((permission) => permission.access === "own")
-        .map((permission) => ({
-          roleId: userRole.id,
-          permissionId: permission.id,
-        }))
-    )
-    .onConflictDoNothing()
-    .returning()
-    .all();
-  console.log(`Assigned ${userPermissions.length} permissions to User role`);
+  if (adminPermissionsToInsert.length > 0) {
+    const adminPermissions = tx
+      .insert(roleToPermissionTable)
+      .values(adminPermissionsToInsert)
+      .onConflictDoNothing()
+      .returning()
+      .all();
+    console.log(
+      `Assigned ${adminPermissions.length} permissions to Admin role`
+    );
+  }
+
+  const userPermissionsToInsert = insertedPermissions
+    .filter((permission) => permission.access === "own")
+    .map((permission) => ({
+      roleId: userRole.id,
+      permissionId: permission.id,
+    }));
+
+  if (userPermissionsToInsert.length > 0) {
+    const userPermissions = tx
+      .insert(roleToPermissionTable)
+      .values(userPermissionsToInsert)
+      .onConflictDoNothing()
+      .returning()
+      .all();
+    console.log(`Assigned ${userPermissions.length} permissions to User role`);
+  }
+
+  console.log("Database transaction completed successfully");
 
   console.log("Database transaction completed successfully");
 });
