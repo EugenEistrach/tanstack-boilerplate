@@ -63,6 +63,7 @@ db.transaction((tx) => {
         description: "User role",
       },
     ])
+    .onConflictDoNothing()
     .returning()
     .get();
   console.log("Created User role");
