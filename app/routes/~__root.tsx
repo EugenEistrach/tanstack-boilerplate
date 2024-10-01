@@ -1,8 +1,4 @@
-import {
-  createRootRoute,
-  createRootRouteWithContext,
-  redirect,
-} from "@tanstack/react-router";
+import { createRootRouteWithContext } from "@tanstack/react-router";
 import { Outlet, ScrollRestoration } from "@tanstack/react-router";
 import { Body, Head, Html, Meta, Scripts } from "@tanstack/start";
 import type * as React from "react";
@@ -14,7 +10,12 @@ import appCss from "@/app/styles/globals.css?url";
 import type { QueryClient } from "@tanstack/react-query";
 import { getAuthSession } from "@/app/auth/auth-session";
 import { ThemeProvider } from "next-themes";
-import { ThemeToggle } from "../components/ui/theme-toggle";
+import {
+  getLocaleFromSession,
+  getMessages,
+  getTimeZoneFromSession,
+} from "../lib/i18n";
+import { IntlProvider } from "use-intl";
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
@@ -46,7 +47,14 @@ export const Route = createRootRouteWithContext<{
   component: RootComponent,
   beforeLoad: async () => {
     const { session, user } = await getAuthSession();
-    return { session, user };
+    const [locale, timeZone] = await Promise.all([
+      getLocaleFromSession(),
+      getTimeZoneFromSession(),
+    ]);
+
+    const messages = await getMessages(locale);
+
+    return { session, user, locale, timeZone, messages };
   },
 });
 
@@ -60,14 +68,18 @@ function RootComponent() {
 }
 
 function RootDocument({ children }: { children: React.ReactNode }) {
+  const { locale, messages, timeZone } = Route.useRouteContext();
   return (
+    // TODO: Add lang attribute once supported by tanstack start
     <Html>
       <Head>
         <Meta />
       </Head>
       <Body>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <div className="font-sans">{children}</div>
+          <IntlProvider locale={locale} messages={messages}>
+            <div className="font-sans">{children}</div>
+          </IntlProvider>
         </ThemeProvider>
         <ScrollRestoration />
         <TanStackRouterDevtools position="bottom-right" />

@@ -13,7 +13,6 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/~__root'
-import { Route as TestImport } from './routes/~test'
 import { Route as DashboardAuthenticatedImport } from './routes/~dashboard/~_authenticated'
 import { Route as authOnboardingImport } from './routes/~(auth)/~onboarding'
 import { Route as authLoginImport } from './routes/~(auth)/~login'
@@ -29,11 +28,6 @@ const DashboardImport = createFileRoute('/dashboard')()
 
 const DashboardRoute = DashboardImport.update({
   path: '/dashboard',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const TestRoute = TestImport.update({
-  path: '/test',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -73,13 +67,6 @@ const DashboardAuthenticatedIndexRoute =
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/test': {
-      id: '/test'
-      path: '/test'
-      fullPath: '/test'
-      preLoaderRoute: typeof TestImport
-      parentRoute: typeof rootRoute
-    }
     '/(landing-page)/': {
       id: '/'
       path: '/'
@@ -163,7 +150,6 @@ const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
 )
 
 export interface FileRoutesByFullPath {
-  '/test': typeof TestRoute
   '/': typeof landingPageIndexRoute
   '/login': typeof authLoginRoute
   '/onboarding': typeof authOnboardingRoute
@@ -173,7 +159,6 @@ export interface FileRoutesByFullPath {
 }
 
 export interface FileRoutesByTo {
-  '/test': typeof TestRoute
   '/': typeof landingPageIndexRoute
   '/login': typeof authLoginRoute
   '/onboarding': typeof authOnboardingRoute
@@ -183,7 +168,6 @@ export interface FileRoutesByTo {
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
-  '/test': typeof TestRoute
   '/': typeof landingPageIndexRoute
   '/login': typeof authLoginRoute
   '/onboarding': typeof authOnboardingRoute
@@ -196,7 +180,6 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/test'
     | '/'
     | '/login'
     | '/onboarding'
@@ -204,16 +187,9 @@ export interface FileRouteTypes {
     | '/dashboard/'
     | '/dashboard/notes'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/test'
-    | '/'
-    | '/login'
-    | '/onboarding'
-    | '/dashboard'
-    | '/dashboard/notes'
+  to: '/' | '/login' | '/onboarding' | '/dashboard' | '/dashboard/notes'
   id:
     | '__root__'
-    | '/test'
     | '/'
     | '/login'
     | '/onboarding'
@@ -225,7 +201,6 @@ export interface FileRouteTypes {
 }
 
 export interface RootRouteChildren {
-  TestRoute: typeof TestRoute
   landingPageIndexRoute: typeof landingPageIndexRoute
   authLoginRoute: typeof authLoginRoute
   authOnboardingRoute: typeof authOnboardingRoute
@@ -233,7 +208,6 @@ export interface RootRouteChildren {
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  TestRoute: TestRoute,
   landingPageIndexRoute: landingPageIndexRoute,
   authLoginRoute: authLoginRoute,
   authOnboardingRoute: authOnboardingRoute,
@@ -252,15 +226,11 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "~__root.tsx",
       "children": [
-        "/test",
         "/",
         "/login",
         "/onboarding",
         "/dashboard"
       ]
-    },
-    "/test": {
-      "filePath": "~test.tsx"
     },
     "/": {
       "filePath": "~(landing-page)/~index.tsx"

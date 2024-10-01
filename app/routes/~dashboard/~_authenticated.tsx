@@ -1,3 +1,4 @@
+import { LocaleSwitcher } from "@/app/components/ui/locale-switcher";
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/dashboard/_authenticated")({
@@ -35,6 +36,7 @@ function DashboardLayout() {
   return (
     <div>
       Hello /(dashboard)/_layout!
+      <LocaleSwitcher />
       <Outlet />
     </div>
   );

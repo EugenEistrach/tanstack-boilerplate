@@ -1,0 +1,12 @@
+{
+  "default": {
+    "helloWorld": "Hello World"
+  },
+  "notes": {
+    "placeholder": "Enter note content",
+    "validation": {
+      "required": "Content is required",
+      "refine": "Content is invalid"
+    }
+  }
+}

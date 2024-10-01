@@ -18,6 +18,8 @@ import { Input } from "@/app/components/ui/input";
 import { Card, CardContent } from "@/app/components/ui/card";
 import { requireAuthSession } from "@/app/auth/auth-session";
 import { eq } from "drizzle-orm";
+import { getTranslations, type Translator } from "@/app/lib/i18n";
+import { useTranslations } from "use-intl";
 
 const validateContentAsync = createServerFn("POST", async (content: string) => {
   return content !== "error";
@@ -31,14 +33,23 @@ const getNotes = createServerFn("GET", async () => {
   });
 });
 
-const noteSchema = z.object({
-  content: z.string().min(1).refine(validateContentAsync),
-});
+const noteSchema = (t: Translator) =>
+  z.object({
+    content: z
+      .string()
+      .min(1, { message: t("notes.validation.required") })
+      .refine(validateContentAsync, {
+        message: t("notes.validation.refine"),
+      }),
+  });
 
 const createNote = createServerFn(
   "POST",
   validationClient
-    .input(noteSchema)
+    .input(async () => {
+      const t = await getTranslations();
+      return noteSchema(t);
+    })
     .handler(async ({ parsedInput: { content } }) => {
       const { user } = await requireAuthSession();
       return db
@@ -64,6 +75,7 @@ export const Route = createFileRoute("/dashboard/_authenticated/notes")({
 function Home() {
   const queryClient = useQueryClient();
   const { data: notes } = useSuspenseQuery(notesQueryOptions());
+  const t = useTranslations();
 
   const {
     register,
@@ -71,7 +83,7 @@ function Home() {
     formState: { errors, isValidating, isLoading, ...rest },
     reset,
   } = useForm({
-    resolver: zodResolver(noteSchema),
+    resolver: zodResolver(noteSchema(t)),
     defaultValues: {
       content: "",
     },
@@ -85,7 +97,7 @@ function Home() {
     },
   });
 
-  const onSubmit = (data: z.infer<typeof noteSchema>) => {
+  const onSubmit = (data: z.infer<ReturnType<typeof noteSchema>>) => {
     createNoteMutation.mutate(data);
   };
 
@@ -95,7 +107,7 @@ function Home() {
         <div className="flex gap-2">
           <Input
             {...register("content")}
-            placeholder="Enter note content"
+            placeholder={t("notes.placeholder")}
             className="flex-grow"
           />
           <Button

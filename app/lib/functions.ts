@@ -16,13 +16,19 @@ export class ValidationError<T> extends Error {
 
 export function createValidationClient() {
   return {
-    input: <T extends z.ZodType>(schema: T) => ({
+    input: <T extends z.ZodType>(
+      schemaOrFactory: T | (() => T | Promise<T>)
+    ) => ({
       handler:
         <R>(fn: (input: { parsedInput: z.infer<T> }) => Promise<R>) =>
         async (
           rawInput: z.input<T>
         ): Promise<[R, null] | [null, FlattenedError<z.infer<T>>]> => {
           try {
+            const schema =
+              typeof schemaOrFactory === "function"
+                ? await schemaOrFactory()
+                : schemaOrFactory;
             const parsedInput = await schema.parseAsync(rawInput);
             const result = await fn({ parsedInput });
             return [result, null];
