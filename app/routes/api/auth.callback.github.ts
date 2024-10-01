@@ -9,8 +9,6 @@ import { setCookie, useSession } from "vinxi/http";
 
 import { z } from "zod";
 
-const github = new GitHub(env.GITHUB_CLIENT_ID, env.GITHUB_CLIENT_SECRET);
-
 export const Route = createAPIFileRoute("/api/auth/callback/github")({
   GET: async ({ request }) => {
     const url = new URL(request.url);
@@ -39,6 +37,13 @@ export const Route = createAPIFileRoute("/api/auth/callback/github")({
     }
 
     try {
+      if (!env.GITHUB_CLIENT_ID || !env.GITHUB_CLIENT_SECRET) {
+        throw new Error(
+          "GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET must be set to use github login."
+        );
+      }
+
+      const github = new GitHub(env.GITHUB_CLIENT_ID, env.GITHUB_CLIENT_SECRET);
       const tokens = await github.validateAuthorizationCode(code);
       const userResponse = await fetch("https://api.github.com/user", {
         headers: {

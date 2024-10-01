@@ -11,9 +11,14 @@ import { z } from "zod";
 
 export const Route = createFileRoute("/(auth)/login")({
   beforeLoad: ({ context }) => {
-    if (context.user) {
+    if (context.user?.roles.includes("user")) {
       throw redirect({
         to: "/dashboard",
+      });
+    }
+    if (context.user) {
+      throw redirect({
+        to: "/onboarding",
       });
     }
   },
