@@ -50,6 +50,7 @@ db.transaction((tx) => {
         description: "Admin role",
       },
     ])
+    .onConflictDoNothing()
     .returning()
     .get();
   console.log("Created Admin role");
