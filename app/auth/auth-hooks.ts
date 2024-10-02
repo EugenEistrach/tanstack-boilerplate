@@ -22,4 +22,6 @@ export function useAuth() {
       },
     });
   }
+
+  return { user, session };
 }

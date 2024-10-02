@@ -11,9 +11,11 @@ import {
 } from "./dropdown-menu";
 import { SunIcon, MoonIcon } from "@radix-ui/react-icons";
 import { cn } from "@/app/lib/utils";
+import { useTranslations } from "use-intl";
 
 export function ThemeToggle({ className }: { className?: string }) {
   const { setTheme } = useTheme();
+  const t = useTranslations();
 
   return (
     <DropdownMenu>
@@ -26,13 +28,13 @@ export function ThemeToggle({ className }: { className?: string }) {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={() => setTheme("light")}>
-          Light
+          {t("theme.light")}
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme("dark")}>
-          Dark
+          {t("theme.dark")}
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme("system")}>
-          System
+          {t("theme.system")}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

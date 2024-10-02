@@ -116,7 +116,7 @@ function Home() {
             type="submit"
             disabled={isValidating || createNoteMutation.isPending}
           >
-            Submit
+            {t("notes.submit")}
           </Button>
         </div>
         {errors.content && <FieldErrorMessage error={errors.content} />}

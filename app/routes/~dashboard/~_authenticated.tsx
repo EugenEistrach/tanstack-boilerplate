@@ -14,14 +14,6 @@ import {
 } from "@radix-ui/react-icons";
 
 import { Button } from "@/app/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/app/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/app/components/ui/sheet";
 import {
   Tooltip,
@@ -29,6 +21,8 @@ import {
   TooltipTrigger,
 } from "@/app/components/ui/tooltip";
 import { ThemeToggle } from "@/app/components/ui/theme-toggle";
+import { UserMenu } from "@/app/components/ui/user-menu";
+import { useTranslations } from "use-intl";
 
 export const Route = createFileRoute("/dashboard/_authenticated")({
   beforeLoad: ({ context, location }) => {
@@ -63,19 +57,21 @@ export const Route = createFileRoute("/dashboard/_authenticated")({
 const links = [
   {
     path: "/dashboard",
-    label: "Dashboard",
+    labelKey: "dashboard.nav.dashboard",
     icon: HomeIcon,
     exact: true,
   },
   {
     path: "/dashboard/notes",
-    label: "Notes",
+    labelKey: "dashboard.nav.notes",
     icon: ReaderIcon,
     exact: false,
   },
 ] as const;
 
 function DashboardLayout() {
+  const t = useTranslations();
+
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
       <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
@@ -85,7 +81,7 @@ function DashboardLayout() {
             className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
           >
             <CubeIcon className="h-4 w-4 transition-all group-hover:scale-110" />
-            <span className="sr-only">Tanstack Boilerplate</span>
+            <span className="sr-only">{t("dashboard.appName")}</span>
           </Link>
 
           {links.map((link) => (
@@ -104,10 +100,10 @@ function DashboardLayout() {
                   className="flex h-9 w-9 items-center justify-center rounded-lg  transition-colors md:h-8 md:w-8"
                 >
                   <link.icon className="h-5 w-5" />
-                  <span className="sr-only">{link.label}</span>
+                  <span className="sr-only">{t(link.labelKey)}</span>
                 </Link>
               </TooltipTrigger>
-              <TooltipContent side="right">{link.label}</TooltipContent>
+              <TooltipContent side="right">{t(link.labelKey)}</TooltipContent>
             </Tooltip>
           ))}
         </nav>
@@ -126,10 +122,12 @@ function DashboardLayout() {
                 className="flex h-9 w-9 items-center justify-center rounded-lg  transition-colors md:h-8 md:w-8"
               >
                 <GearIcon className="h-5 w-5" />
-                <span className="sr-only">Settings</span>
+                <span className="sr-only">{t("dashboard.nav.settings")}</span>
               </Link>
             </TooltipTrigger>
-            <TooltipContent side="right">Settings</TooltipContent>
+            <TooltipContent side="right">
+              {t("dashboard.nav.settings")}
+            </TooltipContent>
           </Tooltip>
         </nav>
       </aside>
@@ -139,7 +137,9 @@ function DashboardLayout() {
             <SheetTrigger asChild>
               <Button size="icon" variant="outline" className="sm:hidden">
                 <CubeIcon className="h-5 w-5" />
-                <span className="sr-only">Toggle Menu</span>
+                <span className="sr-only">
+                  {t("dashboard.menu.toggleMenu")}
+                </span>
               </Button>
             </SheetTrigger>
             <SheetContent side="left" className="sm:max-w-xs">
@@ -149,7 +149,7 @@ function DashboardLayout() {
                   className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-bas"
                 >
                   <CubeIcon className="h-5 w-5 transition-all group-hover:scale-110" />
-                  <span className="sr-only">Tanstack Boilerplate</span>
+                  <span className="sr-only">{t("dashboard.appName")}</span>
                 </Link>
                 {links.map((link) => (
                   <Link
@@ -165,7 +165,7 @@ function DashboardLayout() {
                     className="flex items-center gap-4 px-2.5 text-foreground  transition-colors"
                   >
                     <link.icon className="h-5 w-5" />
-                    {link.label}
+                    {t(link.labelKey)}
                   </Link>
                 ))}
                 <Link
@@ -179,55 +179,38 @@ function DashboardLayout() {
                   className="flex items-center gap-4 px-2.5 text-foreground  transition-colors"
                 >
                   <GearIcon className="h-5 w-5" />
-                  Settings
+                  {t("dashboard.nav.settings")}
                 </Link>
               </nav>
             </SheetContent>
           </Sheet>
           <ThemeToggle className="ml-auto" />
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="outline"
-                size="icon"
-                className="overflow-hidden rounded-full"
-              >
-                {/* Add user avatar here */}T
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Settings</DropdownMenuItem>
-              <DropdownMenuItem>Support</DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Logout</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <UserMenu />
         </header>
         <main className="h-full min-h-full flex-1 px-4 sm:px-6">
           <Outlet />
         </main>
         <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
           <p className="text-xs text-muted-foreground">
-            © {new Date().getFullYear()} Tanstack Boilerplate. All rights
-            reserved.
+            {t("marketing.footer.copyright", {
+              year: new Date().getFullYear(),
+            })}
           </p>
           <nav className="sm:ml-auto flex gap-4 sm:gap-6 items-center  mr-4 sm:mr-6">
             <Link to="/" className="text-xs hover:underline underline-offset-4">
-              Landing Page
+              {t("marketing.footer.home")}
             </Link>
             <Link
               className="text-xs hover:underline underline-offset-4"
               to="/terms"
             >
-              Terms of Service
+              {t("marketing.footer.termsOfService")}
             </Link>
             <Link
               className="text-xs hover:underline underline-offset-4"
               to="/privacy"
             >
-              Privacy Policy
+              {t("marketing.footer.privacyPolicy")}
             </Link>
           </nav>
           <LocaleSwitcher />

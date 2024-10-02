@@ -58,7 +58,7 @@ export const destroyAuthSession = createServerFn("POST", async (_, ctx) => {
   if (sessionId) {
     await lucia.invalidateSession(sessionId);
   }
-  return redirect({
+  throw redirect({
     statusCode: 302,
     to: "/",
   });

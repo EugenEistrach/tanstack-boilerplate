@@ -17,26 +17,28 @@ import {
   CubeIcon,
 } from "@radix-ui/react-icons";
 import { Alert, AlertDescription, AlertTitle } from "@/app/components/ui/alert";
+import { useTranslations } from "use-intl";
+import { LocaleSwitcher } from "../components/ui/locale-switcher";
 
 export const Route = createFileRoute("/_marketing")({
   component: () => {
     const { user } = useOptionalAuth();
+    const t = useTranslations();
 
     return (
       <div className="flex flex-col min-h-screen">
         <Alert className="rounded-none bg-blue-100 dark:bg-blue-900 border-blue-200 dark:border-blue-800">
           <InfoCircledIcon className="h-4 w-4 text-blue-600 dark:text-blue-400" />
           <AlertTitle className="text-blue-800 dark:text-blue-200">
-            AI-Generated Content
+            {t("marketing.alert.title")}
           </AlertTitle>
           <AlertDescription className="text-blue-700 dark:text-blue-300">
-            This landing page content is AI-generated and for demonstration
-            purposes only. The actual features and functionality may vary.
+            {t("marketing.alert.description")}
           </AlertDescription>
         </Alert>
         <header className="px-4 lg:px-6 h-14 flex items-center">
           <Link className="flex items-center justify-center" to="/">
-            <span className="sr-only">SaaS Boilerplate</span>
+            <span className="sr-only">{t("marketing.hero.title")}</span>
             <CubeIcon className="h-6 w-6" />
           </Link>
           <nav className="ml-auto flex gap-4 sm:gap-6 items-center">
@@ -44,18 +46,20 @@ export const Route = createFileRoute("/_marketing")({
               className="text-sm font-medium hover:underline underline-offset-4"
               href="#features"
             >
-              Features
+              {t("marketing.nav.features")}
             </a>
             <a
               className="text-sm font-medium hover:underline underline-offset-4"
               href="#pricing"
             >
-              Pricing
+              {t("marketing.nav.pricing")}
             </a>
             <ThemeToggle />
             <Button asChild>
               <Link to={user ? "/dashboard" : "/login"}>
-                {user ? "Go to App" : "Get Started"}
+                {user
+                  ? t("marketing.nav.goToApp")
+                  : t("marketing.nav.getStarted")}
               </Link>
             </Button>
           </nav>
@@ -65,23 +69,25 @@ export const Route = createFileRoute("/_marketing")({
         </main>
         <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
           <p className="text-xs text-muted-foreground">
-            © {new Date().getFullYear()} Tanstack Boilerplate. All rights
-            reserved.
+            {t("marketing.footer.copyright", {
+              year: new Date().getFullYear(),
+            })}
           </p>
-          <nav className="sm:ml-auto flex gap-4 sm:gap-6 items-center">
+          <nav className="sm:ml-auto flex gap-4 sm:gap-6 items-center mr-4 sm:mr-6">
             <Link
               className="text-xs hover:underline underline-offset-4"
               to="/terms"
             >
-              Terms of Service
+              {t("marketing.footer.termsOfService")}
             </Link>
             <Link
               className="text-xs hover:underline underline-offset-4"
               to="/privacy"
             >
-              Privacy Policy
+              {t("marketing.footer.privacyPolicy")}
             </Link>
           </nav>
+          <LocaleSwitcher />
         </footer>
       </div>
     );
