@@ -1,6 +1,12 @@
 {
-  "default": {
-    "helloWorld": "Hallo Welt"
+  "login": {
+    "title": "Willkommen zurück",
+    "description": "Melden Sie sich bei Ihrem Konto an",
+    "buttons": {
+      "github": "Anmelden mit GitHub",
+      "discord": "Anmelden mit Discord"
+    },
+    "footer": "© {year} Ihre Firma. Alle Rechte vorbehalten."
   },
   "notes": {
     "placeholder": "Inhalt eingeben",

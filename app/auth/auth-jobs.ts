@@ -8,8 +8,8 @@ import { sql } from "drizzle-orm";
 const sessionCleanupQueue = new Queue("session-cleanup", jobConfig);
 const sessionCleanupWorker = new Worker(
   "session-cleanup",
-  async () => {
-    console.log("session-cleanup");
+  async (job) => {
+    job.log("session-cleanup");
     const currentCount = db
       .select({ count: sql<number>`count(*)` })
       .from(sessionTable)
@@ -23,10 +23,10 @@ const sessionCleanupWorker = new Worker(
     const diff = (currentCount?.count ?? 0) - (newCount?.count ?? 0);
 
     if (diff > 0) {
-      console.log(`${diff} sessions cleaned up`);
+      job.log(`${diff} sessions cleaned up`);
     }
 
-    console.log("session-cleanup done");
+    job.log("session-cleanup done");
   },
   jobConfig
 );

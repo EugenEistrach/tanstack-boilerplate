@@ -1,6 +1,12 @@
 {
-  "default": {
-    "helloWorld": "Hello World"
+  "login": {
+    "title": "Welcome Back",
+    "description": "Sign in to your account",
+    "buttons": {
+      "github": "Sign in with GitHub",
+      "discord": "Sign in with Discord"
+    },
+    "footer": "© {year} Your Company. All rights reserved."
   },
   "notes": {
     "placeholder": "Enter note content",

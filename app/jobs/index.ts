@@ -1,4 +1,3 @@
-import { Queue, Worker } from "bullmq";
 import { env } from "../lib/env";
 
 export const jobConfig = {

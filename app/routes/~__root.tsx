@@ -10,11 +10,7 @@ import appCss from "@/app/styles/globals.css?url";
 import type { QueryClient } from "@tanstack/react-query";
 import { getAuthSession } from "@/app/auth/auth-session";
 import { ThemeProvider } from "next-themes";
-import {
-  getLocaleFromSession,
-  getMessages,
-  getTimeZoneFromSession,
-} from "../lib/i18n";
+import { getI18n } from "@/app/lib/i18n";
 import { IntlProvider } from "use-intl";
 
 export const Route = createRootRouteWithContext<{
@@ -47,19 +43,12 @@ export const Route = createRootRouteWithContext<{
   component: RootComponent,
   beforeLoad: async () => {
     const { session, user } = await getAuthSession();
-    const [locale, timeZone] = await Promise.all([
-      getLocaleFromSession(),
-      getTimeZoneFromSession(),
-    ]);
-
-    const messages = await getMessages(locale);
-
+    const { locale, timeZone, messages } = await getI18n();
     return { session, user, locale, timeZone, messages };
   },
 });
 
 function RootComponent() {
-  const { user } = Route.useRouteContext();
   return (
     <RootDocument>
       <Outlet />
@@ -77,7 +66,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </Head>
       <Body>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <IntlProvider locale={locale} messages={messages}>
+          <IntlProvider locale={locale} messages={messages} timeZone={timeZone}>
             <div className="font-sans">{children}</div>
           </IntlProvider>
         </ThemeProvider>

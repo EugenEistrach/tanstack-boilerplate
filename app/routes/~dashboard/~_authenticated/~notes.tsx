@@ -18,8 +18,9 @@ import { Input } from "@/app/components/ui/input";
 import { Card, CardContent } from "@/app/components/ui/card";
 import { requireAuthSession } from "@/app/auth/auth-session";
 import { eq } from "drizzle-orm";
-import { getTranslations, type Translator } from "@/app/lib/i18n";
+import { getTranslations, tk, type Translator } from "@/app/lib/i18n";
 import { useTranslations } from "use-intl";
+import { FieldErrorMessage } from "@/app/components/ui/field-error-message";
 
 const validateContentAsync = createServerFn("POST", async (content: string) => {
   return content !== "error";
@@ -33,22 +34,21 @@ const getNotes = createServerFn("GET", async () => {
   });
 });
 
-const noteSchema = (t: Translator) =>
-  z.object({
-    content: z
-      .string()
-      .min(1, { message: t("notes.validation.required") })
-      .refine(validateContentAsync, {
-        message: t("notes.validation.refine"),
-      }),
-  });
+const noteSchema = z.object({
+  content: z
+    .string()
+    .min(1, { message: tk("notes.validation.required") })
+    .refine(validateContentAsync, {
+      message: tk("notes.validation.refine"),
+    }),
+});
 
 const createNote = createServerFn(
   "POST",
   validationClient
     .input(async () => {
       const t = await getTranslations();
-      return noteSchema(t);
+      return noteSchema;
     })
     .handler(async ({ parsedInput: { content } }) => {
       const { user } = await requireAuthSession();
@@ -80,10 +80,11 @@ function Home() {
   const {
     register,
     handleSubmit,
+
     formState: { errors, isValidating, isLoading, ...rest },
     reset,
   } = useForm({
-    resolver: zodResolver(noteSchema(t)),
+    resolver: zodResolver(noteSchema),
     defaultValues: {
       content: "",
     },
@@ -97,7 +98,7 @@ function Home() {
     },
   });
 
-  const onSubmit = (data: z.infer<ReturnType<typeof noteSchema>>) => {
+  const onSubmit = (data: z.infer<typeof noteSchema>) => {
     createNoteMutation.mutate(data);
   };
 
@@ -117,9 +118,7 @@ function Home() {
             Submit
           </Button>
         </div>
-        {errors.content && (
-          <p className="text-red-500 text-sm mt-1">{errors.content.message}</p>
-        )}
+        {errors.content && <FieldErrorMessage error={errors.content} />}
       </form>
 
       <div className="space-y-4">
