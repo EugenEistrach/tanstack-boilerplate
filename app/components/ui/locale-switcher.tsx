@@ -10,7 +10,7 @@ import {
 import { useChangeLocaleMutation, useCurrentLocale } from "@/app/lib/i18n";
 
 import { CheckIcon, ChevronDownIcon, GlobeIcon } from "@radix-ui/react-icons";
-import { Suspense } from "react";
+import { useState } from "react";
 
 const locales = [
   { value: "en", label: "English" },
@@ -21,8 +21,10 @@ export function LocaleSwitcher() {
   const changeLocale = useChangeLocaleMutation();
   const currentLocale = useCurrentLocale();
 
+  const [open, setOpen] = useState(false);
+
   return (
-    <DropdownMenu>
+    <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size="sm" className="min-w-[8rem]">
           <GlobeIcon className="mr-2 h-4 w-4" />
@@ -34,7 +36,18 @@ export function LocaleSwitcher() {
         {locales.map((locale) => (
           <DropdownMenuItem
             key={locale.value}
-            onClick={() => changeLocale.mutate(locale.value)}
+            onClick={(event) => {
+              event.preventDefault();
+              changeLocale.mutate(locale.value, {
+                onSettled: () => {
+                  // Close the dropdown after short delay to prevent
+                  // flickering when clicking on the trigger`
+                  setTimeout(() => {
+                    setOpen(false);
+                  }, 100);
+                },
+              });
+            }}
           >
             {locale.label}
             {locale.value === currentLocale && (
