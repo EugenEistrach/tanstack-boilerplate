@@ -30,6 +30,35 @@
     }
   },
 
+  "dashboard": {
+    "nav": {
+      "dashboard": "Dashboard",
+      "notes": "Notes",
+      "settings": "Settings"
+    },
+    "menu": {
+      "toggleMenu": "Toggle Menu"
+    },
+    "appName": "Tanstack Boilerplate"
+  },
+
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Manage your account settings, such as your email and name.",
+    "basicInfo": "Basic Information",
+    "nameLabel": "Name",
+    "emailLabel": "Email",
+    "success": "Settings updated successfully",
+    "validation": {
+      "nameRequired": "Name is required"
+    }
+  },
+
+  "common": {
+    "updating": "Updating...",
+    "saveChanges": "Save Changes"
+  },
+
   "marketing": {
     "nav": {
       "features": "Features",
@@ -113,17 +142,5 @@
       "button": "Get Started",
       "buttonLoggedIn": "Go to Dashboard"
     }
-  },
-
-  "dashboard": {
-    "nav": {
-      "dashboard": "Dashboard",
-      "notes": "Notes",
-      "settings": "Settings"
-    },
-    "menu": {
-      "toggleMenu": "Toggle Menu"
-    },
-    "appName": "Tanstack Boilerplate"
   }
 }

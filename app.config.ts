@@ -11,7 +11,6 @@ export default defineConfig({
   },
   server: {
     preset: "node-server",
-
   },
   tsr: {
     appDirectory: "app",

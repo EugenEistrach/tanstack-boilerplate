@@ -124,7 +124,7 @@ function Home() {
             {t("notes.submit")}
           </Button>
         </div>
-        {errors.content && <FieldErrorMessage error={errors.content} />}
+        <FieldErrorMessage error={errors.content} />
       </form>
 
       <div className="space-y-4">

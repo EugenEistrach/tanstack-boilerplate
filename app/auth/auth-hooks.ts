@@ -11,10 +11,10 @@ export function useOptionalAuth() {
 export function useAuth() {
   const router = useRouter();
   const { user, session } = useRouteContext({
-    from: "/dashboard/_authenticated",
+    from: "__root__",
   });
 
-  if (!user && !session) {
+  if (!user || !session) {
     throw redirect({
       to: "/login",
       search: {

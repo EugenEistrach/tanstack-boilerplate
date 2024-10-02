@@ -12,6 +12,14 @@ import { ThemeProvider } from "next-themes";
 import { getI18n } from "@/app/lib/i18n";
 import { IntlProvider } from "use-intl";
 import { TooltipProvider } from "../components/ui/tooltip";
+import { Toaster } from "../components/ui/sonner";
+
+// TODO: remove once https://github.com/TanStack/router/pull/2316 is merged and released
+if (import.meta.hot) {
+  import.meta.hot.on("vite:beforeUpdate", () => {
+    window.location.reload();
+  });
+}
 
 const TanStackRouterDevtools =
   process.env["NODE_ENV"] === "production"
@@ -82,6 +90,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
           <IntlProvider locale={locale} messages={messages} timeZone={timeZone}>
             <TooltipProvider>
               <div className="font-sans">{children}</div>
+              <Toaster />
             </TooltipProvider>
           </IntlProvider>
         </ThemeProvider>

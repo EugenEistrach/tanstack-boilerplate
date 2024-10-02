@@ -28,6 +28,35 @@
       "refine": "Inhalt ist ungültig"
     }
   },
+  "dashboard": {
+    "nav": {
+      "dashboard": "Dashboard",
+      "notes": "Notizen",
+      "settings": "Einstellungen"
+    },
+    "menu": {
+      "toggleMenu": "Menü umschalten"
+    },
+    "appName": "Tanstack Boilerplate"
+  },
+
+  "settings": {
+    "title": "Einstellungen",
+    "subtitle": "Verwalten Sie Ihre Kontoeinstellungen, z.B. Ihre E-Mail-Adresse und Ihren Namen.",
+    "basicInfo": "Grundlegende Informationen",
+    "nameLabel": "Name",
+    "emailLabel": "E-Mail",
+    "success": "Einstellungen erfolgreich aktualisiert",
+    "validation": {
+      "nameRequired": "Name ist erforderlich"
+    }
+  },
+
+  "common": {
+    "updating": "Aktualisiere...",
+    "saveChanges": "Änderungen speichern"
+  },
+
   "marketing": {
     "nav": {
       "features": "Funktionen",
@@ -111,16 +140,5 @@
       "button": "Loslegen",
       "buttonLoggedIn": "Zum Dashboard"
     }
-  },
-  "dashboard": {
-    "nav": {
-      "dashboard": "Dashboard",
-      "notes": "Notizen",
-      "settings": "Einstellungen"
-    },
-    "menu": {
-      "toggleMenu": "Menü umschalten"
-    },
-    "appName": "Tanstack Boilerplate"
   }
 }
