@@ -24,9 +24,6 @@ export const getI18n = createServerFn("GET", async () => {
 
   if (!locale) {
     const header = getHeader("Accept-Language");
-
-    console.log("header", header);
-
     const languages = header?.split(",") ?? [];
     locale =
       supportedLocales.find((lang) => languages.includes(lang)) ??

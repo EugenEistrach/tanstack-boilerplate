@@ -21,6 +21,7 @@ import { eq } from "drizzle-orm";
 import { getTranslations, tk, type Translator } from "@/app/lib/i18n";
 import { useTranslations } from "use-intl";
 import { FieldErrorMessage } from "@/app/components/ui/field-error-message";
+import { ReaderIcon } from "@radix-ui/react-icons";
 
 const validateContentAsync = createServerFn("POST", async (content: string) => {
   return content !== "error";
@@ -103,7 +104,7 @@ function Home() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-4">
+    <div className="max-w-2xl ">
       <form onSubmit={handleSubmit(onSubmit)} className="mb-6">
         <div className="flex gap-2">
           <Input

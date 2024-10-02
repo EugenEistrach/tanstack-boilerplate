@@ -24,7 +24,7 @@ export function LocaleSwitcher() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="sm">
+        <Button variant="outline" size="sm" className="min-w-[8rem]">
           <GlobeIcon className="mr-2 h-4 w-4" />
           {locales.find((l) => l.value === currentLocale)?.label}
           <ChevronDownIcon className="ml-2 h-4 w-4" />

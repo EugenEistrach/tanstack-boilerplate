@@ -12,6 +12,7 @@ import { getAuthSession } from "@/app/auth/auth-session";
 import { ThemeProvider } from "next-themes";
 import { getI18n } from "@/app/lib/i18n";
 import { IntlProvider } from "use-intl";
+import { TooltipProvider } from "../components/ui/tooltip";
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
@@ -67,12 +68,14 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <Body>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <IntlProvider locale={locale} messages={messages} timeZone={timeZone}>
-            <div className="font-sans">{children}</div>
+            <TooltipProvider>
+              <div className="font-sans">{children}</div>
+            </TooltipProvider>
           </IntlProvider>
         </ThemeProvider>
         <ScrollRestoration />
         <TanStackRouterDevtools position="bottom-right" />
-        <ReactQueryDevtools buttonPosition="bottom-left" />
+        <ReactQueryDevtools buttonPosition="bottom-right" />
         <Scripts />
       </Body>
     </Html>

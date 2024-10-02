@@ -13,10 +13,14 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/~__root'
+import { Route as MarketingImport } from './routes/~_marketing'
 import { Route as DashboardAuthenticatedImport } from './routes/~dashboard/~_authenticated'
+import { Route as MarketingTermsImport } from './routes/~_marketing/~terms'
+import { Route as MarketingPrivacyImport } from './routes/~_marketing/~privacy'
 import { Route as authOnboardingImport } from './routes/~(auth)/~onboarding'
 import { Route as authLoginImport } from './routes/~(auth)/~login'
-import { Route as landingPageIndexImport } from './routes/~(landing-page)/~index'
+import { Route as MarketingIndexImport } from './routes/~_marketing/~index'
+import { Route as DashboardAuthenticatedSettingsImport } from './routes/~dashboard/~_authenticated/~settings'
 import { Route as DashboardAuthenticatedNotesImport } from './routes/~dashboard/~_authenticated/~notes'
 import { Route as DashboardAuthenticatedIndexImport } from './routes/~dashboard/~_authenticated/~index'
 
@@ -31,9 +35,24 @@ const DashboardRoute = DashboardImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const MarketingRoute = MarketingImport.update({
+  id: '/_marketing',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const DashboardAuthenticatedRoute = DashboardAuthenticatedImport.update({
   id: '/_authenticated',
   getParentRoute: () => DashboardRoute,
+} as any)
+
+const MarketingTermsRoute = MarketingTermsImport.update({
+  path: '/terms',
+  getParentRoute: () => MarketingRoute,
+} as any)
+
+const MarketingPrivacyRoute = MarketingPrivacyImport.update({
+  path: '/privacy',
+  getParentRoute: () => MarketingRoute,
 } as any)
 
 const authOnboardingRoute = authOnboardingImport.update({
@@ -46,10 +65,16 @@ const authLoginRoute = authLoginImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const landingPageIndexRoute = landingPageIndexImport.update({
+const MarketingIndexRoute = MarketingIndexImport.update({
   path: '/',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => MarketingRoute,
 } as any)
+
+const DashboardAuthenticatedSettingsRoute =
+  DashboardAuthenticatedSettingsImport.update({
+    path: '/settings',
+    getParentRoute: () => DashboardAuthenticatedRoute,
+  } as any)
 
 const DashboardAuthenticatedNotesRoute =
   DashboardAuthenticatedNotesImport.update({
@@ -67,12 +92,19 @@ const DashboardAuthenticatedIndexRoute =
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/(landing-page)/': {
-      id: '/'
+    '/_marketing': {
+      id: '/_marketing'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof MarketingImport
+      parentRoute: typeof rootRoute
+    }
+    '/_marketing/': {
+      id: '/_marketing/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof landingPageIndexImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof MarketingIndexImport
+      parentRoute: typeof MarketingImport
     }
     '/(auth)/login': {
       id: '/login'
@@ -87,6 +119,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/onboarding'
       preLoaderRoute: typeof authOnboardingImport
       parentRoute: typeof rootRoute
+    }
+    '/_marketing/privacy': {
+      id: '/_marketing/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof MarketingPrivacyImport
+      parentRoute: typeof MarketingImport
+    }
+    '/_marketing/terms': {
+      id: '/_marketing/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof MarketingTermsImport
+      parentRoute: typeof MarketingImport
     }
     '/dashboard': {
       id: '/dashboard'
@@ -116,20 +162,45 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardAuthenticatedNotesImport
       parentRoute: typeof DashboardAuthenticatedImport
     }
+    '/dashboard/_authenticated/settings': {
+      id: '/dashboard/_authenticated/settings'
+      path: '/settings'
+      fullPath: '/dashboard/settings'
+      preLoaderRoute: typeof DashboardAuthenticatedSettingsImport
+      parentRoute: typeof DashboardAuthenticatedImport
+    }
   }
 }
 
 // Create and export the route tree
 
+interface MarketingRouteChildren {
+  MarketingIndexRoute: typeof MarketingIndexRoute
+  MarketingPrivacyRoute: typeof MarketingPrivacyRoute
+  MarketingTermsRoute: typeof MarketingTermsRoute
+}
+
+const MarketingRouteChildren: MarketingRouteChildren = {
+  MarketingIndexRoute: MarketingIndexRoute,
+  MarketingPrivacyRoute: MarketingPrivacyRoute,
+  MarketingTermsRoute: MarketingTermsRoute,
+}
+
+const MarketingRouteWithChildren = MarketingRoute._addFileChildren(
+  MarketingRouteChildren,
+)
+
 interface DashboardAuthenticatedRouteChildren {
   DashboardAuthenticatedIndexRoute: typeof DashboardAuthenticatedIndexRoute
   DashboardAuthenticatedNotesRoute: typeof DashboardAuthenticatedNotesRoute
+  DashboardAuthenticatedSettingsRoute: typeof DashboardAuthenticatedSettingsRoute
 }
 
 const DashboardAuthenticatedRouteChildren: DashboardAuthenticatedRouteChildren =
   {
     DashboardAuthenticatedIndexRoute: DashboardAuthenticatedIndexRoute,
     DashboardAuthenticatedNotesRoute: DashboardAuthenticatedNotesRoute,
+    DashboardAuthenticatedSettingsRoute: DashboardAuthenticatedSettingsRoute,
   }
 
 const DashboardAuthenticatedRouteWithChildren =
@@ -150,65 +221,92 @@ const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
 )
 
 export interface FileRoutesByFullPath {
-  '/': typeof landingPageIndexRoute
+  '': typeof MarketingRouteWithChildren
+  '/': typeof MarketingIndexRoute
   '/login': typeof authLoginRoute
   '/onboarding': typeof authOnboardingRoute
+  '/privacy': typeof MarketingPrivacyRoute
+  '/terms': typeof MarketingTermsRoute
   '/dashboard': typeof DashboardAuthenticatedRouteWithChildren
   '/dashboard/': typeof DashboardAuthenticatedIndexRoute
   '/dashboard/notes': typeof DashboardAuthenticatedNotesRoute
+  '/dashboard/settings': typeof DashboardAuthenticatedSettingsRoute
 }
 
 export interface FileRoutesByTo {
-  '/': typeof landingPageIndexRoute
+  '/': typeof MarketingIndexRoute
   '/login': typeof authLoginRoute
   '/onboarding': typeof authOnboardingRoute
+  '/privacy': typeof MarketingPrivacyRoute
+  '/terms': typeof MarketingTermsRoute
   '/dashboard': typeof DashboardAuthenticatedIndexRoute
   '/dashboard/notes': typeof DashboardAuthenticatedNotesRoute
+  '/dashboard/settings': typeof DashboardAuthenticatedSettingsRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
-  '/': typeof landingPageIndexRoute
+  '/_marketing': typeof MarketingRouteWithChildren
+  '/_marketing/': typeof MarketingIndexRoute
   '/login': typeof authLoginRoute
   '/onboarding': typeof authOnboardingRoute
+  '/_marketing/privacy': typeof MarketingPrivacyRoute
+  '/_marketing/terms': typeof MarketingTermsRoute
   '/dashboard': typeof DashboardRouteWithChildren
   '/dashboard/_authenticated': typeof DashboardAuthenticatedRouteWithChildren
   '/dashboard/_authenticated/': typeof DashboardAuthenticatedIndexRoute
   '/dashboard/_authenticated/notes': typeof DashboardAuthenticatedNotesRoute
+  '/dashboard/_authenticated/settings': typeof DashboardAuthenticatedSettingsRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | ''
     | '/'
     | '/login'
     | '/onboarding'
+    | '/privacy'
+    | '/terms'
     | '/dashboard'
     | '/dashboard/'
     | '/dashboard/notes'
+    | '/dashboard/settings'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/onboarding' | '/dashboard' | '/dashboard/notes'
-  id:
-    | '__root__'
+  to:
     | '/'
     | '/login'
     | '/onboarding'
+    | '/privacy'
+    | '/terms'
+    | '/dashboard'
+    | '/dashboard/notes'
+    | '/dashboard/settings'
+  id:
+    | '__root__'
+    | '/_marketing'
+    | '/_marketing/'
+    | '/login'
+    | '/onboarding'
+    | '/_marketing/privacy'
+    | '/_marketing/terms'
     | '/dashboard'
     | '/dashboard/_authenticated'
     | '/dashboard/_authenticated/'
     | '/dashboard/_authenticated/notes'
+    | '/dashboard/_authenticated/settings'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-  landingPageIndexRoute: typeof landingPageIndexRoute
+  MarketingRoute: typeof MarketingRouteWithChildren
   authLoginRoute: typeof authLoginRoute
   authOnboardingRoute: typeof authOnboardingRoute
   DashboardRoute: typeof DashboardRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  landingPageIndexRoute: landingPageIndexRoute,
+  MarketingRoute: MarketingRouteWithChildren,
   authLoginRoute: authLoginRoute,
   authOnboardingRoute: authOnboardingRoute,
   DashboardRoute: DashboardRouteWithChildren,
@@ -226,20 +324,37 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "~__root.tsx",
       "children": [
-        "/",
+        "/_marketing",
         "/login",
         "/onboarding",
         "/dashboard"
       ]
     },
-    "/": {
-      "filePath": "~(landing-page)/~index.tsx"
+    "/_marketing": {
+      "filePath": "~_marketing.tsx",
+      "children": [
+        "/_marketing/",
+        "/_marketing/privacy",
+        "/_marketing/terms"
+      ]
+    },
+    "/_marketing/": {
+      "filePath": "~_marketing/~index.tsx",
+      "parent": "/_marketing"
     },
     "/login": {
       "filePath": "~(auth)/~login.tsx"
     },
     "/onboarding": {
       "filePath": "~(auth)/~onboarding.tsx"
+    },
+    "/_marketing/privacy": {
+      "filePath": "~_marketing/~privacy.tsx",
+      "parent": "/_marketing"
+    },
+    "/_marketing/terms": {
+      "filePath": "~_marketing/~terms.tsx",
+      "parent": "/_marketing"
     },
     "/dashboard": {
       "filePath": "~dashboard",
@@ -252,7 +367,8 @@ export const routeTree = rootRoute
       "parent": "/dashboard",
       "children": [
         "/dashboard/_authenticated/",
-        "/dashboard/_authenticated/notes"
+        "/dashboard/_authenticated/notes",
+        "/dashboard/_authenticated/settings"
       ]
     },
     "/dashboard/_authenticated/": {
@@ -261,6 +377,10 @@ export const routeTree = rootRoute
     },
     "/dashboard/_authenticated/notes": {
       "filePath": "~dashboard/~_authenticated/~notes.tsx",
+      "parent": "/dashboard/_authenticated"
+    },
+    "/dashboard/_authenticated/settings": {
+      "filePath": "~dashboard/~_authenticated/~settings.tsx",
       "parent": "/dashboard/_authenticated"
     }
   }

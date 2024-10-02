@@ -1,4 +1,18 @@
 {
+  "email": {
+    "welcome": {
+      "title": "Willkommen in unserer App!",
+      "greeting": "Willkommen, {username}!",
+      "description": "Wir sind begeistert, dass Sie an Bord sind. Unsere App ist so konzipiert, dass Ihr Leben einfacher macht.",
+      "features": {
+        "description": "Hier sind einige wichtige Funktionen von unserem Boilerplate:",
+        "tanstack": "TanStack Start!",
+        "typescript": "TypeScript für typensichere Entwicklung",
+        "shadcn": "Shadcn UI und Tailwind CSS für schöne, reaktionsschnelle Designs"
+      },
+      "footer": "Brauchen Sie Hilfe? Schauen Sie in unsere Dokumentation oder wenden Sie sich an unseren Support-Team."
+    }
+  },
   "login": {
     "title": "Willkommen zurück",
     "description": "Melden Sie sich bei Ihrem Konto an",
