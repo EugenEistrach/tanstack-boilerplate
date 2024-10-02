@@ -5,7 +5,6 @@ import type * as React from "react";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
-// @ts-ignore
 import appCss from "@/app/styles/globals.css?url";
 import type { QueryClient } from "@tanstack/react-query";
 import { getAuthSession } from "@/app/auth/auth-session";
