@@ -1,8 +1,8 @@
 import { createRootRouteWithContext } from "@tanstack/react-router";
 import { Outlet, ScrollRestoration } from "@tanstack/react-router";
 import { Body, Head, Html, Meta, Scripts } from "@tanstack/start";
-import type * as React from "react";
-import { TanStackRouterDevtools } from "@tanstack/router-devtools";
+import * as React from "react";
+
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 import appCss from "@/app/styles/globals.css?url";
@@ -13,8 +13,21 @@ import { getI18n } from "@/app/lib/i18n";
 import { IntlProvider } from "use-intl";
 import { TooltipProvider } from "../components/ui/tooltip";
 
+const TanStackRouterDevtools =
+  process.env["NODE_ENV"] === "production"
+    ? () => null // Render nothing in production
+    : React.lazy(() =>
+        // Lazy load in development
+        import("@tanstack/router-devtools").then((res) => ({
+          default: res.TanStackRouterDevtools,
+          // For Embedded Mode
+          // default: res.TanStackRouterDevtoolsPanel
+        }))
+      );
+
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
+  breadcrumb?: string;
 }>()({
   meta: () => [
     {

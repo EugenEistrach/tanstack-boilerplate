@@ -21,10 +21,6 @@ import { destroyAuthSession } from "@/app/auth/auth-session";
 import { Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/start";
 
-export const UserButtonSkeleton = () => {
-  return <Skeleton className="h-8 w-8 rounded-full" />;
-};
-
 export const UserMenu = () => {
   const { user } = useAuth();
   const t = useTranslations();

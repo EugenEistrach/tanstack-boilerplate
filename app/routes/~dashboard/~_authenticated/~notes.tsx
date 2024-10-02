@@ -69,6 +69,11 @@ const notesQueryOptions = () =>
 
 export const Route = createFileRoute("/dashboard/_authenticated/notes")({
   component: Home,
+  beforeLoad: () => {
+    return {
+      breadcrumb: "Notes",
+    };
+  },
   loader: async ({ context }) =>
     await context.queryClient.ensureQueryData(notesQueryOptions()),
 });

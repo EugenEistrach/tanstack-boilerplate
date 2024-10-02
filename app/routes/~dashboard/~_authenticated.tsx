@@ -9,7 +9,6 @@ import {
   HomeIcon,
   CubeIcon,
   GearIcon,
-  BackpackIcon,
   ReaderIcon,
 } from "@radix-ui/react-icons";
 
@@ -23,6 +22,7 @@ import {
 import { ThemeToggle } from "@/app/components/ui/theme-toggle";
 import { UserMenu } from "@/app/components/ui/user-menu";
 import { useTranslations } from "use-intl";
+import { Breadcrumbs } from "@/app/components/ui/breadcrumbs";
 
 export const Route = createFileRoute("/dashboard/_authenticated")({
   beforeLoad: ({ context, location }) => {
@@ -49,6 +49,7 @@ export const Route = createFileRoute("/dashboard/_authenticated")({
         ...context.user,
         name,
       },
+      breadcrumb: "Dashboard",
     };
   },
   component: DashboardLayout,
@@ -75,14 +76,16 @@ function DashboardLayout() {
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
       <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
-        <nav className="flex flex-col items-center gap-4 px-2 sm:py-4">
-          <Link
-            to="/dashboard"
-            className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
-          >
-            <CubeIcon className="h-4 w-4 transition-all group-hover:scale-110" />
-            <span className="sr-only">{t("dashboard.appName")}</span>
-          </Link>
+        <nav className="flex flex-col items-center gap-4 px-2">
+          <div className="py-6  flex items-center justify-center border-b border-border">
+            <Link
+              to="/dashboard"
+              className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base "
+            >
+              <CubeIcon className="h-4 w-4 transition-all group-hover:scale-110" />
+              <span className="sr-only">{t("dashboard.appName")}</span>
+            </Link>
+          </div>
 
           {links.map((link) => (
             <Tooltip key={link.path}>
@@ -97,7 +100,7 @@ function DashboardLayout() {
                   inactiveProps={{
                     className: "text-muted-foreground  hover:text-foreground",
                   }}
-                  className="flex h-9 w-9 items-center justify-center rounded-lg  transition-colors md:h-8 md:w-8"
+                  className="flex h-9 w-9 items-center justify-center rounded-lg  transition-colors"
                 >
                   <link.icon className="h-5 w-5" />
                   <span className="sr-only">{t(link.labelKey)}</span>
@@ -119,7 +122,7 @@ function DashboardLayout() {
                 inactiveProps={{
                   className: "text-muted-foreground  hover:text-foreground",
                 }}
-                className="flex h-9 w-9 items-center justify-center rounded-lg  transition-colors md:h-8 md:w-8"
+                className="flex h-9 w-9 items-center justify-center rounded-lg  transition-colors"
               >
                 <GearIcon className="h-5 w-5" />
                 <span className="sr-only">{t("dashboard.nav.settings")}</span>
@@ -184,10 +187,18 @@ function DashboardLayout() {
               </nav>
             </SheetContent>
           </Sheet>
+
+          <div className="hidden sm:block">
+            <Breadcrumbs />
+          </div>
+
           <ThemeToggle className="ml-auto" />
           <UserMenu />
         </header>
         <main className="h-full min-h-full flex-1 px-4 sm:px-6">
+          <div className="block sm:hidden pb-4 ">
+            <Breadcrumbs />
+          </div>
           <Outlet />
         </main>
         <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
