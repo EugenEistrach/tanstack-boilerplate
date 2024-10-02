@@ -31,6 +31,7 @@ EMAIL_FROM=
 - SQLite
 - Drizzle ORM
 - Emails (Resend & React Email)
+- i18n (use-intl)
 - Cron jobs & background jobs (BullMQ)
 - react hook form (still evaluating if tanstack form could be used instead)
 - fly.io deployment (see deployments.md for more info)
@@ -40,7 +41,6 @@ EMAIL_FROM=
 - [ ] magic links & otp
 - [ ] stripe
 - [ ] file uploads
-- [ ] i18n
 - [ ] notifications
 - [ ] data tables example
 - [ ] sentry
