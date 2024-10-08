@@ -1,4 +1,4 @@
-# Tanstack Boilerplate
+# Tanstack Boilerplate (WIP)
 
 This is a personal boilerplate to jumpstart new projects.
 
