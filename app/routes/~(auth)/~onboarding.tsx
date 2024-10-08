@@ -27,6 +27,7 @@ import { useMutation } from "@tanstack/react-query";
 import { validationClient } from "@/app/lib/functions";
 import { requireInitialAuthSession } from "@/app/auth/auth-session";
 import { eq } from "drizzle-orm";
+import { useSpinDelay } from "spin-delay";
 
 const formSchema = z.object({
   name: z.string().min(1, {
@@ -121,6 +122,8 @@ function Onboarding() {
     await updateUserMutation.mutateAsync({ ...values, redirectTo });
   }
 
+  const isPending = useSpinDelay(updateUserMutation.isPending);
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-primary/20 to-secondary/20">
       <Card className="w-full max-w-md">
@@ -150,14 +153,8 @@ function Onboarding() {
               />
             </CardContent>
             <CardFooter>
-              <Button
-                type="submit"
-                className="w-full"
-                disabled={updateUserMutation.isPending}
-              >
-                {updateUserMutation.isPending
-                  ? "Processing..."
-                  : "Complete Onboarding"}
+              <Button type="submit" className="w-full" disabled={isPending}>
+                {isPending ? "Processing..." : "Complete Onboarding"}
               </Button>
             </CardFooter>
           </form>
