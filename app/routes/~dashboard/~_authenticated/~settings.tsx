@@ -74,7 +74,7 @@ function Settings() {
 		},
 	})
 
-	const onSubmit = (data: z.infer) => {
+	const onSubmit = (data: z.infer<typeof updateNameSchema>) => {
 		updateNameMutation.mutate(data)
 		toast.success(t('settings.success'))
 	}

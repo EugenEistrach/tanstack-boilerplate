@@ -13,6 +13,7 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/~__root'
+import { Route as TestImport } from './routes/~test'
 import { Route as MarketingImport } from './routes/~_marketing'
 import { Route as DashboardAuthenticatedImport } from './routes/~dashboard/~_authenticated'
 import { Route as MarketingTermsImport } from './routes/~_marketing/~terms'
@@ -33,6 +34,12 @@ const DashboardImport = createFileRoute('/dashboard')()
 const DashboardRoute = DashboardImport.update({
   id: '/dashboard',
   path: '/dashboard',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const TestRoute = TestImport.update({
+  id: '/test',
+  path: '/test',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -106,6 +113,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: ''
       preLoaderRoute: typeof MarketingImport
+      parentRoute: typeof rootRoute
+    }
+    '/test': {
+      id: '/test'
+      path: '/test'
+      fullPath: '/test'
+      preLoaderRoute: typeof TestImport
       parentRoute: typeof rootRoute
     }
     '/_marketing/': {
@@ -231,6 +245,7 @@ const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
 
 export interface FileRoutesByFullPath {
   '': typeof MarketingRouteWithChildren
+  '/test': typeof TestRoute
   '/': typeof MarketingIndexRoute
   '/login': typeof authLoginRoute
   '/onboarding': typeof authOnboardingRoute
@@ -243,6 +258,7 @@ export interface FileRoutesByFullPath {
 }
 
 export interface FileRoutesByTo {
+  '/test': typeof TestRoute
   '/': typeof MarketingIndexRoute
   '/login': typeof authLoginRoute
   '/onboarding': typeof authOnboardingRoute
@@ -256,6 +272,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/_marketing': typeof MarketingRouteWithChildren
+  '/test': typeof TestRoute
   '/_marketing/': typeof MarketingIndexRoute
   '/(auth)/login': typeof authLoginRoute
   '/(auth)/onboarding': typeof authOnboardingRoute
@@ -272,6 +289,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | ''
+    | '/test'
     | '/'
     | '/login'
     | '/onboarding'
@@ -283,6 +301,7 @@ export interface FileRouteTypes {
     | '/dashboard/settings'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/test'
     | '/'
     | '/login'
     | '/onboarding'
@@ -294,6 +313,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/_marketing'
+    | '/test'
     | '/_marketing/'
     | '/(auth)/login'
     | '/(auth)/onboarding'
@@ -309,6 +329,7 @@ export interface FileRouteTypes {
 
 export interface RootRouteChildren {
   MarketingRoute: typeof MarketingRouteWithChildren
+  TestRoute: typeof TestRoute
   authLoginRoute: typeof authLoginRoute
   authOnboardingRoute: typeof authOnboardingRoute
   DashboardRoute: typeof DashboardRouteWithChildren
@@ -316,6 +337,7 @@ export interface RootRouteChildren {
 
 const rootRouteChildren: RootRouteChildren = {
   MarketingRoute: MarketingRouteWithChildren,
+  TestRoute: TestRoute,
   authLoginRoute: authLoginRoute,
   authOnboardingRoute: authOnboardingRoute,
   DashboardRoute: DashboardRouteWithChildren,
@@ -334,6 +356,7 @@ export const routeTree = rootRoute
       "filePath": "~__root.tsx",
       "children": [
         "/_marketing",
+        "/test",
         "/(auth)/login",
         "/(auth)/onboarding",
         "/dashboard"
@@ -346,6 +369,9 @@ export const routeTree = rootRoute
         "/_marketing/privacy",
         "/_marketing/terms"
       ]
+    },
+    "/test": {
+      "filePath": "~test.tsx"
     },
     "/_marketing/": {
       "filePath": "~_marketing/~index.tsx",
