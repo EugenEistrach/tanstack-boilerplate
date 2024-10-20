@@ -7,7 +7,7 @@ const OUTPUT_SQL_PATH = './scripts/.output/prod-seed.sql'
 
 async function runCommand(command: string): Promise<string> {
 	return new Promise((resolve, reject) => {
-		exec(command, (error, stdout, stderr) => {
+		exec(command, (error, stdout) => {
 			if (error) reject(error)
 			resolve(stdout)
 		})

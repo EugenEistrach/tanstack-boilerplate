@@ -32,320 +32,320 @@ const DashboardImport = createFileRoute('/dashboard')()
 // Create/Update Routes
 
 const DashboardRoute = DashboardImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => rootRoute,
+	id: '/dashboard',
+	path: '/dashboard',
+	getParentRoute: () => rootRoute,
 } as any)
 
 const TestRoute = TestImport.update({
-  id: '/test',
-  path: '/test',
-  getParentRoute: () => rootRoute,
+	id: '/test',
+	path: '/test',
+	getParentRoute: () => rootRoute,
 } as any)
 
 const MarketingRoute = MarketingImport.update({
-  id: '/_marketing',
-  getParentRoute: () => rootRoute,
+	id: '/_marketing',
+	getParentRoute: () => rootRoute,
 } as any)
 
 const DashboardAuthenticatedRoute = DashboardAuthenticatedImport.update({
-  id: '/_authenticated',
-  getParentRoute: () => DashboardRoute,
+	id: '/_authenticated',
+	getParentRoute: () => DashboardRoute,
 } as any)
 
 const MarketingTermsRoute = MarketingTermsImport.update({
-  id: '/terms',
-  path: '/terms',
-  getParentRoute: () => MarketingRoute,
+	id: '/terms',
+	path: '/terms',
+	getParentRoute: () => MarketingRoute,
 } as any)
 
 const MarketingPrivacyRoute = MarketingPrivacyImport.update({
-  id: '/privacy',
-  path: '/privacy',
-  getParentRoute: () => MarketingRoute,
+	id: '/privacy',
+	path: '/privacy',
+	getParentRoute: () => MarketingRoute,
 } as any)
 
 const authOnboardingRoute = authOnboardingImport.update({
-  id: '/(auth)/onboarding',
-  path: '/onboarding',
-  getParentRoute: () => rootRoute,
+	id: '/(auth)/onboarding',
+	path: '/onboarding',
+	getParentRoute: () => rootRoute,
 } as any)
 
 const authLoginRoute = authLoginImport.update({
-  id: '/(auth)/login',
-  path: '/login',
-  getParentRoute: () => rootRoute,
+	id: '/(auth)/login',
+	path: '/login',
+	getParentRoute: () => rootRoute,
 } as any)
 
 const MarketingIndexRoute = MarketingIndexImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => MarketingRoute,
+	id: '/',
+	path: '/',
+	getParentRoute: () => MarketingRoute,
 } as any)
 
 const DashboardAuthenticatedSettingsRoute =
-  DashboardAuthenticatedSettingsImport.update({
-    id: '/settings',
-    path: '/settings',
-    getParentRoute: () => DashboardAuthenticatedRoute,
-  } as any)
+	DashboardAuthenticatedSettingsImport.update({
+		id: '/settings',
+		path: '/settings',
+		getParentRoute: () => DashboardAuthenticatedRoute,
+	} as any)
 
 const DashboardAuthenticatedNotesRoute =
-  DashboardAuthenticatedNotesImport.update({
-    id: '/notes',
-    path: '/notes',
-    getParentRoute: () => DashboardAuthenticatedRoute,
-  } as any)
+	DashboardAuthenticatedNotesImport.update({
+		id: '/notes',
+		path: '/notes',
+		getParentRoute: () => DashboardAuthenticatedRoute,
+	} as any)
 
 const DashboardAuthenticatedIndexRoute =
-  DashboardAuthenticatedIndexImport.update({
-    id: '/',
-    path: '/',
-    getParentRoute: () => DashboardAuthenticatedRoute,
-  } as any)
+	DashboardAuthenticatedIndexImport.update({
+		id: '/',
+		path: '/',
+		getParentRoute: () => DashboardAuthenticatedRoute,
+	} as any)
 
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
-  interface FileRoutesByPath {
-    '/_marketing': {
-      id: '/_marketing'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof MarketingImport
-      parentRoute: typeof rootRoute
-    }
-    '/test': {
-      id: '/test'
-      path: '/test'
-      fullPath: '/test'
-      preLoaderRoute: typeof TestImport
-      parentRoute: typeof rootRoute
-    }
-    '/_marketing/': {
-      id: '/_marketing/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof MarketingIndexImport
-      parentRoute: typeof MarketingImport
-    }
-    '/(auth)/login': {
-      id: '/(auth)/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof authLoginImport
-      parentRoute: typeof rootRoute
-    }
-    '/(auth)/onboarding': {
-      id: '/(auth)/onboarding'
-      path: '/onboarding'
-      fullPath: '/onboarding'
-      preLoaderRoute: typeof authOnboardingImport
-      parentRoute: typeof rootRoute
-    }
-    '/_marketing/privacy': {
-      id: '/_marketing/privacy'
-      path: '/privacy'
-      fullPath: '/privacy'
-      preLoaderRoute: typeof MarketingPrivacyImport
-      parentRoute: typeof MarketingImport
-    }
-    '/_marketing/terms': {
-      id: '/_marketing/terms'
-      path: '/terms'
-      fullPath: '/terms'
-      preLoaderRoute: typeof MarketingTermsImport
-      parentRoute: typeof MarketingImport
-    }
-    '/dashboard': {
-      id: '/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardImport
-      parentRoute: typeof rootRoute
-    }
-    '/dashboard/_authenticated': {
-      id: '/dashboard/_authenticated'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardAuthenticatedImport
-      parentRoute: typeof DashboardRoute
-    }
-    '/dashboard/_authenticated/': {
-      id: '/dashboard/_authenticated/'
-      path: '/'
-      fullPath: '/dashboard/'
-      preLoaderRoute: typeof DashboardAuthenticatedIndexImport
-      parentRoute: typeof DashboardAuthenticatedImport
-    }
-    '/dashboard/_authenticated/notes': {
-      id: '/dashboard/_authenticated/notes'
-      path: '/notes'
-      fullPath: '/dashboard/notes'
-      preLoaderRoute: typeof DashboardAuthenticatedNotesImport
-      parentRoute: typeof DashboardAuthenticatedImport
-    }
-    '/dashboard/_authenticated/settings': {
-      id: '/dashboard/_authenticated/settings'
-      path: '/settings'
-      fullPath: '/dashboard/settings'
-      preLoaderRoute: typeof DashboardAuthenticatedSettingsImport
-      parentRoute: typeof DashboardAuthenticatedImport
-    }
-  }
+	interface FileRoutesByPath {
+		'/_marketing': {
+			id: '/_marketing'
+			path: ''
+			fullPath: ''
+			preLoaderRoute: typeof MarketingImport
+			parentRoute: typeof rootRoute
+		}
+		'/test': {
+			id: '/test'
+			path: '/test'
+			fullPath: '/test'
+			preLoaderRoute: typeof TestImport
+			parentRoute: typeof rootRoute
+		}
+		'/_marketing/': {
+			id: '/_marketing/'
+			path: '/'
+			fullPath: '/'
+			preLoaderRoute: typeof MarketingIndexImport
+			parentRoute: typeof MarketingImport
+		}
+		'/(auth)/login': {
+			id: '/(auth)/login'
+			path: '/login'
+			fullPath: '/login'
+			preLoaderRoute: typeof authLoginImport
+			parentRoute: typeof rootRoute
+		}
+		'/(auth)/onboarding': {
+			id: '/(auth)/onboarding'
+			path: '/onboarding'
+			fullPath: '/onboarding'
+			preLoaderRoute: typeof authOnboardingImport
+			parentRoute: typeof rootRoute
+		}
+		'/_marketing/privacy': {
+			id: '/_marketing/privacy'
+			path: '/privacy'
+			fullPath: '/privacy'
+			preLoaderRoute: typeof MarketingPrivacyImport
+			parentRoute: typeof MarketingImport
+		}
+		'/_marketing/terms': {
+			id: '/_marketing/terms'
+			path: '/terms'
+			fullPath: '/terms'
+			preLoaderRoute: typeof MarketingTermsImport
+			parentRoute: typeof MarketingImport
+		}
+		'/dashboard': {
+			id: '/dashboard'
+			path: '/dashboard'
+			fullPath: '/dashboard'
+			preLoaderRoute: typeof DashboardImport
+			parentRoute: typeof rootRoute
+		}
+		'/dashboard/_authenticated': {
+			id: '/dashboard/_authenticated'
+			path: '/dashboard'
+			fullPath: '/dashboard'
+			preLoaderRoute: typeof DashboardAuthenticatedImport
+			parentRoute: typeof DashboardRoute
+		}
+		'/dashboard/_authenticated/': {
+			id: '/dashboard/_authenticated/'
+			path: '/'
+			fullPath: '/dashboard/'
+			preLoaderRoute: typeof DashboardAuthenticatedIndexImport
+			parentRoute: typeof DashboardAuthenticatedImport
+		}
+		'/dashboard/_authenticated/notes': {
+			id: '/dashboard/_authenticated/notes'
+			path: '/notes'
+			fullPath: '/dashboard/notes'
+			preLoaderRoute: typeof DashboardAuthenticatedNotesImport
+			parentRoute: typeof DashboardAuthenticatedImport
+		}
+		'/dashboard/_authenticated/settings': {
+			id: '/dashboard/_authenticated/settings'
+			path: '/settings'
+			fullPath: '/dashboard/settings'
+			preLoaderRoute: typeof DashboardAuthenticatedSettingsImport
+			parentRoute: typeof DashboardAuthenticatedImport
+		}
+	}
 }
 
 // Create and export the route tree
 
 interface MarketingRouteChildren {
-  MarketingIndexRoute: typeof MarketingIndexRoute
-  MarketingPrivacyRoute: typeof MarketingPrivacyRoute
-  MarketingTermsRoute: typeof MarketingTermsRoute
+	MarketingIndexRoute: typeof MarketingIndexRoute
+	MarketingPrivacyRoute: typeof MarketingPrivacyRoute
+	MarketingTermsRoute: typeof MarketingTermsRoute
 }
 
 const MarketingRouteChildren: MarketingRouteChildren = {
-  MarketingIndexRoute: MarketingIndexRoute,
-  MarketingPrivacyRoute: MarketingPrivacyRoute,
-  MarketingTermsRoute: MarketingTermsRoute,
+	MarketingIndexRoute: MarketingIndexRoute,
+	MarketingPrivacyRoute: MarketingPrivacyRoute,
+	MarketingTermsRoute: MarketingTermsRoute,
 }
 
 const MarketingRouteWithChildren = MarketingRoute._addFileChildren(
-  MarketingRouteChildren,
+	MarketingRouteChildren,
 )
 
 interface DashboardAuthenticatedRouteChildren {
-  DashboardAuthenticatedIndexRoute: typeof DashboardAuthenticatedIndexRoute
-  DashboardAuthenticatedNotesRoute: typeof DashboardAuthenticatedNotesRoute
-  DashboardAuthenticatedSettingsRoute: typeof DashboardAuthenticatedSettingsRoute
+	DashboardAuthenticatedIndexRoute: typeof DashboardAuthenticatedIndexRoute
+	DashboardAuthenticatedNotesRoute: typeof DashboardAuthenticatedNotesRoute
+	DashboardAuthenticatedSettingsRoute: typeof DashboardAuthenticatedSettingsRoute
 }
 
 const DashboardAuthenticatedRouteChildren: DashboardAuthenticatedRouteChildren =
-  {
-    DashboardAuthenticatedIndexRoute: DashboardAuthenticatedIndexRoute,
-    DashboardAuthenticatedNotesRoute: DashboardAuthenticatedNotesRoute,
-    DashboardAuthenticatedSettingsRoute: DashboardAuthenticatedSettingsRoute,
-  }
+	{
+		DashboardAuthenticatedIndexRoute: DashboardAuthenticatedIndexRoute,
+		DashboardAuthenticatedNotesRoute: DashboardAuthenticatedNotesRoute,
+		DashboardAuthenticatedSettingsRoute: DashboardAuthenticatedSettingsRoute,
+	}
 
 const DashboardAuthenticatedRouteWithChildren =
-  DashboardAuthenticatedRoute._addFileChildren(
-    DashboardAuthenticatedRouteChildren,
-  )
+	DashboardAuthenticatedRoute._addFileChildren(
+		DashboardAuthenticatedRouteChildren,
+	)
 
 interface DashboardRouteChildren {
-  DashboardAuthenticatedRoute: typeof DashboardAuthenticatedRouteWithChildren
+	DashboardAuthenticatedRoute: typeof DashboardAuthenticatedRouteWithChildren
 }
 
 const DashboardRouteChildren: DashboardRouteChildren = {
-  DashboardAuthenticatedRoute: DashboardAuthenticatedRouteWithChildren,
+	DashboardAuthenticatedRoute: DashboardAuthenticatedRouteWithChildren,
 }
 
 const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
-  DashboardRouteChildren,
+	DashboardRouteChildren,
 )
 
 export interface FileRoutesByFullPath {
-  '': typeof MarketingRouteWithChildren
-  '/test': typeof TestRoute
-  '/': typeof MarketingIndexRoute
-  '/login': typeof authLoginRoute
-  '/onboarding': typeof authOnboardingRoute
-  '/privacy': typeof MarketingPrivacyRoute
-  '/terms': typeof MarketingTermsRoute
-  '/dashboard': typeof DashboardAuthenticatedRouteWithChildren
-  '/dashboard/': typeof DashboardAuthenticatedIndexRoute
-  '/dashboard/notes': typeof DashboardAuthenticatedNotesRoute
-  '/dashboard/settings': typeof DashboardAuthenticatedSettingsRoute
+	'': typeof MarketingRouteWithChildren
+	'/test': typeof TestRoute
+	'/': typeof MarketingIndexRoute
+	'/login': typeof authLoginRoute
+	'/onboarding': typeof authOnboardingRoute
+	'/privacy': typeof MarketingPrivacyRoute
+	'/terms': typeof MarketingTermsRoute
+	'/dashboard': typeof DashboardAuthenticatedRouteWithChildren
+	'/dashboard/': typeof DashboardAuthenticatedIndexRoute
+	'/dashboard/notes': typeof DashboardAuthenticatedNotesRoute
+	'/dashboard/settings': typeof DashboardAuthenticatedSettingsRoute
 }
 
 export interface FileRoutesByTo {
-  '/test': typeof TestRoute
-  '/': typeof MarketingIndexRoute
-  '/login': typeof authLoginRoute
-  '/onboarding': typeof authOnboardingRoute
-  '/privacy': typeof MarketingPrivacyRoute
-  '/terms': typeof MarketingTermsRoute
-  '/dashboard': typeof DashboardAuthenticatedIndexRoute
-  '/dashboard/notes': typeof DashboardAuthenticatedNotesRoute
-  '/dashboard/settings': typeof DashboardAuthenticatedSettingsRoute
+	'/test': typeof TestRoute
+	'/': typeof MarketingIndexRoute
+	'/login': typeof authLoginRoute
+	'/onboarding': typeof authOnboardingRoute
+	'/privacy': typeof MarketingPrivacyRoute
+	'/terms': typeof MarketingTermsRoute
+	'/dashboard': typeof DashboardAuthenticatedIndexRoute
+	'/dashboard/notes': typeof DashboardAuthenticatedNotesRoute
+	'/dashboard/settings': typeof DashboardAuthenticatedSettingsRoute
 }
 
 export interface FileRoutesById {
-  __root__: typeof rootRoute
-  '/_marketing': typeof MarketingRouteWithChildren
-  '/test': typeof TestRoute
-  '/_marketing/': typeof MarketingIndexRoute
-  '/(auth)/login': typeof authLoginRoute
-  '/(auth)/onboarding': typeof authOnboardingRoute
-  '/_marketing/privacy': typeof MarketingPrivacyRoute
-  '/_marketing/terms': typeof MarketingTermsRoute
-  '/dashboard': typeof DashboardRouteWithChildren
-  '/dashboard/_authenticated': typeof DashboardAuthenticatedRouteWithChildren
-  '/dashboard/_authenticated/': typeof DashboardAuthenticatedIndexRoute
-  '/dashboard/_authenticated/notes': typeof DashboardAuthenticatedNotesRoute
-  '/dashboard/_authenticated/settings': typeof DashboardAuthenticatedSettingsRoute
+	__root__: typeof rootRoute
+	'/_marketing': typeof MarketingRouteWithChildren
+	'/test': typeof TestRoute
+	'/_marketing/': typeof MarketingIndexRoute
+	'/(auth)/login': typeof authLoginRoute
+	'/(auth)/onboarding': typeof authOnboardingRoute
+	'/_marketing/privacy': typeof MarketingPrivacyRoute
+	'/_marketing/terms': typeof MarketingTermsRoute
+	'/dashboard': typeof DashboardRouteWithChildren
+	'/dashboard/_authenticated': typeof DashboardAuthenticatedRouteWithChildren
+	'/dashboard/_authenticated/': typeof DashboardAuthenticatedIndexRoute
+	'/dashboard/_authenticated/notes': typeof DashboardAuthenticatedNotesRoute
+	'/dashboard/_authenticated/settings': typeof DashboardAuthenticatedSettingsRoute
 }
 
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | ''
-    | '/test'
-    | '/'
-    | '/login'
-    | '/onboarding'
-    | '/privacy'
-    | '/terms'
-    | '/dashboard'
-    | '/dashboard/'
-    | '/dashboard/notes'
-    | '/dashboard/settings'
-  fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/test'
-    | '/'
-    | '/login'
-    | '/onboarding'
-    | '/privacy'
-    | '/terms'
-    | '/dashboard'
-    | '/dashboard/notes'
-    | '/dashboard/settings'
-  id:
-    | '__root__'
-    | '/_marketing'
-    | '/test'
-    | '/_marketing/'
-    | '/(auth)/login'
-    | '/(auth)/onboarding'
-    | '/_marketing/privacy'
-    | '/_marketing/terms'
-    | '/dashboard'
-    | '/dashboard/_authenticated'
-    | '/dashboard/_authenticated/'
-    | '/dashboard/_authenticated/notes'
-    | '/dashboard/_authenticated/settings'
-  fileRoutesById: FileRoutesById
+	fileRoutesByFullPath: FileRoutesByFullPath
+	fullPaths:
+		| ''
+		| '/test'
+		| '/'
+		| '/login'
+		| '/onboarding'
+		| '/privacy'
+		| '/terms'
+		| '/dashboard'
+		| '/dashboard/'
+		| '/dashboard/notes'
+		| '/dashboard/settings'
+	fileRoutesByTo: FileRoutesByTo
+	to:
+		| '/test'
+		| '/'
+		| '/login'
+		| '/onboarding'
+		| '/privacy'
+		| '/terms'
+		| '/dashboard'
+		| '/dashboard/notes'
+		| '/dashboard/settings'
+	id:
+		| '__root__'
+		| '/_marketing'
+		| '/test'
+		| '/_marketing/'
+		| '/(auth)/login'
+		| '/(auth)/onboarding'
+		| '/_marketing/privacy'
+		| '/_marketing/terms'
+		| '/dashboard'
+		| '/dashboard/_authenticated'
+		| '/dashboard/_authenticated/'
+		| '/dashboard/_authenticated/notes'
+		| '/dashboard/_authenticated/settings'
+	fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-  MarketingRoute: typeof MarketingRouteWithChildren
-  TestRoute: typeof TestRoute
-  authLoginRoute: typeof authLoginRoute
-  authOnboardingRoute: typeof authOnboardingRoute
-  DashboardRoute: typeof DashboardRouteWithChildren
+	MarketingRoute: typeof MarketingRouteWithChildren
+	TestRoute: typeof TestRoute
+	authLoginRoute: typeof authLoginRoute
+	authOnboardingRoute: typeof authOnboardingRoute
+	DashboardRoute: typeof DashboardRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  MarketingRoute: MarketingRouteWithChildren,
-  TestRoute: TestRoute,
-  authLoginRoute: authLoginRoute,
-  authOnboardingRoute: authOnboardingRoute,
-  DashboardRoute: DashboardRouteWithChildren,
+	MarketingRoute: MarketingRouteWithChildren,
+	TestRoute: TestRoute,
+	authLoginRoute: authLoginRoute,
+	authOnboardingRoute: authOnboardingRoute,
+	DashboardRoute: DashboardRouteWithChildren,
 }
 
 export const routeTree = rootRoute
-  ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>()
+	._addFileChildren(rootRouteChildren)
+	._addFileTypes<FileRouteTypes>()
 
 /* prettier-ignore-end */
 

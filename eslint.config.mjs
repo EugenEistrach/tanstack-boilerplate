@@ -1,11 +1,11 @@
 // @ts-check
-import { config } from '@epic-web/config/eslint'
+import { default as defaultConfig } from '@epic-web/config/eslint'
 import * as tanstackQuery from '@tanstack/eslint-plugin-query'
 import pluginRouter from '@tanstack/eslint-plugin-router'
 import gitignore from 'eslint-config-flat-gitignore'
 
 export default [
-	...config,
+	...defaultConfig,
 	gitignore(),
 	...pluginRouter.configs['flat/recommended'],
 	{
