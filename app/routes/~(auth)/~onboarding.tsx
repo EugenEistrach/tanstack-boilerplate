@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { createFileRoute, redirect } from '@tanstack/react-router'
 import { createServerFn, useServerFn } from '@tanstack/start'
 import { eq } from 'drizzle-orm'
@@ -28,6 +28,7 @@ import { Input } from '@/app/components/ui/input'
 import { db } from '@/app/db'
 import { roleTable, userTable, userToRoleTable } from '@/app/db/schema'
 import { validationClient } from '@/app/lib/functions'
+import { getTimeZoneQueryOptions, setTimeZoneInSession$ } from '@/app/lib/i18n'
 
 const formSchema = z.object({
 	name: z.string().min(1, {
@@ -35,15 +36,16 @@ const formSchema = z.object({
 	}),
 })
 
-const updateUser = createServerFn(
+const updateUser$ = createServerFn(
 	'POST',
 	validationClient
 		.input(
 			formSchema.extend({
+				timeZone: z.string().optional(),
 				redirectTo: z.string().optional(),
 			}),
 		)
-		.handler(async ({ parsedInput: { name, redirectTo } }) => {
+		.handler(async ({ parsedInput: { name, redirectTo, timeZone } }) => {
 			const { user } = await requireInitialAuthSession()
 
 			await db.transaction(async (tx) => {
@@ -69,6 +71,10 @@ const updateUser = createServerFn(
 					roleId: userRole.id,
 				})
 			})
+
+			if (timeZone) {
+				await setTimeZoneInSession$(timeZone)
+			}
 
 			throw redirect({
 				to: redirectTo || '/dashboard',
@@ -105,6 +111,7 @@ export const Route = createFileRoute('/(auth)/onboarding')({
 
 function Onboarding() {
 	const { redirectTo } = Route.useSearch()
+	const queryClient = useQueryClient()
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -113,12 +120,11 @@ function Onboarding() {
 	})
 
 	const updateUserMutation = useMutation({
-		mutationFn: useServerFn(updateUser),
+		mutationFn: useServerFn(updateUser$),
+		onSettled: () => {
+			void queryClient.invalidateQueries(getTimeZoneQueryOptions())
+		},
 	})
-
-	async function onSubmit(values: z.infer<typeof formSchema>) {
-		await updateUserMutation.mutateAsync({ ...values, redirectTo })
-	}
 
 	const isPending = useSpinDelay(updateUserMutation.isPending)
 
@@ -134,7 +140,19 @@ function Onboarding() {
 					</CardDescription>
 				</CardHeader>
 				<Form {...form}>
-					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+					<form
+						onSubmit={form.handleSubmit((values) => {
+							const userTimeZone =
+								Intl.DateTimeFormat().resolvedOptions().timeZone
+							console.log(userTimeZone)
+							void updateUserMutation.mutateAsync({
+								...values,
+								redirectTo,
+								timeZone: userTimeZone,
+							})
+						})}
+						className="space-y-8"
+					>
 						<CardContent className="space-y-4">
 							<FormField
 								control={form.control}

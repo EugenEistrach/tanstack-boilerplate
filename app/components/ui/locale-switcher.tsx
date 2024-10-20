@@ -9,17 +9,10 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from '@/app/components/ui/dropdown-menu'
-import { useChangeLocaleMutation, useCurrentLocale } from '@/app/lib/i18n'
-
-
-const locales = [
-	{ value: 'en', label: 'English' },
-	{ value: 'de', label: 'Deutsch' },
-] as const
+import { supportedLocales, useLocale } from '@/app/lib/i18n'
 
 export function LocaleSwitcher() {
-	const changeLocale = useChangeLocaleMutation()
-	const currentLocale = useCurrentLocale()
+	const { locale, changeLocaleMutation } = useLocale()
 
 	const [open, setOpen] = useState(false)
 
@@ -28,17 +21,17 @@ export function LocaleSwitcher() {
 			<DropdownMenuTrigger asChild>
 				<Button variant="outline" size="sm" className="min-w-[8rem]">
 					<GlobeIcon className="mr-2 h-4 w-4" />
-					{locales.find((l) => l.value === currentLocale)?.label}
+					{supportedLocales.find((l) => l.locale === locale)?.label}
 					<ChevronDownIcon className="ml-2 h-4 w-4" />
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent align="end">
-				{locales.map((locale) => (
+				{supportedLocales.map(({ locale: supportedLocale, label }) => (
 					<DropdownMenuItem
-						key={locale.value}
+						key={supportedLocale}
 						onClick={(event) => {
 							event.preventDefault()
-							changeLocale.mutate(locale.value, {
+							changeLocaleMutation.mutate(supportedLocale, {
 								onSettled: () => {
 									// Close the dropdown after short delay to prevent
 									// flickering when clicking on the trigger`
@@ -49,8 +42,8 @@ export function LocaleSwitcher() {
 							})
 						}}
 					>
-						{locale.label}
-						{locale.value === currentLocale && (
+						{label}
+						{supportedLocale === locale && (
 							<CheckIcon className="ml-2 h-4 w-4" />
 						)}
 					</DropdownMenuItem>

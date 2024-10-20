@@ -13,7 +13,12 @@ import { IntlProvider } from 'use-intl'
 import { Toaster } from '../components/ui/sonner'
 import { TooltipProvider } from '../components/ui/tooltip'
 import { getAuthSession } from '@/app/auth/auth-session'
-import { getI18n } from '@/app/lib/i18n'
+import {
+	getTimeZoneQueryOptions,
+	getI18nQueryOptions,
+	useI18n,
+	useTimeZone,
+} from '@/app/lib/i18n'
 import appCss from '@/app/styles/globals.css?url'
 
 // TODO: remove once https://github.com/TanStack/router/pull/2316 is merged and released
@@ -39,10 +44,15 @@ export const Route = createRootRouteWithContext<{
 	queryClient: QueryClient
 	breadcrumb?: string
 }>()({
-	beforeLoad: async () => {
+	beforeLoad: async ({ context }) => {
 		const { session, user } = await getAuthSession()
-		const { locale, timeZone, messages } = await getI18n()
-		return { session, user, locale, timeZone, messages }
+
+		await Promise.all([
+			context.queryClient.ensureQueryData(getI18nQueryOptions()),
+			context.queryClient.ensureQueryData(getTimeZoneQueryOptions()),
+		])
+
+		return { session, user }
 	},
 	meta: () => [
 		{
@@ -80,7 +90,8 @@ function RootComponent() {
 }
 
 function RootDocument({ children }: { children: React.ReactNode }) {
-	const { locale, messages, timeZone } = Route.useRouteContext()
+	const { locale, messages } = useI18n()
+	const { timeZone } = useTimeZone()
 	return (
 		// TODO: Add lang attribute once supported by tanstack start
 		<Html>

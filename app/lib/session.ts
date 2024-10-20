@@ -3,7 +3,7 @@ import { env } from './env'
 import { type supportedLocales } from './i18n'
 
 interface Session {
-	locale?: (typeof supportedLocales)[number]
+	locale?: (typeof supportedLocales)[number]['locale']
 	timeZone?: string
 }
 

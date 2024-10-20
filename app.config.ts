@@ -11,6 +11,19 @@ export default defineConfig({
 	},
 	server: {
 		preset: 'node-server',
+		typescript: {
+			tsConfig: {
+				compilerOptions: {
+					// top level await etc
+					target: 'ES2022',
+				},
+			},
+		},
+		esbuild: {
+			options: {
+				target: 'ES2022',
+			},
+		},
 	},
 	tsr: {
 		appDirectory: 'app',
