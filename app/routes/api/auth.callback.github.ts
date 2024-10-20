@@ -1,203 +1,206 @@
-import { lucia } from "@/app/auth";
-import { db } from "@/app/db";
-import { ssoProviderTable, userTable } from "@/app/db/schema";
-import { env } from "@/app/lib/env";
-import { createAPIFileRoute } from "@tanstack/start/api";
-import { generateState, GitHub, OAuth2RequestError } from "arctic";
-import { and, eq } from "drizzle-orm";
-import { setCookie, useSession } from "vinxi/http";
+import { createAPIFileRoute } from '@tanstack/start/api'
+import { GitHub, OAuth2RequestError } from 'arctic'
+import { and, eq } from 'drizzle-orm'
+import { setCookie, useSession } from 'vinxi/http'
 
-import { z } from "zod";
+import { z } from 'zod'
+import { lucia } from '@/app/auth'
+import { db } from '@/app/db'
+import { ssoProviderTable, userTable } from '@/app/db/schema'
+import { env } from '@/app/lib/env'
 
-export const Route = createAPIFileRoute("/api/auth/callback/github")({
-  GET: async ({ request }) => {
-    const url = new URL(request.url);
-    const code = url.searchParams.get("code");
-    const state = url.searchParams.get("state");
-    const session = await useSession({
-      password: env.SESSION_SECRET,
-    });
+export const Route = createAPIFileRoute('/api/auth/callback/github')({
+	GET: async ({ request }) => {
+		const url = new URL(request.url)
 
-    if (!("github_oauth_state" in session.data)) {
-      return new Response("Invalid state", { status: 400 });
-    }
+		const code = url.searchParams.get('code')
+		const state = url.searchParams.get('state')
 
-    let redirectTo = "/";
-    if (
-      "redirectTo" in session.data &&
-      typeof session.data["redirectTo"] === "string"
-    ) {
-      redirectTo = session.data["redirectTo"];
-    }
+		// eslint-disable-next-line react-hooks/rules-of-hooks
+		const session = await useSession({
+			password: env.SESSION_SECRET,
+		})
 
-    const storedState = session.data["github_oauth_state"];
+		if (!('github_oauth_state' in session.data)) {
+			return new Response('Invalid state', { status: 400 })
+		}
 
-    if (!code || !state || !storedState || state !== storedState) {
-      return new Response("Invalid state", { status: 400 });
-    }
+		let redirectTo = '/'
+		if (
+			'redirectTo' in session.data &&
+			typeof session.data['redirectTo'] === 'string'
+		) {
+			redirectTo = session.data['redirectTo']
+		}
 
-    try {
-      if (!env.GITHUB_CLIENT_ID || !env.GITHUB_CLIENT_SECRET) {
-        throw new Error(
-          "GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET must be set to use github login."
-        );
-      }
+		const storedState = session.data['github_oauth_state']
 
-      const github = new GitHub(env.GITHUB_CLIENT_ID, env.GITHUB_CLIENT_SECRET);
-      const tokens = await github.validateAuthorizationCode(code);
-      const userResponse = await fetch("https://api.github.com/user", {
-        headers: {
-          Authorization: `Bearer ${tokens.accessToken}`,
-        },
-      });
+		if (!code || !state || !storedState || state !== storedState) {
+			return new Response('Invalid state', { status: 400 })
+		}
 
-      if (!userResponse.ok) {
-        throw new Error("Failed to fetch user data");
-      }
+		try {
+			if (!env.GITHUB_CLIENT_ID || !env.GITHUB_CLIENT_SECRET) {
+				throw new Error(
+					'GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET must be set to use github login.',
+				)
+			}
 
-      const { id, avatar_url } = z
-        .object({
-          id: z.number(),
-          avatar_url: z.string().optional(),
-        })
-        .parse(await userResponse.json());
+			const github = new GitHub(env.GITHUB_CLIENT_ID, env.GITHUB_CLIENT_SECRET)
+			const tokens = await github.validateAuthorizationCode(code)
+			const userResponse = await fetch('https://api.github.com/user', {
+				headers: {
+					Authorization: `Bearer ${tokens.accessToken}`,
+				},
+			})
 
-      const emailResponse = await fetch("https://api.github.com/user/emails", {
-        headers: {
-          Authorization: `Bearer ${tokens.accessToken}`,
-        },
-      });
+			if (!userResponse.ok) {
+				throw new Error('Failed to fetch user data')
+			}
 
-      if (!emailResponse.ok) {
-        throw new Error("Failed to fetch user data");
-      }
+			const { id, avatar_url } = z
+				.object({
+					id: z.number(),
+					avatar_url: z.string().optional(),
+				})
+				.parse(await userResponse.json())
 
-      const emails = z
-        .array(
-          z.object({
-            email: z.string().email(),
-            primary: z.boolean(),
-            verified: z.boolean(),
-          })
-        )
-        .parse(await emailResponse.json());
+			const emailResponse = await fetch('https://api.github.com/user/emails', {
+				headers: {
+					Authorization: `Bearer ${tokens.accessToken}`,
+				},
+			})
 
-      const primary = emails.find((email) => email.primary);
+			if (!emailResponse.ok) {
+				throw new Error('Failed to fetch user data')
+			}
 
-      if (!primary) {
-        throw new Error("Failed to fetch user data");
-      }
+			const emails = z
+				.array(
+					z.object({
+						email: z.string().email(),
+						primary: z.boolean(),
+						verified: z.boolean(),
+					}),
+				)
+				.parse(await emailResponse.json())
 
-      if (!primary.verified) {
-        throw new Error("Email not verified");
-      }
+			const primary = emails.find((email) => email.primary)
 
-      const existingProvider = await db.query.ssoProviderTable.findFirst({
-        where: and(
-          eq(ssoProviderTable.provider, "github"),
-          eq(ssoProviderTable.providerAccountId, id.toString())
-        ),
-      });
+			if (!primary) {
+				throw new Error('Failed to fetch user data')
+			}
 
-      if (existingProvider) {
-        const luciaSession = await lucia.createSession(
-          existingProvider.userId,
-          {}
-        );
-        const sessionCookie = lucia.createSessionCookie(luciaSession.id);
+			if (!primary.verified) {
+				throw new Error('Email not verified')
+			}
 
-        setCookie(
-          sessionCookie.name,
-          sessionCookie.value,
-          sessionCookie.attributes
-        );
+			const existingProvider = await db.query.ssoProviderTable.findFirst({
+				where: and(
+					eq(ssoProviderTable.provider, 'github'),
+					eq(ssoProviderTable.providerAccountId, id.toString()),
+				),
+			})
 
-        return new Response(null, {
-          status: 302,
-          headers: {
-            Location: redirectTo,
-          },
-        });
-      }
+			if (existingProvider) {
+				const luciaSession = await lucia.createSession(
+					existingProvider.userId,
+					{},
+				)
+				const sessionCookie = lucia.createSessionCookie(luciaSession.id)
 
-      const existingUser = await db.query.userTable.findFirst({
-        where: eq(userTable.email, primary.email),
-      });
+				setCookie(
+					sessionCookie.name,
+					sessionCookie.value,
+					sessionCookie.attributes,
+				)
 
-      if (existingUser) {
-        const luciaSession = await lucia.createSession(existingUser.id, {});
-        const sessionCookie = lucia.createSessionCookie(luciaSession.id);
+				return new Response(null, {
+					status: 302,
+					headers: {
+						Location: redirectTo,
+					},
+				})
+			}
 
-        setCookie(
-          sessionCookie.name,
-          sessionCookie.value,
-          sessionCookie.attributes
-        );
+			const existingUser = await db.query.userTable.findFirst({
+				where: eq(userTable.email, primary.email),
+			})
 
-        db.insert(ssoProviderTable)
-          .values({
-            userId: existingUser.id,
-            provider: "github",
-            providerAccountId: id.toString(),
-          })
-          .run();
+			if (existingUser) {
+				const luciaSession = await lucia.createSession(existingUser.id, {})
+				const sessionCookie = lucia.createSessionCookie(luciaSession.id)
 
-        return new Response(null, {
-          status: 302,
-          headers: {
-            Location: redirectTo,
-          },
-        });
-      }
+				setCookie(
+					sessionCookie.name,
+					sessionCookie.value,
+					sessionCookie.attributes,
+				)
 
-      const newUser = await db.transaction(async (tx) => {
-        const newUser = tx
-          .insert(userTable)
-          .values({
-            email: primary.email,
-            avatarUrl: avatar_url ?? null,
-          })
-          .returning()
-          .get();
+				db.insert(ssoProviderTable)
+					.values({
+						userId: existingUser.id,
+						provider: 'github',
+						providerAccountId: id.toString(),
+					})
+					.run()
 
-        tx.insert(ssoProviderTable)
-          .values({
-            userId: newUser.id,
-            provider: "github",
-            providerAccountId: id.toString(),
-          })
-          .run();
+				return new Response(null, {
+					status: 302,
+					headers: {
+						Location: redirectTo,
+					},
+				})
+			}
 
-        return newUser;
-      });
+			const newUser = await db.transaction(async (tx) => {
+				const newUser = tx
+					.insert(userTable)
+					.values({
+						email: primary.email,
+						avatarUrl: avatar_url ?? null,
+					})
+					.returning()
+					.get()
 
-      const luciaSession = await lucia.createSession(newUser.id, {});
-      const sessionCookie = lucia.createSessionCookie(luciaSession.id);
+				tx.insert(ssoProviderTable)
+					.values({
+						userId: newUser.id,
+						provider: 'github',
+						providerAccountId: id.toString(),
+					})
+					.run()
 
-      setCookie(
-        sessionCookie.name,
-        sessionCookie.value,
-        sessionCookie.attributes
-      );
+				return newUser
+			})
 
-      return new Response(null, {
-        status: 302,
-        headers: {
-          Location: redirectTo,
-        },
-      });
-    } catch (error) {
-      console.log(error);
-      // the specific error message depends on the provider
-      if (error instanceof OAuth2RequestError) {
-        // invalid code
-        return new Response(null, {
-          status: 400,
-        });
-      }
-      return new Response(null, {
-        status: 500,
-      });
-    }
-  },
-});
+			const luciaSession = await lucia.createSession(newUser.id, {})
+			const sessionCookie = lucia.createSessionCookie(luciaSession.id)
+
+			setCookie(
+				sessionCookie.name,
+				sessionCookie.value,
+				sessionCookie.attributes,
+			)
+
+			return new Response(null, {
+				status: 302,
+				headers: {
+					Location: redirectTo,
+				},
+			})
+		} catch (error) {
+			console.log(error)
+			// the specific error message depends on the provider
+			if (error instanceof OAuth2RequestError) {
+				// invalid code
+				return new Response(null, {
+					status: 400,
+				})
+			}
+			return new Response(null, {
+				status: 500,
+			})
+		}
+	},
+})

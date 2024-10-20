@@ -1,102 +1,102 @@
-import "dotenv/config";
+import 'dotenv/config'
 
-import { db } from "@/app/db";
 import {
-  permissionTable,
-  roleTable,
-  roleToPermissionTable,
-} from "@/app/db/schema";
+	accesses,
+	actions,
+	resources,
+	type Access,
+	type Action,
+	type Resource,
+} from '@/app/auth/auth-permissions'
+import { db } from '@/app/db'
 import {
-  accesses,
-  actions,
-  resources,
-  type Access,
-  type Action,
-  type Resource,
-} from "@/app/auth/auth-permissions";
+	permissionTable,
+	roleTable,
+	roleToPermissionTable,
+} from '@/app/db/schema'
 
-console.log("Seeding database...");
+console.log('Seeding database...')
 
 const permissionsToCreate: {
-  action: Action;
-  resource: Resource;
-  access: Access;
-}[] = [];
+	action: Action
+	resource: Resource
+	access: Access
+}[] = []
 
 for (const resource of resources) {
-  for (const action of actions) {
-    for (const access of accesses) {
-      permissionsToCreate.push({ action, resource, access });
-    }
-  }
+	for (const action of actions) {
+		for (const access of accesses) {
+			permissionsToCreate.push({ action, resource, access })
+		}
+	}
 }
 
 db.transaction((tx) => {
-  console.log("Starting database transaction...");
+	console.log('Starting database transaction...')
 
-  const insertedPermissions = tx
-    .insert(permissionTable)
-    .values(permissionsToCreate)
-    .onConflictDoNothing()
-    .returning()
-    .all();
-  console.log(`Inserted ${insertedPermissions.length} permissions`);
+	const insertedPermissions = tx
+		.insert(permissionTable)
+		.values(permissionsToCreate)
+		.onConflictDoNothing()
+		.returning()
+		.all()
+	console.log(`Inserted ${insertedPermissions.length} permissions`)
 
-  const adminRole = tx
-    .insert(roleTable)
-    .values([
-      {
-        name: "admin",
-        description: "Admin role",
-      },
-    ])
-    .returning()
-    .get();
-  console.log("Created Admin role");
+	const adminRole = tx
+		.insert(roleTable)
+		.values([
+			{
+				name: 'admin',
+				description: 'Admin role',
+			},
+		])
+		.returning()
+		.get()
+	console.log('Created Admin role')
 
-  const userRole = tx
-    .insert(roleTable)
-    .values([
-      {
-        name: "user",
-        description: "User role",
-      },
-    ])
-    .returning()
-    .get();
-  console.log("Created User role");
+	const userRole = tx
+		.insert(roleTable)
+		.values([
+			{
+				name: 'user',
+				description: 'User role',
+			},
+		])
+		.returning()
+		.get()
+	console.log('Created User role')
 
-  const adminPermissions = tx
-    .insert(roleToPermissionTable)
-    .values(
-      insertedPermissions
-        .filter((permission) => permission.access === "any")
-        .map((permission) => ({
-          roleId: adminRole.id,
-          permissionId: permission.id,
-        }))
-    )
-    .onConflictDoNothing()
-    .returning()
-    .all();
-  console.log(`Assigned ${adminPermissions.length} permissions to Admin role`);
+	const adminPermissions = tx
+		.insert(roleToPermissionTable)
+		.values(
+			insertedPermissions
+				.filter((permission) => permission.access === 'any')
+				.map((permission) => ({
+					roleId: adminRole.id,
+					permissionId: permission.id,
+				})),
+		)
+		.onConflictDoNothing()
+		.returning()
+		.all()
+	console.log(`Assigned ${adminPermissions.length} permissions to Admin role`)
 
-  const userPermissions = tx
-    .insert(roleToPermissionTable)
-    .values(
-      insertedPermissions
-        .filter((permission) => permission.access === "own")
-        .map((permission) => ({
-          roleId: userRole.id,
-          permissionId: permission.id,
-        }))
-    )
-    .onConflictDoNothing()
-    .returning()
-    .all();
-  console.log(`Assigned ${userPermissions.length} permissions to User role`);
+	const userPermissions = tx
+		.insert(roleToPermissionTable)
+		.values(
+			insertedPermissions
+				.filter((permission) => permission.access === 'own')
+				.map((permission) => ({
+					roleId: userRole.id,
+					permissionId: permission.id,
+				})),
+		)
+		.onConflictDoNothing()
+		.returning()
+		.all()
+	console.log(`Assigned ${userPermissions.length} permissions to User role`)
 
-  console.log("Database transaction completed successfully");
-});
+	console.log('Database transaction completed successfully')
+})
 
-console.log("Database seeded successfully.");
+console.log('Database seeded successfully.')

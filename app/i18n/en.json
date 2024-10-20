@@ -1,146 +1,146 @@
 {
-  "login": {
-    "title": "Welcome Back",
-    "description": "Sign in to your account",
-    "buttons": {
-      "github": "Sign in with GitHub",
-      "discord": "Sign in with Discord"
-    },
-    "footer": "© {year} Your Company. All rights reserved."
-  },
+	"login": {
+		"title": "Welcome Back",
+		"description": "Sign in to your account",
+		"buttons": {
+			"github": "Sign in with GitHub",
+			"discord": "Sign in with Discord"
+		},
+		"footer": "© {year} Your Company. All rights reserved."
+	},
 
-  "user": {
-    "avatarAlt": "User avatar",
-    "settings": "Settings",
-    "signOut": "Sign out"
-  },
+	"user": {
+		"avatarAlt": "User avatar",
+		"settings": "Settings",
+		"signOut": "Sign out"
+	},
 
-  "theme": {
-    "dark": "Dark",
-    "light": "Light",
-    "system": "System"
-  },
+	"theme": {
+		"dark": "Dark",
+		"light": "Light",
+		"system": "System"
+	},
 
-  "notes": {
-    "submit": "Add note",
-    "placeholder": "Enter note content",
-    "validation": {
-      "required": "Content is required",
-      "refine": "Content is invalid"
-    }
-  },
+	"notes": {
+		"submit": "Add note",
+		"placeholder": "Enter note content",
+		"validation": {
+			"required": "Content is required",
+			"refine": "Content is invalid"
+		}
+	},
 
-  "dashboard": {
-    "nav": {
-      "dashboard": "Dashboard",
-      "notes": "Notes",
-      "settings": "Settings"
-    },
-    "menu": {
-      "toggleMenu": "Toggle Menu"
-    },
-    "appName": "Tanstack Boilerplate"
-  },
+	"dashboard": {
+		"nav": {
+			"dashboard": "Dashboard",
+			"notes": "Notes",
+			"settings": "Settings"
+		},
+		"menu": {
+			"toggleMenu": "Toggle Menu"
+		},
+		"appName": "Tanstack Boilerplate"
+	},
 
-  "settings": {
-    "title": "Settings",
-    "subtitle": "Manage your account settings, such as your email and name.",
-    "basicInfo": "Basic Information",
-    "nameLabel": "Name",
-    "emailLabel": "Email",
-    "success": "Settings updated successfully",
-    "validation": {
-      "nameRequired": "Name is required"
-    }
-  },
+	"settings": {
+		"title": "Settings",
+		"subtitle": "Manage your account settings, such as your email and name.",
+		"basicInfo": "Basic Information",
+		"nameLabel": "Name",
+		"emailLabel": "Email",
+		"success": "Settings updated successfully",
+		"validation": {
+			"nameRequired": "Name is required"
+		}
+	},
 
-  "common": {
-    "updating": "Updating...",
-    "saveChanges": "Save Changes"
-  },
+	"common": {
+		"updating": "Updating...",
+		"saveChanges": "Save Changes"
+	},
 
-  "marketing": {
-    "nav": {
-      "features": "Features",
-      "pricing": "Pricing",
-      "getStarted": "Get Started",
-      "goToApp": "Go to App"
-    },
-    "footer": {
-      "home": "Home",
-      "copyright": "© {year} Tanstack Boilerplate. All rights reserved.",
-      "termsOfService": "Terms of Service",
-      "privacyPolicy": "Privacy Policy"
-    },
-    "alert": {
-      "title": "AI-Generated Content",
-      "description": "This landing page content is AI-generated and for demonstration purposes only. The actual features and functionality may vary."
-    },
-    "hero": {
-      "title": "Tanstack Boilerplate",
-      "description": "A personal boilerplate to jumpstart new Node.js projects with modern web technologies.",
-      "learnMore": "Learn More"
-    },
-    "features": {
-      "title": "Key Features",
-      "items": {
-        "tanstack": {
-          "title": "Tanstack Stack",
-          "description": "Includes Tanstack Start, Router, and Query for a seamless development experience."
-        },
-        "ui": {
-          "title": "UI Components",
-          "description": "Shadcn UI and Tailwind CSS for beautiful, responsive designs."
-        },
-        "auth": {
-          "title": "Authentication",
-          "description": "Lucia Auth with GitHub and Discord SSO integration."
-        },
-        "database": {
-          "title": "Database & ORM",
-          "description": "SQLite database with Drizzle ORM for efficient data management."
-        },
-        "email": {
-          "title": "Email Integration",
-          "description": "Resend and React Email for handling email communications."
-        },
-        "background": {
-          "title": "Background Processing",
-          "description": "Cron jobs and background tasks with BullMQ."
-        }
-      }
-    },
-    "pricing": {
-      "title": "Pricing Plans",
-      "perMonth": "per month",
-      "choosePlan": "Choose Plan",
-      "plans": {
-        "starter": {
-          "title": "Starter",
-          "price": "$9",
-          "description": "For small teams or projects"
-        },
-        "pro": {
-          "title": "Pro",
-          "price": "$29",
-          "description": "For growing businesses"
-        },
-        "enterprise": {
-          "title": "Enterprise",
-          "price": "Custom",
-          "description": "For large-scale operations"
-        }
-      },
-      "feature1": "Feature 1",
-      "feature2": "Feature 2",
-      "feature3": "Feature 3",
-      "feature4": "Feature 4"
-    },
-    "cta": {
-      "title": "Ready to Start Your Project?",
-      "description": "Jumpstart your development with this feature-rich boilerplate.",
-      "button": "Get Started",
-      "buttonLoggedIn": "Go to Dashboard"
-    }
-  }
+	"marketing": {
+		"nav": {
+			"features": "Features",
+			"pricing": "Pricing",
+			"getStarted": "Get Started",
+			"goToApp": "Go to App"
+		},
+		"footer": {
+			"home": "Home",
+			"copyright": "© {year} Tanstack Boilerplate. All rights reserved.",
+			"termsOfService": "Terms of Service",
+			"privacyPolicy": "Privacy Policy"
+		},
+		"alert": {
+			"title": "AI-Generated Content",
+			"description": "This landing page content is AI-generated and for demonstration purposes only. The actual features and functionality may vary."
+		},
+		"hero": {
+			"title": "Tanstack Boilerplate",
+			"description": "A personal boilerplate to jumpstart new Node.js projects with modern web technologies.",
+			"learnMore": "Learn More"
+		},
+		"features": {
+			"title": "Key Features",
+			"items": {
+				"tanstack": {
+					"title": "Tanstack Stack",
+					"description": "Includes Tanstack Start, Router, and Query for a seamless development experience."
+				},
+				"ui": {
+					"title": "UI Components",
+					"description": "Shadcn UI and Tailwind CSS for beautiful, responsive designs."
+				},
+				"auth": {
+					"title": "Authentication",
+					"description": "Lucia Auth with GitHub and Discord SSO integration."
+				},
+				"database": {
+					"title": "Database & ORM",
+					"description": "SQLite database with Drizzle ORM for efficient data management."
+				},
+				"email": {
+					"title": "Email Integration",
+					"description": "Resend and React Email for handling email communications."
+				},
+				"background": {
+					"title": "Background Processing",
+					"description": "Cron jobs and background tasks with BullMQ."
+				}
+			}
+		},
+		"pricing": {
+			"title": "Pricing Plans",
+			"perMonth": "per month",
+			"choosePlan": "Choose Plan",
+			"plans": {
+				"starter": {
+					"title": "Starter",
+					"price": "$9",
+					"description": "For small teams or projects"
+				},
+				"pro": {
+					"title": "Pro",
+					"price": "$29",
+					"description": "For growing businesses"
+				},
+				"enterprise": {
+					"title": "Enterprise",
+					"price": "Custom",
+					"description": "For large-scale operations"
+				}
+			},
+			"feature1": "Feature 1",
+			"feature2": "Feature 2",
+			"feature3": "Feature 3",
+			"feature4": "Feature 4"
+		},
+		"cta": {
+			"title": "Ready to Start Your Project?",
+			"description": "Jumpstart your development with this feature-rich boilerplate.",
+			"button": "Get Started",
+			"buttonLoggedIn": "Go to Dashboard"
+		}
+	}
 }

@@ -2,8 +2,8 @@
 
 ## Docker (self-hosted for example)
 
-This can be deployed to any platform that supports docker.
-Check the `Dockerfile` for reference.
+This can be deployed to any platform that supports docker. Check the
+`Dockerfile` for reference.
 
 ## Fly.io
 
@@ -24,4 +24,5 @@ fly secrets set RESEND_API_KEY=
 fly secrets set EMAIL_FROM=
 ```
 
-**There is a github action that will deploy the app to fly.io. A secret needs to be set in github secrets for the action to work.**
+**There is a github action that will deploy the app to fly.io. A secret needs to
+be set in github secrets for the action to work.**

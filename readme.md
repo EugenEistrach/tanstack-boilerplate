@@ -2,11 +2,12 @@
 
 This is a personal boilerplate to jumpstart new projects.
 
-**It's node only and will not work for serverless deployments, as this requires a long running server for things like cron jobs and sockets.**
+**It's node only and will not work for serverless deployments, as this requires
+a long running server for things like cron jobs and sockets.**
 
 For the app to work, the following environment variables need to be set:
 
-```
+```env
 SESSION_SECRET=
 REDIS_URL=
 
@@ -24,7 +25,8 @@ EMAIL_FROM=
 - Tanstack Start, Router, Query
 - Shadcn UI
 - Tailwind CSS
-- Light & Dark mode (next-themes <- yes this works here too, as its not using next specific APIs)
+- Light & Dark mode (next-themes <- yes this works here too, as its not using
+  next specific APIs)
 - Lucia Auth (github & discord sso)
 - Simple onboarding flow after first signup (to set name)
 - simple role and permission system
@@ -36,7 +38,7 @@ EMAIL_FROM=
 - react hook form (still evaluating if tanstack form could be used instead)
 - fly.io deployment (see deployments.md for more info)
 
-## TODO:
+## TODO
 
 - [ ] magic links & otp
 - [ ] stripe
@@ -57,7 +59,7 @@ EMAIL_FROM=
 
 Clone the repo using degit and run setup:
 
-```
+```bash
 pnpm dlx degit EugenEistrach/tanstack-boilerplate my-project
 cd my-project
 node scripts/setup.js
@@ -65,6 +67,6 @@ node scripts/setup.js
 
 Start the dev server:
 
-```
+```bash
 pnpm dev
 ```

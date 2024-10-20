@@ -1,144 +1,144 @@
 {
-  "login": {
-    "title": "Willkommen zurück",
-    "description": "Melden Sie sich bei Ihrem Konto an",
-    "buttons": {
-      "github": "Anmelden mit GitHub",
-      "discord": "Anmelden mit Discord"
-    },
-    "footer": "© {year} Ihre Firma. Alle Rechte vorbehalten."
-  },
-  "user": {
-    "avatarAlt": "Benutzer-Avatar",
-    "settings": "Einstellungen",
-    "signOut": "Ausloggen"
-  },
+	"login": {
+		"title": "Willkommen zurück",
+		"description": "Melden Sie sich bei Ihrem Konto an",
+		"buttons": {
+			"github": "Anmelden mit GitHub",
+			"discord": "Anmelden mit Discord"
+		},
+		"footer": "© {year} Ihre Firma. Alle Rechte vorbehalten."
+	},
+	"user": {
+		"avatarAlt": "Benutzer-Avatar",
+		"settings": "Einstellungen",
+		"signOut": "Ausloggen"
+	},
 
-  "theme": {
-    "dark": "Dunkel",
-    "light": "Hell",
-    "system": "System"
-  },
+	"theme": {
+		"dark": "Dunkel",
+		"light": "Hell",
+		"system": "System"
+	},
 
-  "notes": {
-    "submit": "Hinzufügen",
-    "placeholder": "Inhalt eingeben",
-    "validation": {
-      "required": "Inhalt ist erforderlich",
-      "refine": "Inhalt ist ungültig"
-    }
-  },
-  "dashboard": {
-    "nav": {
-      "dashboard": "Dashboard",
-      "notes": "Notizen",
-      "settings": "Einstellungen"
-    },
-    "menu": {
-      "toggleMenu": "Menü umschalten"
-    },
-    "appName": "Tanstack Boilerplate"
-  },
+	"notes": {
+		"submit": "Hinzufügen",
+		"placeholder": "Inhalt eingeben",
+		"validation": {
+			"required": "Inhalt ist erforderlich",
+			"refine": "Inhalt ist ungültig"
+		}
+	},
+	"dashboard": {
+		"nav": {
+			"dashboard": "Dashboard",
+			"notes": "Notizen",
+			"settings": "Einstellungen"
+		},
+		"menu": {
+			"toggleMenu": "Menü umschalten"
+		},
+		"appName": "Tanstack Boilerplate"
+	},
 
-  "settings": {
-    "title": "Einstellungen",
-    "subtitle": "Verwalten Sie Ihre Kontoeinstellungen, z.B. Ihre E-Mail-Adresse und Ihren Namen.",
-    "basicInfo": "Grundlegende Informationen",
-    "nameLabel": "Name",
-    "emailLabel": "E-Mail",
-    "success": "Einstellungen erfolgreich aktualisiert",
-    "validation": {
-      "nameRequired": "Name ist erforderlich"
-    }
-  },
+	"settings": {
+		"title": "Einstellungen",
+		"subtitle": "Verwalten Sie Ihre Kontoeinstellungen, z.B. Ihre E-Mail-Adresse und Ihren Namen.",
+		"basicInfo": "Grundlegende Informationen",
+		"nameLabel": "Name",
+		"emailLabel": "E-Mail",
+		"success": "Einstellungen erfolgreich aktualisiert",
+		"validation": {
+			"nameRequired": "Name ist erforderlich"
+		}
+	},
 
-  "common": {
-    "updating": "Aktualisiere...",
-    "saveChanges": "Änderungen speichern"
-  },
+	"common": {
+		"updating": "Aktualisiere...",
+		"saveChanges": "Änderungen speichern"
+	},
 
-  "marketing": {
-    "nav": {
-      "features": "Funktionen",
-      "pricing": "Preise",
-      "getStarted": "Loslegen",
-      "goToApp": "Zur App"
-    },
-    "footer": {
-      "home": "Startseite",
-      "copyright": "© {year} Tanstack Boilerplate. Alle Rechte vorbehalten.",
-      "termsOfService": "Nutzungsbedingungen",
-      "privacyPolicy": "Datenschutzrichtlinie"
-    },
-    "alert": {
-      "title": "KI-generierter Inhalt",
-      "description": "Dieser Landingpage-Inhalt ist KI-generiert und dient nur zu Demonstrationszwecken. Die tatsächlichen Funktionen und Funktionalitäten können variieren."
-    },
-    "hero": {
-      "title": "Tanstack Boilerplate",
-      "description": "Ein persönlicher Boilerplate zum Starten neuer Node.js-Projekte mit modernen Webtechnologien.",
-      "learnMore": "Mehr erfahren"
-    },
-    "features": {
-      "title": "Hauptfunktionen",
-      "items": {
-        "tanstack": {
-          "title": "Tanstack Stack",
-          "description": "Enthält Tanstack Start, Router und Query für eine nahtlose Entwicklungserfahrung."
-        },
-        "ui": {
-          "title": "UI-Komponenten",
-          "description": "Shadcn UI und Tailwind CSS für schöne, responsive Designs."
-        },
-        "auth": {
-          "title": "Authentifizierung",
-          "description": "Lucia Auth mit GitHub- und Discord-SSO-Integration."
-        },
-        "database": {
-          "title": "Datenbank & ORM",
-          "description": "SQLite-Datenbank mit Drizzle ORM für effizientes Datenmanagement."
-        },
-        "email": {
-          "title": "E-Mail-Integration",
-          "description": "Resend und React Email für die Handhabung von E-Mail-Kommunikation."
-        },
-        "background": {
-          "title": "Hintergrundverarbeitung",
-          "description": "Cron-Jobs und Hintergrundaufgaben mit BullMQ."
-        }
-      }
-    },
-    "pricing": {
-      "title": "Preispläne",
-      "perMonth": "pro Monat",
-      "choosePlan": "Plan wählen",
-      "plans": {
-        "starter": {
-          "title": "Starter",
-          "price": "9 €",
-          "description": "Für kleine Teams oder Projekte"
-        },
-        "pro": {
-          "title": "Pro",
-          "price": "29 €",
-          "description": "Für wachsende Unternehmen"
-        },
-        "enterprise": {
-          "title": "Enterprise",
-          "price": "Individuell",
-          "description": "Für große Unternehmen"
-        }
-      },
-      "feature1": "Funktion 1",
-      "feature2": "Funktion 2",
-      "feature3": "Funktion 3",
-      "feature4": "Funktion 4"
-    },
-    "cta": {
-      "title": "Bereit, Ihr Projekt zu starten?",
-      "description": "Starten Sie Ihre Entwicklung mit diesem funktionsreichen Boilerplate.",
-      "button": "Loslegen",
-      "buttonLoggedIn": "Zum Dashboard"
-    }
-  }
+	"marketing": {
+		"nav": {
+			"features": "Funktionen",
+			"pricing": "Preise",
+			"getStarted": "Loslegen",
+			"goToApp": "Zur App"
+		},
+		"footer": {
+			"home": "Startseite",
+			"copyright": "© {year} Tanstack Boilerplate. Alle Rechte vorbehalten.",
+			"termsOfService": "Nutzungsbedingungen",
+			"privacyPolicy": "Datenschutzrichtlinie"
+		},
+		"alert": {
+			"title": "KI-generierter Inhalt",
+			"description": "Dieser Landingpage-Inhalt ist KI-generiert und dient nur zu Demonstrationszwecken. Die tatsächlichen Funktionen und Funktionalitäten können variieren."
+		},
+		"hero": {
+			"title": "Tanstack Boilerplate",
+			"description": "Ein persönlicher Boilerplate zum Starten neuer Node.js-Projekte mit modernen Webtechnologien.",
+			"learnMore": "Mehr erfahren"
+		},
+		"features": {
+			"title": "Hauptfunktionen",
+			"items": {
+				"tanstack": {
+					"title": "Tanstack Stack",
+					"description": "Enthält Tanstack Start, Router und Query für eine nahtlose Entwicklungserfahrung."
+				},
+				"ui": {
+					"title": "UI-Komponenten",
+					"description": "Shadcn UI und Tailwind CSS für schöne, responsive Designs."
+				},
+				"auth": {
+					"title": "Authentifizierung",
+					"description": "Lucia Auth mit GitHub- und Discord-SSO-Integration."
+				},
+				"database": {
+					"title": "Datenbank & ORM",
+					"description": "SQLite-Datenbank mit Drizzle ORM für effizientes Datenmanagement."
+				},
+				"email": {
+					"title": "E-Mail-Integration",
+					"description": "Resend und React Email für die Handhabung von E-Mail-Kommunikation."
+				},
+				"background": {
+					"title": "Hintergrundverarbeitung",
+					"description": "Cron-Jobs und Hintergrundaufgaben mit BullMQ."
+				}
+			}
+		},
+		"pricing": {
+			"title": "Preispläne",
+			"perMonth": "pro Monat",
+			"choosePlan": "Plan wählen",
+			"plans": {
+				"starter": {
+					"title": "Starter",
+					"price": "9 €",
+					"description": "Für kleine Teams oder Projekte"
+				},
+				"pro": {
+					"title": "Pro",
+					"price": "29 €",
+					"description": "Für wachsende Unternehmen"
+				},
+				"enterprise": {
+					"title": "Enterprise",
+					"price": "Individuell",
+					"description": "Für große Unternehmen"
+				}
+			},
+			"feature1": "Funktion 1",
+			"feature2": "Funktion 2",
+			"feature3": "Funktion 3",
+			"feature4": "Funktion 4"
+		},
+		"cta": {
+			"title": "Bereit, Ihr Projekt zu starten?",
+			"description": "Starten Sie Ihre Entwicklung mit diesem funktionsreichen Boilerplate.",
+			"button": "Loslegen",
+			"buttonLoggedIn": "Zum Dashboard"
+		}
+	}
 }

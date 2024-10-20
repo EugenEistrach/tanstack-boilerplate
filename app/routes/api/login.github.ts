@@ -1,40 +1,41 @@
-import { env } from "@/app/lib/env";
-import { createAPIFileRoute } from "@tanstack/start/api";
-import { generateState, GitHub } from "arctic";
-import { useSession } from "vinxi/http";
+import { createAPIFileRoute } from '@tanstack/start/api'
+import { generateState, GitHub } from 'arctic'
+import { useSession } from 'vinxi/http'
+import { env } from '@/app/lib/env'
 
-export const Route = createAPIFileRoute("/api/login/github")({
-  GET: async ({ request }) => {
-    const state = generateState();
+export const Route = createAPIFileRoute('/api/login/github')({
+	GET: async ({ request }) => {
+		const state = generateState()
 
-    const session = await useSession({
-      password: env.SESSION_SECRET,
-    });
+		// eslint-disable-next-line react-hooks/rules-of-hooks
+		const session = await useSession({
+			password: env.SESSION_SECRET,
+		})
 
-    const redirectTo = new URL(request.url).searchParams.get("redirectTo");
+		const redirectTo = new URL(request.url).searchParams.get('redirectTo')
 
-    await session.update({
-      github_oauth_state: state,
-      redirectTo,
-    });
+		await session.update({
+			github_oauth_state: state,
+			redirectTo,
+		})
 
-    if (!env.GITHUB_CLIENT_ID || !env.GITHUB_CLIENT_SECRET) {
-      throw new Error(
-        "GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET must be set to use github login."
-      );
-    }
+		if (!env.GITHUB_CLIENT_ID || !env.GITHUB_CLIENT_SECRET) {
+			throw new Error(
+				'GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET must be set to use github login.',
+			)
+		}
 
-    const github = new GitHub(env.GITHUB_CLIENT_ID, env.GITHUB_CLIENT_SECRET);
+		const github = new GitHub(env.GITHUB_CLIENT_ID, env.GITHUB_CLIENT_SECRET)
 
-    const url = await github.createAuthorizationURL(state, {
-      scopes: ["user:email"],
-    });
+		const url = await github.createAuthorizationURL(state, {
+			scopes: ['user:email'],
+		})
 
-    return new Response(null, {
-      status: 302,
-      headers: {
-        Location: url.toString(),
-      },
-    });
-  },
-});
+		return new Response(null, {
+			status: 302,
+			headers: {
+				Location: url.toString(),
+			},
+		})
+	},
+})

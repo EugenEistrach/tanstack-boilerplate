@@ -1,12 +1,12 @@
-import type en from "./app/i18n/en.json";
+import type en from './app/i18n/en.json'
 
-type Messages = typeof en;
+type Messages = typeof en
 
 declare global {
-  // Use type safe message keys with `next-intl`
-  interface IntlMessages extends Messages {}
+	// Use type safe message keys with `next-intl`
+	interface IntlMessages extends Messages {}
 }
 
-declare module "@tanstack/react-router" {
-  interface StaticDataRouteOption {}
+declare module '@tanstack/react-router' {
+	interface StaticDataRouteOption {}
 }
