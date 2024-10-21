@@ -1,5 +1,5 @@
 import { useSession } from 'vinxi/http'
-import { env } from './env.server'
+import { serverEnv } from './env.server'
 import { type supportedLocales } from './i18n'
 
 interface Session {
@@ -11,7 +11,7 @@ interface Session {
 export async function getVinxiSession() {
 	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const session = await useSession<Session>({
-		password: env.SESSION_SECRET,
+		password: serverEnv.SESSION_SECRET,
 	})
 
 	return session

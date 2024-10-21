@@ -1,10 +1,10 @@
 import { drizzle } from 'drizzle-orm/better-sqlite3'
 
-import { env } from '../lib/env.server'
+import { serverEnv } from '../lib/env.server'
 import * as authSchema from './schemas/auth-schema'
 
 export const db = drizzle({
-	connection: env.DATABASE_URL,
+	connection: serverEnv.DATABASE_URL,
 	schema: {
 		user: authSchema.UserTable,
 		session: authSchema.SessionTable,

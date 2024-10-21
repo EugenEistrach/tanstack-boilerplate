@@ -4,7 +4,7 @@ import { createServerFn, useServerFn } from '@tanstack/start'
 import { createTranslator } from 'use-intl'
 import { getHeader, useSession } from 'vinxi/http'
 import { $getHints } from './client-hints'
-import { env } from './env.server'
+import { serverEnv } from './env.server'
 import { getVinxiSession } from './session.server'
 
 export const supportedLocales = [
@@ -52,7 +52,7 @@ export const $updateLocale = createServerFn(
 	'POST',
 	async (locale: SupportedLocale) => {
 		const session = await useSession({
-			password: env.SESSION_SECRET,
+			password: serverEnv.SESSION_SECRET,
 		})
 
 		await session.update({

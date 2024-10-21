@@ -2,11 +2,11 @@ import 'dotenv/config'
 
 import { execSync } from 'node:child_process'
 import { resolve } from 'node:path'
-import { env } from '@//lib/env.server'
+import { serverEnv } from '@//lib/env.server'
 
 console.log('Clearing database...')
 
-const databaseUrl = env.DATABASE_URL
+const databaseUrl = serverEnv.DATABASE_URL
 if (!databaseUrl) {
 	console.error('DATABASE_URL environment variable is not set.')
 	process.exit(1)

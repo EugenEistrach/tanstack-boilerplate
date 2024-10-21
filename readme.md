@@ -10,8 +10,9 @@ For the app to work, the following environment variables need to be set:
 ```env
 SESSION_SECRET=
 REDIS_URL=
+PUBLIC_AUTH_URL=https://localhost:3000
 
-# Optional:
+# Optional (one sso provider is required):
 GITHUB_CLIENT_ID=
 GITHUB_CLIENT_SECRET=
 DISCORD_CLIENT_ID=
@@ -27,20 +28,20 @@ EMAIL_FROM=
 - Tailwind CSS
 - Light & Dark mode (next-themes <- yes this works here too, as its not using
   next specific APIs)
-- Lucia Auth (github & discord sso)
+- Better Auth (sso, rbac, etc.)
 - Simple onboarding flow after first signup (to set name)
-- simple role and permission system
 - SQLite
 - Drizzle ORM
 - Emails (Resend & React Email)
 - i18n (use-intl)
+- user timezone on server (without flashes)
 - Cron jobs & background jobs (BullMQ)
 - react hook form (still evaluating if tanstack form could be used instead)
 - fly.io deployment (see deployments.md for more info)
 
 ## TODO
 
-- [ ] magic links & otp
+- [ ] magic links & otp (better auth has this)
 - [ ] stripe
 - [ ] file uploads
 - [ ] notifications
