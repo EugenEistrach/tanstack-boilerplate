@@ -3,6 +3,7 @@ import { z } from 'zod'
 
 export const env = createEnv({
 	server: {
+		BASE_URL: z.string().min(1),
 		DATABASE_URL: z.string().min(1),
 		REDIS_URL: z.string().min(1),
 		GITHUB_CLIENT_ID: z.string().optional(),
@@ -11,12 +12,11 @@ export const env = createEnv({
 		RESEND_API_KEY: z.string().optional(),
 		EMAIL_FROM: z.string().optional(),
 	},
-	client: { VITE_AUTH_URL: z.string().min(1) },
+
 	runtimeEnv: {
 		...process.env,
-		...import.meta.env,
 	},
-	clientPrefix: 'VITE_',
+
 	isServer: typeof window === 'undefined',
 	emptyStringAsUndefined: true,
 })

@@ -13,7 +13,7 @@ const github =
 		: undefined
 
 export const authServer = betterAuth({
-	baseURL: env.VITE_AUTH_URL,
+	baseURL: env.BASE_URL,
 	secret: env.SESSION_SECRET,
 	database: drizzleAdapter(db, {
 		provider: 'sqlite',
