@@ -20,7 +20,7 @@ import { Route as MarketingTermsImport } from './routes/_marketing/terms'
 import { Route as MarketingPrivacyImport } from './routes/_marketing/privacy'
 import { Route as authOnboardingImport } from './routes/(auth)/onboarding'
 import { Route as authLoginImport } from './routes/(auth)/login'
-import { Route as DashboardSettingsIndexImport } from './r./routes/dashboard/settings
+import { Route as DashboardSettingsIndexImport } from './routes/dashboard/settings/index'
 
 // Create/Update Routes
 

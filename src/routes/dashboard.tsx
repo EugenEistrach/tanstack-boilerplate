@@ -31,10 +31,6 @@ export const Route = createFileRoute('/dashboard')({
 				},
 			})
 		}
-
-		return {
-			breadcrumb: 'Dashboard',
-		}
 	},
 	component: DashboardLayout,
 })
@@ -69,7 +65,7 @@ function DashboardLayout() {
 						<Tooltip key={link.to}>
 							<TooltipTrigger asChild>
 								<Link
-									{...link}
+									to={link.to}
 									activeOptions={{ exact: link.exact }}
 									activeProps={{
 										className:
@@ -135,7 +131,7 @@ function DashboardLayout() {
 								{dashboardLinkOptions.map((link) => (
 									<Link
 										key={link.to}
-										{...link}
+										to={link.to}
 										activeOptions={{ exact: link.exact }}
 										activeProps={{
 											className: 'text-foreground',
