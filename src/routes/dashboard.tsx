@@ -41,12 +41,12 @@ import {
 } from '@/components/ui/sidebar'
 
 import { ThemeToggle } from '@/components/ui/theme-toggle'
+import { $requireOnboardingInfo } from '@/features/onboarding/onboarding'
 import { useAuth, $logout } from '@/lib/auth.client'
-import { env } from '@/lib/env'
 import { tk } from '@/lib/i18n'
 
 export const Route = createFileRoute('/dashboard')({
-	beforeLoad: ({ context, location }) => {
+	beforeLoad: async ({ context, location }) => {
 		if (!context.auth) {
 			throw redirect({
 				to: '/login',
@@ -54,6 +54,11 @@ export const Route = createFileRoute('/dashboard')({
 					redirectTo: location.pathname,
 				},
 			})
+		}
+
+		const onboardingInfo = await $requireOnboardingInfo()
+		return {
+			onboardingInfo,
 		}
 	},
 	component: DashboardLayout,
