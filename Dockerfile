@@ -53,4 +53,4 @@ EXPOSE 3000
 ENV DATABASE_URL="/data/sqlite.db"
 
 # Change to "start" in real production
-CMD [ "pnpm", "run", "start-with-reset" ]
+CMD [ "pnpm", "run", "start" ]

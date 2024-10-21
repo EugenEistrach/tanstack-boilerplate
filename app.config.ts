@@ -11,22 +11,26 @@ export default defineConfig({
 	},
 	server: {
 		preset: 'node-server',
-		typescript: {
-			tsConfig: {
-				compilerOptions: {
-					// top level await etc
-					target: 'ES2022',
-				},
-			},
-		},
 		esbuild: {
 			options: {
 				target: 'ES2022',
 			},
 		},
 	},
+	routers: {
+		ssr: {
+			entry: './src/entry.server.tsx',
+		},
+		client: {
+			entry: './src/entry.client.tsx',
+		},
+		api: {
+			entry: './src/entry.api.ts',
+		},
+	},
 	tsr: {
-		appDirectory: 'app',
-		routeFilePrefix: '~',
+		appDirectory: './src/',
+		routesDirectory: './src/routes/',
+		generatedRouteTree: './src/routeTree.gen.ts',
 	},
 })
