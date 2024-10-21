@@ -30,6 +30,7 @@
 	},
 	"dashboard": {
 		"nav": {
+			"main": "Main",
 			"dashboard": "Dashboard",
 			"notes": "Notizen",
 			"settings": "Einstellungen"

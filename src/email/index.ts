@@ -1,10 +1,8 @@
 import { type ReactElement } from 'react'
 import { Resend } from 'resend'
-import { serverEnv } from '../lib/env.server'
+import { env } from '../lib/env'
 
-const resend = serverEnv.RESEND_API_KEY
-	? new Resend(serverEnv.RESEND_API_KEY)
-	: null
+const resend = env.RESEND_API_KEY ? new Resend(env.RESEND_API_KEY) : null
 
 export async function sendEmail({
 	to,
@@ -15,13 +13,13 @@ export async function sendEmail({
 	subject: string
 	react: ReactElement
 }) {
-	if (!resend || !serverEnv.EMAIL_FROM) {
+	if (!resend || !env.EMAIL_FROM) {
 		console.log(`Simulating email send: ${subject}, to: ${to}, html: ${react}`)
 		return
 	}
 
 	await resend.emails.send({
-		from: serverEnv.EMAIL_FROM,
+		from: env.EMAIL_FROM,
 		to,
 		subject,
 		react,

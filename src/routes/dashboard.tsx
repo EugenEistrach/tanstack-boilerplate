@@ -1,4 +1,4 @@
-import { HomeIcon, CubeIcon, GearIcon } from '@radix-ui/react-icons'
+import { HomeIcon, CubeIcon } from '@radix-ui/react-icons'
 import {
 	createFileRoute,
 	Link,
@@ -6,19 +6,43 @@ import {
 	Outlet,
 	redirect,
 } from '@tanstack/react-router'
+import { useServerFn } from '@tanstack/start'
+import { ChevronsUpDown, LogOut, Settings } from 'lucide-react'
 import { useTranslations } from 'use-intl'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Breadcrumbs } from '@/components/ui/breadcrumbs'
-import { Button } from '@/components/ui/button'
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuGroup,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 import { LocaleSwitcher } from '@/components/ui/locale-switcher'
 
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
-import { ThemeToggle } from '@/components/ui/theme-toggle'
+import { Separator } from '@/components/ui/separator'
 import {
-	Tooltip,
-	TooltipContent,
-	TooltipTrigger,
-} from '@/components/ui/tooltip'
-import { UserMenu } from '@/components/ui/user-menu'
+	Sidebar,
+	SidebarProvider,
+	SidebarHeader,
+	SidebarMenu,
+	SidebarMenuItem,
+	SidebarMenuButton,
+	SidebarContent,
+	SidebarGroup,
+	SidebarGroupLabel,
+	SidebarFooter,
+	SidebarRail,
+	SidebarInset,
+	SidebarTrigger,
+	useSidebar,
+} from '@/components/ui/sidebar'
+
+import { ThemeToggle } from '@/components/ui/theme-toggle'
+import { useAuth, $logout } from '@/lib/auth.client'
+import { env } from '@/lib/env'
 import { tk } from '@/lib/i18n'
 
 export const Route = createFileRoute('/dashboard')({
@@ -42,137 +66,64 @@ export const dashboardLinkOption = linkOptions({
 	exact: true,
 })
 
-export const dashboardLinkOptions = [dashboardLinkOption]
+export const mainLinkOptions = [dashboardLinkOption]
 
-function DashboardLayout() {
+export default function DashboardLayout() {
 	const t = useTranslations()
-
+	console.log(env)
 	return (
-		<div className="flex min-h-screen w-full flex-col bg-muted/40">
-			<aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
-				<nav className="flex flex-col items-center gap-4 px-2">
-					<div className="flex items-center justify-center border-b border-border py-6">
-						<Link
-							to="/dashboard"
-							className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base"
-						>
-							<CubeIcon className="h-4 w-4 transition-all group-hover:scale-110" />
-							<span className="sr-only">{t('dashboard.appName')}</span>
-						</Link>
-					</div>
-
-					{dashboardLinkOptions.map((link) => (
-						<Tooltip key={link.to}>
-							<TooltipTrigger asChild>
-								<Link
-									to={link.to}
-									activeOptions={{ exact: link.exact }}
-									activeProps={{
-										className:
-											'bg-accent text-accent-foreground transition-colors hover:text-foreground',
-									}}
-									inactiveProps={{
-										className: 'text-muted-foreground  hover:text-foreground',
-									}}
-									className="flex h-9 w-9 items-center justify-center rounded-lg transition-colors"
-								>
-									<link.icon className="h-5 w-5" />
-									<span className="sr-only">{t(link.labelKey)}</span>
-								</Link>
-							</TooltipTrigger>
-							<TooltipContent side="right">{t(link.labelKey)}</TooltipContent>
-						</Tooltip>
-					))}
-				</nav>
-				<nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-4">
-					<Tooltip>
-						<TooltipTrigger asChild>
-							<Link
-								to="/dashboard/settings"
-								activeProps={{
-									className:
-										'bg-accent text-accent-foreground transition-colors hover:text-foreground',
-								}}
-								inactiveProps={{
-									className: 'text-muted-foreground  hover:text-foreground',
-								}}
-								className="flex h-9 w-9 items-center justify-center rounded-lg transition-colors"
+		<SidebarProvider>
+			<Sidebar collapsible="icon">
+				<SidebarHeader>
+					<SidebarMenu>
+						<SidebarMenuItem>
+							<SidebarMenuButton
+								size="lg"
+								className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
 							>
-								<GearIcon className="h-5 w-5" />
-								<span className="sr-only">{t('dashboard.nav.settings')}</span>
-							</Link>
-						</TooltipTrigger>
-						<TooltipContent side="right">
-							{t('dashboard.nav.settings')}
-						</TooltipContent>
-					</Tooltip>
-				</nav>
-			</aside>
-			<div className="flex h-full min-h-screen flex-col gap-4 sm:gap-6 sm:pl-14">
-				<header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 py-6 sm:static sm:h-auto sm:bg-transparent sm:px-6">
-					<Sheet>
-						<SheetTrigger asChild>
-							<Button size="icon" variant="outline" className="sm:hidden">
-								<CubeIcon className="h-5 w-5" />
-								<span className="sr-only">
-									{t('dashboard.menu.toggleMenu')}
-								</span>
-							</Button>
-						</SheetTrigger>
-						<SheetContent side="left" className="sm:max-w-xs">
-							<nav className="grid gap-6 text-lg font-medium">
-								<Link
-									to="/dashboard"
-									className="md:text-bas group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground"
-								>
-									<CubeIcon className="h-5 w-5 transition-all group-hover:scale-110" />
-									<span className="sr-only">{t('dashboard.appName')}</span>
-								</Link>
-								{dashboardLinkOptions.map((link) => (
-									<Link
-										key={link.to}
-										to={link.to}
-										activeOptions={{ exact: link.exact }}
-										activeProps={{
-											className: 'text-foreground',
-										}}
-										inactiveProps={{
-											className: 'text-muted-foreground  hover:text-foreground',
-										}}
-										className="flex items-center gap-4 px-2.5 text-foreground transition-colors"
-									>
-										<link.icon className="h-5 w-5" />
-										{t(link.labelKey)}
-									</Link>
-								))}
-								<Link
-									to="/dashboard/settings"
-									activeProps={{
-										className: 'text-foreground',
-									}}
-									inactiveProps={{
-										className: 'text-muted-foreground  hover:text-foreground',
-									}}
-									className="flex items-center gap-4 px-2.5 text-foreground transition-colors"
-								>
-									<GearIcon className="h-5 w-5" />
-									{t('dashboard.nav.settings')}
-								</Link>
-							</nav>
-						</SheetContent>
-					</Sheet>
-
-					<div className="hidden sm:block">
-						<Breadcrumbs />
-					</div>
-
-					<ThemeToggle className="ml-auto" />
+								<div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+									<CubeIcon className="size-4 transition-all group-hover:scale-110" />
+								</div>
+								<div className="grid flex-1 text-left text-sm leading-tight">
+									<span className="truncate font-semibold">
+										{t('dashboard.appName')}
+									</span>
+								</div>
+							</SidebarMenuButton>
+						</SidebarMenuItem>
+					</SidebarMenu>
+				</SidebarHeader>
+				<SidebarContent>
+					<SidebarGroup>
+						<SidebarGroupLabel>{t('dashboard.nav.main')}</SidebarGroupLabel>
+						<SidebarMenu>
+							{mainLinkOptions.map((item) => (
+								<SidebarMenuItem key={item.to}>
+									<SidebarMenuButton tooltip={t(item.labelKey)} asChild>
+										<Link to={item.to} activeOptions={{ exact: item.exact }}>
+											{item.icon && <item.icon />}
+											<span>{t(item.labelKey)}</span>
+										</Link>
+									</SidebarMenuButton>
+								</SidebarMenuItem>
+							))}
+						</SidebarMenu>
+					</SidebarGroup>
+				</SidebarContent>
+				<SidebarFooter>
 					<UserMenu />
-				</header>
-				<main className="h-full min-h-full flex-1 px-4 sm:px-6">
-					<div className="block pb-4 sm:hidden">
+				</SidebarFooter>
+				<SidebarRail />
+			</Sidebar>
+			<SidebarInset>
+				<header className="sticky top-0 flex h-16 shrink-0 items-center gap-2 border-b bg-background transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
+					<div className="flex items-center gap-2 px-4">
+						<SidebarTrigger className="-ml-1" />
+						<Separator orientation="vertical" className="mr-2 h-4" />
 						<Breadcrumbs />
 					</div>
+				</header>
+				<main className="flex flex-1 flex-col p-4 sm:p-6">
 					<Outlet />
 				</main>
 				<footer className="flex w-full shrink-0 flex-col items-center gap-2 border-t px-4 py-6 sm:flex-row md:px-6">
@@ -198,9 +149,90 @@ function DashboardLayout() {
 							{t('marketing.footer.privacyPolicy')}
 						</Link>
 					</nav>
+					<ThemeToggle />
 					<LocaleSwitcher />
 				</footer>
-			</div>
-		</div>
+			</SidebarInset>
+		</SidebarProvider>
+	)
+}
+
+function UserMenu() {
+	const t = useTranslations()
+	const { isMobile } = useSidebar()
+	const { user } = useAuth()
+
+	const name = user.name || user.email.split('@')[0] || ''
+	const email = user.email
+	const image = user.image ?? ''
+
+	const shortName = name
+		.split(' ')
+		.map((n) => n[0])
+		.join('')
+		.toUpperCase()
+
+	const logout = useServerFn($logout)
+	return (
+		<SidebarMenu>
+			<SidebarMenuItem>
+				<DropdownMenu>
+					<DropdownMenuTrigger asChild>
+						<SidebarMenuButton
+							size="lg"
+							className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+						>
+							<Avatar className="h-8 w-8 rounded-lg">
+								<AvatarImage src={image} alt={t('user.avatarAlt')} />
+								<AvatarFallback className="rounded-lg">
+									{shortName}
+								</AvatarFallback>
+							</Avatar>
+							<div className="grid flex-1 text-left text-sm leading-tight">
+								<span className="truncate font-semibold">{name}</span>
+								<span className="truncate text-xs">{email}</span>
+							</div>
+							<ChevronsUpDown className="ml-auto size-4" />
+						</SidebarMenuButton>
+					</DropdownMenuTrigger>
+					<DropdownMenuContent
+						className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
+						side={isMobile ? 'bottom' : 'right'}
+						align="end"
+						sideOffset={4}
+					>
+						<DropdownMenuLabel className="p-0 font-normal">
+							<div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
+								<Avatar className="h-8 w-8 rounded-lg">
+									<AvatarImage src={image} alt={t('user.avatarAlt')} />
+									<AvatarFallback className="rounded-lg">
+										{shortName}
+									</AvatarFallback>
+								</Avatar>
+								<div className="grid flex-1 text-left text-sm leading-tight">
+									<span className="truncate font-semibold">{name}</span>
+									<span className="truncate text-xs">{email}</span>
+								</div>
+							</div>
+						</DropdownMenuLabel>
+						<DropdownMenuSeparator />
+						<DropdownMenuGroup>
+							<DropdownMenuItem asChild>
+								<Link to="/dashboard/settings">
+									<Settings />
+									{t('user.settings')}
+								</Link>
+							</DropdownMenuItem>
+						</DropdownMenuGroup>
+
+						<DropdownMenuSeparator />
+						<DropdownMenuItem onClick={() => logout()}>
+							<LogOut />
+							{t('user.signOut')}
+						</DropdownMenuItem>
+					</DropdownMenuContent>
+				</DropdownMenu>
+			</SidebarMenuItem>
+		</SidebarMenu>
 	)
 }

@@ -32,6 +32,7 @@
 
 	"dashboard": {
 		"nav": {
+			"main": "Main",
 			"dashboard": "Dashboard",
 			"notes": "Notes",
 			"settings": "Settings"
