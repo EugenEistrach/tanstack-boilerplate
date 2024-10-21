@@ -27,13 +27,17 @@ import {
 import { Input } from '@/components/ui/input'
 
 import { db } from '@/drizzle/db'
-import { UserTable } from '@/drizzle/schemas'
-import { $requireAuthSession } from '@/lib/auth.client'
+import { OnboardingInfoTable, UserTable } from '@/drizzle/schemas'
+import { $getOnboardingInfo } from '@/features/onboarding/onboarding'
+import { $requireAuthSession, useAuth } from '@/lib/auth.client'
 import { validationClient } from '@/lib/functions'
 
 const formSchema = z.object({
 	name: z.string().min(1, {
 		message: 'Name is required.',
+	}),
+	favoriteColor: z.string().min(1, {
+		message: 'Favorite color is required.',
 	}),
 })
 
@@ -46,7 +50,7 @@ const $updateUser = createServerFn(
 				redirectTo: z.string().optional(),
 			}),
 		)
-		.handler(async ({ parsedInput: { name, redirectTo } }) => {
+		.handler(async ({ parsedInput: { name, favoriteColor, redirectTo } }) => {
 			const { user } = await $requireAuthSession()
 
 			await db.transaction(async (tx) => {
@@ -56,6 +60,11 @@ const $updateUser = createServerFn(
 						name,
 					})
 					.where(eq(UserTable.id, user.id))
+
+				await tx.insert(OnboardingInfoTable).values({
+					userId: user.id,
+					favoriteColor,
+				})
 			})
 
 			throw redirect({
@@ -68,13 +77,21 @@ export const Route = createFileRoute('/(auth)/onboarding')({
 	validateSearch: z.object({
 		redirectTo: z.string().optional(),
 	}),
-	beforeLoad: ({ context, search }) => {
+	beforeLoad: async ({ context, search }) => {
 		if (!context.auth) {
 			throw redirect({
 				to: '/login',
 				search: {
 					redirectTo: search.redirectTo,
 				},
+			})
+		}
+
+		const onboardingInfo = await $getOnboardingInfo()
+
+		if (onboardingInfo) {
+			throw redirect({
+				to: search.redirectTo || '/dashboard',
 			})
 		}
 
@@ -87,11 +104,13 @@ export const Route = createFileRoute('/(auth)/onboarding')({
 
 function Onboarding() {
 	const { redirectTo } = Route.useSearch()
+	const auth = useAuth()
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			name: '',
+			name: auth.user.name,
+			favoriteColor: '',
 		},
 	})
 
@@ -115,9 +134,6 @@ function Onboarding() {
 				<Form {...form}>
 					<form
 						onSubmit={form.handleSubmit((values) => {
-							const userTimeZone =
-								Intl.DateTimeFormat().resolvedOptions().timeZone
-							console.log(userTimeZone)
 							void updateUserMutation.mutateAsync({
 								...values,
 								redirectTo,
@@ -134,6 +150,22 @@ function Onboarding() {
 										<FormLabel>What's your name?</FormLabel>
 										<FormControl>
 											<Input placeholder="Enter your name" {...field} />
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+							<FormField
+								control={form.control}
+								name="favoriteColor"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel>What's your favorite color?</FormLabel>
+										<FormControl>
+											<Input
+												placeholder="Enter your favorite color"
+												{...field}
+											/>
 										</FormControl>
 										<FormMessage />
 									</FormItem>

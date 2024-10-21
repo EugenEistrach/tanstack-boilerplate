@@ -64,7 +64,17 @@ export const $requireAuthSession = createServerFn('GET', async () => {
 		})
 	}
 
-	return auth
+	return {
+		session: {
+			...auth.session,
+			expiresAt: auth.session.expiresAt.toISOString(),
+		},
+		user: {
+			...auth.user,
+			createdAt: auth.user.createdAt.toISOString(),
+			updatedAt: auth.user.updatedAt.toISOString(),
+		},
+	}
 })
 
 export const $logout = createServerFn('POST', async () => {
