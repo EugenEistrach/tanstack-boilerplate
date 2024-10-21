@@ -17,5 +17,6 @@ export const env = createEnv({
 		...import.meta.env,
 	},
 	clientPrefix: 'VITE_',
+	isServer: typeof window === 'undefined',
 	emptyStringAsUndefined: true,
 })
