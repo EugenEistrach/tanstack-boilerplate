@@ -1,7 +1,7 @@
-import { serverEnv } from '../lib/env.server'
+import { env } from '../lib/env'
 
 export const jobConfig = {
 	connection: {
-		url: serverEnv.REDIS_URL,
+		url: env.REDIS_URL,
 	},
 }

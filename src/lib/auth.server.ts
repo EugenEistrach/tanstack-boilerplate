@@ -2,19 +2,21 @@ import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 import { admin, organization } from 'better-auth/plugins'
 import { db } from '../drizzle/db'
-import { serverEnv } from './env.server'
+import { env } from './env'
 
 const github =
-	serverEnv.GITHUB_CLIENT_ID && serverEnv.GITHUB_CLIENT_SECRET
+	env.GITHUB_CLIENT_ID && env.GITHUB_CLIENT_SECRET
 		? {
-				clientId: serverEnv.GITHUB_CLIENT_ID,
-				clientSecret: serverEnv.GITHUB_CLIENT_SECRET,
+				clientId: env.GITHUB_CLIENT_ID,
+				clientSecret: env.GITHUB_CLIENT_SECRET,
 			}
 		: undefined
 
+console.log('server env', env)
+
 export const authServer = betterAuth({
-	baseURL: serverEnv.PUBLIC_AUTH_URL,
-	secret: serverEnv.SESSION_SECRET,
+	baseURL: env.VITE_AUTH_URL,
+	secret: env.SESSION_SECRET,
 	database: drizzleAdapter(db, {
 		provider: 'sqlite',
 	}),

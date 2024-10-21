@@ -5,10 +5,10 @@ import { adminClient, organizationClient } from 'better-auth/client/plugins'
 import { createContext, useContext } from 'react'
 import { getWebRequest } from 'vinxi/http'
 import { authServer } from './auth.server'
-import { clientEnv } from './env.client'
+import { env } from './env'
 
 export const authClient = createAuthClient({
-	baseURL: clientEnv.VITE_AUTH_URL,
+	baseURL: env.VITE_AUTH_URL,
 	plugins: [adminClient(), organizationClient()],
 })
 

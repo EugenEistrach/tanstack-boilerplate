@@ -1,12 +1,12 @@
 import { defineConfig } from 'drizzle-kit'
-import { serverEnv } from './src/lib/env.server'
+import { env } from './src/lib/env'
 
 export default defineConfig({
 	dialect: 'sqlite',
 	out: './src/drizzle/migrations',
 	schema: './src/drizzle/schemas',
 	dbCredentials: {
-		url: serverEnv.DATABASE_URL,
+		url: env.DATABASE_URL,
 	},
 	breakpoints: true,
 	// Print all statements
