@@ -70,7 +70,7 @@ export const mainLinkOptions = [dashboardLinkOption]
 
 export default function DashboardLayout() {
 	const t = useTranslations()
-	console.log(env)
+	console.log('clientenv', env)
 	return (
 		<SidebarProvider>
 			<Sidebar collapsible="icon">

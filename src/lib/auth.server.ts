@@ -12,8 +12,6 @@ const github =
 			}
 		: undefined
 
-console.log('server env', env)
-
 export const authServer = betterAuth({
 	baseURL: env.VITE_AUTH_URL,
 	secret: env.SESSION_SECRET,
