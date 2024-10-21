@@ -2,7 +2,7 @@ import 'dotenv/config'
 
 import { execSync } from 'node:child_process'
 import { resolve } from 'node:path'
-import { env } from '@/app/lib/env'
+import { env } from '@//lib/env.server'
 
 console.log('Clearing database...')
 
