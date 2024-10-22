@@ -24,12 +24,6 @@ export const Route = createFileRoute('/(auth)/login')({
 		throw redirect({
 			to: '/dashboard',
 		})
-
-		// if (context.user) {
-		// 	throw redirect({
-		// 		to: '/onboarding',
-		// 	})
-		// }
 	},
 	component: Login,
 })
@@ -57,11 +51,6 @@ function Login() {
 								await $setRedirectTo(redirectTo ?? '/dashboard')
 								await authClient.signIn.social({
 									provider: 'github',
-									fetchOptions: {
-										onSuccess: () => {
-											console.log('success')
-										},
-									},
 								})
 							}}
 						>
@@ -86,7 +75,10 @@ function Login() {
 						<Button
 							className="w-full"
 							variant="secondary"
-							onClick={() => authClient.signIn.social({ provider: 'discord' })}
+							onClick={async () => {
+								await $setRedirectTo(redirectTo ?? '/dashboard')
+								await authClient.signIn.social({ provider: 'discord' })
+							}}
 						>
 							<span className="flex items-center">
 								<svg

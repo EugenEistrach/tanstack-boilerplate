@@ -1,8 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
 import { createFileRoute, redirect } from '@tanstack/react-router'
-import { createServerFn, useServerFn } from '@tanstack/start'
-import { eq } from 'drizzle-orm'
+import { useServerFn } from '@tanstack/start'
 import { useForm } from 'react-hook-form'
 import { useSpinDelay } from 'spin-delay'
 import { z } from 'zod'
@@ -26,11 +25,11 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 
-import { db } from '@/drizzle/db'
-import { OnboardingInfoTable, UserTable } from '@/drizzle/schemas'
-import { $getOnboardingInfo } from '@/features/onboarding/onboarding'
-import { $requireAuthSession, useAuth } from '@/lib/auth.client'
-import { validationClient } from '@/lib/functions'
+import {
+	$completeOnboarding,
+	$getOnboardingInfo,
+} from '@/features/onboarding/onboarding'
+import { useAuth } from '@/lib/auth.client'
 
 const formSchema = z.object({
 	name: z.string().min(1, {
@@ -40,38 +39,6 @@ const formSchema = z.object({
 		message: 'Favorite color is required.',
 	}),
 })
-
-const $updateUser = createServerFn(
-	'POST',
-
-	validationClient
-		.input(
-			formSchema.extend({
-				redirectTo: z.string().optional(),
-			}),
-		)
-		.handler(async ({ parsedInput: { name, favoriteColor, redirectTo } }) => {
-			const { user } = await $requireAuthSession()
-
-			await db.transaction(async (tx) => {
-				await tx
-					.update(UserTable)
-					.set({
-						name,
-					})
-					.where(eq(UserTable.id, user.id))
-
-				await tx.insert(OnboardingInfoTable).values({
-					userId: user.id,
-					favoriteColor,
-				})
-			})
-
-			throw redirect({
-				to: redirectTo || '/dashboard',
-			})
-		}),
-)
 
 export const Route = createFileRoute('/(auth)/onboarding')({
 	validateSearch: z.object({
@@ -114,11 +81,11 @@ function Onboarding() {
 		},
 	})
 
-	const updateUserMutation = useMutation({
-		mutationFn: useServerFn($updateUser),
+	const completeOnboardingMutation = useMutation({
+		mutationFn: useServerFn($completeOnboarding),
 	})
 
-	const isPending = useSpinDelay(updateUserMutation.isPending)
+	const isPending = useSpinDelay(completeOnboardingMutation.isPending)
 
 	return (
 		<div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-primary/20 to-secondary/20">
@@ -134,7 +101,7 @@ function Onboarding() {
 				<Form {...form}>
 					<form
 						onSubmit={form.handleSubmit((values) => {
-							void updateUserMutation.mutateAsync({
+							void completeOnboardingMutation.mutateAsync({
 								...values,
 								redirectTo,
 							})

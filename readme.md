@@ -8,9 +8,9 @@ a long running server for things like cron jobs and sockets.**
 For the app to work, the following environment variables need to be set:
 
 ```env
+BASE_URL=https://localhost:3000
 SESSION_SECRET=
 REDIS_URL=
-PUBLIC_AUTH_URL=https://localhost:3000
 
 # Optional (one sso provider is required):
 GITHUB_CLIENT_ID=
@@ -37,7 +37,7 @@ EMAIL_FROM=
 - user timezone on server (without flashes)
 - Cron jobs & background jobs (BullMQ)
 - react hook form (still evaluating if tanstack form could be used instead)
-- fly.io deployment (see deployments.md for more info)
+- docker deployment with fly.io (see deployments.md for more info)
 
 ## TODO
 
