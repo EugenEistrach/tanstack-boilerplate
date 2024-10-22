@@ -33,7 +33,9 @@
 			"main": "Main",
 			"dashboard": "Dashboard",
 			"notes": "Notizen",
-			"settings": "Einstellungen"
+			"settings": "Einstellungen",
+			"users": "Benutzer",
+			"admin": "Admin"
 		},
 		"menu": {
 			"toggleMenu": "Menü umschalten"

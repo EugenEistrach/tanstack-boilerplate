@@ -15,6 +15,7 @@ import { Route as DashboardImport } from './routes/dashboard'
 import { Route as MarketingImport } from './routes/_marketing'
 import { Route as DashboardIndexImport } from './routes/dashboard/index'
 import { Route as MarketingIndexImport } from './routes/_marketing/index'
+import { Route as DashboardUsersImport } from './routes/dashboard/users'
 import { Route as DashboardSettingsImport } from './routes/dashboard/settings'
 import { Route as MarketingTermsImport } from './routes/_marketing/terms'
 import { Route as MarketingPrivacyImport } from './routes/_marketing/privacy'
@@ -45,6 +46,12 @@ const MarketingIndexRoute = MarketingIndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => MarketingRoute,
+} as any)
+
+const DashboardUsersRoute = DashboardUsersImport.update({
+  id: '/users',
+  path: '/users',
+  getParentRoute: () => DashboardRoute,
 } as any)
 
 const DashboardSettingsRoute = DashboardSettingsImport.update({
@@ -136,6 +143,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardSettingsImport
       parentRoute: typeof DashboardImport
     }
+    '/dashboard/users': {
+      id: '/dashboard/users'
+      path: '/users'
+      fullPath: '/dashboard/users'
+      preLoaderRoute: typeof DashboardUsersImport
+      parentRoute: typeof DashboardImport
+    }
     '/_marketing/': {
       id: '/_marketing/'
       path: '/'
@@ -191,11 +205,13 @@ const DashboardSettingsRouteWithChildren =
 
 interface DashboardRouteChildren {
   DashboardSettingsRoute: typeof DashboardSettingsRouteWithChildren
+  DashboardUsersRoute: typeof DashboardUsersRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
 }
 
 const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardSettingsRoute: DashboardSettingsRouteWithChildren,
+  DashboardUsersRoute: DashboardUsersRoute,
   DashboardIndexRoute: DashboardIndexRoute,
 }
 
@@ -211,6 +227,7 @@ export interface FileRoutesByFullPath {
   '/privacy': typeof MarketingPrivacyRoute
   '/terms': typeof MarketingTermsRoute
   '/dashboard/settings': typeof DashboardSettingsRouteWithChildren
+  '/dashboard/users': typeof DashboardUsersRoute
   '/': typeof MarketingIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/dashboard/settings/': typeof DashboardSettingsIndexRoute
@@ -221,6 +238,7 @@ export interface FileRoutesByTo {
   '/onboarding': typeof authOnboardingRoute
   '/privacy': typeof MarketingPrivacyRoute
   '/terms': typeof MarketingTermsRoute
+  '/dashboard/users': typeof DashboardUsersRoute
   '/': typeof MarketingIndexRoute
   '/dashboard': typeof DashboardIndexRoute
   '/dashboard/settings': typeof DashboardSettingsIndexRoute
@@ -235,6 +253,7 @@ export interface FileRoutesById {
   '/_marketing/privacy': typeof MarketingPrivacyRoute
   '/_marketing/terms': typeof MarketingTermsRoute
   '/dashboard/settings': typeof DashboardSettingsRouteWithChildren
+  '/dashboard/users': typeof DashboardUsersRoute
   '/_marketing/': typeof MarketingIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/dashboard/settings/': typeof DashboardSettingsIndexRoute
@@ -250,6 +269,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/terms'
     | '/dashboard/settings'
+    | '/dashboard/users'
     | '/'
     | '/dashboard/'
     | '/dashboard/settings/'
@@ -259,6 +279,7 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/privacy'
     | '/terms'
+    | '/dashboard/users'
     | '/'
     | '/dashboard'
     | '/dashboard/settings'
@@ -271,6 +292,7 @@ export interface FileRouteTypes {
     | '/_marketing/privacy'
     | '/_marketing/terms'
     | '/dashboard/settings'
+    | '/dashboard/users'
     | '/_marketing/'
     | '/dashboard/'
     | '/dashboard/settings/'
@@ -321,6 +343,7 @@ export const routeTree = rootRoute
       "filePath": "dashboard.tsx",
       "children": [
         "/dashboard/settings",
+        "/dashboard/users",
         "/dashboard/"
       ]
     },
@@ -344,6 +367,10 @@ export const routeTree = rootRoute
       "children": [
         "/dashboard/settings/"
       ]
+    },
+    "/dashboard/users": {
+      "filePath": "dashboard/users.tsx",
+      "parent": "/dashboard"
     },
     "/_marketing/": {
       "filePath": "_marketing/index.tsx",
