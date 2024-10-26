@@ -3,6 +3,7 @@ import { env } from './env'
 
 interface Session {
 	redirectTo?: string
+	sidebarOpen?: boolean
 }
 
 export async function getVinxiSession() {

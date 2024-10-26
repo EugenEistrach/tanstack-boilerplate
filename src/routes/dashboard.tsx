@@ -8,8 +8,9 @@ import {
 	redirect,
 	useLocation,
 } from '@tanstack/react-router'
-import { useServerFn } from '@tanstack/start'
+import { createServerFn, useServerFn } from '@tanstack/start'
 import { ChevronsUpDown, LogOut, Settings, UsersIcon } from 'lucide-react'
+import { useState } from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Breadcrumbs } from '@/components/ui/breadcrumbs'
 import {
@@ -45,6 +46,20 @@ import { ThemeToggle } from '@/components/ui/theme-toggle'
 import { $requireOnboardingInfo } from '@/features/onboarding/onboarding'
 import { useAuth, $logout } from '@/lib/auth.client'
 import * as m from '@/lib/paraglide/messages'
+import { getVinxiSession } from '@/lib/session.server'
+
+const $getSidebarState = createServerFn('GET', async () => {
+	const session = await getVinxiSession()
+	return session.data.sidebarOpen ?? true
+})
+
+const $setSidebarState = createServerFn(
+	'POST',
+	async ({ state }: { state: boolean }) => {
+		const session = await getVinxiSession()
+		await session.update({ sidebarOpen: state })
+	},
+)
 
 export const Route = createFileRoute('/dashboard')({
 	beforeLoad: async ({ context, location }) => {
@@ -57,9 +72,12 @@ export const Route = createFileRoute('/dashboard')({
 			})
 		}
 
+		const sidebarOpen = await $getSidebarState()
+
 		const onboardingInfo = await $requireOnboardingInfo()
 		return {
 			onboardingInfo,
+			defaultSidebarOpen: sidebarOpen,
 		}
 	},
 	component: DashboardLayout,
@@ -84,6 +102,8 @@ export const adminLinkOptions = [usersLinkOption]
 
 export default function DashboardLayout() {
 	const { user } = useAuth()
+	const { defaultSidebarOpen } = Route.useRouteContext()
+	const [sidebarOpen, _setSidebarOpen] = useState(defaultSidebarOpen)
 
 	const location = useLocation()
 
@@ -96,8 +116,13 @@ export default function DashboardLayout() {
 		return location.pathname.startsWith(item.to ?? '')
 	}
 
+	const setSidebarOpen = async (state: boolean) => {
+		_setSidebarOpen(state)
+		await $setSidebarState({ state })
+	}
+
 	return (
-		<SidebarProvider>
+		<SidebarProvider open={sidebarOpen} onOpenChange={setSidebarOpen}>
 			<Sidebar collapsible="icon">
 				<SidebarHeader>
 					<SidebarMenu>
