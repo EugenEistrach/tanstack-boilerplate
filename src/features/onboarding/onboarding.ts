@@ -2,8 +2,8 @@ import { redirect } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/start'
 
 import { eq } from 'drizzle-orm'
+import * as v from 'valibot'
 import { getWebRequest } from 'vinxi/http'
-import { z } from 'zod'
 import { db } from '@/drizzle/db'
 import { OnboardingInfoTable, UserTable } from '@/drizzle/schemas'
 import { $requireAuthSession } from '@/lib/auth.client'
@@ -44,14 +44,10 @@ export const $completeOnboarding = createServerFn(
 
 	validationClient
 		.input(
-			z.object({
-				name: z.string().min(1, {
-					message: 'Name is required.',
-				}),
-				favoriteColor: z.string().min(1, {
-					message: 'Favorite color is required.',
-				}),
-				redirectTo: z.string().optional(),
+			v.object({
+				name: v.pipe(v.string(), v.minLength(1)),
+				favoriteColor: v.pipe(v.string(), v.minLength(1)),
+				redirectTo: v.optional(v.string()),
 			}),
 		)
 		.handler(async ({ parsedInput: { name, favoriteColor, redirectTo } }) => {

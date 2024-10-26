@@ -1,6 +1,6 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
 import { useTranslations } from 'use-intl'
-import { z } from 'zod'
+import * as v from 'valibot'
 import { Button } from '@/components/ui/button'
 import {
 	Card,
@@ -13,8 +13,8 @@ import { authClient } from '@/lib/auth.client'
 import { $setRedirectTo } from '@/lib/redirect'
 
 export const Route = createFileRoute('/(auth)/login')({
-	validateSearch: z.object({
-		redirectTo: z.string().optional(),
+	validateSearch: v.object({
+		redirectTo: v.optional(v.string()),
 	}),
 	beforeLoad: ({ context }) => {
 		if (!context.auth) {

@@ -1,3 +1,4 @@
+import { paraglide } from '@inlang/paraglide-js-adapter-vite'
 import { defineConfig } from '@tanstack/start/config'
 import viteTsConfigPaths from 'vite-tsconfig-paths'
 
@@ -12,6 +13,10 @@ export default defineConfig({
 		plugins: [
 			viteTsConfigPaths({
 				projects: ['./tsconfig.json'],
+			}),
+			paraglide({
+				project: './project.inlang', //Path to your inlang project
+				outdir: './paraglide', //Where you want the generated files to be placed
 			}),
 		],
 		define: {

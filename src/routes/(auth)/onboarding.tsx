@@ -1,11 +1,11 @@
-import { zodResolver } from '@hookform/resolvers/zod'
+import { valibotResolver } from '@hookform/resolvers/valibot'
 import { useMutation } from '@tanstack/react-query'
 import { createFileRoute, redirect } from '@tanstack/react-router'
 import { useServerFn } from '@tanstack/start'
 import { useForm } from 'react-hook-form'
 import { useSpinDelay } from 'spin-delay'
 import { useTranslations } from 'use-intl'
-import { z } from 'zod'
+import * as v from 'valibot'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -32,18 +32,14 @@ import {
 } from '@/features/onboarding/onboarding'
 import { useAuth } from '@/lib/auth.client'
 
-const formSchema = z.object({
-	name: z.string().min(1, {
-		message: 'Name is required.',
-	}),
-	favoriteColor: z.string().min(1, {
-		message: 'Favorite color is required.',
-	}),
+const formSchema = v.object({
+	name: v.string(),
+	favoriteColor: v.string(),
 })
 
 export const Route = createFileRoute('/(auth)/onboarding')({
-	validateSearch: z.object({
-		redirectTo: z.string().optional(),
+	validateSearch: v.object({
+		redirectTo: v.optional(v.string()),
 	}),
 	beforeLoad: async ({ context, search }) => {
 		if (!context.auth) {
@@ -75,8 +71,8 @@ function Onboarding() {
 	const auth = useAuth()
 	const t = useTranslations()
 
-	const form = useForm<z.infer<typeof formSchema>>({
-		resolver: zodResolver(formSchema),
+	const form = useForm<v.InferOutput<typeof formSchema>>({
+		resolver: valibotResolver(formSchema),
 		defaultValues: {
 			name: auth.user.name,
 			favoriteColor: '',
