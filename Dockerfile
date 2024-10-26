@@ -26,8 +26,6 @@ RUN apt-get update -qq && \
 
 # Install node modules
 COPY package.json pnpm-lock.yaml ./
-COPY project.inlang ./project.inlang
-COPY messages ./messages
 
 RUN pnpm install --frozen-lockfile --prod=false
 
