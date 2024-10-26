@@ -42,11 +42,16 @@ export const useOptionalAuth = () => {
 }
 
 export const $getSession = createServerFn('GET', async () => {
-	const request = getWebRequest()
-	const session = await authServer.api.getSession({
-		headers: request.headers,
-	})
-	return session
+	try {
+		const request = getWebRequest()
+		const session = await authServer.api.getSession({
+			headers: request.headers,
+		})
+		return session
+	} catch (error) {
+		console.error(error)
+		return null
+	}
 })
 
 export const $requireAuthSession = createServerFn('GET', async () => {
