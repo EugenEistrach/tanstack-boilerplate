@@ -24,7 +24,7 @@ import { validationClient } from '@/lib/functions'
 import { tk } from '@/lib/i18n'
 
 const updateNameSchema = z.object({
-	name: z.string().min(1, { message: tk('settings.validation.nameRequired') }),
+	name: z.string().min(1, { message: tk('validation.nameRequired') }),
 })
 
 const $updateName = createServerFn(
@@ -67,7 +67,7 @@ function Settings() {
 
 	const onSubmit = (data: z.infer<typeof updateNameSchema>) => {
 		updateNameMutation.mutate(data)
-		toast.success(t('settings.success'))
+		toast.success(t('settings.profileUpdateSuccess'))
 	}
 
 	const isPending = useSpinDelay(updateNameMutation.isPending)
@@ -76,13 +76,13 @@ function Settings() {
 		<div className="space-y-6">
 			<div>
 				<H1>{t('settings.title')}</H1>
-				<Subtitle>{t('settings.subtitle')}</Subtitle>
+				<Subtitle>{t('settings.updateProfile')}</Subtitle>
 			</div>
 
 			<Card className="max-w-3xl">
 				<form onSubmit={handleSubmit(onSubmit)}>
 					<CardHeader>
-						<H2>{t('settings.basicInfo')}</H2>
+						<H2>{t('settings.updateProfile')}</H2>
 					</CardHeader>
 					<CardContent className="p-6">
 						<div className="flex items-start space-x-6">
@@ -92,11 +92,11 @@ function Settings() {
 							</Avatar>
 							<div className="flex-grow space-y-4">
 								<div className="space-y-1">
-									<Label htmlFor="email">{t('settings.emailLabel')}</Label>
+									<Label htmlFor="email">{t('auth.email')}</Label>
 									<Input id="email" value={user.email} disabled />
 								</div>
 								<div className="space-y-1">
-									<Label htmlFor="name">{t('settings.nameLabel')}</Label>
+									<Label htmlFor="name">{t('onboarding.nameLabel')}</Label>
 									<Input id="name" {...register('name')} />
 									<FieldErrorMessage error={errors.name} />
 								</div>
@@ -109,7 +109,7 @@ function Settings() {
 							disabled={isValidating || isPending}
 							className="ml-auto"
 						>
-							{isPending ? t('common.updating') : t('common.saveChanges')}
+							{isPending ? t('common.loading') : t('common.saveChanges')}
 						</Button>
 					</CardFooter>
 				</form>

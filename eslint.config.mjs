@@ -4,6 +4,7 @@ import * as tanstackQuery from '@tanstack/eslint-plugin-query'
 import pluginRouter from '@tanstack/eslint-plugin-router'
 import gitignore from 'eslint-config-flat-gitignore'
 import pluginBoundaries from 'eslint-plugin-boundaries'
+import i18next from 'eslint-plugin-i18next'
 
 const enforceServerFnPrefix = {
 	meta: {
@@ -45,6 +46,11 @@ const enforceServerFnPrefix = {
 export default [
 	...defaultConfig,
 	gitignore(),
+	{
+		files: ['**/*.{js,jsx,ts,tsx}'],
+		ignores: ['src/email/**/*'], // Add this line to ignore the email folder
+		...i18next.configs['flat/recommended'],
+	},
 	...pluginRouter.configs['flat/recommended'],
 	{
 		name: '@tanstack/query',

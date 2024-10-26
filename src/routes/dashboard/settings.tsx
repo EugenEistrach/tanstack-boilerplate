@@ -1,9 +1,10 @@
 import { createFileRoute, Outlet } from '@tanstack/react-router'
+import { useTranslations } from 'use-intl'
 
 export const Route = createFileRoute('/dashboard/settings')({
-	loader: () => {
+	loader: ({ context }) => {
 		return {
-			crumb: 'Settings',
+			crumb: context.t('settings.title'),
 		}
 	},
 	component: () => <Outlet />,

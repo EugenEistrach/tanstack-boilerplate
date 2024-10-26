@@ -6,6 +6,7 @@ import {
 	linkOptions,
 	Outlet,
 	redirect,
+	useLocation,
 } from '@tanstack/react-router'
 import { useServerFn } from '@tanstack/start'
 import { ChevronsUpDown, LogOut, Settings, UsersIcon } from 'lucide-react'
@@ -67,7 +68,7 @@ export const Route = createFileRoute('/dashboard')({
 
 export const dashboardLinkOption = linkOptions({
 	to: '/dashboard',
-	labelKey: tk('dashboard.nav.dashboard'),
+	labelKey: tk('nav.dashboard'),
 	icon: HomeIcon,
 	exact: true,
 })
@@ -76,7 +77,7 @@ export const mainLinkOptions = [dashboardLinkOption]
 
 const usersLinkOption = linkOptions({
 	to: '/dashboard/users',
-	labelKey: tk('dashboard.nav.users'),
+	labelKey: tk('nav.users'),
 	icon: UsersIcon,
 })
 
@@ -85,6 +86,8 @@ export const adminLinkOptions = [usersLinkOption]
 export default function DashboardLayout() {
 	const t = useTranslations()
 	const { user } = useAuth()
+
+	const location = useLocation()
 
 	const isAdmin = user.role === 'admin'
 
@@ -110,7 +113,7 @@ export default function DashboardLayout() {
 								</div>
 								<div className="grid flex-1 text-left text-sm leading-tight">
 									<span className="truncate font-semibold">
-										{t('dashboard.appName')}
+										{t('dashboard.title')}
 									</span>
 								</div>
 							</SidebarMenuButton>
@@ -119,7 +122,7 @@ export default function DashboardLayout() {
 				</SidebarHeader>
 				<SidebarContent>
 					<SidebarGroup>
-						<SidebarGroupLabel>{t('dashboard.nav.main')}</SidebarGroupLabel>
+						<SidebarGroupLabel>{t('nav.main')}</SidebarGroupLabel>
 						<SidebarMenu>
 							{mainLinkOptions.map((item) => (
 								<SidebarMenuItem key={item.to}>
@@ -139,7 +142,7 @@ export default function DashboardLayout() {
 					</SidebarGroup>
 					{isAdmin && (
 						<SidebarGroup>
-							<SidebarGroupLabel>{t('dashboard.nav.admin')}</SidebarGroupLabel>
+							<SidebarGroupLabel>{t('nav.admin')}</SidebarGroupLabel>
 							<SidebarMenu>
 								{adminLinkOptions.map((item) => (
 									<SidebarMenuItem key={item.to}>
@@ -177,25 +180,25 @@ export default function DashboardLayout() {
 				</main>
 				<footer className="flex w-full shrink-0 flex-col items-center gap-2 border-t px-4 py-6 sm:flex-row md:px-6">
 					<p className="text-xs text-muted-foreground">
-						{t('marketing.footer.copyright', {
+						{t('footer.copyright', {
 							year: new Date().getFullYear(),
 						})}
 					</p>
 					<nav className="mr-4 flex items-center gap-4 sm:ml-auto sm:mr-6 sm:gap-6">
 						<Link to="/" className="text-xs underline-offset-4 hover:underline">
-							{t('marketing.footer.home')}
+							{t('footer.home')}
 						</Link>
 						<Link
 							className="text-xs underline-offset-4 hover:underline"
 							to="/terms"
 						>
-							{t('marketing.footer.termsOfService')}
+							{t('footer.termsOfService')}
 						</Link>
 						<Link
 							className="text-xs underline-offset-4 hover:underline"
 							to="/privacy"
 						>
-							{t('marketing.footer.privacyPolicy')}
+							{t('footer.privacyPolicy')}
 						</Link>
 					</nav>
 					<ThemeToggle />
@@ -232,7 +235,7 @@ function UserMenu() {
 							className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
 						>
 							<Avatar className="h-8 w-8 rounded-lg">
-								<AvatarImage src={image} alt={t('user.avatarAlt')} />
+								<AvatarImage src={image} alt={name} />
 								<AvatarFallback className="rounded-lg">
 									{shortName}
 								</AvatarFallback>
@@ -253,7 +256,7 @@ function UserMenu() {
 						<DropdownMenuLabel className="p-0 font-normal">
 							<div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
 								<Avatar className="h-8 w-8 rounded-lg">
-									<AvatarImage src={image} alt={t('user.avatarAlt')} />
+									<AvatarImage src={image} alt={name} />
 									<AvatarFallback className="rounded-lg">
 										{shortName}
 									</AvatarFallback>
@@ -269,7 +272,7 @@ function UserMenu() {
 							<DropdownMenuItem asChild>
 								<Link to="/dashboard/settings">
 									<Settings />
-									{t('user.settings')}
+									{t('nav.settings')}
 								</Link>
 							</DropdownMenuItem>
 						</DropdownMenuGroup>
@@ -277,7 +280,7 @@ function UserMenu() {
 						<DropdownMenuSeparator />
 						<DropdownMenuItem onClick={() => logout()}>
 							<LogOut />
-							{t('user.signOut')}
+							{t('auth.signOut')}
 						</DropdownMenuItem>
 					</DropdownMenuContent>
 				</DropdownMenu>

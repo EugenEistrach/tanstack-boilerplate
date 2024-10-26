@@ -34,7 +34,7 @@ export const $getI18n = createServerFn('GET', async () => {
 			locale,
 		})
 
-		const messages = await import(`../../i18n/${locale}.json`)
+		const messages = await loadMessages(locale)
 
 		return {
 			locale,
@@ -44,7 +44,7 @@ export const $getI18n = createServerFn('GET', async () => {
 
 	return {
 		locale: session.data['locale'],
-		messages: await import(`../../i18n/${session.data['locale']}.json`),
+		messages: await loadMessages(session.data['locale']),
 	}
 })
 
@@ -83,6 +83,34 @@ export const useChangeLocaleMutation = () => {
 		},
 	})
 	return changeLocaleMutation
+}
+
+type NestedMessages = {
+	[key: string]: string | NestedMessages
+}
+
+const loadMessages = async (locale: SupportedLocale) => {
+	const flatMessages = await import(`../../i18n/${locale}.json`)
+	const messages = Object.entries(flatMessages.default).reduce(
+		(acc: NestedMessages, [key, value]) => {
+			const keys = key.split('.')
+			let current: NestedMessages = acc
+			for (let i = 0; i < keys.length - 1; i++) {
+				const k = keys[i]
+				if (k && !(k in current)) {
+					current[k] = {}
+				}
+				current = k ? (current[k] as NestedMessages) : acc
+			}
+			const lastKey = keys[keys.length - 1]
+			if (lastKey) {
+				current[lastKey] = value as string
+			}
+			return acc
+		},
+		{} as NestedMessages,
+	)
+	return messages as any
 }
 
 export type SupportedLocale = (typeof supportedLocales)[number]['locale']

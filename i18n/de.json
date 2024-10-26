@@ -1,147 +1,126 @@
 {
-	"login": {
-		"title": "Willkommen zurück",
-		"description": "Melden Sie sich bei Ihrem Konto an",
-		"buttons": {
-			"github": "Anmelden mit GitHub",
-			"discord": "Anmelden mit Discord"
-		},
-		"footer": "© {year} Ihre Firma. Alle Rechte vorbehalten."
-	},
-	"user": {
-		"avatarAlt": "Benutzer-Avatar",
-		"settings": "Einstellungen",
-		"signOut": "Ausloggen"
-	},
+	"common.saveChanges": "Speichern",
+	"common.noResults": "Keine Ergebnisse",
+	"common.previous": "Zurück",
+	"common.next": "Weiter",
+	"common.more": "Mehr",
+	"common.close": "Schließen",
+	"common.toggleSidebar": "Seitenleiste umschalten",
+	"common.toggleTheme": "Design wechseln",
+	"common.loading": "Lädt...",
 
-	"theme": {
-		"dark": "Dunkel",
-		"light": "Hell",
-		"system": "System"
-	},
+	"theme.light": "Hell",
+	"theme.dark": "Dunkel",
+	"theme.system": "System",
 
-	"notes": {
-		"submit": "Hinzufügen",
-		"placeholder": "Inhalt eingeben",
-		"validation": {
-			"required": "Inhalt ist erforderlich",
-			"refine": "Inhalt ist ungültig"
-		}
-	},
-	"dashboard": {
-		"nav": {
-			"main": "Main",
-			"dashboard": "Dashboard",
-			"notes": "Notizen",
-			"settings": "Einstellungen",
-			"users": "Benutzer",
-			"admin": "Admin"
-		},
-		"menu": {
-			"toggleMenu": "Menü umschalten"
-		},
-		"appName": "Tanstack Boilerplate"
-	},
+	"auth.login.title": "Willkommen zurück",
+	"auth.login.subtitle": "Melde dich in deinem Konto an",
+	"auth.signInWithGithub": "Mit GitHub anmelden",
+	"auth.signInWithDiscord": "Mit Discord anmelden",
+	"auth.signOut": "Abmelden",
+	"auth.email": "E-Mail",
+	"auth.password": "Passwort",
+	"auth.loginSuccess": "Erfolgreich angemeldet",
+	"auth.logoutSuccess": "Erfolgreich abgemeldet",
+	"dashboard.title": "Tanstack Boilerplate",
+	"dashboard.welcomeMessage": "Willkommen zurück, {name}!",
+	"notes.title": "Notizen",
+	"notes.createNew": "Neue Notiz",
+	"notes.saveButton": "Notiz speichern",
+	"notes.saveSuccess": "Notiz gespeichert",
+	"notes.saveError": "Fehler beim Speichern",
+	"settings.title": "Einstellungen",
+	"settings.updateProfile": "Profil aktualisieren",
+	"settings.changePassword": "Passwort ändern",
+	"settings.profileUpdateSuccess": "Profil aktualisiert",
+	"settings.passwordChangeSuccess": "Passwort geändert",
+	"validation.nameRequired": "Name erforderlich",
+	"validation.emailInvalid": "Ungültige E-Mail",
+	"validation.passwordTooShort": "Passwort zu kurz (min. 8 Zeichen)",
+	"nav.dashboard": "Dashboard",
+	"nav.notes": "Notizen",
+	"nav.settings": "Einstellungen",
+	"nav.users": "Benutzer",
+	"nav.admin": "Admin",
+	"nav.main": "Hauptmenü",
+	"footer.copyright": "© {year} {companyName}. Alle Rechte vorbehalten.",
+	"footer.home": "Startseite",
+	"footer.termsOfService": "Nutzungsbedingungen",
+	"footer.privacyPolicy": "Datenschutz",
+	"marketing.hero.title": "Steigere deine Produktivität",
+	"marketing.hero.subtitle": "Optimiere deinen Workflow mit unseren Tools",
+	"marketing.getStarted": "Loslegen",
+	"marketing.learnMore": "Mehr erfahren",
+	"marketing.goToApp": "Zur App",
+	"marketing.alert.title": "KI-generierter Inhalt",
+	"marketing.alert.description": "Diese Seite ist KI-generiert. Sie kann Fehler enthalten und dient nur zur Demo.",
 
-	"settings": {
-		"title": "Einstellungen",
-		"subtitle": "Verwalten Sie Ihre Kontoeinstellungen, z.B. Ihre E-Mail-Adresse und Ihren Namen.",
-		"basicInfo": "Grundlegende Informationen",
-		"nameLabel": "Name",
-		"emailLabel": "E-Mail",
-		"success": "Einstellungen erfolgreich aktualisiert",
-		"validation": {
-			"nameRequired": "Name ist erforderlich"
-		}
-	},
-
-	"common": {
-		"updating": "Aktualisiere...",
-		"saveChanges": "Änderungen speichern"
-	},
-
-	"marketing": {
-		"nav": {
-			"features": "Funktionen",
-			"pricing": "Preise",
-			"getStarted": "Loslegen",
-			"goToApp": "Zur App"
-		},
-		"footer": {
-			"home": "Startseite",
-			"copyright": "© {year} Tanstack Boilerplate. Alle Rechte vorbehalten.",
-			"termsOfService": "Nutzungsbedingungen",
-			"privacyPolicy": "Datenschutzrichtlinie"
-		},
-		"alert": {
-			"title": "KI-generierter Inhalt",
-			"description": "Dieser Landingpage-Inhalt ist KI-generiert und dient nur zu Demonstrationszwecken. Die tatsächlichen Funktionen und Funktionalitäten können variieren."
-		},
-		"hero": {
-			"title": "Tanstack Boilerplate",
-			"description": "Ein persönlicher Boilerplate zum Starten neuer Node.js-Projekte mit modernen Webtechnologien.",
-			"learnMore": "Mehr erfahren"
-		},
-		"features": {
-			"title": "Hauptfunktionen",
-			"items": {
-				"tanstack": {
-					"title": "Tanstack Stack",
-					"description": "Enthält Tanstack Start, Router und Query für eine nahtlose Entwicklungserfahrung."
-				},
-				"ui": {
-					"title": "UI-Komponenten",
-					"description": "Shadcn UI und Tailwind CSS für schöne, responsive Designs."
-				},
-				"auth": {
-					"title": "Authentifizierung",
-					"description": "Lucia Auth mit GitHub- und Discord-SSO-Integration."
-				},
-				"database": {
-					"title": "Datenbank & ORM",
-					"description": "SQLite-Datenbank mit Drizzle ORM für effizientes Datenmanagement."
-				},
-				"email": {
-					"title": "E-Mail-Integration",
-					"description": "Resend und React Email für die Handhabung von E-Mail-Kommunikation."
-				},
-				"background": {
-					"title": "Hintergrundverarbeitung",
-					"description": "Cron-Jobs und Hintergrundaufgaben mit BullMQ."
-				}
-			}
-		},
-		"pricing": {
-			"title": "Preispläne",
-			"perMonth": "pro Monat",
-			"choosePlan": "Plan wählen",
-			"plans": {
-				"starter": {
-					"title": "Starter",
-					"price": "9 €",
-					"description": "Für kleine Teams oder Projekte"
-				},
-				"pro": {
-					"title": "Pro",
-					"price": "29 €",
-					"description": "Für wachsende Unternehmen"
-				},
-				"enterprise": {
-					"title": "Enterprise",
-					"price": "Individuell",
-					"description": "Für große Unternehmen"
-				}
-			},
-			"feature1": "Funktion 1",
-			"feature2": "Funktion 2",
-			"feature3": "Funktion 3",
-			"feature4": "Funktion 4"
-		},
-		"cta": {
-			"title": "Bereit, Ihr Projekt zu starten?",
-			"description": "Starten Sie Ihre Entwicklung mit diesem funktionsreichen Boilerplate.",
-			"button": "Loslegen",
-			"buttonLoggedIn": "Zum Dashboard"
-		}
-	}
+	"marketing.features.title": "Funktionen",
+	"marketing.features.tanstack.title": "Tanstack-Ökosystem",
+	"marketing.features.tanstack.description": "Nahtlose Entwicklung mit Tanstack Start, Router und Query",
+	"marketing.features.ui.title": "Moderne UI",
+	"marketing.features.ui.description": "Responsive Designs mit Shadcn UI und Tailwind CSS, inkl. Hell/Dunkel-Modus",
+	"marketing.features.auth.title": "Erweiterte Authentifizierung",
+	"marketing.features.auth.description": "SSO, RBAC und einfaches Onboarding",
+	"marketing.features.data.title": "Datenverwaltung",
+	"marketing.features.data.description": "SQLite mit Drizzle ORM für effiziente Datenverarbeitung",
+	"marketing.features.i18n.title": "Internationalisierung",
+	"marketing.features.i18n.description": "i18n-Support und Zeitzonen-Erkennung",
+	"marketing.features.background.title": "Hintergrundverarbeitung",
+	"marketing.features.background.description": "Cron-Jobs & Tasks mit BullMQ für bessere Leistung",
+	"marketing.pricing.title": "Preise",
+	"marketing.pricing.subtitle": "Wähle deinen passenden Plan",
+	"marketing.pricing.starter.title": "Starter",
+	"marketing.pricing.starter.price": "9€/Monat",
+	"marketing.pricing.starter.description": "Für kleine Projekte",
+	"marketing.pricing.starter.features.1": "Bis zu 5 Nutzer",
+	"marketing.pricing.starter.features.2": "Basis-Analysen",
+	"marketing.pricing.starter.features.3": "24/7 Support",
+	"marketing.pricing.pro.title": "Pro",
+	"marketing.pricing.pro.price": "29€/Monat",
+	"marketing.pricing.pro.description": "Für wachsende Teams",
+	"marketing.pricing.pro.features.1": "Bis zu 20 Nutzer",
+	"marketing.pricing.pro.features.2": "Erweiterte Analysen",
+	"marketing.pricing.pro.features.3": "Prioritäts-Support",
+	"marketing.pricing.pro.features.4": "Individuelle Integrationen",
+	"marketing.pricing.enterprise.title": "Enterprise",
+	"marketing.pricing.enterprise.price": "Individuell",
+	"marketing.pricing.enterprise.description": "Für Großunternehmen",
+	"marketing.pricing.enterprise.features.1": "Unbegrenzte Nutzer",
+	"marketing.pricing.enterprise.features.2": "Volle Analyse-Suite",
+	"marketing.pricing.enterprise.features.3": "24/7 Premium-Support",
+	"marketing.pricing.enterprise.features.4": "Individuelle Entwicklung",
+	"marketing.pricing.enterprise.features.5": "Persönlicher Account Manager",
+	"marketing.pricing.choosePlan": "Plan wählen",
+	"marketing.cta.title": "Bereit loszulegen?",
+	"marketing.cta.subtitle": "Melde dich an und steigere deine Produktivität",
+	"marketing.cta.choosePlan": "Plan wählen",
+	"users.title": "Nutzerverwaltung",
+	"users.addUser": "Nutzer hinzufügen",
+	"users.editUser": "Nutzer bearbeiten",
+	"users.deleteUser": "Nutzer löschen",
+	"users.addSuccess": "Nutzer hinzugefügt",
+	"users.updateSuccess": "Nutzer aktualisiert",
+	"users.deleteSuccess": "Nutzer gelöscht",
+	"admin.title": "Admin-Bereich",
+	"admin.systemStatus": "Systemstatus",
+	"admin.userStats": "Nutzerstatistiken",
+	"error.notFound": "Seite nicht gefunden",
+	"error.serverError": "Serverfehler",
+	"error.unauthorized": "Zugriff verweigert",
+	"error.generic": "Ein Fehler ist aufgetreten. Bitte erneut versuchen.",
+	"onboarding.title": "Willkommen an Bord!",
+	"onboarding.description": "Lass uns dich kennenlernen",
+	"onboarding.nameLabel": "Wie heißt du?",
+	"onboarding.namePlaceholder": "Dein Name",
+	"onboarding.colorLabel": "Deine Lieblingsfarbe?",
+	"onboarding.colorPlaceholder": "Deine Lieblingsfarbe",
+	"onboarding.completeButton": "Fertig",
+	"admin.userActions.openMenu": "Menü öffnen",
+	"admin.userActions.actions": "Aktionen",
+	"admin.userActions.ban": "Sperren",
+	"admin.userActions.unban": "Entsperren",
+	"admin.userActions.revokeAllSessions": "Alle Sitzungen beenden",
+	"admin.userActions.impersonate": "Als Nutzer anmelden",
+	"admin.userActions.removeUser": "Nutzer entfernen"
 }

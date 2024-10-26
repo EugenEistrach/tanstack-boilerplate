@@ -4,6 +4,7 @@ import { createFileRoute, redirect } from '@tanstack/react-router'
 import { useServerFn } from '@tanstack/start'
 import { useForm } from 'react-hook-form'
 import { useSpinDelay } from 'spin-delay'
+import { useTranslations } from 'use-intl'
 import { z } from 'zod'
 
 import { Button } from '@/components/ui/button'
@@ -72,6 +73,7 @@ export const Route = createFileRoute('/(auth)/onboarding')({
 function Onboarding() {
 	const { redirectTo } = Route.useSearch()
 	const auth = useAuth()
+	const t = useTranslations()
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
@@ -92,10 +94,10 @@ function Onboarding() {
 			<Card className="w-full max-w-md">
 				<CardHeader>
 					<CardTitle className="text-center text-2xl font-bold">
-						Welcome Onboard!
+						{t('onboarding.title')}
 					</CardTitle>
 					<CardDescription className="text-center">
-						Let's get to know you better
+						{t('onboarding.description')}
 					</CardDescription>
 				</CardHeader>
 				<Form {...form}>
@@ -114,9 +116,12 @@ function Onboarding() {
 								name="name"
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel>What's your name?</FormLabel>
+										<FormLabel>{t('onboarding.nameLabel')}</FormLabel>
 										<FormControl>
-											<Input placeholder="Enter your name" {...field} />
+											<Input
+												placeholder={t('onboarding.namePlaceholder')}
+												{...field}
+											/>
 										</FormControl>
 										<FormMessage />
 									</FormItem>
@@ -127,10 +132,10 @@ function Onboarding() {
 								name="favoriteColor"
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel>What's your favorite color?</FormLabel>
+										<FormLabel>{t('onboarding.colorLabel')}</FormLabel>
 										<FormControl>
 											<Input
-												placeholder="Enter your favorite color"
+												placeholder={t('onboarding.colorPlaceholder')}
 												{...field}
 											/>
 										</FormControl>
@@ -138,12 +143,14 @@ function Onboarding() {
 									</FormItem>
 								)}
 							/>
+							<CardFooter>
+								<Button type="submit" className="w-full" disabled={isPending}>
+									{isPending
+										? t('common.loading')
+										: t('onboarding.completeButton')}
+								</Button>
+							</CardFooter>
 						</CardContent>
-						<CardFooter>
-							<Button type="submit" className="w-full" disabled={isPending}>
-								{isPending ? 'Processing...' : 'Complete Onboarding'}
-							</Button>
-						</CardFooter>
 					</form>
 				</Form>
 			</Card>
