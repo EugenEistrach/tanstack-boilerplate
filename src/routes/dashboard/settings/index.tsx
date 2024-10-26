@@ -6,7 +6,6 @@ import { eq } from 'drizzle-orm'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { useSpinDelay } from 'spin-delay'
-import { useTranslations } from 'use-intl'
 import * as v from 'valibot'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -21,6 +20,7 @@ import { db } from '@/drizzle/db'
 import { UserTable } from '@/drizzle/schemas'
 import { $requireAuthSession, useAuth } from '@/lib/auth.client'
 import { validationClient } from '@/lib/functions'
+import * as m from '@/lib/paraglide/messages'
 
 const updateNameSchema = v.object({
 	name: v.pipe(v.string(), v.nonEmpty()),
@@ -42,7 +42,6 @@ export const Route = createFileRoute('/dashboard/settings/')({
 })
 
 function Settings() {
-	const t = useTranslations()
 	const { user } = useAuth()
 	const router = useRouter()
 
@@ -66,7 +65,7 @@ function Settings() {
 
 	const onSubmit = (data: v.InferOutput<typeof updateNameSchema>) => {
 		updateNameMutation.mutate(data)
-		toast.success(t('settings.profileUpdateSuccess'))
+		toast.success(m.profile_update_success())
 	}
 
 	const isPending = useSpinDelay(updateNameMutation.isPending)
@@ -74,14 +73,14 @@ function Settings() {
 	return (
 		<div className="space-y-6">
 			<div>
-				<H1>{t('settings.title')}</H1>
-				<Subtitle>{t('settings.updateProfile')}</Subtitle>
+				<H1>{m.settings_title()}</H1>
+				<Subtitle>{m.low_sad_martin_walk()}</Subtitle>
 			</div>
 
 			<Card className="max-w-3xl">
 				<form onSubmit={handleSubmit(onSubmit)}>
 					<CardHeader>
-						<H2>{t('settings.updateProfile')}</H2>
+						<H2>{m.update_profile()}</H2>
 					</CardHeader>
 					<CardContent className="p-6">
 						<div className="flex items-start space-x-6">
@@ -91,11 +90,11 @@ function Settings() {
 							</Avatar>
 							<div className="flex-grow space-y-4">
 								<div className="space-y-1">
-									<Label htmlFor="email">{t('auth.email')}</Label>
+									<Label htmlFor="email">{m.email()}</Label>
 									<Input id="email" value={user.email} disabled />
 								</div>
 								<div className="space-y-1">
-									<Label htmlFor="name">{t('onboarding.nameLabel')}</Label>
+									<Label htmlFor="name">{m.onboarding_name_label()}</Label>
 									<Input id="name" {...register('name')} />
 									<FieldErrorMessage error={errors.name} />
 								</div>
@@ -108,7 +107,7 @@ function Settings() {
 							disabled={isValidating || isPending}
 							className="ml-auto"
 						>
-							{isPending ? t('common.loading') : t('common.saveChanges')}
+							{isPending ? m.loading() : m.save_changes()}
 						</Button>
 					</CardFooter>
 				</form>

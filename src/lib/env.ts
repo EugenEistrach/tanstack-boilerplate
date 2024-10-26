@@ -36,8 +36,6 @@ Object.entries(processEnv).forEach(([key, value]) => {
 // Parse and create env object with client-side protection
 const _env = v.parse(serverSchema, processEnv)
 
-console.log('🔑 Loaded environment variables:', _env)
-
 export const env = new Proxy(_env, {
 	get(target, prop) {
 		if (typeof window !== 'undefined') {

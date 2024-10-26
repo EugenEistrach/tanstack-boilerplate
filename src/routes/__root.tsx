@@ -9,14 +9,14 @@ import { Body, Head, Html, Meta, Scripts } from '@tanstack/start'
 import { ThemeProvider } from 'next-themes'
 import * as React from 'react'
 
-import { createTranslator, IntlProvider } from 'use-intl'
 import { Toaster } from '../components/ui/sonner'
 import { TooltipProvider } from '../components/ui/tooltip'
 import { $getSession, AuthProvider } from '../lib/auth.client'
 import { $getHints, ClientHintChecker } from '../lib/client-hints'
 
-import { $getI18n } from '../lib/i18n'
 import { $handleRedirectTo } from '../lib/redirect'
+
+import { TimezoneContext } from '@/lib/timezone'
 import appCss from '@/styles/globals.css?url'
 
 // TODO: remove once https://github.com/TanStack/router/pull/2316 is merged and released
@@ -44,25 +44,12 @@ export const Route = createRootRouteWithContext<{
 }>()({
 	beforeLoad: async () => {
 		await $handleRedirectTo()
-		const [session, hints, { locale, messages }] = await Promise.all([
-			$getSession(),
-			$getHints(),
-			$getI18n(),
-		])
-
-		const t = createTranslator({
-			locale,
-			timeZone: hints.timeZone,
-			messages,
-		})
+		const [session, hints] = await Promise.all([$getSession(), $getHints()])
 
 		if (!session) {
 			return {
 				auth: null,
 				hints,
-				locale,
-				messages,
-				t,
 			}
 		}
 
@@ -79,9 +66,6 @@ export const Route = createRootRouteWithContext<{
 				},
 			},
 			hints,
-			locale,
-			messages,
-			t,
 		}
 	},
 	meta: () => [
@@ -120,7 +104,7 @@ function RootComponent() {
 }
 
 function RootDocument({ children }: { children: React.ReactNode }) {
-	const { locale, messages, hints, auth } = Route.useRouteContext()
+	const { hints, auth } = Route.useRouteContext()
 
 	return (
 		// TODO: Add lang attribute once supported by tanstack start
@@ -132,16 +116,13 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 				<ClientHintChecker />
 				<AuthProvider auth={auth}>
 					<ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-						<IntlProvider
-							locale={locale}
-							messages={messages}
-							timeZone={hints.timeZone}
-						>
+						<TimezoneContext.Provider value={hints.timeZone}>
 							<TooltipProvider>
 								<div className="font-sans">{children}</div>
+
 								<Toaster />
 							</TooltipProvider>
-						</IntlProvider>
+						</TimezoneContext.Provider>
 					</ThemeProvider>
 				</AuthProvider>
 				<ScrollRestoration />

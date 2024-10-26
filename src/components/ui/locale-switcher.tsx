@@ -2,7 +2,7 @@
 
 import { CheckIcon, ChevronDownIcon, GlobeIcon } from '@radix-ui/react-icons'
 import { useState } from 'react'
-import { useLocale } from 'use-intl'
+
 import { Button } from '@/components/ui/button'
 import {
 	DropdownMenu,
@@ -10,10 +10,16 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { supportedLocales, useChangeLocaleMutation } from '@/lib/i18n'
+import { useChangeLocaleMutation } from '@/lib/i18n'
+import { availableLanguageTags, languageTag } from '@/lib/paraglide/runtime'
+
+const labels = {
+	de: 'Deutsch',
+	en: 'English',
+}
 
 export function LocaleSwitcher() {
-	const locale = useLocale()
+	const locale = languageTag()
 	const changeLocaleMutation = useChangeLocaleMutation()
 
 	const [open, setOpen] = useState(false)
@@ -23,17 +29,17 @@ export function LocaleSwitcher() {
 			<DropdownMenuTrigger asChild>
 				<Button variant="outline" size="sm" className="min-w-[8rem]">
 					<GlobeIcon className="mr-2 h-4 w-4" />
-					{supportedLocales.find((l) => l.locale === locale)?.label}
+					{labels[locale]}
 					<ChevronDownIcon className="ml-2 h-4 w-4" />
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent align="end">
-				{supportedLocales.map(({ locale: supportedLocale, label }) => (
+				{availableLanguageTags.map((availableTag) => (
 					<DropdownMenuItem
-						key={supportedLocale}
+						key={availableTag}
 						onClick={(event) => {
 							event.preventDefault()
-							changeLocaleMutation.mutate(supportedLocale, {
+							changeLocaleMutation.mutate(availableTag, {
 								onSettled: () => {
 									// Close the dropdown after short delay to prevent
 									// flickering when clicking on the trigger`
@@ -44,10 +50,8 @@ export function LocaleSwitcher() {
 							})
 						}}
 					>
-						{label}
-						{supportedLocale === locale && (
-							<CheckIcon className="ml-2 h-4 w-4" />
-						)}
+						{labels[availableTag]}
+						{availableTag === locale && <CheckIcon className="ml-2 h-4 w-4" />}
 					</DropdownMenuItem>
 				))}
 			</DropdownMenuContent>

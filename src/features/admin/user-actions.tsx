@@ -1,7 +1,5 @@
 import { type UserWithRole } from 'better-auth/plugins'
 import { MoreHorizontal, Ban, Key, UserCircle, Trash2 } from 'lucide-react'
-import React from 'react'
-import { useTranslations } from 'use-intl'
 import { Button } from '@/components/ui/button'
 import {
 	DropdownMenu,
@@ -11,10 +9,10 @@ import {
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { useAuth } from '@/lib/auth.client'
+import * as m from '@/lib/paraglide/messages'
 
 export const UserActions = ({ user }: { user: UserWithRole }) => {
 	const { user: currentUser } = useAuth()
-	const t = useTranslations()
 
 	const handleBanUnban = () => {
 		console.log(`${user.banned ? 'Unban' : 'Ban'} user:`, user.id)
@@ -44,29 +42,27 @@ export const UserActions = ({ user }: { user: UserWithRole }) => {
 					className="h-8 w-8 p-0"
 					disabled={user.id === currentUser.id}
 				>
-					<span className="sr-only">{t('admin.userActions.openMenu')}</span>
+					<span className="sr-only">{m.user_actions_menu()}</span>
 					<MoreHorizontal className="h-4 w-4" />
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent align="end">
-				<DropdownMenuLabel>{t('admin.userActions.actions')}</DropdownMenuLabel>
+				<DropdownMenuLabel>{m.user_actions()}</DropdownMenuLabel>
 				<DropdownMenuItem onClick={handleBanUnban}>
 					<Ban className="mr-2 h-4 w-4" />
-					{user.banned
-						? t('admin.userActions.unban')
-						: t('admin.userActions.ban')}
+					{user.banned ? m.user_unban() : m.user_ban()}
 				</DropdownMenuItem>
 				<DropdownMenuItem onClick={handleRevokeAllSessions}>
 					<Key className="mr-2 h-4 w-4" />
-					{t('admin.userActions.revokeAllSessions')}
+					{m.revoke_all_sessions()}
 				</DropdownMenuItem>
 				<DropdownMenuItem onClick={handleImpersonate}>
 					<UserCircle className="mr-2 h-4 w-4" />
-					{t('admin.userActions.impersonate')}
+					{m.impersonate_user()}
 				</DropdownMenuItem>
 				<DropdownMenuItem onClick={handleRemoveUser}>
 					<Trash2 className="mr-2 h-4 w-4" />
-					{t('admin.userActions.removeUser')}
+					{m.remove_user()}
 				</DropdownMenuItem>
 			</DropdownMenuContent>
 		</DropdownMenu>

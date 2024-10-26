@@ -1,10 +1,7 @@
 import { useSession } from 'vinxi/http'
 import { env } from './env'
-import { type supportedLocales } from './i18n'
 
 interface Session {
-	locale?: (typeof supportedLocales)[number]['locale']
-	timeZone?: string
 	redirectTo?: string
 }
 

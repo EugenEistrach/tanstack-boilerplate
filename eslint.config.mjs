@@ -1,8 +1,8 @@
-// @ts-check
 import { default as defaultConfig } from '@epic-web/config/eslint'
 import * as tanstackQuery from '@tanstack/eslint-plugin-query'
 import pluginRouter from '@tanstack/eslint-plugin-router'
 import gitignore from 'eslint-config-flat-gitignore'
+
 import pluginBoundaries from 'eslint-plugin-boundaries'
 import i18next from 'eslint-plugin-i18next'
 
@@ -18,6 +18,7 @@ const enforceServerFnPrefix = {
 		fixable: 'code',
 		schema: [],
 	},
+
 	create(context) {
 		return {
 			VariableDeclarator(node) {
@@ -32,7 +33,8 @@ const enforceServerFnPrefix = {
 							node: node.id,
 							message:
 								"Variable name created with createServerFn should start with '$'",
-							fix(fixer) {
+
+							fix: (fixer) => {
 								return fixer.replaceText(node.id, '$' + variableName)
 							},
 						})
@@ -43,14 +45,70 @@ const enforceServerFnPrefix = {
 	},
 }
 
+const paraglideMissingImport = {
+	meta: {
+		type: 'suggestion',
+		docs: {
+			description: 'Enforce paraglide messages import when using m.',
+			category: 'Imports',
+			recommended: true,
+		},
+		fixable: 'code',
+		schema: [],
+	},
+
+	create(context) {
+		let hasParaglideImport = false
+
+		return {
+			// Check if the import already exists
+			ImportDeclaration(node) {
+				if (
+					node.source.value === '@/lib/paraglide/messages' &&
+					node.specifiers.some(
+						(spec) =>
+							spec.type === 'ImportNamespaceSpecifier' &&
+							spec.local.name === 'm',
+					)
+				) {
+					hasParaglideImport = true
+				}
+			},
+
+			// Check for m. usage
+			MemberExpression(node) {
+				if (
+					node.object.type === 'Identifier' &&
+					node.object.name === 'm' &&
+					!hasParaglideImport
+				) {
+					context.report({
+						node,
+						message: 'Missing paraglide messages import',
+						fix: (fixer) => {
+							return fixer.insertTextBefore(
+								context.getSourceCode().ast.body[0],
+								"import * as m from '@/lib/paraglide/messages';\n",
+							)
+						},
+					})
+				}
+			},
+		}
+	},
+}
+
 export default [
+	{
+		ignores: ['**/paraglide/**/*'],
+	},
 	...defaultConfig,
-	gitignore(),
 	{
 		files: ['**/*.{js,jsx,ts,tsx}'],
 		ignores: ['src/email/**/*'], // Add this line to ignore the email folder
 		...i18next.configs['flat/recommended'],
 	},
+	gitignore(),
 	...pluginRouter.configs['flat/recommended'],
 	{
 		name: '@tanstack/query',
@@ -68,11 +126,13 @@ export default [
 			custom: {
 				rules: {
 					'enforce-server-fn-prefix': enforceServerFnPrefix,
+					'paraglide-missing-import': paraglideMissingImport,
 				},
 			},
 		},
 		rules: {
 			'custom/enforce-server-fn-prefix': 'error',
+			'custom/paraglide-missing-import': 'error',
 		},
 	},
 	// Add boundaries configuration
