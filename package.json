@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vinxi dev",
     "dev:email": "email dev --port 3002 --dir ./src/email/templates",
-    "build": "paraglide-js compile --project ./project.inlang --outdir ./src/lib/paraglide && vinxi build",
+    "build": "pnpm build:paraglide && vinxi build",
+    "build:paraglide": "paraglide-js compile --project ./project.inlang --outdir ./src/lib/paraglide",
     "start": "node -r dotenv/config .output/server/index.mjs",
     "db:migrate": "drizzle-kit migrate",
     "db:generate": "drizzle-kit generate",
@@ -17,8 +18,7 @@
     "lint": "eslint . ",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
-    "typecheck": "tsc",
-    "postinstall": "paraglide-js compile --project ./project.inlang --outdir ./src/lib/paraglide"
+    "typecheck": "tsc"
   },
   "keywords": [],
   "author": "",
