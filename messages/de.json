@@ -119,5 +119,6 @@
 	"onboarding_name_placeholder": "Dein Name",
 	"onboarding_color_label": "Deine Lieblingsfarbe?",
 	"onboarding_color_placeholder": "Deine Lieblingsfarbe",
-	"complete_onboarding": "Fertig"
+	"complete_onboarding": "Fertig",
+	"east_patchy_mantis_hurl": "Lieblingsfarbe ist erforderlich"
 }

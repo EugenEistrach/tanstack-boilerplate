@@ -33,8 +33,8 @@ import { useAuth } from '@/lib/auth.client'
 import * as m from '@/lib/paraglide/messages'
 
 const formSchema = v.object({
-	name: v.string(),
-	favoriteColor: v.string(),
+	name: v.pipe(v.string(), v.minLength(1, m.name_required)),
+	favoriteColor: v.pipe(v.string(), v.minLength(1, m.east_patchy_mantis_hurl)),
 })
 
 export const Route = createFileRoute('/(auth)/onboarding')({
