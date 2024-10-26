@@ -23,7 +23,7 @@ import { validationClient } from '@/lib/functions'
 import * as m from '@/lib/paraglide/messages'
 
 const updateNameSchema = v.object({
-	name: v.pipe(v.string(), v.nonEmpty()),
+	name: v.pipe(v.string(), v.nonEmpty(m.name_required)),
 })
 
 const $updateName = createServerFn(
