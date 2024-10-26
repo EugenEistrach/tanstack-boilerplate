@@ -6,7 +6,7 @@ import { languageTag, type AvailableLanguageTag } from './paraglide/runtime'
 export const $updateLocale = createServerFn(
 	'POST',
 	async (locale: AvailableLanguageTag) => {
-		await setCookie('lang', locale)
+		setCookie('lang', locale)
 	},
 )
 

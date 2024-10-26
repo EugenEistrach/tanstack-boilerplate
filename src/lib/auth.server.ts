@@ -18,7 +18,11 @@ const discord =
 				clientId: env.DISCORD_CLIENT_ID,
 				clientSecret: env.DISCORD_CLIENT_SECRET,
 			}
-		: undefined
+	 : undefined
+
+
+
+
 
 export const authServer = betterAuth({
 	baseURL: env.BASE_URL,
@@ -27,8 +31,8 @@ export const authServer = betterAuth({
 		provider: 'sqlite',
 	}),
 	socialProviders: {
-		github,
-		discord,
+		...(github && { github }),
+    ...(discord && { discord }),
 	},
 	plugins: [admin(), organization()],
 })
