@@ -1,15 +1,13 @@
 import { motion, AnimatePresence } from 'framer-motion'
-import  { type FieldError } from 'react-hook-form'
-import { useTranslations } from 'use-intl'
+import { type FieldError } from 'react-hook-form'
 
 export const FieldErrorMessage = ({
 	error,
 }: {
 	error: FieldError | undefined
 }) => {
-	const t = useTranslations()
 	// @ts-ignore if the message key is not found, it will return messageKey as value
-	const message = error?.message && t(error.message)
+	const message = error?.message
 
 	return (
 		<AnimatePresence>

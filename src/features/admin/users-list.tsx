@@ -1,9 +1,9 @@
 import { queryOptions, useQuery } from '@tanstack/react-query'
-import { useTranslations } from 'use-intl'
 
 import { columns } from './columns'
 import { DataTable } from '@/components/data-table'
 import { authClient } from '@/lib/auth.client'
+import * as m from '@/lib/paraglide/messages'
 
 export const listUsersQueryOptions = () =>
 	queryOptions({
@@ -19,10 +19,9 @@ export const listUsersQueryOptions = () =>
 
 export function UsersList() {
 	const { data, isLoading, isError } = useQuery(listUsersQueryOptions())
-	const t = useTranslations()
 
-	if (isLoading) return <div>{t('common.loading')}</div>
-	if (isError) return <div>{t('error.generic')}</div>
+	if (isLoading) return <div>{m.loading()}</div>
+	if (isError) return <div>{m.error_generic()}</div>
 
 	return (
 		<div className="">

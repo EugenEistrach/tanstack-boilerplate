@@ -1,7 +1,7 @@
 {
-	"i18n-ally.localesPaths": ["./i18n"],
-
-	"i18n-ally.disabled": false,
-	"i18n-ally.keystyle": "flat",
-	"i18n-ally.enabledFrameworks": ["next-international"]
+	"sherlock.appRecommendations.ninja.enabled": true,
+	"sherlock.inlineAnnotations.enabled": true,
+	"sherlock.previewLanguageTag": "en",
+	"alias-resolver.type": "custom",
+	"alias-resolver.accessPath": ""
 }

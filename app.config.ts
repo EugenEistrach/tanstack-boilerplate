@@ -16,7 +16,7 @@ export default defineConfig({
 			}),
 			paraglide({
 				project: './project.inlang', //Path to your inlang project
-				outdir: './paraglide', //Where you want the generated files to be placed
+				outdir: './src/lib/paraglide', //Where you want the generated files to be placed
 			}),
 		],
 		define: {

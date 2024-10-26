@@ -4,7 +4,6 @@ import { createFileRoute, redirect } from '@tanstack/react-router'
 import { useServerFn } from '@tanstack/start'
 import { useForm } from 'react-hook-form'
 import { useSpinDelay } from 'spin-delay'
-import { useTranslations } from 'use-intl'
 import * as v from 'valibot'
 
 import { Button } from '@/components/ui/button'
@@ -31,6 +30,7 @@ import {
 	$getOnboardingInfo,
 } from '@/features/onboarding/onboarding'
 import { useAuth } from '@/lib/auth.client'
+import * as m from '@/lib/paraglide/messages'
 
 const formSchema = v.object({
 	name: v.string(),
@@ -69,7 +69,6 @@ export const Route = createFileRoute('/(auth)/onboarding')({
 function Onboarding() {
 	const { redirectTo } = Route.useSearch()
 	const auth = useAuth()
-	const t = useTranslations()
 
 	const form = useForm<v.InferOutput<typeof formSchema>>({
 		resolver: valibotResolver(formSchema),
@@ -90,10 +89,10 @@ function Onboarding() {
 			<Card className="w-full max-w-md">
 				<CardHeader>
 					<CardTitle className="text-center text-2xl font-bold">
-						{t('onboarding.title')}
+						{m.onboarding_title()}
 					</CardTitle>
 					<CardDescription className="text-center">
-						{t('onboarding.description')}
+						{m.onboarding_description()}
 					</CardDescription>
 				</CardHeader>
 				<Form {...form}>
@@ -112,10 +111,10 @@ function Onboarding() {
 								name="name"
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel>{t('onboarding.nameLabel')}</FormLabel>
+										<FormLabel>{m.onboarding_name_label()}</FormLabel>
 										<FormControl>
 											<Input
-												placeholder={t('onboarding.namePlaceholder')}
+												placeholder={m.onboarding_name_placeholder()}
 												{...field}
 											/>
 										</FormControl>
@@ -128,10 +127,10 @@ function Onboarding() {
 								name="favoriteColor"
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel>{t('onboarding.colorLabel')}</FormLabel>
+										<FormLabel>{m.onboarding_color_label()}</FormLabel>
 										<FormControl>
 											<Input
-												placeholder={t('onboarding.colorPlaceholder')}
+												placeholder={m.onboarding_color_placeholder()}
 												{...field}
 											/>
 										</FormControl>
@@ -141,9 +140,7 @@ function Onboarding() {
 							/>
 							<CardFooter>
 								<Button type="submit" className="w-full" disabled={isPending}>
-									{isPending
-										? t('common.loading')
-										: t('onboarding.completeButton')}
+									{isPending ? m.loading() : m.complete_onboarding()}
 								</Button>
 							</CardFooter>
 						</CardContent>

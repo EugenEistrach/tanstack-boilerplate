@@ -1,5 +1,3 @@
-import 'dotenv/config'
-
 import { execSync } from 'node:child_process'
 import { resolve } from 'node:path'
 import { env } from '@//lib/env'

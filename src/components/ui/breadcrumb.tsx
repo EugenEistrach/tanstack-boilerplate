@@ -2,7 +2,7 @@ import { ChevronRightIcon, DotsHorizontalIcon } from '@radix-ui/react-icons'
 import { Slot } from '@radix-ui/react-slot'
 import * as React from 'react'
 
-import { useTranslations } from 'use-intl'
+import * as m from '@/lib/paraglide/messages'
 import { cn } from '@/lib/utils'
 
 const Breadcrumb = React.forwardRef<
@@ -93,8 +93,6 @@ const BreadcrumbEllipsis = ({
 	className,
 	...props
 }: React.ComponentProps<'span'>) => {
-	const t = useTranslations()
-
 	return (
 		<span
 			role="presentation"
@@ -103,7 +101,7 @@ const BreadcrumbEllipsis = ({
 			{...props}
 		>
 			<DotsHorizontalIcon className="h-4 w-4" />
-			<span className="sr-only">{t('common.more')}</span>
+			<span className="sr-only">{m.more()}</span>
 		</span>
 	)
 }

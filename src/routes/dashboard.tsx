@@ -10,7 +10,6 @@ import {
 } from '@tanstack/react-router'
 import { useServerFn } from '@tanstack/start'
 import { ChevronsUpDown, LogOut, Settings, UsersIcon } from 'lucide-react'
-import { useTranslations } from 'use-intl'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Breadcrumbs } from '@/components/ui/breadcrumbs'
 import {
@@ -45,7 +44,7 @@ import {
 import { ThemeToggle } from '@/components/ui/theme-toggle'
 import { $requireOnboardingInfo } from '@/features/onboarding/onboarding'
 import { useAuth, $logout } from '@/lib/auth.client'
-import { tk } from '@/lib/i18n'
+import * as m from '@/lib/paraglide/messages'
 
 export const Route = createFileRoute('/dashboard')({
 	beforeLoad: async ({ context, location }) => {
@@ -68,7 +67,7 @@ export const Route = createFileRoute('/dashboard')({
 
 export const dashboardLinkOption = linkOptions({
 	to: '/dashboard',
-	labelKey: tk('nav.dashboard'),
+	label: m.nav_dashboard,
 	icon: HomeIcon,
 	exact: true,
 })
@@ -77,14 +76,13 @@ export const mainLinkOptions = [dashboardLinkOption]
 
 const usersLinkOption = linkOptions({
 	to: '/dashboard/users',
-	labelKey: tk('nav.users'),
+	label: m.nav_users,
 	icon: UsersIcon,
 })
 
 export const adminLinkOptions = [usersLinkOption]
 
 export default function DashboardLayout() {
-	const t = useTranslations()
 	const { user } = useAuth()
 
 	const location = useLocation()
@@ -113,7 +111,7 @@ export default function DashboardLayout() {
 								</div>
 								<div className="grid flex-1 text-left text-sm leading-tight">
 									<span className="truncate font-semibold">
-										{t('dashboard.title')}
+										{m.dashboard_title()}
 									</span>
 								</div>
 							</SidebarMenuButton>
@@ -122,18 +120,18 @@ export default function DashboardLayout() {
 				</SidebarHeader>
 				<SidebarContent>
 					<SidebarGroup>
-						<SidebarGroupLabel>{t('nav.main')}</SidebarGroupLabel>
+						<SidebarGroupLabel>{m.nav_main()}</SidebarGroupLabel>
 						<SidebarMenu>
 							{mainLinkOptions.map((item) => (
 								<SidebarMenuItem key={item.to}>
 									<SidebarMenuButton
-										tooltip={t(item.labelKey)}
+										tooltip={item.label()}
 										isActive={isActive(item)}
 										asChild
 									>
 										<Link to={item.to}>
 											{item.icon && <item.icon />}
-											<span>{t(item.labelKey)}</span>
+											<span>{item.label()}</span>
 										</Link>
 									</SidebarMenuButton>
 								</SidebarMenuItem>
@@ -142,18 +140,18 @@ export default function DashboardLayout() {
 					</SidebarGroup>
 					{isAdmin && (
 						<SidebarGroup>
-							<SidebarGroupLabel>{t('nav.admin')}</SidebarGroupLabel>
+							<SidebarGroupLabel>{m.nav_admin()}</SidebarGroupLabel>
 							<SidebarMenu>
 								{adminLinkOptions.map((item) => (
 									<SidebarMenuItem key={item.to}>
 										<SidebarMenuButton
-											tooltip={t(item.labelKey)}
+											tooltip={item.label()}
 											isActive={isActive(item)}
 											asChild
 										>
 											<Link to={item.to}>
 												{item.icon && <item.icon />}
-												<span>{t(item.labelKey)}</span>
+												<span>{item.label()}</span>
 											</Link>
 										</SidebarMenuButton>
 									</SidebarMenuItem>
@@ -180,25 +178,26 @@ export default function DashboardLayout() {
 				</main>
 				<footer className="flex w-full shrink-0 flex-col items-center gap-2 border-t px-4 py-6 sm:flex-row md:px-6">
 					<p className="text-xs text-muted-foreground">
-						{t('footer.copyright', {
+						{m.footer_copyright({
 							year: new Date().getFullYear(),
+							companyName: 'Company Name',
 						})}
 					</p>
 					<nav className="mr-4 flex items-center gap-4 sm:ml-auto sm:mr-6 sm:gap-6">
 						<Link to="/" className="text-xs underline-offset-4 hover:underline">
-							{t('footer.home')}
+							{m.footer_home()}
 						</Link>
 						<Link
 							className="text-xs underline-offset-4 hover:underline"
 							to="/terms"
 						>
-							{t('footer.termsOfService')}
+							{m.terms_of_service()}
 						</Link>
 						<Link
 							className="text-xs underline-offset-4 hover:underline"
 							to="/privacy"
 						>
-							{t('footer.privacyPolicy')}
+							{m.privacy_policy()}
 						</Link>
 					</nav>
 					<ThemeToggle />
@@ -210,7 +209,6 @@ export default function DashboardLayout() {
 }
 
 function UserMenu() {
-	const t = useTranslations()
 	const { isMobile } = useSidebar()
 	const { user } = useAuth()
 
@@ -272,7 +270,7 @@ function UserMenu() {
 							<DropdownMenuItem asChild>
 								<Link to="/dashboard/settings">
 									<Settings />
-									{t('nav.settings')}
+									{m.nav_settings()}
 								</Link>
 							</DropdownMenuItem>
 						</DropdownMenuGroup>
@@ -280,7 +278,7 @@ function UserMenu() {
 						<DropdownMenuSeparator />
 						<DropdownMenuItem onClick={() => logout()}>
 							<LogOut />
-							{t('auth.signOut')}
+							{m.sign_out()}
 						</DropdownMenuItem>
 					</DropdownMenuContent>
 				</DropdownMenu>

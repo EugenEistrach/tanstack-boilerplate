@@ -3,7 +3,6 @@ import { type VariantProps, cva } from 'class-variance-authority'
 import { PanelLeft } from 'lucide-react'
 import * as React from 'react'
 
-import { useTranslations } from 'use-intl'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
@@ -16,6 +15,7 @@ import {
 	TooltipTrigger,
 } from '@/components/ui/tooltip'
 import { useIsMobile } from '@/hooks/use-mobile'
+import * as m from '@/lib/paraglide/messages'
 import { cn } from '@/lib/utils'
 
 const SIDEBAR_COOKIE_NAME = 'sidebar:state'
@@ -272,7 +272,6 @@ const SidebarTrigger = React.forwardRef<
 	React.ComponentProps<typeof Button>
 >(({ className, onClick, ...props }, ref) => {
 	const { toggleSidebar } = useSidebar()
-	const t = useTranslations()
 
 	return (
 		<Button
@@ -288,7 +287,7 @@ const SidebarTrigger = React.forwardRef<
 			{...props}
 		>
 			<PanelLeft />
-			<span className="sr-only">{t('common.toggleSidebar')}</span>
+			<span className="sr-only">{m.toggle_sidebar()}</span>
 		</Button>
 	)
 })

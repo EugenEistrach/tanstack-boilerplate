@@ -6,7 +6,6 @@ import {
 	getPaginationRowModel,
 } from '@tanstack/react-table'
 
-import { useTranslations } from 'use-intl'
 import { Button } from '@/components/ui/button'
 import {
 	Table,
@@ -16,6 +15,7 @@ import {
 	TableHeader,
 	TableRow,
 } from '@/components/ui/table'
+import * as m from '@/lib/paraglide/messages'
 
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[]
@@ -32,8 +32,6 @@ export function DataTable<TData, TValue>({
 		getCoreRowModel: getCoreRowModel(),
 		getPaginationRowModel: getPaginationRowModel(),
 	})
-
-	const t = useTranslations()
 
 	return (
 		<div>
@@ -80,7 +78,7 @@ export function DataTable<TData, TValue>({
 									colSpan={columns.length}
 									className="h-24 text-center"
 								>
-									{t('common.noResults')}
+									{m.no_results()}
 								</TableCell>
 							</TableRow>
 						)}
@@ -94,7 +92,7 @@ export function DataTable<TData, TValue>({
 					onClick={() => table.previousPage()}
 					disabled={!table.getCanPreviousPage()}
 				>
-					{t('common.previous')}
+					{m.previous()}
 				</Button>
 				<Button
 					variant="outline"
@@ -102,7 +100,7 @@ export function DataTable<TData, TValue>({
 					onClick={() => table.nextPage()}
 					disabled={!table.getCanNextPage()}
 				>
-					{t('common.next')}
+					{m.next()}
 				</Button>
 			</div>
 		</div>
