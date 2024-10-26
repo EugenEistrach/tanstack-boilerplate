@@ -1,76 +1,50 @@
 // Some convenience stuff until the new server functions drop :D
 
-import { z } from 'zod'
+import * as v from 'valibot'
 
-export type FlattenedError<T> = {
-	fieldErrors: { [K in keyof T]?: string[] }
-	formErrors: string[]
-}
+// export type FlattenedError<T> = {
+// 	fieldErrors: { [K in keyof T]?: string[] }
+// 	formErrors: string[]
+// }
 
-export class ValidationError<T> extends Error {
-	constructor(public errors: FlattenedError<T>) {
-		super('Validation Error')
-		this.name = 'ValidationError'
-	}
-}
+// export class ValidationError<T> extends Error {
+// 	constructor(public errors: FlattenedError<T>) {
+// 		super('Validation Error')
+// 		this.name = 'ValidationError'
+// 	}
+// }
 
 export function createValidationClient() {
 	return {
-		input: <T extends z.ZodType>(
+		input: <T extends v.ObjectSchema<any, any>>(
 			schemaOrFactory: T | (() => T | Promise<T>),
 		) => ({
 			handler:
-				<R>(fn: (input: { parsedInput: z.infer<T> }) => Promise<R>) =>
+				<R>(fn: (input: { parsedInput: v.InferOutput<T> }) => Promise<R>) =>
 				async (
-					rawInput: z.input<T>,
-				): Promise<[R, null] | [null, FlattenedError<z.infer<T>>]> => {
+					rawInput: v.InferInput<T>,
+				): Promise<[R, null] | [null, Array<v.InferIssue<T>>]> => {
 					try {
 						const schema =
 							typeof schemaOrFactory === 'function'
 								? await schemaOrFactory()
 								: schemaOrFactory
-						const parsedInput = await schema.parseAsync(rawInput)
-						const result = await fn({ parsedInput })
+						const parsedInput = await v.safeParseAsync(schema, rawInput)
+
+						if (!parsedInput.success) {
+							return new Response(JSON.stringify([null, parsedInput.issues]), {
+								status: 400,
+							}) as unknown as [null, Array<v.InferIssue<T>>]
+						}
+
+						const result = await fn({ parsedInput: parsedInput.output })
 						return [result, null]
 					} catch (error) {
-						if (error instanceof z.ZodError) {
-							return new Response(JSON.stringify([null, error.flatten()]), {
-								status: 400,
-							}) as unknown as [null, FlattenedError<z.infer<T>>]
-						}
-						if (error instanceof ValidationError) {
-							return new Response(JSON.stringify([null, error.errors]), {
-								status: 400,
-							}) as unknown as [null, FlattenedError<z.infer<T>>]
-						}
 						throw error
 					}
 				},
 		}),
 	}
-}
-
-export function validationError<T extends z.ZodType>(
-	_schema: T,
-	errors: Partial<FlattenedError<z.infer<T>>>,
-) {
-	return new ValidationError<z.infer<T>>({
-		fieldErrors: errors.fieldErrors ?? {},
-		formErrors: errors.formErrors ?? [],
-	})
-}
-
-export function globalValidationError(error: string) {
-	return validationError(z.any(), { formErrors: [error] })
-}
-
-export function fieldValidationError<T extends z.ZodType>(
-	_schema: T,
-	errors: FlattenedError<z.infer<T>>['fieldErrors'],
-) {
-	return validationError(_schema, {
-		fieldErrors: errors,
-	})
 }
 
 export const validationClient = createValidationClient()
