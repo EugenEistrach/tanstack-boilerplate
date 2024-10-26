@@ -31,18 +31,18 @@ function LandingPage() {
 								{t('marketing.hero.title')}
 							</h1>
 							<p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
-								{t('marketing.hero.description')}
+								{t('marketing.hero.subtitle')}
 							</p>
 						</div>
 						<div className="space-x-4">
 							<Button asChild>
 								<Link to={auth?.user ? '/dashboard' : '/login'}>
 									{auth?.user
-										? t('marketing.nav.goToApp')
-										: t('marketing.nav.getStarted')}
+										? t('marketing.goToApp')
+										: t('marketing.getStarted')}
 								</Link>
 							</Button>
-							<Button variant="outline">{t('marketing.hero.learnMore')}</Button>
+							<Button variant="outline">{t('marketing.learnMore')}</Button>
 						</div>
 					</div>
 				</div>
@@ -58,60 +58,52 @@ function LandingPage() {
 					<div className="grid gap-6 lg:grid-cols-3 lg:gap-12">
 						<Card>
 							<CardHeader>
-								<CardTitle>
-									{t('marketing.features.items.tanstack.title')}
-								</CardTitle>
+								<CardTitle>{t('marketing.features.tanstack.title')}</CardTitle>
 							</CardHeader>
 							<CardContent>
-								<p>{t('marketing.features.items.tanstack.description')}</p>
+								<p>{t('marketing.features.tanstack.description')}</p>
 							</CardContent>
 						</Card>
 						<Card>
 							<CardHeader>
-								<CardTitle>{t('marketing.features.items.ui.title')}</CardTitle>
+								<CardTitle>{t('marketing.features.ui.title')}</CardTitle>
 							</CardHeader>
 							<CardContent>
-								<p>{t('marketing.features.items.ui.description')}</p>
+								<p>{t('marketing.features.ui.description')}</p>
 							</CardContent>
 						</Card>
 						<Card>
 							<CardHeader>
-								<CardTitle>
-									{t('marketing.features.items.auth.title')}
-								</CardTitle>
+								<CardTitle>{t('marketing.features.auth.title')}</CardTitle>
 							</CardHeader>
 							<CardContent>
-								<p>{t('marketing.features.items.auth.description')}</p>
+								<p>{t('marketing.features.auth.description')}</p>
 							</CardContent>
 						</Card>
 						<Card>
 							<CardHeader>
-								<CardTitle>
-									{t('marketing.features.items.database.title')}
-								</CardTitle>
+								<CardTitle>{t('marketing.features.data.title')}</CardTitle>
 							</CardHeader>
 							<CardContent>
-								<p>{t('marketing.features.items.database.description')}</p>
+								<p>{t('marketing.features.data.description')}</p>
 							</CardContent>
 						</Card>
 						<Card>
 							<CardHeader>
-								<CardTitle>
-									{t('marketing.features.items.email.title')}
-								</CardTitle>
+								<CardTitle>{t('marketing.features.i18n.title')}</CardTitle>
 							</CardHeader>
 							<CardContent>
-								<p>{t('marketing.features.items.email.description')}</p>
+								<p>{t('marketing.features.i18n.description')}</p>
 							</CardContent>
 						</Card>
 						<Card>
 							<CardHeader>
 								<CardTitle>
-									{t('marketing.features.items.background.title')}
+									{t('marketing.features.background.title')}
 								</CardTitle>
 							</CardHeader>
 							<CardContent>
-								<p>{t('marketing.features.items.background.description')}</p>
+								<p>{t('marketing.features.background.description')}</p>
 							</CardContent>
 						</Card>
 					</div>
@@ -125,36 +117,27 @@ function LandingPage() {
 					<div className="grid gap-6 lg:grid-cols-3 lg:gap-12">
 						<Card className="flex flex-col">
 							<CardHeader>
-								<CardTitle>
-									{t('marketing.pricing.plans.starter.title')}
-								</CardTitle>
+								<CardTitle>{t('marketing.pricing.starter.title')}</CardTitle>
 								<CardDescription>
-									{t('marketing.pricing.plans.starter.description')}
+									{t('marketing.pricing.starter.description')}
 								</CardDescription>
 							</CardHeader>
 							<CardContent className="flex-1">
 								<p className="text-4xl font-bold">
-									{t('marketing.pricing.plans.starter.price')}
-								</p>
-								<p className="text-sm text-muted-foreground">
-									{t('marketing.pricing.perMonth')}
+									{t('marketing.pricing.starter.price')}
 								</p>
 								<ul className="mt-4 space-y-2">
 									<li className="flex items-center">
 										<CheckIcon className="mr-2 h-4 w-4 text-green-500" />
-										{t('marketing.pricing.feature1')}
+										{t('marketing.pricing.starter.features.1')}
 									</li>
 									<li className="flex items-center">
 										<CheckIcon className="mr-2 h-4 w-4 text-green-500" />
-										{t('marketing.pricing.feature2')}
+										{t('marketing.pricing.starter.features.2')}
 									</li>
 									<li className="flex items-center">
 										<CheckIcon className="mr-2 h-4 w-4 text-green-500" />
-										{t('marketing.pricing.feature3')}
-									</li>
-									<li className="flex items-center">
-										<CheckIcon className="mr-2 h-4 w-4 text-green-500" />
-										{t('marketing.pricing.feature4')}
+										{t('marketing.pricing.starter.features.3')}
 									</li>
 								</ul>
 							</CardContent>
@@ -166,34 +149,31 @@ function LandingPage() {
 						</Card>
 						<Card className="flex flex-col">
 							<CardHeader>
-								<CardTitle>{t('marketing.pricing.plans.pro.title')}</CardTitle>
+								<CardTitle>{t('marketing.pricing.pro.title')}</CardTitle>
 								<CardDescription>
-									{t('marketing.pricing.plans.pro.description')}
+									{t('marketing.pricing.pro.description')}
 								</CardDescription>
 							</CardHeader>
 							<CardContent className="flex-1">
 								<p className="text-4xl font-bold">
-									{t('marketing.pricing.plans.pro.price')}
-								</p>
-								<p className="text-sm text-muted-foreground">
-									{t('marketing.pricing.perMonth')}
+									{t('marketing.pricing.pro.price')}
 								</p>
 								<ul className="mt-4 space-y-2">
 									<li className="flex items-center">
 										<CheckIcon className="mr-2 h-4 w-4 text-green-500" />
-										{t('marketing.pricing.feature1')}
+										{t('marketing.pricing.pro.features.1')}
 									</li>
 									<li className="flex items-center">
 										<CheckIcon className="mr-2 h-4 w-4 text-green-500" />
-										{t('marketing.pricing.feature2')}
+										{t('marketing.pricing.pro.features.2')}
 									</li>
 									<li className="flex items-center">
 										<CheckIcon className="mr-2 h-4 w-4 text-green-500" />
-										{t('marketing.pricing.feature3')}
+										{t('marketing.pricing.pro.features.3')}
 									</li>
 									<li className="flex items-center">
 										<CheckIcon className="mr-2 h-4 w-4 text-green-500" />
-										{t('marketing.pricing.feature4')}
+										{t('marketing.pricing.pro.features.4')}
 									</li>
 								</ul>
 							</CardContent>
@@ -205,36 +185,35 @@ function LandingPage() {
 						</Card>
 						<Card className="flex flex-col">
 							<CardHeader>
-								<CardTitle>
-									{t('marketing.pricing.plans.enterprise.title')}
-								</CardTitle>
+								<CardTitle>{t('marketing.pricing.enterprise.title')}</CardTitle>
 								<CardDescription>
-									{t('marketing.pricing.plans.enterprise.description')}
+									{t('marketing.pricing.enterprise.description')}
 								</CardDescription>
 							</CardHeader>
 							<CardContent className="flex-1">
 								<p className="text-4xl font-bold">
-									{t('marketing.pricing.plans.enterprise.price')}
-								</p>
-								<p className="text-sm text-muted-foreground">
-									{t('marketing.pricing.perMonth')}
+									{t('marketing.pricing.enterprise.price')}
 								</p>
 								<ul className="mt-4 space-y-2">
 									<li className="flex items-center">
 										<CheckIcon className="mr-2 h-4 w-4 text-green-500" />
-										{t('marketing.pricing.feature1')}
+										{t('marketing.pricing.enterprise.features.1')}
 									</li>
 									<li className="flex items-center">
 										<CheckIcon className="mr-2 h-4 w-4 text-green-500" />
-										{t('marketing.pricing.feature2')}
+										{t('marketing.pricing.enterprise.features.2')}
 									</li>
 									<li className="flex items-center">
 										<CheckIcon className="mr-2 h-4 w-4 text-green-500" />
-										{t('marketing.pricing.feature3')}
+										{t('marketing.pricing.enterprise.features.3')}
 									</li>
 									<li className="flex items-center">
 										<CheckIcon className="mr-2 h-4 w-4 text-green-500" />
-										{t('marketing.pricing.feature4')}
+										{t('marketing.pricing.enterprise.features.4')}
+									</li>
+									<li className="flex items-center">
+										<CheckIcon className="mr-2 h-4 w-4 text-green-500" />
+										{t('marketing.pricing.enterprise.features.5')}
 									</li>
 								</ul>
 							</CardContent>
@@ -255,15 +234,15 @@ function LandingPage() {
 								{t('marketing.cta.title')}
 							</h2>
 							<p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
-								{t('marketing.cta.description')}
+								{t('marketing.cta.subtitle')}
 							</p>
 						</div>
 						<div className="space-x-4">
 							<Button asChild>
 								<Link to={auth?.user ? '/dashboard' : '/login'}>
 									{auth?.user
-										? t('marketing.cta.buttonLoggedIn')
-										: t('marketing.cta.button')}
+										? t('marketing.goToApp')
+										: t('marketing.getStarted')}
 								</Link>
 							</Button>
 						</div>

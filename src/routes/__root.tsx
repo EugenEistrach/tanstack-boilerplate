@@ -9,7 +9,7 @@ import { Body, Head, Html, Meta, Scripts } from '@tanstack/start'
 import { ThemeProvider } from 'next-themes'
 import * as React from 'react'
 
-import { IntlProvider } from 'use-intl'
+import { createTranslator, IntlProvider } from 'use-intl'
 import { Toaster } from '../components/ui/sonner'
 import { TooltipProvider } from '../components/ui/tooltip'
 import { $getSession, AuthProvider } from '../lib/auth.client'
@@ -50,12 +50,19 @@ export const Route = createRootRouteWithContext<{
 			$getI18n(),
 		])
 
+		const t = createTranslator({
+			locale,
+			timeZone: hints.timeZone,
+			messages,
+		})
+
 		if (!session) {
 			return {
 				auth: null,
 				hints,
 				locale,
 				messages,
+				t,
 			}
 		}
 
@@ -74,6 +81,7 @@ export const Route = createRootRouteWithContext<{
 			hints,
 			locale,
 			messages,
+			t,
 		}
 	},
 	meta: () => [

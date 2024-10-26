@@ -36,20 +36,18 @@ function MarketingPage() {
 						className="text-sm font-medium underline-offset-4 hover:underline"
 						href="#features"
 					>
-						{t('marketing.nav.features')}
+						{t('marketing.features.title')}
 					</a>
 					<a
 						className="text-sm font-medium underline-offset-4 hover:underline"
 						href="#pricing"
 					>
-						{t('marketing.nav.pricing')}
+						{t('marketing.pricing.title')}
 					</a>
 					<ThemeToggle />
 					<Button asChild>
 						<Link to={user ? '/dashboard' : '/login'}>
-							{user
-								? t('marketing.nav.goToApp')
-								: t('marketing.nav.getStarted')}
+							{user ? t('marketing.goToApp') : t('marketing.getStarted')}
 						</Link>
 					</Button>
 				</nav>
@@ -59,8 +57,9 @@ function MarketingPage() {
 			</main>
 			<footer className="flex w-full shrink-0 flex-col items-center gap-2 border-t px-4 py-6 sm:flex-row md:px-6">
 				<p className="text-xs text-muted-foreground">
-					{t('marketing.footer.copyright', {
+					{t('footer.copyright', {
 						year: new Date().getFullYear(),
+						companyName: 'Company Name',
 					})}
 				</p>
 				<nav className="mr-4 flex items-center gap-4 sm:ml-auto sm:mr-6 sm:gap-6">
@@ -68,13 +67,13 @@ function MarketingPage() {
 						className="text-xs underline-offset-4 hover:underline"
 						to="/terms"
 					>
-						{t('marketing.footer.termsOfService')}
+						{t('footer.termsOfService')}
 					</Link>
 					<Link
 						className="text-xs underline-offset-4 hover:underline"
 						to="/privacy"
 					>
-						{t('marketing.footer.privacyPolicy')}
+						{t('footer.privacyPolicy')}
 					</Link>
 				</nav>
 				<LocaleSwitcher />
