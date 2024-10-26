@@ -17,8 +17,7 @@
     "lint": "eslint . ",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
-    "typecheck": "tsc",
-    "postinstall": "paraglide-js compile --project ./project.inlang --outdir ./src/lib/paraglide"
+    "typecheck": "tsc"
   },
   "keywords": [],
   "author": "",
