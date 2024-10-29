@@ -1,6 +1,8 @@
 node_modules
 
 .DS_Store
+.idea
+.pnpm-store
 .history
 .output
 .vinxi

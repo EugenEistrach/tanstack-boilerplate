@@ -1,8 +1,8 @@
 import { drizzle } from 'drizzle-orm/better-sqlite3'
 
-import { env } from '../lib/env'
 import * as authSchema from './schemas/auth-schema'
 import * as onboardingSchema from './schemas/onboarding-schema'
+import { env } from '@/lib/env'
 
 export const db = drizzle({
 	connection: env.DATABASE_URL,

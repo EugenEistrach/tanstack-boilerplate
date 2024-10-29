@@ -1,7 +1,5 @@
 {
 	"sherlock.appRecommendations.ninja.enabled": true,
 	"sherlock.inlineAnnotations.enabled": true,
-	"sherlock.previewLanguageTag": "en",
-	"alias-resolver.type": "custom",
-	"alias-resolver.accessPath": ""
+	"sherlock.previewLanguageTag": "en"
 }

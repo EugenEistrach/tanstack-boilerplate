@@ -6,6 +6,38 @@ import gitignore from 'eslint-config-flat-gitignore'
 import pluginBoundaries from 'eslint-plugin-boundaries'
 import i18next from 'eslint-plugin-i18next'
 
+const noRelativeImports = {
+	meta: {
+		type: 'problem',
+		docs: {
+			description:
+				'Enforce absolute imports using @/ except for sibling and children imports',
+		},
+	},
+	create(context) {
+		return {
+			ImportDeclaration(node) {
+				const source = node.source.value
+
+				// Skip if not a relative import
+				if (!source.startsWith('.')) return
+
+				// Allow sibling and children imports
+				if (source.startsWith('./')) return
+
+				// Report parent directory imports
+				if (source.startsWith('../')) {
+					context.report({
+						node,
+						message:
+							'Use absolute imports with @/ instead of relative parent paths',
+					})
+				}
+			},
+		}
+	},
+}
+
 const enforceServerFnPrefix = {
 	meta: {
 		type: 'suggestion',
@@ -146,6 +178,15 @@ export default [
 			'boundaries/elements': [
 				{
 					mode: 'full',
+					type: 'core',
+					pattern: [
+						'src/entry.client.tsx',
+						'src/entry.server.tsx',
+						'src/router.tsx',
+					],
+				},
+				{
+					mode: 'full',
 					type: 'shared',
 					pattern: [
 						'src/components/**/*',
@@ -153,6 +194,7 @@ export default [
 						'src/drizzle/**/*',
 						'src/hooks/**/*',
 						'src/lib/**/*',
+						'src/styles/**/*',
 					],
 				},
 				{
@@ -175,7 +217,12 @@ export default [
 				{
 					mode: 'full',
 					type: 'neverImport',
-					pattern: ['src/*', 'src/tasks/**/*'],
+					pattern: ['src/*'],
+				},
+				{
+					mode: 'full',
+					type: 'tasks',
+					pattern: ['src/tasks/**/*'],
 				},
 			],
 		},
@@ -188,6 +235,14 @@ export default [
 					default: 'disallow',
 					rules: [
 						{
+							from: ['tasks'],
+							allow: ['tasks'],
+						},
+						{
+							from: ['core'],
+							allow: ['*'],
+						},
+						{
 							from: ['shared'],
 							allow: ['shared'],
 						},
@@ -199,8 +254,12 @@ export default [
 							],
 						},
 						{
-							from: ['routes', 'neverImport'],
+							from: ['routes', 'neverImport', 'tasks'],
 							allow: ['shared', 'feature'],
+						},
+						{
+							from: ['email'],
+							allow: ['email', 'shared'],
 						},
 						{
 							from: ['routes'],
@@ -209,6 +268,27 @@ export default [
 					],
 				},
 			],
+		},
+	},
+	{
+		files: ['**/*.{js,jsx,ts,tsx}'],
+		settings: {
+			'import/resolver': {
+				typescript: {},
+			},
+		},
+	},
+	{
+		files: ['**/*.{js,jsx,ts,tsx}'],
+		plugins: {
+			'no-relative-imports': {
+				rules: {
+					'no-relative-imports': noRelativeImports,
+				},
+			},
+		},
+		rules: {
+			'no-relative-imports/no-relative-imports': 'error',
 		},
 	},
 ]

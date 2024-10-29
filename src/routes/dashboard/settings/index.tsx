@@ -17,7 +17,7 @@ import { Label } from '@/components/ui/label'
 import { H1, H2, Subtitle } from '@/components/ui/typography'
 
 import { db } from '@/drizzle/db'
-import { UserTable } from '@/drizzle/schemas'
+import { UserTable } from '@/drizzle/schemas/auth-schema'
 import { $requireAuthSession, useAuth } from '@/lib/auth.client'
 import { validationClient } from '@/lib/functions'
 import * as m from '@/lib/paraglide/messages'

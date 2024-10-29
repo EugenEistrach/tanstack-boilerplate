@@ -1,10 +1,9 @@
 import { InfoCircledIcon, CubeIcon } from '@radix-ui/react-icons'
 import { createFileRoute, Link, Outlet } from '@tanstack/react-router'
 
-import { LocaleSwitcher } from '../components/ui/locale-switcher'
-
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
+import { LocaleSwitcher } from '@/components/ui/locale-switcher'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
 
 import * as m from '@/lib/paraglide/messages'

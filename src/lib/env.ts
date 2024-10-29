@@ -20,6 +20,12 @@ const serverSchema = v.object({
 		v.transform((val) => val.split(',')),
 		v.array(v.pipe(v.string(), v.trim())),
 	),
+	DISABLE_CRONJOBS: v.optional(
+		v.pipe(
+			v.string(),
+			v.transform((val) => val === 'true'),
+		),
+	),
 })
 
 // Type inference

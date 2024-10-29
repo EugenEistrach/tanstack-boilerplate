@@ -9,12 +9,12 @@ import { Body, Head, Html, Meta, Scripts } from '@tanstack/start'
 import { ThemeProvider } from 'next-themes'
 import * as React from 'react'
 
-import { Toaster } from '../components/ui/sonner'
-import { TooltipProvider } from '../components/ui/tooltip'
-import { $getSession, AuthProvider } from '../lib/auth.client'
-import { $getHints, ClientHintChecker } from '../lib/client-hints'
+import { Toaster } from '@/components/ui/sonner'
+import { TooltipProvider } from '@/components/ui/tooltip'
+import { $getSession, AuthProvider } from '@/lib/auth.client'
+import { $getHints, ClientHintChecker } from '@/lib/client-hints'
 
-import { $handleRedirectTo } from '../lib/redirect'
+import { $handleRedirectTo } from '@/lib/redirect'
 
 import { TimezoneContext } from '@/lib/timezone'
 import appCss from '@/styles/globals.css?url'
@@ -40,7 +40,6 @@ const TanStackRouterDevtools =
 
 export const Route = createRootRouteWithContext<{
 	queryClient: QueryClient
-	breadcrumb?: string
 }>()({
 	beforeLoad: async () => {
 		await $handleRedirectTo()
