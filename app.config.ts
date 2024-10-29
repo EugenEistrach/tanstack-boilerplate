@@ -2,12 +2,6 @@ import { paraglide } from '@inlang/paraglide-js-adapter-vite'
 import { defineConfig } from '@tanstack/start/config'
 import viteTsConfigPaths from 'vite-tsconfig-paths'
 
-const viteEnvVariables = Object.fromEntries(
-	Object.entries(process.env)
-		.filter(([key]) => key.startsWith('VITE_'))
-		.map(([key, value]) => [`import.meta.env.${key}`, JSON.stringify(value)]),
-)
-
 export default defineConfig({
 	vite: {
 		plugins: [
@@ -19,9 +13,6 @@ export default defineConfig({
 				outdir: './src/lib/paraglide', //Where you want the generated files to be placed
 			}),
 		],
-		define: {
-			...viteEnvVariables,
-		},
 	},
 	server: {
 		preset: 'node-server',

@@ -1,6 +1,6 @@
 import { sqliteTable } from 'drizzle-orm/sqlite-core'
-import { dateTableFields, textId } from '../table-fields'
-import { UserTable } from './auth-schema'
+import { UserTable } from '@/drizzle/schemas/auth-schema'
+import { dateTableFields, textId } from '@/drizzle/table-fields'
 
 export const OnboardingInfoTable = sqliteTable('user_onboarding_info', (t) => ({
 	id: textId(),

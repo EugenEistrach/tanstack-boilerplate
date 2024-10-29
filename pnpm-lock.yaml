@@ -12,8 +12,8 @@ importers:
         specifier: ^1.3.5
         version: 1.3.5
       '@hookform/resolvers':
-        specifier: ^3.9.0
-        version: 3.9.0(react-hook-form@7.53.1(react@18.3.1))
+        specifier: ^3.9.1
+        version: 3.9.1(react-hook-form@7.53.1(react@18.3.1))
       '@inlang/paraglide-js-adapter-vite':
         specifier: ^1.2.40
         version: 1.2.40
@@ -66,23 +66,23 @@ importers:
         specifier: ^5.59.16
         version: 5.59.16(@tanstack/react-query@5.59.16(react@18.3.1))(react@18.3.1)
       '@tanstack/react-router':
-        specifier: ^1.76.3
-        version: 1.76.3(@tanstack/router-generator@1.74.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^1.77.6
+        version: 1.77.6(@tanstack/router-generator@1.74.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@tanstack/react-router-with-query':
-        specifier: ^1.76.3
-        version: 1.76.3(@tanstack/react-query@5.59.16(react@18.3.1))(@tanstack/react-router@1.76.3(@tanstack/router-generator@1.74.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^1.77.6
+        version: 1.77.6(@tanstack/react-query@5.59.16(react@18.3.1))(@tanstack/react-router@1.77.6(@tanstack/router-generator@1.74.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@tanstack/react-table':
         specifier: ^8.20.5
         version: 8.20.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@tanstack/start':
-        specifier: ^1.76.3
-        version: 1.76.3(@types/node@22.7.7)(better-sqlite3@11.5.0)(drizzle-orm@0.35.3(@libsql/client-wasm@0.14.0)(@types/better-sqlite3@7.6.11)(@types/react@18.3.12)(better-sqlite3@11.5.0)(kysely@0.27.4)(react@18.3.1))(ioredis@5.4.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(terser@5.36.0)(vite@5.4.9(@types/node@22.7.7)(terser@5.36.0))(webpack-sources@3.2.3)
+        specifier: ^1.77.6
+        version: 1.77.6(@types/node@22.7.7)(better-sqlite3@11.5.0)(drizzle-orm@0.35.3(@libsql/client-wasm@0.14.0)(@types/better-sqlite3@7.6.11)(@types/react@18.3.12)(better-sqlite3@11.5.0)(kysely@0.27.4)(react@18.3.1))(ioredis@5.4.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(terser@5.36.0)(vite@5.4.9(@types/node@22.7.7)(terser@5.36.0))(webpack-sources@3.2.3)
       '@vitejs/plugin-react':
         specifier: ^4.3.3
         version: 4.3.3(vite@5.4.9(@types/node@22.7.7)(terser@5.36.0))
       better-auth:
-        specifier: 0.5.4-beta.6
-        version: 0.5.4-beta.6(react@18.3.1)(solid-js@1.9.2)(vue@3.5.12(typescript@5.6.3))
+        specifier: 0.6.2
+        version: 0.6.2(react@18.3.1)(solid-js@1.9.2)(vue@3.5.12(typescript@5.6.3))
       better-sqlite3:
         specifier: ^11.5.0
         version: 11.5.0
@@ -105,8 +105,8 @@ importers:
         specifier: ^11.11.10
         version: 11.11.10(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       lucide-react:
-        specifier: ^0.453.0
-        version: 0.453.0(react@18.3.1)
+        specifier: ^0.454.0
+        version: 0.454.0(react@18.3.1)
       next-themes:
         specifier: ^0.3.0
         version: 0.3.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -135,8 +135,8 @@ importers:
         specifier: ^1.0.7
         version: 1.0.7(tailwindcss@3.4.14)
       tsx:
-        specifier: ^4.19.1
-        version: 4.19.1
+        specifier: ^4.19.2
+        version: 4.19.2
       valibot:
         specifier: 1.0.0-beta.2
         version: 1.0.0-beta.2(typescript@5.6.3)
@@ -150,6 +150,9 @@ importers:
       '@flydotio/dockerfile':
         specifier: ^0.5.9
         version: 0.5.9
+      '@inlang/cli':
+        specifier: ^2.18.1
+        version: 2.18.1
       '@inlang/paraglide-js':
         specifier: 1.11.3
         version: 1.11.3
@@ -160,8 +163,8 @@ importers:
         specifier: ^1.74.5
         version: 1.74.5(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3)
       '@tanstack/router-devtools':
-        specifier: ^1.76.3
-        version: 1.76.3(@tanstack/react-router@1.76.3(@tanstack/router-generator@1.74.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(csstype@3.1.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^1.77.6
+        version: 1.77.6(@tanstack/react-router@1.77.6(@tanstack/router-generator@1.74.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(csstype@3.1.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@types/better-sqlite3':
         specifier: ^7.6.11
         version: 7.6.11
@@ -180,9 +183,12 @@ importers:
       eslint-config-flat-gitignore:
         specifier: ^0.3.0
         version: 0.3.0(eslint@9.13.0(jiti@2.3.3))
+      eslint-import-resolver-typescript:
+        specifier: ^3.6.3
+        version: 3.6.3(@typescript-eslint/parser@8.11.0(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3))(eslint-plugin-import-x@4.3.1(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3))(eslint@9.13.0(jiti@2.3.3))
       eslint-plugin-boundaries:
         specifier: ^4.2.2
-        version: 4.2.2(@typescript-eslint/parser@8.11.0(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3))(eslint@9.13.0(jiti@2.3.3))
+        version: 4.2.2(@typescript-eslint/parser@8.11.0(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3))(eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@8.11.0(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3))(eslint-plugin-import-x@4.3.1(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3))(eslint@9.13.0(jiti@2.3.3)))(eslint@9.13.0(jiti@2.3.3))
       eslint-plugin-i18next:
         specifier: ^6.1.0
         version: 6.1.0
@@ -1268,8 +1274,8 @@ packages:
   '@hexagon/base64@1.1.28':
     resolution: {integrity: sha512-lhqDEAvWixy3bZ+UOYbPwUbBkwBq5C1LAJ/xPC8Oi+lL54oyakv/npbA0aU2hgCsx/1NUd4IBvV03+aUBWxerw==}
 
-  '@hookform/resolvers@3.9.0':
-    resolution: {integrity: sha512-bU0Gr4EepJ/EQsH/IwEzYLsT/PEj5C0ynLQ4m+GSHS+xKH4TfSelhluTgOaoc4kA5s7eCsQbM4wvZLzELmWzUg==}
+  '@hookform/resolvers@3.9.1':
+    resolution: {integrity: sha512-ud2HqmGBM0P0IABqoskKWI6PEf6ZDDBZkFqe2Vnl+mTHCEHzr3ISjjZyCwTjC/qpL25JC9aIDkloQejvMeq0ug==}
     peerDependencies:
       react-hook-form: ^7.0.0
 
@@ -1288,6 +1294,11 @@ packages:
   '@humanwhocodes/retry@0.3.1':
     resolution: {integrity: sha512-JBxkERygn7Bv/GbN5Rv8Ul6LVknS+5Bp6RgDC/O8gEBU/yeH5Ui5C/OlWrTb6qct7LjjfT6Re2NxB0ln0yYybA==}
     engines: {node: '>=18.18'}
+
+  '@inlang/cli@2.18.1':
+    resolution: {integrity: sha512-6C/w7M9PbIs43GTheitckZCsW8Qc6F//S0iWCVL4BY2yIMXJJq1MLv3QC3qPkAHy+wpkJAnLPMnzyCJZBW50EQ==}
+    engines: {node: '>=18.0.0'}
+    hasBin: true
 
   '@inlang/detect-json-formatting@1.0.0':
     resolution: {integrity: sha512-o0jeI8U4TgNlsPwI0y92jld8/18Loh2KEgHCYCJ42rCOdxFrA8R60cydlEd2/6jkdHFn5DxKj8rOyiKv3z9uOw==}
@@ -1439,8 +1450,8 @@ packages:
     peerDependencies:
       nanostores: '>=0.10'
 
-  '@nanostores/react@0.7.3':
-    resolution: {integrity: sha512-/XuLAMENRu/Q71biW4AZ4qmU070vkZgiQ28gaTSNRPm2SZF5zGAR81zPE1MaMB4SeOp6ZTst92NBaG75XSspNg==}
+  '@nanostores/react@0.8.0':
+    resolution: {integrity: sha512-MhbVB7NQLboq/Z9fRTDen9zib/YCffe6mn+3Xg5MOYByMX5Xx98SOZjk/Nd3yvOd/g7GjlQqwXj0KF2lPb6CEQ==}
     engines: {node: ^18.0.0 || >=20.0.0}
     peerDependencies:
       nanostores: ^0.9.0 || ^0.10.0 || ^0.11.0
@@ -1727,6 +1738,10 @@ packages:
   '@nodelib/fs.walk@1.2.8':
     resolution: {integrity: sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg==}
     engines: {node: '>= 8'}
+
+  '@nolyfill/is-core-module@1.0.39':
+    resolution: {integrity: sha512-nn5ozdjYQpUCZlWGuxcJY/KpxkWQs4DcbMCmKojjyrYDEAGy4Ce19NN4v5MduafTwJlbKc99UA8YhSVqq9yPZA==}
+    engines: {node: '>=12.4.0'}
 
   '@octokit/app@14.1.0':
     resolution: {integrity: sha512-g3uEsGOQCBl1+W1rgfwoRFUIR6PtvB2T1E4RpygeUU5LrLvlOqcxrt5lfykIeRpUPpupreGJUYl70fqMDXdTpw==}
@@ -2714,8 +2729,8 @@ packages:
     peerDependencies:
       react: ^18 || ^19
 
-  '@tanstack/react-router-with-query@1.76.3':
-    resolution: {integrity: sha512-k15CLVeDBe7EaoMnsLRvXaxwmXwMKm7w9dL+e3x4pi/3ATXz+p2OSVv1lQsYwNIwFQGN8aooD0CyGBBiZOmpPg==}
+  '@tanstack/react-router-with-query@1.77.6':
+    resolution: {integrity: sha512-FeY/OJbBarPD5MF7HVto5k2qGnDb/O8gA/Q+pel6R7KZTXvjU4QFU+u5sAmuedHn0p+8sL6Nvd2fBvnqTXwKbw==}
     engines: {node: '>=12'}
     peerDependencies:
       '@tanstack/react-query': '>=5.49.2'
@@ -2723,8 +2738,8 @@ packages:
       react: '>=18'
       react-dom: '>=18'
 
-  '@tanstack/react-router@1.76.3':
-    resolution: {integrity: sha512-1ORoGN2crarV6blPBQ8tbf2YTwGX7Gw2eRwTLHY/8zKPwxZQb+TCIUu47ABoUjqw0lVUIrFUDPav+pdQJBF4lg==}
+  '@tanstack/react-router@1.77.6':
+    resolution: {integrity: sha512-0YLpnSjoLdR2qrPAU3C2TkSN7lWIODjXKbod97wPL4gKm5ubBzRtF7K4CCUAT3a+vqIWmSuCYaFWqMlDs4HNnA==}
     engines: {node: '>=12'}
     peerDependencies:
       '@tanstack/router-generator': 1.74.2
@@ -2747,11 +2762,11 @@ packages:
       react: '>=16.8'
       react-dom: '>=16.8'
 
-  '@tanstack/router-devtools@1.76.3':
-    resolution: {integrity: sha512-r0meAw47MBnjmTBd7kwqQsOhFAvWjCHCjy1U9hoiC/pU/gCwJEHgtMkb0A7cQ1ByNWf8V7wr7US/BRF0mCqgRg==}
+  '@tanstack/router-devtools@1.77.6':
+    resolution: {integrity: sha512-2u+3+jQPo4WR/dqwTdvP7+UW8ptYTWflaWBLrd1Q1CoXfQz6SF3weiNELLROh63iUxoo0jnQ3aCAlKjHzs6Y9Q==}
     engines: {node: '>=12'}
     peerDependencies:
-      '@tanstack/react-router': ^1.76.3
+      '@tanstack/react-router': ^1.77.6
       react: '>=18'
       react-dom: '>=18'
 
@@ -2759,8 +2774,8 @@ packages:
     resolution: {integrity: sha512-S69fXvYcL+tQsO5Fe9ju/XVa/hZvk4pCaWbtoR2MNjIgR2RmjiFKOgXYeLRMNom/IpP/HAQmQ3m1DwU9jjSUKA==}
     engines: {node: '>=12'}
 
-  '@tanstack/router-plugin@1.76.0':
-    resolution: {integrity: sha512-5JY1NeNbxi7jamTKTAWLyyC9t4Y9Ol+vFZB84h6F1K1BkxqeWQTCJuXMYCY3KawSd7xy2mVT/BgDyZ0AS5hKAA==}
+  '@tanstack/router-plugin@1.76.4':
+    resolution: {integrity: sha512-yfaDAFLOkb7WWnL/NolPzYbTjkJX/oPopYwf+wRxdnqkQeil90zh2XupGrw40N/FopM1CWBr+FOmsAEP3u8oxA==}
     engines: {node: '>=12'}
     peerDependencies:
       '@rsbuild/core': '>=1.0.2'
@@ -2778,8 +2793,8 @@ packages:
     resolution: {integrity: sha512-ZWGlNqF7vAiEOMQxxFQvzzcc/MIcT2l1xBz5mkjzTR4rrsLumaTXd8++LPoGD57NmlaGncBkGkiTiDMWZn1cFw==}
     engines: {node: '>=12'}
 
-  '@tanstack/start@1.76.3':
-    resolution: {integrity: sha512-G7vsqpdr9fO8s42YJHYwXXmfEMZVsjE9dbtKkT8D0mbguN6gohz3NAS6TkLUk1zkU36p7qTo5bxNZSWS96040Q==}
+  '@tanstack/start@1.77.6':
+    resolution: {integrity: sha512-pu4wOCSP3aw+54T6plqtWbcRps2wFesCbpMVoDX6KgGEr9nIWKjT1Qu4r07lYaTIMrg/acw99NBtM17a0Rm3Gw==}
     engines: {node: '>=12'}
     peerDependencies:
       react: '>=18.0.0 || >=19.0.0'
@@ -3234,11 +3249,11 @@ packages:
   before-after-hook@2.2.3:
     resolution: {integrity: sha512-NzUnlZexiaH/46WDhANlyR2bXRopNg4F/zuSA3OpZnllCUgRaOF2znDioDWrmbNVsuZk6l9pMquQB38cfBZwkQ==}
 
-  better-auth@0.5.4-beta.6:
-    resolution: {integrity: sha512-oI3gDy2NFgbRROtruD5oBCKdrNnS+gumTsIvEwzOiPujNU38SECpmZg9M6nsfBnFPT8Hh6zFuk9VZb+iIODm/w==}
+  better-auth@0.6.2:
+    resolution: {integrity: sha512-7lh0ph5eXnoyMDs9hbL32hrY+e/y7Abk0IHtCS5h0fbObZNA1Uv2uW4G89RuHQG30LI7VeB4klYGn6Qcs74DrA==}
 
-  better-call@0.2.11:
-    resolution: {integrity: sha512-Hl9+dYCqUcadp/jzE72HYwg8afhK/R8joACyy8XIlLUMlrgUoRvDvJnWbu7HWPBEjkDUM+xGWYxYCHHSTi9Cxw==}
+  better-call@0.2.13:
+    resolution: {integrity: sha512-Y1rOwUtTYeH4usW7XNqonoo+Dtcb2sXL6m6zcLsgTYSD2ANqyELxkeA8BkCTWonN1y+Pt9CMbcn5vILaPohdUg==}
 
   better-sqlite3@11.5.0:
     resolution: {integrity: sha512-e/6eggfOutzoK0JWiU36jsisdWoHOfN9iWiW/SieKvb7SAa6aGNmBM/UKyp+/wWSXpLlWNN8tCPwoDNPhzUvuQ==}
@@ -3849,6 +3864,10 @@ packages:
     resolution: {integrity: sha512-C5Pn8Wk+1vKBoHghJODM63yk8MvrO9EWZUfkAt5HAqIgPE4/8FF0PEGHXtEd40l223+cE5ABWuPzm38PHFXfMA==}
     engines: {node: '>=10.2.0'}
 
+  enhanced-resolve@5.17.1:
+    resolution: {integrity: sha512-LMHl3dXhTcfv8gM4kEzIUeTQ+7fpdA0l2tUf34BddXPkz2A5xJ5L/Pchd5BL6rdccM9QGvu0sWZzK1Z1t4wwyg==}
+    engines: {node: '>=10.13.0'}
+
   entities@4.5.0:
     resolution: {integrity: sha512-V0hjH4dGPh9Ao5p0MoRY6BVqtwCjhz6vI5LT8AJ55H+4g9/4vbHx1I54fS0XuclLhDHArPQCiMjDxjaL8fPxhw==}
     engines: {node: '>=0.12'}
@@ -3891,6 +3910,11 @@ packages:
     resolution: {integrity: sha512-H2/S7Pm8a9CL1uhp9OvjwrBh5Pvx0H8qVOxNu8Wed9Y7qv56MPtq+GGM8RJpq6glYJn9Wspr8uw7l55uyinNeg==}
     peerDependencies:
       esbuild: '>=0.12 <1'
+
+  esbuild-wasm@0.19.12:
+    resolution: {integrity: sha512-Zmc4hk6FibJZBcTx5/8K/4jT3/oG1vkGTEeKJUQFCUQKimD6Q7+adp/bdVQyYJFolMKaXkQnVZdV4O5ZaTYmyQ==}
+    engines: {node: '>=12'}
+    hasBin: true
 
   esbuild@0.18.20:
     resolution: {integrity: sha512-ceqxoedUrcayh7Y7ZX6NdbbDzGROiyVBgC4PriJThBKSVPWnnFHZAkfI1lJT8QFkOwH4qOS2SJkS4wvpGl8BpA==}
@@ -3948,6 +3972,19 @@ packages:
 
   eslint-import-resolver-node@0.3.9:
     resolution: {integrity: sha512-WFj2isz22JahUv+B788TlO3N6zL3nNJGU8CcZbPZvVEkBPaJdCV4vy5wyghty5ROFbCRnm132v8BScu5/1BQ8g==}
+
+  eslint-import-resolver-typescript@3.6.3:
+    resolution: {integrity: sha512-ud9aw4szY9cCT1EWWdGv1L1XR6hh2PaRWif0j2QjQ0pgTY/69iw+W0Z4qZv5wHahOl8isEr+k/JnyAqNQkLkIA==}
+    engines: {node: ^14.18.0 || >=16.0.0}
+    peerDependencies:
+      eslint: '*'
+      eslint-plugin-import: '*'
+      eslint-plugin-import-x: '*'
+    peerDependenciesMeta:
+      eslint-plugin-import:
+        optional: true
+      eslint-plugin-import-x:
+        optional: true
 
   eslint-module-utils@2.8.1:
     resolution: {integrity: sha512-rXDXR3h7cs7dy9RNpUlQf80nX31XWJEyGq1tRMo+6GsO5VmTe4UTwtmonAD4ZkAsrfMVDA2wlGJ3790Ys+D49Q==}
@@ -4480,6 +4517,9 @@ packages:
     resolution: {integrity: sha512-gDYaKHJmnj4aWxyj6YHyXVpdQawtVLHU5cb+eztPGczf6cjuTdwve5ZIEfgXqH4e57An1D1AKf8CZ3kYrQRqYA==}
     engines: {node: '>= 0.4'}
 
+  is-bun-module@1.2.1:
+    resolution: {integrity: sha512-AmidtEM6D6NmUiLOvvU7+IePxjEjOzra2h0pSrsfSAcXwl/83zLLXDByafUJy9k/rKK0pvXMLdwKwGHlX2Ke6Q==}
+
   is-callable@1.2.7:
     resolution: {integrity: sha512-1BC0BVFhS/p0qtw6enp8e+8OD0UrK0oFLztSjNzhcKA3WDuJxxAPXzPuPtKkjEY9UUoEWlX/8fgKeu2S8i9JTA==}
     engines: {node: '>= 0.4'}
@@ -4812,8 +4852,8 @@ packages:
   lru-cache@5.1.1:
     resolution: {integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==}
 
-  lucide-react@0.453.0:
-    resolution: {integrity: sha512-kL+RGZCcJi9BvJtzg2kshO192Ddy9hv3ij+cPrVPWSRzgCWCVazoQJxOjAwgK53NomL07HB7GPHW120FimjNhQ==}
+  lucide-react@0.454.0:
+    resolution: {integrity: sha512-hw7zMDwykCLnEzgncEEjHeA6+45aeEzRYuKHuyRSOPkhko+J3ySGjGIzu+mmMfDFG1vazHepMaYFYHbTFAZAAQ==}
     peerDependencies:
       react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0-rc
 
@@ -5918,6 +5958,10 @@ packages:
     engines: {node: '>=14.0.0'}
     hasBin: true
 
+  tapable@2.2.1:
+    resolution: {integrity: sha512-GNzQvQTOIP6RyTfE2Qxb8ZVlNmw0n88vp1szwWRimP02mnTsx3Wtn5qRdqY9w2XduFNUgvOwhNnQsjwCp+kqaQ==}
+    engines: {node: '>=6'}
+
   tar-fs@2.1.1:
     resolution: {integrity: sha512-V0r2Y9scmbDRLCNex/+hYzvp/zyYjvFbHPNgVTKfQvVrb6guiE/fxP+XblDNR011utopbkex2nM4dHNV6GDsng==}
 
@@ -6006,8 +6050,8 @@ packages:
     peerDependencies:
       typescript: '>=2.8.0 || >= 3.2.0-dev || >= 3.3.0-dev || >= 3.4.0-dev || >= 3.5.0-dev || >= 3.6.0-dev || >= 3.6.0-beta || >= 3.7.0-dev || >= 3.7.0-beta'
 
-  tsx@4.19.1:
-    resolution: {integrity: sha512-0flMz1lh74BR4wOvBjuh9olbnwqCPc35OOlfyzHba0Dc+QNUeWX/Gq2YTbnwcWPO3BMd8fkzRVrHcsR+a7z7rA==}
+  tsx@4.19.2:
+    resolution: {integrity: sha512-pOUl6Vo2LUq/bSa8S5q7b91cgNSjctn9ugq/+Mvow99qW6x/UZYwzxy/3NmqoT66eHYfCVvFvACC58UBPFf28g==}
     engines: {node: '>=18.0.0'}
     hasBin: true
 
@@ -7124,7 +7168,7 @@ snapshots:
 
   '@hexagon/base64@1.1.28': {}
 
-  '@hookform/resolvers@3.9.0(react-hook-form@7.53.1(react@18.3.1))':
+  '@hookform/resolvers@3.9.1(react-hook-form@7.53.1(react@18.3.1))':
     dependencies:
       react-hook-form: 7.53.1(react@18.3.1)
 
@@ -7138,6 +7182,10 @@ snapshots:
   '@humanwhocodes/module-importer@1.0.1': {}
 
   '@humanwhocodes/retry@0.3.1': {}
+
+  '@inlang/cli@2.18.1':
+    dependencies:
+      esbuild-wasm: 0.19.12
 
   '@inlang/detect-json-formatting@1.0.0':
     dependencies:
@@ -7361,7 +7409,7 @@ snapshots:
       nanoevents: 9.1.0
       nanostores: 0.11.3
 
-  '@nanostores/react@0.7.3(nanostores@0.11.3)(react@18.3.1)':
+  '@nanostores/react@0.8.0(nanostores@0.11.3)(react@18.3.1)':
     dependencies:
       nanostores: 0.11.3
       react: 18.3.1
@@ -7559,6 +7607,8 @@ snapshots:
     dependencies:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.17.1
+
+  '@nolyfill/is-core-module@1.0.39': {}
 
   '@octokit/app@14.1.0':
     dependencies:
@@ -8537,14 +8587,14 @@ snapshots:
       '@tanstack/query-core': 5.59.16
       react: 18.3.1
 
-  '@tanstack/react-router-with-query@1.76.3(@tanstack/react-query@5.59.16(react@18.3.1))(@tanstack/react-router@1.76.3(@tanstack/router-generator@1.74.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@tanstack/react-router-with-query@1.77.6(@tanstack/react-query@5.59.16(react@18.3.1))(@tanstack/react-router@1.77.6(@tanstack/router-generator@1.74.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@tanstack/react-query': 5.59.16(react@18.3.1)
-      '@tanstack/react-router': 1.76.3(@tanstack/router-generator@1.74.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@tanstack/react-router': 1.77.6(@tanstack/router-generator@1.74.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
-  '@tanstack/react-router@1.76.3(@tanstack/router-generator@1.74.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@tanstack/react-router@1.77.6(@tanstack/router-generator@1.74.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@tanstack/history': 1.61.1
       '@tanstack/react-store': 0.5.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -8568,9 +8618,9 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
-  '@tanstack/router-devtools@1.76.3(@tanstack/react-router@1.76.3(@tanstack/router-generator@1.74.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(csstype@3.1.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@tanstack/router-devtools@1.77.6(@tanstack/react-router@1.77.6(@tanstack/router-generator@1.74.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(csstype@3.1.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@tanstack/react-router': 1.76.3(@tanstack/router-generator@1.74.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@tanstack/react-router': 1.77.6(@tanstack/router-generator@1.74.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       clsx: 2.1.1
       goober: 2.1.16(csstype@3.1.3)
       react: 18.3.1
@@ -8582,10 +8632,10 @@ snapshots:
     dependencies:
       '@tanstack/virtual-file-routes': 1.64.0
       prettier: 3.3.3
-      tsx: 4.19.1
+      tsx: 4.19.2
       zod: 3.23.8
 
-  '@tanstack/router-plugin@1.76.0(vite@5.4.9(@types/node@22.7.7)(terser@5.36.0))(webpack-sources@3.2.3)':
+  '@tanstack/router-plugin@1.76.4(vite@5.4.9(@types/node@22.7.7)(terser@5.36.0))(webpack-sources@3.2.3)':
     dependencies:
       '@babel/core': 7.25.8
       '@babel/generator': 7.25.7
@@ -8629,12 +8679,12 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@tanstack/start@1.76.3(@types/node@22.7.7)(better-sqlite3@11.5.0)(drizzle-orm@0.35.3(@libsql/client-wasm@0.14.0)(@types/better-sqlite3@7.6.11)(@types/react@18.3.12)(better-sqlite3@11.5.0)(kysely@0.27.4)(react@18.3.1))(ioredis@5.4.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(terser@5.36.0)(vite@5.4.9(@types/node@22.7.7)(terser@5.36.0))(webpack-sources@3.2.3)':
+  '@tanstack/start@1.77.6(@types/node@22.7.7)(better-sqlite3@11.5.0)(drizzle-orm@0.35.3(@libsql/client-wasm@0.14.0)(@types/better-sqlite3@7.6.11)(@types/react@18.3.12)(better-sqlite3@11.5.0)(kysely@0.27.4)(react@18.3.1))(ioredis@5.4.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(terser@5.36.0)(vite@5.4.9(@types/node@22.7.7)(terser@5.36.0))(webpack-sources@3.2.3)':
     dependencies:
       '@tanstack/react-cross-context': 1.74.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@tanstack/react-router': 1.76.3(@tanstack/router-generator@1.74.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@tanstack/react-router': 1.77.6(@tanstack/router-generator@1.74.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@tanstack/router-generator': 1.74.2
-      '@tanstack/router-plugin': 1.76.0(vite@5.4.9(@types/node@22.7.7)(terser@5.36.0))(webpack-sources@3.2.3)
+      '@tanstack/router-plugin': 1.76.4(vite@5.4.9(@types/node@22.7.7)(terser@5.36.0))(webpack-sources@3.2.3)
       '@tanstack/start-vite-plugin': 1.66.1
       '@vinxi/react': 0.2.5
       '@vinxi/react-server-dom': 0.0.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(vite@5.4.9(@types/node@22.7.7)(terser@5.36.0))
@@ -9280,18 +9330,18 @@ snapshots:
 
   before-after-hook@2.2.3: {}
 
-  better-auth@0.5.4-beta.6(react@18.3.1)(solid-js@1.9.2)(vue@3.5.12(typescript@5.6.3)):
+  better-auth@0.6.2(react@18.3.1)(solid-js@1.9.2)(vue@3.5.12(typescript@5.6.3)):
     dependencies:
       '@better-fetch/fetch': 1.1.12
       '@nanostores/query': 0.3.4(nanostores@0.11.3)
-      '@nanostores/react': 0.7.3(nanostores@0.11.3)(react@18.3.1)
+      '@nanostores/react': 0.8.0(nanostores@0.11.3)(react@18.3.1)
       '@nanostores/solid': 0.4.2(nanostores@0.11.3)(solid-js@1.9.2)
       '@nanostores/vue': 0.10.0(nanostores@0.11.3)(vue@3.5.12(typescript@5.6.3))
       '@noble/ciphers': 0.6.0
       '@noble/hashes': 1.5.0
       '@simplewebauthn/browser': 10.0.0
       '@simplewebauthn/server': 10.0.1
-      better-call: 0.2.11
+      better-call: 0.2.13
       consola: 3.2.3
       defu: 6.1.4
       jose: 5.9.6
@@ -9310,7 +9360,7 @@ snapshots:
       - solid-js
       - vue
 
-  better-call@0.2.11:
+  better-call@0.2.13:
     dependencies:
       '@better-fetch/fetch': 1.1.12
       rou3: 0.5.1
@@ -9808,6 +9858,11 @@ snapshots:
       - supports-color
       - utf-8-validate
 
+  enhanced-resolve@5.17.1:
+    dependencies:
+      graceful-fs: 4.2.11
+      tapable: 2.2.1
+
   entities@4.5.0: {}
 
   es-abstract@1.23.3:
@@ -9910,6 +9965,8 @@ snapshots:
       esbuild: 0.19.12
     transitivePeerDependencies:
       - supports-color
+
+  esbuild-wasm@0.19.12: {}
 
   esbuild@0.18.20:
     optionalDependencies:
@@ -10091,22 +10148,42 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-module-utils@2.8.1(@typescript-eslint/parser@8.11.0(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3))(eslint-import-resolver-node@0.3.9)(eslint@9.13.0(jiti@2.3.3)):
+  eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@8.11.0(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3))(eslint-plugin-import-x@4.3.1(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3))(eslint@9.13.0(jiti@2.3.3)):
+    dependencies:
+      '@nolyfill/is-core-module': 1.0.39
+      debug: 4.3.7
+      enhanced-resolve: 5.17.1
+      eslint: 9.13.0(jiti@2.3.3)
+      eslint-module-utils: 2.8.1(@typescript-eslint/parser@8.11.0(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@8.11.0(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3))(eslint-plugin-import-x@4.3.1(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3))(eslint@9.13.0(jiti@2.3.3)))(eslint@9.13.0(jiti@2.3.3))
+      fast-glob: 3.3.2
+      get-tsconfig: 4.8.1
+      is-bun-module: 1.2.1
+      is-glob: 4.0.3
+    optionalDependencies:
+      eslint-plugin-import-x: 4.3.1(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3)
+    transitivePeerDependencies:
+      - '@typescript-eslint/parser'
+      - eslint-import-resolver-node
+      - eslint-import-resolver-webpack
+      - supports-color
+
+  eslint-module-utils@2.8.1(@typescript-eslint/parser@8.11.0(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@8.11.0(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3))(eslint-plugin-import-x@4.3.1(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3))(eslint@9.13.0(jiti@2.3.3)))(eslint@9.13.0(jiti@2.3.3)):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
       '@typescript-eslint/parser': 8.11.0(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3)
       eslint: 9.13.0(jiti@2.3.3)
       eslint-import-resolver-node: 0.3.9
+      eslint-import-resolver-typescript: 3.6.3(@typescript-eslint/parser@8.11.0(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3))(eslint-plugin-import-x@4.3.1(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3))(eslint@9.13.0(jiti@2.3.3))
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-boundaries@4.2.2(@typescript-eslint/parser@8.11.0(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3))(eslint@9.13.0(jiti@2.3.3)):
+  eslint-plugin-boundaries@4.2.2(@typescript-eslint/parser@8.11.0(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3))(eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@8.11.0(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3))(eslint-plugin-import-x@4.3.1(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3))(eslint@9.13.0(jiti@2.3.3)))(eslint@9.13.0(jiti@2.3.3)):
     dependencies:
       chalk: 4.1.2
       eslint: 9.13.0(jiti@2.3.3)
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.8.1(@typescript-eslint/parser@8.11.0(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3))(eslint-import-resolver-node@0.3.9)(eslint@9.13.0(jiti@2.3.3))
+      eslint-module-utils: 2.8.1(@typescript-eslint/parser@8.11.0(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@8.11.0(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3))(eslint-plugin-import-x@4.3.1(eslint@9.13.0(jiti@2.3.3))(typescript@5.6.3))(eslint@9.13.0(jiti@2.3.3)))(eslint@9.13.0(jiti@2.3.3))
       micromatch: 4.0.7
     transitivePeerDependencies:
       - '@typescript-eslint/parser'
@@ -10709,6 +10786,10 @@ snapshots:
       call-bind: 1.0.7
       has-tostringtag: 1.0.2
 
+  is-bun-module@1.2.1:
+    dependencies:
+      semver: 7.6.3
+
   is-callable@1.2.7: {}
 
   is-core-module@2.15.1:
@@ -11023,7 +11104,7 @@ snapshots:
     dependencies:
       yallist: 3.1.1
 
-  lucide-react@0.453.0(react@18.3.1):
+  lucide-react@0.454.0(react@18.3.1):
     dependencies:
       react: 18.3.1
 
@@ -12255,6 +12336,8 @@ snapshots:
     transitivePeerDependencies:
       - ts-node
 
+  tapable@2.2.1: {}
+
   tar-fs@2.1.1:
     dependencies:
       chownr: 1.1.4
@@ -12339,7 +12422,7 @@ snapshots:
       tslib: 1.14.1
       typescript: 5.6.3
 
-  tsx@4.19.1:
+  tsx@4.19.2:
     dependencies:
       esbuild: 0.23.1
       get-tsconfig: 4.8.1

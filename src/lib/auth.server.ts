@@ -1,8 +1,8 @@
 import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 import { admin, organization } from 'better-auth/plugins'
-import { db } from '../drizzle/db'
-import { env } from './env'
+import { db } from '@/drizzle/db'
+import { env } from '@/lib/env'
 
 const github =
 	env.GITHUB_CLIENT_ID && env.GITHUB_CLIENT_SECRET
@@ -18,11 +18,7 @@ const discord =
 				clientId: env.DISCORD_CLIENT_ID,
 				clientSecret: env.DISCORD_CLIENT_SECRET,
 			}
-	 : undefined
-
-
-
-
+		: undefined
 
 export const authServer = betterAuth({
 	baseURL: env.BASE_URL,
@@ -32,7 +28,7 @@ export const authServer = betterAuth({
 	}),
 	socialProviders: {
 		...(github && { github }),
-    ...(discord && { discord }),
+		...(discord && { discord }),
 	},
 	plugins: [admin(), organization()],
 })
