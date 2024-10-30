@@ -1,13 +1,5 @@
 import { HomeIcon, CubeIcon } from '@radix-ui/react-icons'
-import {
-	createFileRoute,
-	Link,
-	type LinkOptions,
-	linkOptions,
-	Outlet,
-	redirect,
-	useLocation,
-} from '@tanstack/react-router'
+import { createFileRoute, Link, Outlet, redirect } from '@tanstack/react-router'
 import { createServerFn, useServerFn } from '@tanstack/start'
 import { ChevronsUpDown, LogOut, Settings, UsersIcon } from 'lucide-react'
 import { useState } from 'react'
@@ -24,6 +16,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { LocaleSwitcher } from '@/components/ui/locale-switcher'
 
+import { NavLink } from '@/components/ui/nav-link'
 import { Separator } from '@/components/ui/separator'
 import {
 	Sidebar,
@@ -83,38 +76,12 @@ export const Route = createFileRoute('/dashboard')({
 	component: DashboardLayout,
 })
 
-export const dashboardLinkOption = linkOptions({
-	to: '/dashboard',
-	label: m.nav_dashboard,
-	icon: HomeIcon,
-	exact: true,
-})
-
-export const mainLinkOptions = [dashboardLinkOption]
-
-const usersLinkOption = linkOptions({
-	to: '/dashboard/users',
-	label: m.nav_users,
-	icon: UsersIcon,
-})
-
-export const adminLinkOptions = [usersLinkOption]
-
 export default function DashboardLayout() {
 	const { user } = useAuth()
 	const { defaultSidebarOpen } = Route.useRouteContext()
 	const [sidebarOpen, _setSidebarOpen] = useState(defaultSidebarOpen)
 
-	const location = useLocation()
-
 	const isAdmin = user.role === 'admin'
-
-	const isActive = (item: LinkOptions) => {
-		if ('exact' in item && item.exact) {
-			return location.pathname === item.to
-		}
-		return location.pathname.startsWith(item.to ?? '')
-	}
 
 	const setSidebarOpen = async (state: boolean) => {
 		_setSidebarOpen(state)
@@ -147,40 +114,28 @@ export default function DashboardLayout() {
 					<SidebarGroup>
 						<SidebarGroupLabel>{m.nav_main()}</SidebarGroupLabel>
 						<SidebarMenu>
-							{mainLinkOptions.map((item) => (
-								<SidebarMenuItem key={item.to}>
-									<SidebarMenuButton
-										tooltip={item.label()}
-										isActive={isActive(item)}
-										asChild
-									>
-										<Link to={item.to}>
-											{item.icon && <item.icon />}
-											<span>{item.label()}</span>
-										</Link>
-									</SidebarMenuButton>
-								</SidebarMenuItem>
-							))}
+							<SidebarMenuItem>
+								<SidebarMenuButton tooltip={m.nav_dashboard()} asChild>
+									<NavLink to="/dashboard">
+										<HomeIcon />
+										<span>{m.nav_dashboard()}</span>
+									</NavLink>
+								</SidebarMenuButton>
+							</SidebarMenuItem>
 						</SidebarMenu>
 					</SidebarGroup>
 					{isAdmin && (
 						<SidebarGroup>
 							<SidebarGroupLabel>{m.nav_admin()}</SidebarGroupLabel>
 							<SidebarMenu>
-								{adminLinkOptions.map((item) => (
-									<SidebarMenuItem key={item.to}>
-										<SidebarMenuButton
-											tooltip={item.label()}
-											isActive={isActive(item)}
-											asChild
-										>
-											<Link to={item.to}>
-												{item.icon && <item.icon />}
-												<span>{item.label()}</span>
-											</Link>
-										</SidebarMenuButton>
-									</SidebarMenuItem>
-								))}
+								<SidebarMenuItem>
+									<SidebarMenuButton tooltip={m.nav_users()} asChild>
+										<NavLink to="/dashboard/admin/users">
+											<UsersIcon />
+											<span>{m.nav_users()}</span>
+										</NavLink>
+									</SidebarMenuButton>
+								</SidebarMenuItem>
 							</SidebarMenu>
 						</SidebarGroup>
 					)}
