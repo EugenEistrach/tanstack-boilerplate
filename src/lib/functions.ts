@@ -1,18 +1,4 @@
-// Some convenience stuff until the new server functions drop :D
-
 import * as v from 'valibot'
-
-// export type FlattenedError<T> = {
-// 	fieldErrors: { [K in keyof T]?: string[] }
-// 	formErrors: string[]
-// }
-
-// export class ValidationError<T> extends Error {
-// 	constructor(public errors: FlattenedError<T>) {
-// 		super('Validation Error')
-// 		this.name = 'ValidationError'
-// 	}
-// }
 
 export function createValidationClient() {
 	return {
