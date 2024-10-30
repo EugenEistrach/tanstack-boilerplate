@@ -19,7 +19,8 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "typecheck": "tsc",
-    "i18n-check": "inlang lint --project ./project.inlang"
+    "i18n-check": "inlang lint --project ./project.inlang",
+    "i18n-auto-translate": "inlang machine translate --project ./project.inlang -f"
   },
   "keywords": [],
   "author": "",
