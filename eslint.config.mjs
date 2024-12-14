@@ -140,6 +140,7 @@ export default [
 		ignores: ['src/email/**/*'], // Add this line to ignore the email folder
 		...i18next.configs['flat/recommended'],
 	},
+
 	gitignore(),
 	...pluginRouter.configs['flat/recommended'],
 	{
@@ -176,6 +177,11 @@ export default [
 		settings: {
 			'boundaries/include': ['src/**/*'],
 			'boundaries/elements': [
+				{
+					mode: 'file',
+					type: 'test-file',
+					pattern: ['**/*.test.{js,jsx,ts,tsx}'],
+				},
 				{
 					mode: 'full',
 					type: 'core',
@@ -224,6 +230,11 @@ export default [
 					type: 'tasks',
 					pattern: ['src/tasks/**/*'],
 				},
+				{
+					mode: 'full',
+					type: 'tests',
+					pattern: ['src/tests/**/*'],
+				},
 			],
 		},
 		rules: {
@@ -264,6 +275,14 @@ export default [
 						{
 							from: ['routes'],
 							allow: [['routes', { fileName: '*.css' }]],
+						},
+						{
+							from: ['tests'],
+							allow: ['*'],
+						},
+						{
+							from: ['test-file'],
+							allow: ['*'],
 						},
 					],
 				},

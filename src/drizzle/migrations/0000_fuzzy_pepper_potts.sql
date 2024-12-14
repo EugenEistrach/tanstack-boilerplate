@@ -6,8 +6,12 @@ CREATE TABLE `account` (
 	`accessToken` text,
 	`refreshToken` text,
 	`idToken` text,
-	`expiresAt` integer,
+	`accessTokenExpiresAt` integer,
+	`refreshTokenExpiresAt` integer,
+	`scope` text,
 	`password` text,
+	`createdAt` integer DEFAULT (strftime('%s', 'now')) NOT NULL,
+	`updatedAt` integer DEFAULT (strftime('%s', 'now')) NOT NULL,
 	FOREIGN KEY (`userId`) REFERENCES `user`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
@@ -19,6 +23,8 @@ CREATE TABLE `invitation` (
 	`status` text NOT NULL,
 	`expiresAt` integer NOT NULL,
 	`inviterId` text NOT NULL,
+	`createdAt` integer DEFAULT (strftime('%s', 'now')) NOT NULL,
+	`updatedAt` integer DEFAULT (strftime('%s', 'now')) NOT NULL,
 	FOREIGN KEY (`organizationId`) REFERENCES `organization`(`id`) ON UPDATE no action ON DELETE no action,
 	FOREIGN KEY (`inviterId`) REFERENCES `user`(`id`) ON UPDATE no action ON DELETE no action
 );
@@ -29,7 +35,8 @@ CREATE TABLE `member` (
 	`userId` text NOT NULL,
 	`email` text NOT NULL,
 	`role` text NOT NULL,
-	`createdAt` integer NOT NULL,
+	`createdAt` integer DEFAULT (strftime('%s', 'now')) NOT NULL,
+	`updatedAt` integer DEFAULT (strftime('%s', 'now')) NOT NULL,
 	FOREIGN KEY (`organizationId`) REFERENCES `organization`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
@@ -38,7 +45,8 @@ CREATE TABLE `organization` (
 	`name` text NOT NULL,
 	`slug` text,
 	`logo` text,
-	`createdAt` integer NOT NULL,
+	`createdAt` integer DEFAULT (strftime('%s', 'now')) NOT NULL,
+	`updatedAt` integer DEFAULT (strftime('%s', 'now')) NOT NULL,
 	`metadata` text
 );
 --> statement-breakpoint
@@ -51,17 +59,21 @@ CREATE TABLE `session` (
 	`userId` text NOT NULL,
 	`impersonatedBy` text,
 	`activeOrganizationId` text,
+	`token` text NOT NULL,
+	`createdAt` integer DEFAULT (strftime('%s', 'now')) NOT NULL,
+	`updatedAt` integer DEFAULT (strftime('%s', 'now')) NOT NULL,
 	FOREIGN KEY (`userId`) REFERENCES `user`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
+CREATE UNIQUE INDEX `session_token_unique` ON `session` (`token`);--> statement-breakpoint
 CREATE TABLE `user` (
 	`id` text PRIMARY KEY NOT NULL,
 	`name` text NOT NULL,
 	`email` text NOT NULL,
 	`emailVerified` integer NOT NULL,
 	`image` text,
-	`createdAt` integer NOT NULL,
-	`updatedAt` integer NOT NULL,
+	`createdAt` integer DEFAULT (strftime('%s', 'now')) NOT NULL,
+	`updatedAt` integer DEFAULT (strftime('%s', 'now')) NOT NULL,
 	`role` text,
 	`banned` integer,
 	`banReason` text,
@@ -73,5 +85,16 @@ CREATE TABLE `verification` (
 	`id` text PRIMARY KEY NOT NULL,
 	`identifier` text NOT NULL,
 	`value` text NOT NULL,
-	`expiresAt` integer NOT NULL
+	`expiresAt` integer NOT NULL,
+	`createdAt` integer DEFAULT (strftime('%s', 'now')) NOT NULL,
+	`updatedAt` integer DEFAULT (strftime('%s', 'now')) NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE `user_onboarding_info` (
+	`id` text PRIMARY KEY NOT NULL,
+	`userId` text,
+	`favoriteColor` text,
+	`createdAt` integer DEFAULT (strftime('%s', 'now')) NOT NULL,
+	`updatedAt` integer DEFAULT (strftime('%s', 'now')) NOT NULL,
+	FOREIGN KEY (`userId`) REFERENCES `user`(`id`) ON UPDATE no action ON DELETE no action
 );

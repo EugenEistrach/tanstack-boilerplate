@@ -1,20 +1,13 @@
 {
-	"version": "7",
-	"dialect": "sqlite",
-	"entries": [
-		{
-			"idx": 0,
-			"version": "6",
-			"when": 1729448588063,
-			"tag": "0000_bent_misty_knight",
-			"breakpoints": true
-		},
-		{
-			"idx": 1,
-			"version": "6",
-			"when": 1729537481995,
-			"tag": "0001_damp_marvel_apes",
-			"breakpoints": true
-		}
-	]
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1733561871121,
+      "tag": "0000_fuzzy_pepper_potts",
+      "breakpoints": true
+    }
+  ]
 }

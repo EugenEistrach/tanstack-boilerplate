@@ -4,7 +4,9 @@ import { createAuthClient } from 'better-auth/client'
 import { adminClient, organizationClient } from 'better-auth/client/plugins'
 import { createContext, useContext } from 'react'
 import { getWebRequest } from 'vinxi/http'
-import { authServer } from './auth.server'
+import { authServer } from '@/lib/server/auth.server'
+
+import { getVinxiSession } from '@/lib/server/session.server'
 
 export const authClient = createAuthClient({
 	plugins: [adminClient(), organizationClient()],
@@ -41,48 +43,52 @@ export const useOptionalAuth = () => {
 	return useContext(AuthContext)
 }
 
-export const $getSession = createServerFn('GET', async () => {
-	try {
+export const $getSession = createServerFn({ method: 'GET' }).handler(
+	async () => {
+		try {
+			const request = getWebRequest()
+			const session = await authServer.api.getSession({
+				headers: request.headers,
+			})
+			return session
+		} catch (error) {
+			console.error(error)
+			return null
+		}
+	},
+)
+
+export const $getVinxiSession = createServerFn({ method: 'GET' }).handler(
+	async () => {
+		const session = await getVinxiSession()
+		return session.data
+	},
+)
+
+export const $requireAuthSession = createServerFn({ method: 'GET' }).handler(
+	async () => {
 		const request = getWebRequest()
-		const session = await authServer.api.getSession({
-			headers: request.headers,
-		})
-		return session
-	} catch (error) {
-		console.error(error)
-		return null
-	}
-})
+		const auth = await authServer.api.getSession({ headers: request.headers })
 
-export const $requireAuthSession = createServerFn('GET', async () => {
-	const request = getWebRequest()
-	const auth = await authServer.api.getSession({ headers: request.headers })
+		const redirectToPath = new URL(request.url).pathname
 
-	const redirectToPath = new URL(request.url).pathname
+		if (!auth) {
+			throw redirect({
+				to: '/login',
+				search: {
+					redirectTo: redirectToPath,
+				},
+			})
+		}
 
-	if (!auth) {
-		throw redirect({
-			to: '/login',
-			search: {
-				redirectTo: redirectToPath,
-			},
-		})
-	}
+		return {
+			session: auth.session,
+			user: auth.user,
+		}
+	},
+)
 
-	return {
-		session: {
-			...auth.session,
-			expiresAt: auth.session.expiresAt.toISOString(),
-		},
-		user: {
-			...auth.user,
-			createdAt: auth.user.createdAt.toISOString(),
-			updatedAt: auth.user.updatedAt.toISOString(),
-		},
-	}
-})
-
-export const $logout = createServerFn('POST', async () => {
+export const $logout = createServerFn({ method: 'POST' }).handler(async () => {
 	const request = getWebRequest()
 	await authServer.api.signOut({ headers: request.headers })
 	throw redirect({ to: '/login' })

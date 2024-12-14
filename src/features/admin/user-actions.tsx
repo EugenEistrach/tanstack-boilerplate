@@ -8,7 +8,7 @@ import {
 	DropdownMenuLabel,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { useAuth } from '@/lib/auth.client'
+import { useAuth } from '@/lib/dd/auth.client'
 import * as m from '@/lib/paraglide/messages'
 
 export const UserActions = ({ user }: { user: UserWithRole }) => {

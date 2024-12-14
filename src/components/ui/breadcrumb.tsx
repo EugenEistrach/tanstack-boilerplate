@@ -3,7 +3,7 @@ import { Slot } from '@radix-ui/react-slot'
 import * as React from 'react'
 
 import * as m from '@/lib/paraglide/messages'
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/shared/utils'
 
 const Breadcrumb = React.forwardRef<
 	HTMLElement,

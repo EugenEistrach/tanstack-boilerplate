@@ -10,7 +10,7 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { useChangeLocaleMutation } from '@/lib/i18n'
+import { useChangeLocaleMutation } from '@/lib/dd/i18n.client'
 import { availableLanguageTags, languageTag } from '@/lib/paraglide/runtime'
 
 const labels = {
@@ -39,15 +39,18 @@ export function LocaleSwitcher() {
 						key={availableTag}
 						onClick={(event) => {
 							event.preventDefault()
-							changeLocaleMutation.mutate(availableTag, {
-								onSettled: () => {
-									// Close the dropdown after short delay to prevent
-									// flickering when clicking on the trigger`
-									setTimeout(() => {
-										setOpen(false)
-									}, 100)
+							changeLocaleMutation.mutate(
+								{ data: { locale: availableTag } },
+								{
+									onSettled: () => {
+										// Close the dropdown after short delay to prevent
+										// flickering when clicking on the trigger`
+										setTimeout(() => {
+											setOpen(false)
+										}, 100)
+									},
 								},
-							})
+							)
 						}}
 					>
 						{labels[availableTag]}

@@ -1,5 +1,6 @@
+import { sql } from 'drizzle-orm'
 import { text, customType } from 'drizzle-orm/sqlite-core'
-import { cuid } from '@/lib/utils'
+import { cuid } from '@/lib/shared/utils'
 
 export const dateString = customType<{
 	data: string
@@ -19,10 +20,10 @@ export const dateString = customType<{
 export const dateTableFields = {
 	createdAt: dateString()
 		.notNull()
-		.$default(() => new Date().toISOString()),
+		.default(sql`(strftime('%s', 'now'))`),
 	updatedAt: dateString()
 		.notNull()
-		.$default(() => new Date().toISOString())
+		.default(sql`(strftime('%s', 'now'))`)
 		.$onUpdate(() => new Date().toISOString()),
 }
 

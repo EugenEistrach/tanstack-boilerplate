@@ -18,24 +18,21 @@ import { H1, H2, Subtitle } from '@/components/ui/typography'
 
 import { db } from '@/drizzle/db'
 import { UserTable } from '@/drizzle/schemas/auth-schema'
-import { $requireAuthSession, useAuth } from '@/lib/auth.client'
-import { validationClient } from '@/lib/functions'
+import { $requireAuthSession, useAuth } from '@/lib/dd/auth.client'
+
 import * as m from '@/lib/paraglide/messages'
 
 const updateNameSchema = v.object({
 	name: v.pipe(v.string(), v.nonEmpty(m.name_required)),
 })
 
-const $updateName = createServerFn(
-	'POST',
-	validationClient
-		.input(updateNameSchema)
-		.handler(async ({ parsedInput: { name } }) => {
-			const { user } = await $requireAuthSession()
-			await db.update(UserTable).set({ name }).where(eq(UserTable.id, user.id))
-			return { success: true }
-		}),
-)
+const $updateName = createServerFn({ method: 'POST' })
+	.validator(updateNameSchema)
+	.handler(async ({ data: { name } }) => {
+		const { user } = await $requireAuthSession()
+		await db.update(UserTable).set({ name }).where(eq(UserTable.id, user.id))
+		return { success: true }
+	})
 
 export const Route = createFileRoute('/dashboard/settings/')({
 	component: () => <Settings />,
@@ -64,7 +61,7 @@ function Settings() {
 	})
 
 	const onSubmit = (data: v.InferOutput<typeof updateNameSchema>) => {
-		updateNameMutation.mutate(data)
+		updateNameMutation.mutate({ data })
 		toast.success(m.profile_update_success())
 	}
 
@@ -85,7 +82,7 @@ function Settings() {
 					<CardContent className="p-6">
 						<div className="flex items-start space-x-6">
 							<Avatar className="h-20 w-20">
-								<AvatarImage src={user.image} alt={user.name} />
+								<AvatarImage src={user.image ?? ''} alt={user.name ?? ''} />
 								<AvatarFallback>{user.name?.charAt(0)}</AvatarFallback>
 							</Avatar>
 							<div className="flex-grow space-y-4">
