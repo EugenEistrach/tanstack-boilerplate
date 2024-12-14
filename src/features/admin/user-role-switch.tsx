@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { type UserWithRole } from 'better-auth/plugins'
 import { listUsersQueryOptions } from './users-list'
 import { Switch } from '@/components/ui/switch'
-import { authClient, useAuth } from '@/lib/dd/auth.client'
+import { authClient, useAuth } from '@/lib/client/auth.client'
 
 export const UserRoleSwitch = ({ user }: { user: UserWithRole }) => {
 	const { user: currentUser } = useAuth()

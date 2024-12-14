@@ -15,13 +15,13 @@ import {
 	$getSession,
 	$getVinxiSession,
 	AuthProvider,
-} from '@/lib/dd/auth.client'
-import { $getHints, ClientHintChecker } from '@/lib/dd/client-hints.client'
+} from '@/lib/client/auth.client'
+import { $getHints, ClientHintChecker } from '@/lib/client/client-hints.client'
 
-import { useLocale } from '@/lib/dd/i18n.client'
-import { $handleRedirectTo } from '@/lib/dd/redirect.client'
+import { useLocale } from '@/lib/client/i18n.client'
+import { $handleRedirectTo } from '@/lib/client/redirect.client'
 
-import { TimezoneContext } from '@/lib/dd/timezone.client'
+import { TimezoneContext } from '@/lib/client/timezone.client'
 import appCss from '@/styles/globals.css?url'
 
 const TanStackRouterDevtools =

@@ -38,7 +38,7 @@ import {
 
 import { ThemeToggle } from '@/components/ui/theme-toggle'
 import { $requireOnboardingInfo } from '@/features/onboarding/ui/onboarding-form.fullstack'
-import { useAuth, $logout } from '@/lib/dd/auth.client'
+import { useAuth, $logout } from '@/lib/client/auth.client'
 import * as m from '@/lib/paraglide/messages'
 import { getVinxiSession } from '@/lib/server/session.server'
 

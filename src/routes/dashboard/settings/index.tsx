@@ -18,7 +18,7 @@ import { H1, H2, Subtitle } from '@/components/ui/typography'
 
 import { db } from '@/drizzle/db'
 import { UserTable } from '@/drizzle/schemas/auth-schema'
-import { $requireAuthSession, useAuth } from '@/lib/dd/auth.client'
+import { $requireAuthSession, useAuth } from '@/lib/client/auth.client'
 
 import * as m from '@/lib/paraglide/messages'
 
