@@ -30,7 +30,7 @@ import {
 	completeOnboarding,
 	getOnboardingInfo,
 } from '@/features/onboarding/domain/onboarding.server'
-import { $requireAuthSession, useAuth } from '@/lib/dd/auth.client'
+import { $requireAuthSession, useAuth } from '@/lib/client/auth.client'
 
 import * as m from '@/lib/paraglide/messages'
 

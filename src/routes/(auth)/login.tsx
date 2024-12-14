@@ -8,8 +8,8 @@ import {
 	CardHeader,
 	CardTitle,
 } from '@/components/ui/card'
-import { authClient } from '@/lib/dd/auth.client'
-import { $setRedirectTo } from '@/lib/dd/redirect.client'
+import { authClient } from '@/lib/client/auth.client'
+import { $setRedirectTo } from '@/lib/client/redirect.client'
 import * as m from '@/lib/paraglide/messages'
 
 export const Route = createFileRoute('/(auth)/login')({

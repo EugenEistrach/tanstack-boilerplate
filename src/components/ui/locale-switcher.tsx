@@ -10,7 +10,7 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { useChangeLocaleMutation } from '@/lib/dd/i18n.client'
+import { useChangeLocaleMutation } from '@/lib/client/i18n.client'
 import { availableLanguageTags, languageTag } from '@/lib/paraglide/runtime'
 
 const labels = {
