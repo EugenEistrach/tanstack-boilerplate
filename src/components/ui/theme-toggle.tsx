@@ -1,21 +1,41 @@
 'use client'
 
+import { subscribeToSchemeChange } from '@epic-web/client-hints/color-scheme'
 import { SunIcon, MoonIcon } from '@radix-ui/react-icons'
-import { useTheme } from 'next-themes'
 
-import { Button } from './button'
+import { useRouter } from '@tanstack/react-router'
+import { createServerFn } from '@tanstack/start'
+import { useEffect } from 'react'
+import * as v from 'valibot'
+
+import { Button } from '@/components/ui/button'
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuTrigger,
-} from './dropdown-menu'
+} from '@/components/ui/dropdown-menu'
 import * as m from '@/lib/paraglide/messages'
 
-import { cn } from '@/lib/utils'
+import { getVinxiSession } from '@/lib/server/session.server'
+import { cn } from '@/lib/shared/utils'
+
+const $setTheme = createServerFn({ method: 'POST' })
+	.validator(v.object({ theme: v.picklist(['light', 'dark', 'system']) }))
+	.handler(async ({ data: { theme } }) => {
+		const session = await getVinxiSession()
+		await session.update({ theme: theme === 'system' ? undefined : theme })
+	})
 
 export function ThemeToggle({ className }: { className?: string }) {
-	const { setTheme } = useTheme()
+	const router = useRouter()
+
+	useEffect(() => subscribeToSchemeChange(() => router.invalidate()), [router])
+
+	const setTheme = async (theme: 'light' | 'dark' | 'system') => {
+		await $setTheme({ data: { theme } })
+		await router.invalidate()
+	}
 
 	return (
 		<DropdownMenu>

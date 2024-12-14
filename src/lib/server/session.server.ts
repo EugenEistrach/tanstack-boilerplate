@@ -1,9 +1,10 @@
 import { useSession } from 'vinxi/http'
-import { env } from './env'
+import { env } from '@/lib/server/env.server'
 
 interface Session {
 	redirectTo?: string
 	sidebarOpen?: boolean
+	theme?: 'light' | 'dark'
 }
 
 export async function getVinxiSession() {

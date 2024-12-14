@@ -4,6 +4,11 @@ import viteTsConfigPaths from 'vite-tsconfig-paths'
 
 export default defineConfig({
 	vite: {
+		define: {
+			'process.env.MOCKS': JSON.stringify(process.env['MOCKS']),
+			'process.env.CI': JSON.stringify(process.env['CI']),
+			'process.env.NODE_ENV': JSON.stringify(process.env['NODE_ENV']),
+		},
 		plugins: [
 			viteTsConfigPaths({
 				projects: ['./tsconfig.json'],

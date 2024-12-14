@@ -2,7 +2,7 @@ import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 import { admin, organization } from 'better-auth/plugins'
 import { db } from '@/drizzle/db'
-import { env } from '@/lib/env'
+import { env } from '@/lib/server/env.server'
 
 const github =
 	env.GITHUB_CLIENT_ID && env.GITHUB_CLIENT_SECRET

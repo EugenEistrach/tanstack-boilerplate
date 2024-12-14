@@ -16,7 +16,7 @@ import {
 } from '@/components/ui/tooltip'
 import { useIsMobile } from '@/hooks/use-mobile'
 import * as m from '@/lib/paraglide/messages'
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/shared/utils'
 
 const SIDEBAR_WIDTH = '16rem'
 const SIDEBAR_WIDTH_MOBILE = '18rem'

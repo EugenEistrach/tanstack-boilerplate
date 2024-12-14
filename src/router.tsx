@@ -5,25 +5,12 @@ import {
 	Link,
 } from '@tanstack/react-router'
 import { routerWithQueryClient } from '@tanstack/react-router-with-query'
+
+import { NotFound } from './components/not-found'
 import { routeTree } from './routeTree.gen'
 import * as m from '@/lib/paraglide/messages'
 
-const NotFoundPage = () => (
-	<div className="flex min-h-screen flex-col items-center justify-center bg-background">
-		<h1 className="mb-4 text-6xl font-bold text-foreground">404</h1>
-		<p className="mb-8 text-xl text-muted-foreground">
-			{m.equal_blue_boar_tickle()}
-		</p>
-		<Link
-			to="/"
-			className="rounded-lg bg-primary px-6 py-3 text-primary-foreground transition-colors hover:bg-primary/90"
-		>
-			{m.male_brave_alligator_type()}
-		</Link>
-	</div>
-)
-
-const ErrorPage = ({ error, info }: ErrorComponentProps) => (
+export const ErrorPage = ({ error }: ErrorComponentProps) => (
 	<div className="flex min-h-screen flex-col items-center justify-center bg-background p-4">
 		<h1 className="mb-4 text-6xl font-bold text-destructive">500</h1>
 		<p className="mb-4 text-xl text-muted-foreground">
@@ -34,22 +21,6 @@ const ErrorPage = ({ error, info }: ErrorComponentProps) => (
 			<p className="mb-2 text-sm">
 				<strong>{m.extra_caring_zebra_advise()}</strong> {error.message}
 			</p>
-			{error.stack && (
-				<div className="mb-2">
-					{/* eslint-disable-next-line i18next/no-literal-string */}
-					<strong className="text-sm">Stack:</strong>
-					<pre className="whitespace-pre-wrap text-xs">{error.stack}</pre>
-				</div>
-			)}
-			{info?.componentStack && (
-				<div>
-					{/* eslint-disable-next-line i18next/no-literal-string */}
-					<strong className="text-sm">Component Stack:</strong>
-					<pre className="whitespace-pre-wrap text-xs">
-						{info.componentStack}
-					</pre>
-				</div>
-			)}
 		</div>
 
 		<div className="flex gap-4">
@@ -78,7 +49,7 @@ export function createRouter() {
 			routeTree,
 			context: { queryClient },
 			defaultPreload: 'intent',
-			defaultNotFoundComponent: NotFoundPage,
+			defaultNotFoundComponent: NotFound,
 			defaultErrorComponent: ErrorPage,
 		}),
 		queryClient,

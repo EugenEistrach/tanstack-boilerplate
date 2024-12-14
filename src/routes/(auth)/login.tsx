@@ -8,9 +8,9 @@ import {
 	CardHeader,
 	CardTitle,
 } from '@/components/ui/card'
-import { authClient } from '@/lib/auth.client'
+import { authClient } from '@/lib/dd/auth.client'
+import { $setRedirectTo } from '@/lib/dd/redirect.client'
 import * as m from '@/lib/paraglide/messages'
-import { $setRedirectTo } from '@/lib/redirect'
 
 export const Route = createFileRoute('/(auth)/login')({
 	validateSearch: v.object({
@@ -47,7 +47,9 @@ function Login() {
 						<Button
 							className="w-full"
 							onClick={async () => {
-								await $setRedirectTo(redirectTo ?? '/dashboard')
+								await $setRedirectTo({
+									data: { redirectTo: redirectTo ?? '/dashboard' },
+								})
 								await authClient.signIn.social({
 									provider: 'github',
 								})
@@ -74,7 +76,9 @@ function Login() {
 							className="w-full"
 							variant="secondary"
 							onClick={async () => {
-								await $setRedirectTo(redirectTo ?? '/dashboard')
+								await $setRedirectTo({
+									data: { redirectTo: redirectTo ?? '/dashboard' },
+								})
 								await authClient.signIn.social({ provider: 'discord' })
 							}}
 						>

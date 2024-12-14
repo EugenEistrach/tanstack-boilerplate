@@ -2,6 +2,20 @@ import * as v from 'valibot'
 
 // Schema definition
 const serverSchema = v.object({
+	APP_NAME: v.pipe(v.string(), v.nonEmpty()),
+	CI: v.optional(
+		v.pipe(
+			v.string(),
+			v.transform((val) => val === 'true'),
+		),
+	),
+	MOCKS: v.optional(
+		v.pipe(
+			v.string(),
+			v.transform((val) => val === 'true'),
+		),
+	),
+	NODE_ENV: v.optional(v.string()),
 	BASE_URL: v.pipe(v.string(), v.nonEmpty()),
 	DATABASE_URL: v.pipe(v.string(), v.nonEmpty()),
 	REDIS_URL: v.pipe(v.string(), v.nonEmpty()),
@@ -26,6 +40,8 @@ const serverSchema = v.object({
 			v.transform((val) => val === 'true'),
 		),
 	),
+
+	LOG_LEVEL: v.optional(v.string(), 'info'),
 })
 
 // Type inference

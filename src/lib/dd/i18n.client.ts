@@ -1,14 +1,18 @@
 import { useMutation } from '@tanstack/react-query'
 import { createServerFn, useServerFn } from '@tanstack/start'
+import * as v from 'valibot'
 import { setCookie } from 'vinxi/http'
-import { languageTag, type AvailableLanguageTag } from './paraglide/runtime'
+import { languageTag } from '@/lib/paraglide/runtime'
 
-export const $updateLocale = createServerFn(
-	'POST',
-	async (locale: AvailableLanguageTag) => {
+export const $updateLocale = createServerFn({ method: 'POST' })
+	.validator(
+		v.object({
+			locale: v.string(),
+		}),
+	)
+	.handler(async ({ data: { locale } }) => {
 		setCookie('lang', locale)
-	},
-)
+	})
 
 export const useChangeLocaleMutation = () => {
 	const changeLocaleMutation = useMutation({

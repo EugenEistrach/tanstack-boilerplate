@@ -3,6 +3,7 @@ import { createFileRoute, Link, Outlet, redirect } from '@tanstack/react-router'
 import { createServerFn, useServerFn } from '@tanstack/start'
 import { ChevronsUpDown, LogOut, Settings, UsersIcon } from 'lucide-react'
 import { useState } from 'react'
+import * as v from 'valibot'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Breadcrumbs } from '@/components/ui/breadcrumbs'
 import {
@@ -36,23 +37,22 @@ import {
 } from '@/components/ui/sidebar'
 
 import { ThemeToggle } from '@/components/ui/theme-toggle'
-import { $requireOnboardingInfo } from '@/features/onboarding/onboarding'
-import { useAuth, $logout } from '@/lib/auth.client'
+import { $requireOnboardingInfo } from '@/features/onboarding/ui/onboarding-form.fullstack'
+import { useAuth, $logout } from '@/lib/dd/auth.client'
 import * as m from '@/lib/paraglide/messages'
-import { getVinxiSession } from '@/lib/session.server'
+import { getVinxiSession } from '@/lib/server/session.server'
 
-const $getSidebarState = createServerFn('GET', async () => {
+const $getSidebarState = createServerFn({ method: 'GET' }).handler(async () => {
 	const session = await getVinxiSession()
 	return session.data.sidebarOpen ?? true
 })
 
-const $setSidebarState = createServerFn(
-	'POST',
-	async ({ state }: { state: boolean }) => {
+const $setSidebarState = createServerFn({ method: 'POST' })
+	.validator(v.object({ state: v.boolean() }))
+	.handler(async ({ data: { state } }) => {
 		const session = await getVinxiSession()
 		await session.update({ sidebarOpen: state })
-	},
-)
+	})
 
 export const Route = createFileRoute('/dashboard')({
 	beforeLoad: async ({ context, location }) => {
@@ -67,7 +67,10 @@ export const Route = createFileRoute('/dashboard')({
 
 		const sidebarOpen = await $getSidebarState()
 
+		console.log('sidebarOpen', sidebarOpen)
+
 		const onboardingInfo = await $requireOnboardingInfo()
+		console.log(onboardingInfo)
 		return {
 			onboardingInfo,
 			defaultSidebarOpen: sidebarOpen,
@@ -78,14 +81,18 @@ export const Route = createFileRoute('/dashboard')({
 
 export default function DashboardLayout() {
 	const { user } = useAuth()
+	console.log('user', user)
+	console.log('Route.useRouteContext()', Route.useRouteContext())
 	const { defaultSidebarOpen } = Route.useRouteContext()
+	console.log('defaultSidebarOpen', defaultSidebarOpen)
 	const [sidebarOpen, _setSidebarOpen] = useState(defaultSidebarOpen)
 
+	console.log('sidebarOpen', sidebarOpen)
 	const isAdmin = user.role === 'admin'
 
 	const setSidebarOpen = async (state: boolean) => {
 		_setSidebarOpen(state)
-		await $setSidebarState({ state })
+		await $setSidebarState({ data: { state } })
 	}
 
 	return (
@@ -210,6 +217,7 @@ function UserMenu() {
 					<DropdownMenuTrigger asChild>
 						<SidebarMenuButton
 							size="lg"
+							data-testid="user-menu-trigger"
 							className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
 						>
 							<Avatar className="h-8 w-8 rounded-lg">

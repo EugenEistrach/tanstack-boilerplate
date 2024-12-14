@@ -1,5 +1,5 @@
 import { Queue, Worker } from 'bullmq'
-import { env } from '@/lib/env'
+import { env } from '@/lib/server/env.server'
 
 export const jobConfig = {
 	connection: {

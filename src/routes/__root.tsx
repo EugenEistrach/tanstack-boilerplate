@@ -5,26 +5,24 @@ import {
 	Outlet,
 	ScrollRestoration,
 } from '@tanstack/react-router'
-import { Body, Head, Html, Meta, Scripts } from '@tanstack/start'
-import { ThemeProvider } from 'next-themes'
+import { Meta, Scripts } from '@tanstack/start'
+
 import * as React from 'react'
 
 import { Toaster } from '@/components/ui/sonner'
 import { TooltipProvider } from '@/components/ui/tooltip'
-import { $getSession, AuthProvider } from '@/lib/auth.client'
-import { $getHints, ClientHintChecker } from '@/lib/client-hints'
+import {
+	$getSession,
+	$getVinxiSession,
+	AuthProvider,
+} from '@/lib/dd/auth.client'
+import { $getHints, ClientHintChecker } from '@/lib/dd/client-hints.client'
 
-import { $handleRedirectTo } from '@/lib/redirect'
+import { useLocale } from '@/lib/dd/i18n.client'
+import { $handleRedirectTo } from '@/lib/dd/redirect.client'
 
-import { TimezoneContext } from '@/lib/timezone'
+import { TimezoneContext } from '@/lib/dd/timezone.client'
 import appCss from '@/styles/globals.css?url'
-
-// TODO: remove once https://github.com/TanStack/router/pull/2316 is merged and released
-if (import.meta.hot) {
-	import.meta.hot.on('vite:beforeUpdate', () => {
-		window.location.reload()
-	})
-}
 
 const TanStackRouterDevtools =
 	process.env['NODE_ENV'] === 'production'
@@ -43,55 +41,53 @@ export const Route = createRootRouteWithContext<{
 }>()({
 	beforeLoad: async () => {
 		await $handleRedirectTo()
-		const [session, hints] = await Promise.all([$getSession(), $getHints()])
+		const [auth, hints, vinxiSession] = await Promise.all([
+			$getSession(),
+			$getHints(),
+			$getVinxiSession(),
+		])
 
-		if (!session) {
+		if (!auth) {
 			return {
 				auth: null,
 				hints,
+				theme: vinxiSession?.theme ?? hints.colorScheme,
 			}
 		}
 
 		return {
-			auth: {
-				user: {
-					...session.user,
-					createdAt: new Date(session.user.createdAt as unknown as string),
-					updatedAt: new Date(session.user.updatedAt as unknown as string),
-				},
-				session: {
-					...session.session,
-					expiresAt: new Date(session.session.expiresAt as unknown as string),
-				},
-			},
+			auth,
 			hints,
+			theme: vinxiSession?.theme ?? hints.colorScheme,
 		}
 	},
-	meta: () => [
-		{
-			charSet: 'utf-8',
-		},
-		{
-			name: 'viewport',
-			content: 'width=device-width, initial-scale=1',
-		},
-		{
-			title: 'Tanstack - Boilerplate',
-		},
-	],
+	head: () => ({
+		meta: [
+			{
+				charSet: 'utf-8',
+			},
+			{
+				name: 'viewport',
+				content: 'width=device-width, initial-scale=1',
+			},
+			{
+				title: 'Tanstack Boilerplate',
+			},
+		],
+		links: [
+			{ rel: 'stylesheet', href: appCss },
+			{
+				rel: 'preload',
+				href: 'https://api.fontshare.com/v2/css?f[]=satoshi@300,301,400,401,500,501,700,701,900,901,1,2&display=swap',
+				as: 'style',
+			},
+			{
+				rel: 'stylesheet',
+				href: 'https://api.fontshare.com/v2/css?f[]=satoshi@300,301,400,401,500,501,700,701,900,901,1,2&display=swap',
+			},
+		],
+	}),
 	component: RootComponent,
-	links: () => [
-		{ rel: 'stylesheet', href: appCss },
-		{
-			rel: 'preload',
-			href: 'https://api.fontshare.com/v2/css?f[]=satoshi@300,301,400,401,500,501,700,701,900,901,1,2&display=swap',
-			as: 'style',
-		},
-		{
-			rel: 'stylesheet',
-			href: 'https://api.fontshare.com/v2/css?f[]=satoshi@300,301,400,401,500,501,700,701,900,901,1,2&display=swap',
-		},
-	],
 })
 
 function RootComponent() {
@@ -103,32 +99,29 @@ function RootComponent() {
 }
 
 function RootDocument({ children }: { children: React.ReactNode }) {
-	const { hints, auth } = Route.useRouteContext()
-
+	const { hints, auth, theme } = Route.useRouteContext()
+	const lang = useLocale()
 	return (
-		// TODO: Add lang attribute once supported by tanstack start
-		<Html>
-			<Head>
+		<html lang={lang}>
+			<head>
 				<Meta />
-			</Head>
-			<Body>
+			</head>
+			<body className={theme}>
 				<ClientHintChecker />
 				<AuthProvider auth={auth}>
-					<ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-						<TimezoneContext.Provider value={hints.timeZone}>
-							<TooltipProvider>
-								<div className="font-sans">{children}</div>
+					<TimezoneContext.Provider value={hints.timeZone}>
+						<TooltipProvider>
+							<div className="font-sans">{children}</div>
 
-								<Toaster />
-							</TooltipProvider>
-						</TimezoneContext.Provider>
-					</ThemeProvider>
+							<Toaster />
+						</TooltipProvider>
+					</TimezoneContext.Provider>
 				</AuthProvider>
 				<ScrollRestoration />
 				<TanStackRouterDevtools position="bottom-right" />
 				<ReactQueryDevtools buttonPosition="bottom-right" />
 				<Scripts />
-			</Body>
-		</Html>
+			</body>
+		</html>
 	)
 }

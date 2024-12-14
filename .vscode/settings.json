@@ -1,5 +1,9 @@
 {
 	"sherlock.appRecommendations.ninja.enabled": true,
 	"sherlock.inlineAnnotations.enabled": true,
-	"sherlock.previewLanguageTag": "en"
+	"sherlock.previewLanguageTag": "en",
+  "files.exclude": {
+		"**/routeTree.gen.ts": true
+	},
+	"vitest.rootConfig": "./vitest.config.ts"
 }

@@ -4,7 +4,7 @@ import * as v from 'valibot'
 import {
 	$getOnboardingInfo,
 	OnboardingForm,
-} from '@/features/onboarding/onboarding'
+} from '@/features/onboarding/ui/onboarding-form.fullstack'
 
 export const Route = createFileRoute('/(auth)/onboarding')({
 	validateSearch: v.object({

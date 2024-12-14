@@ -3,8 +3,7 @@ import { useMutation } from '@tanstack/react-query'
 import { redirect } from '@tanstack/react-router'
 import { createServerFn, useServerFn } from '@tanstack/start'
 
-import { eq } from 'drizzle-orm'
-import { Form, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { useSpinDelay } from 'spin-delay'
 import * as v from 'valibot'
 import { getWebRequest } from 'vinxi/http'
@@ -23,14 +22,16 @@ import {
 	FormLabel,
 	FormControl,
 	FormMessage,
+	Form,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { db } from '@/drizzle/db'
-import { UserTable } from '@/drizzle/schemas/auth-schema'
-import { OnboardingInfoTable } from '@/drizzle/schemas/onboarding-schema'
-import { $requireAuthSession, useAuth } from '@/lib/auth.client'
-import { env } from '@/lib/env'
-import { validationClient } from '@/lib/functions'
+
+import {
+	completeOnboarding,
+	getOnboardingInfo,
+} from '@/features/onboarding/domain/onboarding.server'
+import { $requireAuthSession, useAuth } from '@/lib/dd/auth.client'
+
 import * as m from '@/lib/paraglide/messages'
 
 const onboardingFormSchema = v.object({
@@ -39,63 +40,49 @@ const onboardingFormSchema = v.object({
 	redirectTo: v.optional(v.string()),
 })
 
-export const $getOnboardingInfo = createServerFn('GET', async () => {
-	const auth = await $requireAuthSession()
-
-	const onboardingInfo = db
-		.select()
-		.from(OnboardingInfoTable)
-		.where(eq(OnboardingInfoTable.userId, auth.user.id))
-		.get()
-
-	if (!onboardingInfo) {
-		return null
-	}
-
-	return onboardingInfo
-})
-
-export const $requireOnboardingInfo = createServerFn('GET', async () => {
-	const onboardingInfo = await $getOnboardingInfo()
-	const request = getWebRequest()
-
-	if (!onboardingInfo) {
-		throw redirect({
-			to: '/onboarding',
-			search: { redirectTo: new URL(request.url).pathname },
-		})
-	}
-	return onboardingInfo
-})
-
-export const $completeOnboarding = createServerFn(
-	'POST',
-
-	validationClient
-		.input(onboardingFormSchema)
-		.handler(async ({ parsedInput: { name, favoriteColor, redirectTo } }) => {
-			const { user } = await $requireAuthSession()
-
-			await db.transaction(async (tx) => {
-				await tx
-					.update(UserTable)
-					.set({
-						name,
-						role: env.ADMIN_USER_EMAILS.includes(user.email) ? 'admin' : 'user',
-					})
-					.where(eq(UserTable.id, user.id))
-
-				await tx.insert(OnboardingInfoTable).values({
-					userId: user.id,
-					favoriteColor,
-				})
-			})
-
-			throw redirect({
-				to: redirectTo || '/dashboard',
-			})
-		}),
+export const $getOnboardingInfo = createServerFn({ method: 'GET' }).handler(
+	async () => {
+		const { user } = await $requireAuthSession()
+		return getOnboardingInfo(user.id)
+	},
 )
+
+export const $requireOnboardingInfo = createServerFn({ method: 'GET' }).handler(
+	async () => {
+		const onboardingInfo = await $getOnboardingInfo()
+		const request = getWebRequest()
+
+		if (!onboardingInfo) {
+			throw redirect({
+				to: '/onboarding',
+				search: { redirectTo: new URL(request.url).pathname },
+			})
+		}
+		return onboardingInfo
+	},
+)
+
+export const $completeOnboarding = createServerFn({ method: 'POST' })
+	.validator(
+		v.object({
+			name: v.string(),
+			favoriteColor: v.string(),
+			redirectTo: v.optional(v.string()),
+		}),
+	)
+	.handler(async ({ data: { name, favoriteColor, redirectTo } }) => {
+		const { user } = await $requireAuthSession()
+
+		completeOnboarding({
+			userId: user.id,
+			name,
+			favoriteColor,
+		})
+
+		throw redirect({
+			to: redirectTo || '/dashboard',
+		})
+	})
 
 export function OnboardingForm({ redirectTo }: { redirectTo?: string }) {
 	const auth = useAuth()
@@ -129,7 +116,7 @@ export function OnboardingForm({ redirectTo }: { redirectTo?: string }) {
 				<Form {...form}>
 					<form
 						onSubmit={form.handleSubmit((values) => {
-							void completeOnboardingMutation.mutateAsync(values)
+							void completeOnboardingMutation.mutateAsync({ data: values })
 						})}
 						className="space-y-8"
 					>

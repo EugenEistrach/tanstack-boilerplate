@@ -1,3 +1,4 @@
+import { sql } from 'drizzle-orm'
 import { sqliteTable } from 'drizzle-orm/sqlite-core'
 
 export const UserTable = sqliteTable('user', (t) => ({
@@ -6,8 +7,14 @@ export const UserTable = sqliteTable('user', (t) => ({
 	email: t.text().notNull().unique(),
 	emailVerified: t.integer({ mode: 'boolean' }).notNull(),
 	image: t.text(),
-	createdAt: t.integer({ mode: 'timestamp' }).notNull(),
-	updatedAt: t.integer({ mode: 'timestamp' }).notNull(),
+	createdAt: t
+		.integer({ mode: 'timestamp' })
+		.notNull()
+		.default(sql`(strftime('%s', 'now'))`),
+	updatedAt: t
+		.integer({ mode: 'timestamp' })
+		.notNull()
+		.default(sql`(strftime('%s', 'now'))`),
 	role: t.text(),
 	banned: t.integer({ mode: 'boolean' }),
 	banReason: t.text(),
@@ -25,6 +32,15 @@ export const SessionTable = sqliteTable('session', (t) => ({
 		.references(() => UserTable.id),
 	impersonatedBy: t.text(),
 	activeOrganizationId: t.text(),
+	token: t.text().unique().notNull(),
+	createdAt: t
+		.integer({ mode: 'timestamp' })
+		.notNull()
+		.default(sql`(strftime('%s', 'now'))`),
+	updatedAt: t
+		.integer({ mode: 'timestamp' })
+		.notNull()
+		.default(sql`(strftime('%s', 'now'))`),
 }))
 
 export const AccountTable = sqliteTable('account', (t) => ({
@@ -38,8 +54,18 @@ export const AccountTable = sqliteTable('account', (t) => ({
 	accessToken: t.text(),
 	refreshToken: t.text(),
 	idToken: t.text(),
-	expiresAt: t.integer({ mode: 'timestamp' }),
+	accessTokenExpiresAt: t.integer({ mode: 'timestamp' }),
+	refreshTokenExpiresAt: t.integer({ mode: 'timestamp' }),
+	scope: t.text(),
 	password: t.text(),
+	createdAt: t
+		.integer({ mode: 'timestamp' })
+		.notNull()
+		.default(sql`(strftime('%s', 'now'))`),
+	updatedAt: t
+		.integer({ mode: 'timestamp' })
+		.notNull()
+		.default(sql`(strftime('%s', 'now'))`),
 }))
 
 export const VerificationTable = sqliteTable('verification', (t) => ({
@@ -47,6 +73,14 @@ export const VerificationTable = sqliteTable('verification', (t) => ({
 	identifier: t.text().notNull(),
 	value: t.text().notNull(),
 	expiresAt: t.integer({ mode: 'timestamp' }).notNull(),
+	createdAt: t
+		.integer({ mode: 'timestamp' })
+		.notNull()
+		.default(sql`(strftime('%s', 'now'))`),
+	updatedAt: t
+		.integer({ mode: 'timestamp' })
+		.notNull()
+		.default(sql`(strftime('%s', 'now'))`),
 }))
 
 export const OrganizationTable = sqliteTable('organization', (t) => ({
@@ -54,7 +88,14 @@ export const OrganizationTable = sqliteTable('organization', (t) => ({
 	name: t.text().notNull(),
 	slug: t.text().unique(),
 	logo: t.text(),
-	createdAt: t.integer({ mode: 'timestamp' }).notNull(),
+	createdAt: t
+		.integer({ mode: 'timestamp' })
+		.notNull()
+		.default(sql`(strftime('%s', 'now'))`),
+	updatedAt: t
+		.integer({ mode: 'timestamp' })
+		.notNull()
+		.default(sql`(strftime('%s', 'now'))`),
 	metadata: t.text(),
 }))
 
@@ -67,7 +108,14 @@ export const MemberTable = sqliteTable('member', (t) => ({
 	userId: t.text().notNull(),
 	email: t.text().notNull(),
 	role: t.text().notNull(),
-	createdAt: t.integer({ mode: 'timestamp' }).notNull(),
+	createdAt: t
+		.integer({ mode: 'timestamp' })
+		.notNull()
+		.default(sql`(strftime('%s', 'now'))`),
+	updatedAt: t
+		.integer({ mode: 'timestamp' })
+		.notNull()
+		.default(sql`(strftime('%s', 'now'))`),
 }))
 
 export const InvitationTable = sqliteTable('invitation', (t) => ({
@@ -84,4 +132,12 @@ export const InvitationTable = sqliteTable('invitation', (t) => ({
 		.text()
 		.notNull()
 		.references(() => UserTable.id),
+	createdAt: t
+		.integer({ mode: 'timestamp' })
+		.notNull()
+		.default(sql`(strftime('%s', 'now'))`),
+	updatedAt: t
+		.integer({ mode: 'timestamp' })
+		.notNull()
+		.default(sql`(strftime('%s', 'now'))`),
 }))

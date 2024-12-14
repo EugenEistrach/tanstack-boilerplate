@@ -4,7 +4,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import * as React from 'react'
 
 import * as m from '@/lib/paraglide/messages'
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/shared/utils'
 
 const Sheet = SheetPrimitive.Root
 
