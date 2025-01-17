@@ -1,12 +1,12 @@
 import pino from 'pino'
 
-const nodeEnv = process.env['NODE_ENV'] ?? 'development'
+const nodeEnv = process.env['NODE_ENV']
 const logLevel = process.env['LOG_LEVEL'] ?? 'info'
-const appName = process.env['APP_NAME'] ?? 'app'
+const appName = process.env['APP_NAME']
 
 export const logger = pino({
 	transport:
-		nodeEnv !== 'production'
+		appName && nodeEnv !== 'production'
 			? {
 					target: 'pino-pretty',
 					options: {
@@ -19,7 +19,8 @@ export const logger = pino({
 			: undefined,
 
 	base: {
-		app: appName,
+		app: appName ?? 'app',
+
 		env: nodeEnv,
 	},
 	level: logLevel,
