@@ -19,7 +19,7 @@ export default defineConfig({
 	},
 	build: {
 		external: ['libsql'],
-		extensions: [additionalPackages({ packages: ['@libsql/darwin-arm64'] })],
+		//extensions: [additionalPackages({ packages: ['@libsql/darwin-arm64'] })],
 	},
 	dirs: ['src/tasks'],
 })
