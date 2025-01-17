@@ -1,3 +1,4 @@
+import { additionalPackages } from '@trigger.dev/build/extensions/core'
 import { defineConfig } from '@trigger.dev/sdk/v3'
 
 export default defineConfig({
@@ -15,6 +16,10 @@ export default defineConfig({
 			factor: 2,
 			randomize: true,
 		},
+	},
+	build: {
+		external: ['libsql'],
+		extensions: [additionalPackages({ packages: ['@libsql/darwin-arm64'] })],
 	},
 	dirs: ['src/tasks'],
 })

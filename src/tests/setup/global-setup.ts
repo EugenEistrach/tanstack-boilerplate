@@ -49,7 +49,8 @@ export async function setup() {
 		stdio: 'inherit',
 		env: {
 			...process.env,
-			DATABASE_URL: `${BASE_DATABASE_PATH}`,
+			// we are using drizzle kit commands to reset the db and in the config we use LOCAL_DATABASE_PATH for the path
+			LOCAL_DATABASE_PATH: `${BASE_DATABASE_PATH}`,
 		},
 	})
 }

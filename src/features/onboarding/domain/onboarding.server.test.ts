@@ -1,28 +1,29 @@
 import { eq } from 'drizzle-orm'
 import { describe, expect, it, beforeEach, afterEach } from 'vitest'
 import { completeOnboarding, getOnboardingInfo } from './onboarding.server'
-import { db } from '@/drizzle/db'
+
 import { UserTable } from '@/drizzle/schemas/_exports'
 import { env } from '@/lib/server/env.server'
+import { testDb } from '@/tests/setup/test-db'
 import { createUser } from '@/tests/test-utils'
 
 describe('onboarding.server', () => {
 	describe('getOnboardingInfo', () => {
-		it('should return null for user without onboarding info', () => {
-			const user = createUser()
-			const result = getOnboardingInfo(user.id)
+		it('should return null for user without onboarding info', async () => {
+			const user = await createUser()
+			const result = await getOnboardingInfo(user.id)
 			expect(result).toBeNull()
 		})
 
-		it('should return onboarding info for completed user', () => {
-			const user = createUser()
-			completeOnboarding({
+		it('should return onboarding info for completed user', async () => {
+			const user = await createUser()
+			await completeOnboarding({
 				userId: user.id,
 				favoriteColor: 'blue',
 				name: 'Updated Name',
 			})
 
-			const result = getOnboardingInfo(user.id)
+			const result = await getOnboardingInfo(user.id)
 			expect(result).toMatchObject({
 				userId: user.id,
 				favoriteColor: 'blue',
@@ -41,16 +42,16 @@ describe('onboarding.server', () => {
 			env.ADMIN_USER_EMAILS = originalAdminEmails
 		})
 
-		it('should complete onboarding for regular user', () => {
-			const user = createUser()
+		it('should complete onboarding for regular user', async () => {
+			const user = await createUser()
 
-			completeOnboarding({
+			await completeOnboarding({
 				userId: user.id,
 				favoriteColor: 'red',
 				name: 'New Name',
 			})
 
-			const updatedUser = db
+			const updatedUser = await testDb
 				.select()
 				.from(UserTable)
 				.where(eq(UserTable.id, user.id))
@@ -68,16 +69,16 @@ describe('onboarding.server', () => {
 			})
 		})
 
-		it('should set admin role for admin email', () => {
-			const user = createUser({ email: 'admin@example.com' })
+		it('should set admin role for admin email', async () => {
+			const user = await createUser({ email: 'admin@example.com' })
 
-			completeOnboarding({
+			await completeOnboarding({
 				userId: user.id,
 				favoriteColor: 'green',
 				name: 'Admin User',
 			})
 
-			const updatedUser = db
+			const updatedUser = await testDb
 				.select()
 				.from(UserTable)
 				.where(eq(UserTable.id, user.id))
@@ -86,14 +87,14 @@ describe('onboarding.server', () => {
 			expect(updatedUser?.role).toBe('admin')
 		})
 
-		it('should throw error for non-existent user', () => {
-			expect(() =>
+		it('should throw error for non-existent user', async () => {
+			await expect(
 				completeOnboarding({
 					userId: 'non-existent-id',
 					favoriteColor: 'blue',
 					name: 'Test Name',
 				}),
-			).toThrow('User not found')
+			).rejects.toThrow('User not found')
 		})
 	})
 })

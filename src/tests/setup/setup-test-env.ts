@@ -1,9 +1,16 @@
 import 'dotenv/config'
 import './db-setup'
-
+import { vi, afterEach, beforeEach, type MockInstance } from 'vitest'
 // import { cleanup } from '@testing-library/react'
-import { afterEach, beforeEach, vi, type MockInstance } from 'vitest'
 import { server } from '@/tests/mocks'
+
+const mockDb = vi.hoisted(async () => {
+	const mod = await import('./test-db.js')
+	return { db: mod.testDb }
+})
+
+// Mock the database import to use testDb
+vi.mock('@/drizzle/db', () => mockDb)
 
 afterEach(() => server.resetHandlers())
 // afterEach(() => cleanup())

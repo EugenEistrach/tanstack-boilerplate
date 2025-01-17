@@ -17,7 +17,11 @@ const serverSchema = v.object({
 	),
 	NODE_ENV: v.optional(v.string()),
 	BASE_URL: v.pipe(v.string(), v.nonEmpty()),
-	DATABASE_URL: v.pipe(v.string(), v.nonEmpty()),
+
+	TURSO_DATABASE_URL: v.optional(v.string()),
+	TURSO_AUTH_TOKEN: v.optional(v.string()),
+
+	LOCAL_DATABASE_PATH: v.pipe(v.string(), v.nonEmpty()),
 
 	GITHUB_CLIENT_ID: v.optional(v.string()),
 	GITHUB_CLIENT_SECRET: v.optional(v.string()),

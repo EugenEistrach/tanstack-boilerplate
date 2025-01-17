@@ -73,7 +73,7 @@ export const $completeOnboarding = createServerFn({ method: 'POST' })
 	.handler(async ({ data: { name, favoriteColor, redirectTo } }) => {
 		const { user } = await $requireAuthSession()
 
-		completeOnboarding({
+		await completeOnboarding({
 			userId: user.id,
 			name,
 			favoriteColor,

@@ -6,7 +6,7 @@ import {
 	createStartHandler,
 	defaultStreamHandler,
 } from '@tanstack/start/server'
-import { migrate } from 'drizzle-orm/better-sqlite3/migrator'
+import { migrate } from 'drizzle-orm/libsql/migrator'
 import { type HandlerCallback } from 'node_modules/@tanstack/start/dist/esm/server/defaultStreamHandler'
 
 import { db } from './drizzle/db'
@@ -26,7 +26,7 @@ if (env.MOCKS) {
 // migrate db
 try {
 	logger.info('Starting database migration')
-	migrate(db, {
+	await migrate(db, {
 		migrationsFolder: './src/drizzle/migrations',
 	})
 	logger.info('Database migration completed successfully')

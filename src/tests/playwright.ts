@@ -16,7 +16,7 @@ export const test = base.extend<{
 		let userId: string | undefined = undefined
 		// eslint-disable-next-line react-hooks/rules-of-hooks
 		await use(async (options?: UserOptions) => {
-			const [newUser, newSession] = createUserAndSession(options)
+			const [newUser, newSession] = await createUserAndSession(options)
 			userId = newUser.id
 			const responseHeaders = new Headers()
 			await setSignedCookie(
@@ -54,7 +54,11 @@ export const test = base.extend<{
 			await page.context().addCookies([cookie])
 			await page.goto('http://localhost:3000/')
 			await page.waitForLoadState('networkidle')
-			return db.select().from(UserTable).where(eq(UserTable.id, userId)).get()!
+			return (await db
+				.select()
+				.from(UserTable)
+				.where(eq(UserTable.id, userId))
+				.get())!
 		})
 
 		if (!userId) return

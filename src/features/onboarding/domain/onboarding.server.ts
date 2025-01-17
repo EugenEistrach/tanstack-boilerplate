@@ -23,8 +23,8 @@ export function completeOnboarding({
 	favoriteColor: string
 	name: string
 }) {
-	return db.transaction((tx) => {
-		const user = tx
+	return db.transaction(async (tx) => {
+		const user = await tx
 			.select({
 				email: UserTable.email,
 			})
@@ -36,7 +36,8 @@ export function completeOnboarding({
 			throw new Error('User not found')
 		}
 
-		tx.update(UserTable)
+		await tx
+			.update(UserTable)
 			.set({
 				name,
 				role: env.ADMIN_USER_EMAILS.includes(user?.email ?? '')
@@ -46,7 +47,8 @@ export function completeOnboarding({
 			.where(eq(UserTable.id, userId))
 			.run()
 
-		tx.insert(OnboardingInfoTable)
+		await tx
+			.insert(OnboardingInfoTable)
 			.values({
 				userId,
 				favoriteColor,
