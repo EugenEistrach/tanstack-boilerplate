@@ -18,7 +18,6 @@ const serverSchema = v.object({
 	NODE_ENV: v.optional(v.string()),
 	BASE_URL: v.pipe(v.string(), v.nonEmpty()),
 	DATABASE_URL: v.pipe(v.string(), v.nonEmpty()),
-	REDIS_URL: v.pipe(v.string(), v.nonEmpty()),
 
 	GITHUB_CLIENT_ID: v.optional(v.string()),
 	GITHUB_CLIENT_SECRET: v.optional(v.string()),
@@ -33,12 +32,6 @@ const serverSchema = v.object({
 		v.trim(),
 		v.transform((val) => val.split(',')),
 		v.array(v.pipe(v.string(), v.trim())),
-	),
-	DISABLE_CRONJOBS: v.optional(
-		v.pipe(
-			v.string(),
-			v.transform((val) => val === 'true'),
-		),
 	),
 
 	LOG_LEVEL: v.optional(v.string(), 'info'),

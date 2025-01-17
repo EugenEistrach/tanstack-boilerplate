@@ -22,3 +22,5 @@ node_modules
 /playwright/.cache/a
 
 unhandled-requests/
+
+.trigger

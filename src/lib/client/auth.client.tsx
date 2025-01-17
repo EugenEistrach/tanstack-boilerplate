@@ -47,6 +47,7 @@ export const $getSession = createServerFn({ method: 'GET' }).handler(
 	async () => {
 		try {
 			const request = getWebRequest()
+
 			const session = await authServer.api.getSession({
 				headers: request.headers,
 			})
