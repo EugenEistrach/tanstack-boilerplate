@@ -2,7 +2,7 @@ import * as v from 'valibot'
 
 // Schema definition
 const serverSchema = v.object({
-	APP_NAME: v.pipe(v.string(), v.nonEmpty()),
+	APP_NAME: v.optional(v.string(), `Tanstack Boilerplate`),
 	CI: v.optional(
 		v.pipe(
 			v.string(),

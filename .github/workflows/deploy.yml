@@ -140,9 +140,47 @@ jobs:
           path: playwright-report/
           retention-days: 30
 
+  deploy-trigger:
+    name: 🎯 Deploy Trigger.dev
+    needs: [checks, playwright]
+    runs-on: ubuntu-latest
+    concurrency: trigger-deploy-group
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 📥 Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: 🔑 Login to Custom Registry
+        uses: docker/login-action@v3
+        with:
+          registry: registry.perfux.dev
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+
+      - name: 📦 Install dependencies
+        run: pnpm install
+
+      - name: 🚀 Deploy Trigger.dev
+        id: deploy
+        continue-on-error: true
+        env:
+          TRIGGER_ACCESS_TOKEN: ${{ secrets.TRIGGER_ACCESS_TOKEN }}
+          TRIGGER_API_URL: https://trigger.perfux.dev
+        run: |
+          pnpm dlx trigger.dev@latest deploy --self-hosted --load-image --registry registry.perfux.dev --namespace perfux
+
   deploy:
     name: Deploy app
-    needs: [checks, playwright]
+    needs: [checks, playwright, deploy-trigger]
     runs-on: ubuntu-latest
     concurrency: deploy-group
     steps:
