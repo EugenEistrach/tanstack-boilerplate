@@ -26,16 +26,20 @@ export const exaxpleTask = schemaTask({
 			APP_NAME: env.APP_NAME,
 		})
 
-		const newUser = await db
-			.insert(UserTable)
-			.values({
-				id: crypto.randomUUID(),
-				name: payload.name,
-				email: payload.email,
-				emailVerified: false,
-			})
-			.returning()
+		try {
+			const newUser = await db
+				.insert(UserTable)
+				.values({
+					id: crypto.randomUUID(),
+					name: payload.name,
+					email: payload.email,
+					emailVerified: false,
+				})
+				.returning()
 
-		logger.log('New user created', { newUser })
+			logger.log('New user created', { newUser })
+		} catch (error) {
+			logger.error('Error creating user', { error })
+		}
 	},
 })
