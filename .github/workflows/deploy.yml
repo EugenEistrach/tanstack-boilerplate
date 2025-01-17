@@ -188,7 +188,7 @@ jobs:
 
   deploy-trigger:
     name: Deploy Trigger.dev
-    needs: [deploy]
+    needs: [checks, playwright]
     runs-on: ubuntu-latest
     concurrency: trigger-deploy-group
     steps:
