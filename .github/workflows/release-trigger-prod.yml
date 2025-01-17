@@ -31,3 +31,20 @@ jobs:
           TRIGGER_API_URL: https://trigger.perfux.dev
         run: |
           pnpm dlx trigger.dev@latest deploy --self-hosted --load-image --registry docker.io --namespace eugen1993
+
+      - name: Display Build Logs
+        if: always()
+        run: |
+          if [ -f "/tmp/trigger-*/build-*.log" ]; then
+            echo "=== Build Log Contents ==="
+            cat /tmp/trigger-*/build-*.log
+            echo "======================="
+          else
+            echo "Build log file not found"
+          fi
+
+      - name: Check Build Status
+        if: steps.deploy.outcome == 'failure'
+        run: |
+          echo "Build/Push step failed"
+          exit 1
