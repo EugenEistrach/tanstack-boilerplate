@@ -3,14 +3,13 @@ import { drizzle } from 'drizzle-orm/libsql'
 
 import { schema } from './schemas/schema'
 import { env } from '@/lib/server/env.server'
-import { logger } from '@/lib/server/logger.server'
 
 const getDbClient = () => {
 	// Case 1: Remote Turso DB with auth
 	if (env.TURSO_DATABASE_URL && env.TURSO_AUTH_TOKEN) {
 		// Case 1a: Remote only mode
 		if (!env.ENABLE_EMBEDDED_DB) {
-			logger.info(
+			console.info(
 				{
 					url: env.TURSO_DATABASE_URL,
 					mode: 'remote-only',
@@ -24,7 +23,7 @@ const getDbClient = () => {
 		}
 
 		// Case 1b: Hybrid mode (local + remote sync)
-		logger.info(
+		console.info(
 			{
 				localPath: env.LOCAL_DATABASE_PATH,
 				syncUrl: env.TURSO_DATABASE_URL,
@@ -41,7 +40,7 @@ const getDbClient = () => {
 	}
 
 	// Case 2: Local-only mode
-	logger.info(
+	console.info(
 		{
 			localPath: env.LOCAL_DATABASE_PATH,
 			mode: 'local-only',

@@ -1,6 +1,6 @@
 import * as v from 'valibot'
 
-import { logger } from '@/lib/server/logger.server'
+import { pino } from '@/lib/server/logger.server'
 
 // Schema definition
 const serverSchema = v.object({
@@ -66,15 +66,15 @@ const parseEnv = () => {
 	const result = v.safeParse(serverSchema, processEnv)
 
 	if (!result.success) {
-		logger.error('\n❌ Invalid Environment Variables:\n')
+		pino.error('\n❌ Invalid Environment Variables:\n')
 
 		for (const issue of result.issues) {
 			const pathString = issue.path
 				? issue.path.map((segment) => String(segment.key)).join('.')
 				: 'unknown'
 
-			logger.error(`• ${pathString}: ${issue.message}`)
-			logger.error(`  Current value: ${processEnv[pathString] || 'missing'}\n`)
+			pino.error(`• ${pathString}: ${issue.message}`)
+			pino.error(`  Current value: ${processEnv[pathString] || 'missing'}\n`)
 		}
 
 		throw new Error(

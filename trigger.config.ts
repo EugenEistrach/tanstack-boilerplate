@@ -2,10 +2,12 @@ import 'dotenv/config'
 
 import { defineConfig } from '@trigger.dev/sdk/v3'
 
+console.log('env', process.env)
+
 export default defineConfig({
 	project: 'proj_tlgfryfhwprwupwefzie',
 	runtime: 'node',
-	logLevel: 'log',
+	logLevel: 'debug',
 	maxDuration: 300,
 	retries: {
 		enabledInDev: true,
