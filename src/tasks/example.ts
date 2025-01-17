@@ -1,4 +1,4 @@
-import { logger, schemaTask, task } from '@trigger.dev/sdk/v3'
+import { logger, schemaTask, task, wait } from '@trigger.dev/sdk/v3'
 import * as v from 'valibot'
 import { db } from '@/drizzle/db'
 import { UserTable } from '@/drizzle/schemas/auth-schema'
@@ -85,8 +85,15 @@ export const exaxpleTask3 = task({
 	id: 'example-task-create-user-3',
 	maxDuration: 300,
 	run: async (payload) => {
-		console.log('payload', {
+		logger.log('payload', {
 			payload,
 		})
+
+		await wait.for({ seconds: 1 })
+
+		logger.info('info')
+		logger.debug('debug')
+		logger.error('error')
+		logger.warn('warn')
 	},
 })
