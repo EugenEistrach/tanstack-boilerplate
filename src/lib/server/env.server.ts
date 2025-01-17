@@ -3,6 +3,7 @@ import * as v from 'valibot'
 // Schema definition
 const serverSchema = v.object({
 	APP_NAME: v.optional(v.string(), `Tanstack Boilerplate`),
+
 	CI: v.optional(
 		v.pipe(
 			v.string(),
@@ -53,7 +54,29 @@ Object.entries(processEnv).forEach(([key, value]) => {
 })
 
 // Parse and create env object with client-side protection
-const _env = v.parse(serverSchema, processEnv)
+const parseEnv = () => {
+	try {
+		return v.parse(serverSchema, processEnv)
+	} catch (error) {
+		if (error instanceof v.ValiError) {
+			console.error('\n❌ Invalid Environment Variables:\n')
+
+			error.issues.forEach((issue) => {
+				const path = issue.path?.map((p) => p.key).join('.') || 'unknown'
+				console.error(`• ${path}: ${issue.message}`)
+				console.error(`  Required value: ${processEnv[path] || 'missing'}\n`)
+			})
+
+			throw new Error(
+				'🚨 Invalid environment variables. Check the logs above and update your .env file.',
+			)
+		}
+
+		throw error
+	}
+}
+
+const _env = parseEnv()
 
 export const env = new Proxy(_env, {
 	get(target, prop) {
