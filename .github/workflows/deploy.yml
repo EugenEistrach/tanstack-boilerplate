@@ -187,8 +187,8 @@ jobs:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 
   deploy-trigger:
-    name: 🎯 Deploy Trigger.dev
-    needs: [checks, playwright, deploy]
+    name: Deploy Trigger.dev
+    needs: [deploy]
     runs-on: ubuntu-latest
     concurrency: trigger-deploy-group
     steps:
