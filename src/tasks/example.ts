@@ -1,8 +1,8 @@
 import { logger, schemaTask, task, wait } from '@trigger.dev/sdk/v3'
 import * as v from 'valibot'
-import { db } from '@/drizzle/db'
-import { UserTable } from '@/drizzle/schemas/auth-schema'
-import { env } from '@/lib/server/env.server'
+// import { db } from '@/drizzle/db'
+// import { UserTable } from '@/drizzle/schemas/auth-schema'
+// import { env } from '@/lib/server/env.server'
 
 const valibotParser = v.parser(
 	v.object({
@@ -16,68 +16,11 @@ export const exaxpleTask = schemaTask({
 	maxDuration: 300,
 	schema: valibotParser,
 	run: async (payload) => {
-		logger.log('env', {
-			LOCAL_DATABASE_PATH: env.LOCAL_DATABASE_PATH,
-			TURSO_DATABASE_URL: env.TURSO_DATABASE_URL,
-			TURSO_AUTH_TOKEN: env.TURSO_AUTH_TOKEN,
-			ENABLE_EMBEDDED_DB: env.ENABLE_EMBEDDED_DB,
-			NODE_ENV: env.NODE_ENV,
-			LOG_LEVEL: env.LOG_LEVEL,
-			APP_NAME: env.APP_NAME,
-		})
-
-		console.log('env', {
-			LOCAL_DATABASE_PATH: env.LOCAL_DATABASE_PATH,
-			TURSO_DATABASE_URL: env.TURSO_DATABASE_URL,
-			TURSO_AUTH_TOKEN: env.TURSO_AUTH_TOKEN,
-			ENABLE_EMBEDDED_DB: env.ENABLE_EMBEDDED_DB,
-			NODE_ENV: env.NODE_ENV,
-			LOG_LEVEL: env.LOG_LEVEL,
-			APP_NAME: env.APP_NAME,
-		})
-
 		try {
-			const newUser = await db
-				.insert(UserTable)
-				.values({
-					id: crypto.randomUUID(),
-					name: payload.name,
-					email: payload.email,
-					emailVerified: false,
-				})
-				.returning()
-
-			logger.log('New user created', { newUser })
+			logger.log('New user created', { payload })
 		} catch (error) {
 			logger.error('Error creating user', { error })
 		}
-	},
-})
-
-export const exaxpleTask2 = schemaTask({
-	id: 'example-task-create-user-2',
-	maxDuration: 300,
-	schema: valibotParser,
-	run: async (payload) => {
-		logger.log('env', {
-			LOCAL_DATABASE_PATH: env.LOCAL_DATABASE_PATH,
-			TURSO_DATABASE_URL: env.TURSO_DATABASE_URL,
-			TURSO_AUTH_TOKEN: env.TURSO_AUTH_TOKEN,
-			ENABLE_EMBEDDED_DB: env.ENABLE_EMBEDDED_DB,
-			NODE_ENV: env.NODE_ENV,
-			LOG_LEVEL: env.LOG_LEVEL,
-			APP_NAME: env.APP_NAME,
-		})
-
-		console.log('env', {
-			LOCAL_DATABASE_PATH: env.LOCAL_DATABASE_PATH,
-			TURSO_DATABASE_URL: env.TURSO_DATABASE_URL,
-			TURSO_AUTH_TOKEN: env.TURSO_AUTH_TOKEN,
-			ENABLE_EMBEDDED_DB: env.ENABLE_EMBEDDED_DB,
-			NODE_ENV: env.NODE_ENV,
-			LOG_LEVEL: env.LOG_LEVEL,
-			APP_NAME: env.APP_NAME,
-		})
 	},
 })
 
@@ -91,9 +34,7 @@ export const exaxpleTask3 = task({
 
 		await wait.for({ seconds: 1 })
 
-		logger.info('info')
-		logger.debug('debug')
-		logger.error('error')
-		logger.warn('warn')
+		logger.info('trace')
+		logger.debug
 	},
 })
