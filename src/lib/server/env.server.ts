@@ -39,6 +39,13 @@ const serverSchema = v.object({
 		v.array(v.pipe(v.string(), v.trim())),
 	),
 
+	DISABLE_EMBEDDED_DB: v.optional(
+		v.pipe(
+			v.string(),
+			v.transform((val) => val === 'true'),
+		),
+	),
+
 	LOG_LEVEL: v.optional(v.string(), 'info'),
 })
 
@@ -53,7 +60,6 @@ Object.entries(processEnv).forEach(([key, value]) => {
 	}
 })
 
-// Parse and create env object with client-side protection
 const parseEnv = () => {
 	const result = v.safeParse(serverSchema, processEnv)
 
@@ -77,23 +83,22 @@ const parseEnv = () => {
 	return result.output
 }
 
-const safeParseEnv = () => {
-	try {
-		return parseEnv()
-	} catch {
-		return null
-	}
-}
+// Cache for parsed env
+let parsedEnv: Env | null = null
 
-const _env = safeParseEnv()
-
-export const env = new Proxy(_env ?? ({} as Env), {
+export const env = new Proxy({} as Env, {
 	get(target, prop) {
 		if (typeof window !== 'undefined') {
 			throw new Error(
 				'❌ Attempted to access server-side environment variable on the client',
 			)
 		}
-		return Reflect.get(target, prop)
+
+		// Lazy parse env if not already parsed
+		if (!parsedEnv) {
+			parsedEnv = parseEnv()
+		}
+
+		return Reflect.get(parsedEnv, prop)
 	},
 })
