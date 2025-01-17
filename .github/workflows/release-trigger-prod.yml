@@ -33,5 +33,5 @@ jobs:
           TRIGGER_API_URL: https://trigger.perfux.dev
         run: |
           set +e  # Don't exit on error
-          pnpm dlx trigger.dev@latest deploy --self-hosted --load-image --registry docker.io --namespace eugen1993
+          pnpm dlx trigger.dev@latest deploy --self-hosted --load-image --registry registry.perfux.dev --namespace perfux
           cat /tmp/trigger-*/build-*.log || true
