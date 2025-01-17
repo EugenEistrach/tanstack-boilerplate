@@ -26,6 +26,16 @@ export const exaxpleTask = schemaTask({
 			APP_NAME: env.APP_NAME,
 		})
 
+		console.log('env', {
+			LOCAL_DATABASE_PATH: env.LOCAL_DATABASE_PATH,
+			TURSO_DATABASE_URL: env.TURSO_DATABASE_URL,
+			TURSO_AUTH_TOKEN: env.TURSO_AUTH_TOKEN,
+			ENABLE_EMBEDDED_DB: env.ENABLE_EMBEDDED_DB,
+			NODE_ENV: env.NODE_ENV,
+			LOG_LEVEL: env.LOG_LEVEL,
+			APP_NAME: env.APP_NAME,
+		})
+
 		try {
 			const newUser = await db
 				.insert(UserTable)
