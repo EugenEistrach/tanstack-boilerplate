@@ -131,6 +131,7 @@ export function OnboardingForm({ redirectTo }: { redirectTo?: string }) {
 											<Input
 												placeholder={m.onboarding_name_placeholder()}
 												{...field}
+												defaultValue={auth.user.name}
 											/>
 										</FormControl>
 										<FormMessage />
@@ -147,6 +148,7 @@ export function OnboardingForm({ redirectTo }: { redirectTo?: string }) {
 											<Input
 												placeholder={m.onboarding_color_placeholder()}
 												{...field}
+												defaultValue=""
 											/>
 										</FormControl>
 										<FormMessage />

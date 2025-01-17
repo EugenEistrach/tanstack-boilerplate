@@ -4,6 +4,7 @@ import { createServerFn, useServerFn } from '@tanstack/start'
 import { ChevronsUpDown, LogOut, Settings, UsersIcon } from 'lucide-react'
 import { useState } from 'react'
 import * as v from 'valibot'
+import { AdminOnly } from '@/components/ui/admin-only'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Breadcrumbs } from '@/components/ui/breadcrumbs'
 import {
@@ -66,11 +67,8 @@ export const Route = createFileRoute('/dashboard')({
 		}
 
 		const sidebarOpen = await $getSidebarState()
-
-		console.log('sidebarOpen', sidebarOpen)
-
 		const onboardingInfo = await $requireOnboardingInfo()
-		console.log(onboardingInfo)
+
 		return {
 			onboardingInfo,
 			defaultSidebarOpen: sidebarOpen,
@@ -80,15 +78,8 @@ export const Route = createFileRoute('/dashboard')({
 })
 
 export default function DashboardLayout() {
-	const { user } = useAuth()
-	console.log('user', user)
-	console.log('Route.useRouteContext()', Route.useRouteContext())
 	const { defaultSidebarOpen } = Route.useRouteContext()
-	console.log('defaultSidebarOpen', defaultSidebarOpen)
 	const [sidebarOpen, _setSidebarOpen] = useState(defaultSidebarOpen)
-
-	console.log('sidebarOpen', sidebarOpen)
-	const isAdmin = user.role === 'admin'
 
 	const setSidebarOpen = async (state: boolean) => {
 		_setSidebarOpen(state)
@@ -131,7 +122,7 @@ export default function DashboardLayout() {
 							</SidebarMenuItem>
 						</SidebarMenu>
 					</SidebarGroup>
-					{isAdmin && (
+					<AdminOnly>
 						<SidebarGroup>
 							<SidebarGroupLabel>{m.nav_admin()}</SidebarGroupLabel>
 							<SidebarMenu>
@@ -145,7 +136,7 @@ export default function DashboardLayout() {
 								</SidebarMenuItem>
 							</SidebarMenu>
 						</SidebarGroup>
-					)}
+					</AdminOnly>
 				</SidebarContent>
 				<SidebarFooter>
 					<UserMenu />
