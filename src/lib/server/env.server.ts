@@ -41,7 +41,7 @@ const serverSchema = v.object({
 		v.array(v.pipe(v.string(), v.trim())),
 	),
 
-	DISABLE_EMBEDDED_DB: v.optional(
+	ENABLE_EMBEDDED_DB: v.optional(
 		v.pipe(
 			v.string(),
 			v.transform((val) => val === 'true'),

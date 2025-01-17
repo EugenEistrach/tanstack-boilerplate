@@ -9,7 +9,7 @@ const getDbClient = () => {
 	// Case 1: Remote Turso DB with auth
 	if (env.TURSO_DATABASE_URL && env.TURSO_AUTH_TOKEN) {
 		// Case 1a: Remote only mode
-		if (env.DISABLE_EMBEDDED_DB) {
+		if (!env.ENABLE_EMBEDDED_DB) {
 			logger.info(
 				{
 					url: env.TURSO_DATABASE_URL,
