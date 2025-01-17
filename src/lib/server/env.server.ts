@@ -96,7 +96,11 @@ export const env = new Proxy({} as Env, {
 
 		// Lazy parse env if not already parsed
 		if (!parsedEnv) {
-			parsedEnv = parseEnv()
+			try {
+				parsedEnv = parseEnv()
+			} catch {
+				return null
+			}
 		}
 
 		return Reflect.get(parsedEnv, prop)
