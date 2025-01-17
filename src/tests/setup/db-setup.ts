@@ -6,10 +6,10 @@ import { BASE_DATABASE_PATH } from './global-setup'
 // SQLite just needs the path, not file: prefix
 const databaseFile = `./src/tests/drizzle/data.${process.env['VITEST_POOL_ID'] || 0}.sqlite`
 const databasePath = path.join(process.cwd(), databaseFile)
-process.env['DATABASE_URL'] = databasePath
+process.env['TEST_DB_PATH'] = databasePath
 
 beforeEach(async () => {
-	process.env['DATABASE_URL'] = databasePath
+	process.env['TEST_DB_PATH'] = databasePath
 	await ensureNoDatabaseFiles()
 	console.log(`Copying ${BASE_DATABASE_PATH} database to ${databasePath}`)
 	await fsExtra.copyFile(BASE_DATABASE_PATH, databasePath)
@@ -20,10 +20,10 @@ afterEach(async () => {
 })
 
 async function ensureNoDatabaseFiles() {
-	const { db } = await import('@/drizzle/db')
+	const { testDb } = await import('@/tests/setup/test-db')
 
-	if (db.$client.open) {
-		db.$client.close()
+	if (testDb.$client.open) {
+		testDb.$client.close()
 	}
 
 	const filesToRemove = [

@@ -1,11 +1,11 @@
 import { faker } from '@faker-js/faker'
 import { eq } from 'drizzle-orm'
 import { UniqueEnforcer } from 'enforce-unique'
-import { db } from '@/drizzle/db'
 
 import { SessionTable, UserTable } from '@/drizzle/schemas/auth-schema'
 import { OnboardingInfoTable } from '@/drizzle/schemas/onboarding-schema'
 import { cuid } from '@/lib/shared/utils'
+import { testDb } from '@/tests/setup/test-db'
 const uniqueUsernameEnforcer = new UniqueEnforcer()
 
 export type UserOptions = {
@@ -40,7 +40,7 @@ export function createFakeUser() {
 }
 
 export function createUser(options: UserOptions = {}) {
-	return db.transaction((tx) => {
+	return testDb.transaction((tx) => {
 		const fakeUser = createFakeUser()
 		const user = tx
 			.insert(UserTable)
@@ -59,10 +59,10 @@ export function createUser(options: UserOptions = {}) {
 	})
 }
 
-export function createUserAndSession(options: UserOptions = {}) {
-	return db.transaction((tx) => {
+export async function createUserAndSession(options: UserOptions = {}) {
+	return testDb.transaction(async (tx) => {
 		if (options.id) {
-			const user = tx
+			const user = await tx
 				.select()
 				.from(UserTable)
 				.where(eq(UserTable.id, options.id))
@@ -71,7 +71,7 @@ export function createUserAndSession(options: UserOptions = {}) {
 			if (!user) throw new Error('User not found. You must use a valid id.')
 
 			const id = cuid()
-			const session = tx
+			const session = await tx
 				.insert(SessionTable)
 				.values({
 					id,
@@ -84,14 +84,15 @@ export function createUserAndSession(options: UserOptions = {}) {
 				.returning()
 				.get()
 
-			tx.insert(OnboardingInfoTable)
+			await tx
+				.insert(OnboardingInfoTable)
 				.values({ id: cuid(), userId: user.id })
 				.returning({ id: OnboardingInfoTable.id })
 				.get()
 			return [user, session] as const
 		} else {
 			const fakeUser = createFakeUser()
-			const user = tx
+			const user = await tx
 				.insert(UserTable)
 				.values({
 					id: cuid(),
@@ -105,7 +106,7 @@ export function createUserAndSession(options: UserOptions = {}) {
 				.get()
 
 			const id = cuid()
-			const session = tx
+			const session = await tx
 				.insert(SessionTable)
 				.values({
 					id,
@@ -117,7 +118,8 @@ export function createUserAndSession(options: UserOptions = {}) {
 				})
 				.returning()
 				.get()
-			tx.insert(OnboardingInfoTable)
+			await tx
+				.insert(OnboardingInfoTable)
 				.values({ id: cuid(), userId: user.id })
 				.returning({ id: OnboardingInfoTable.id })
 				.get()

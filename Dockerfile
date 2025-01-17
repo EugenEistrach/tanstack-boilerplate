@@ -24,6 +24,10 @@ FROM base as build
 RUN apt-get update -qq && \
   apt-get install --no-install-recommends -y build-essential node-gyp pkg-config python-is-python3
 
+RUN apt-get update -qq && \
+  apt-get install -y ca-certificates && \
+  update-ca-certificates
+
 # Install node modules
 COPY package.json pnpm-lock.yaml ./
 
@@ -44,6 +48,7 @@ FROM base
 
 # Copy built application
 COPY --from=build /app /app
+COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 
 # Setup sqlite3 on a separate volume
 RUN mkdir -p /data
@@ -51,7 +56,7 @@ VOLUME /data
 
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 3000
-ENV DATABASE_URL="/data/sqlite.db"
+ENV LOCAL_DATABASE_PATH="/data/sqlite.db"
 
 # Change to "start" in real production
 CMD [ "pnpm", "run", "start-with-clean-db" ]

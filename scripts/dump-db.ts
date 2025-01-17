@@ -155,7 +155,7 @@ async function dumpDb() {
 
 		// Copy current database to temp location
 		const currentDbPath =
-			process.env['DATABASE_URL']?.replace('file:', '') || 'db.sqlite'
+			process.env['LOCAL_DATABASE_PATH']?.replace('file:', '') || 'db.sqlite'
 		await fs.copyFile(currentDbPath, TEMP_DB_PATH)
 
 		// Get database structure

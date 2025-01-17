@@ -5,9 +5,9 @@ import { resolve } from 'node:path'
 
 console.log('Clearing database...')
 
-const databaseUrl = process.env['DATABASE_URL']
+const databaseUrl = process.env['LOCAL_DATABASE_PATH']
 if (!databaseUrl) {
-	console.error('DATABASE_URL environment variable is not set.')
+	console.error('LOCAL_DATABASE_PATH environment variable is not set.')
 	process.exit(1)
 }
 

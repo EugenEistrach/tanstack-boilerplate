@@ -6,7 +6,7 @@ export default defineConfig({
 	out: './src/drizzle/migrations',
 	schema: ['./src/drizzle/schemas/_exports.ts'],
 	dbCredentials: {
-		url: env.DATABASE_URL,
+		url: env.LOCAL_DATABASE_PATH,
 	},
 	breakpoints: true,
 	// Print all statements

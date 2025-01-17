@@ -1,34 +1,20 @@
-import { drizzle } from 'drizzle-orm/better-sqlite3'
+import { createClient } from '@libsql/client'
+import { drizzle } from 'drizzle-orm/libsql'
 
-import * as authSchema from './schemas/auth-schema'
-import * as onboardingSchema from './schemas/onboarding-schema'
+import { schema } from './schemas/schema'
 import { env } from '@/lib/server/env.server'
 
-const schema = {
-	user: authSchema.UserTable,
-	session: authSchema.SessionTable,
-	account: authSchema.AccountTable,
-	verification: authSchema.VerificationTable,
-	organization: authSchema.OrganizationTable,
-	member: authSchema.MemberTable,
-	invitation: authSchema.InvitationTable,
+let client =
+	env.TURSO_DATABASE_URL && env.TURSO_AUTH_TOKEN
+		? createClient({
+				url: `file:${env.LOCAL_DATABASE_PATH}`,
 
-	onboardingInfo: onboardingSchema.OnboardingInfoTable,
-} as const
-
-type DrizzleDB = ReturnType<typeof drizzle<typeof schema>>
-let drizzleDb: DrizzleDB | null = null
-
-export const db = new Proxy({} as DrizzleDB, {
-	get(_, prop) {
-		// if we don't have a db or the db is not open, we need to create it
-		if (!drizzleDb || !drizzleDb.$client.open) {
-			drizzleDb = drizzle({
-				connection: env.DATABASE_URL,
-				schema,
+				authToken: env.TURSO_AUTH_TOKEN,
+				syncUrl: env.TURSO_DATABASE_URL,
+				syncInterval: 60,
 			})
-			drizzleDb.$client.pragma('journal_mode = WAL')
-		}
-		return drizzleDb[prop as keyof DrizzleDB]
-	},
-})
+		: createClient({
+				url: `file:${env.LOCAL_DATABASE_PATH}`,
+			})
+
+export const db = drizzle(client, { schema })
