@@ -12,6 +12,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Login to Custom Registry
+        uses: docker/login-action@v3
+        with:
+          registry: registry.perfux.dev
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+
       - name: Use Node.js 20.x
         uses: actions/setup-node@v4
         with:
