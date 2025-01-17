@@ -1,7 +1,5 @@
 import * as v from 'valibot'
 
-import { pino } from '@/lib/server/logger.server'
-
 // Schema definition
 const serverSchema = v.object({
 	APP_NAME: v.optional(v.string(), `Tanstack Boilerplate`),
@@ -66,15 +64,15 @@ const parseEnv = () => {
 	const result = v.safeParse(serverSchema, processEnv)
 
 	if (!result.success) {
-		pino.error('\n❌ Invalid Environment Variables:\n')
+		console.error('\n❌ Invalid Environment Variables:\n')
 
 		for (const issue of result.issues) {
 			const pathString = issue.path
 				? issue.path.map((segment) => String(segment.key)).join('.')
 				: 'unknown'
 
-			pino.error(`• ${pathString}: ${issue.message}`)
-			pino.error(`  Current value: ${processEnv[pathString] || 'missing'}\n`)
+			console.error(`• ${pathString}: ${issue.message}`)
+			console.error(`  Current value: ${processEnv[pathString] || 'missing'}\n`)
 		}
 
 		throw new Error(
