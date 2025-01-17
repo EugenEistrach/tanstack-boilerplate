@@ -7,7 +7,6 @@ console.log('env', process.env)
 export default defineConfig({
 	project: 'proj_tlgfryfhwprwupwefzie',
 	runtime: 'node',
-	logLevel: 'debug',
 	maxDuration: 300,
 	retries: {
 		enabledInDev: true,
