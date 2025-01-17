@@ -224,5 +224,6 @@ jobs:
           # disable exit code check
           set +e
           cp .env.example .env
-          pnpm dlx trigger.dev@latest deploy --self-hosted --load-image --registry registry.perfux.dev --namespace perfux
+          pnpm dlx trigger.dev@latest deploy --skip-sync-env-vars --self-hosted --load-image --registry registry.perfux.dev --namespace perfux --env-file .env
+
           cat /tmp/trigger-*/build-*.log || true
