@@ -1,4 +1,5 @@
 import * as v from 'valibot'
+import { logger } from '@/lib/server/logger.server'
 
 // Schema definition
 const serverSchema = v.object({
@@ -58,15 +59,15 @@ const parseEnv = () => {
 	const result = v.safeParse(serverSchema, processEnv)
 
 	if (!result.success) {
-		console.error('\n❌ Invalid Environment Variables:\n')
+		logger.error('\n❌ Invalid Environment Variables:\n')
 
 		for (const issue of result.issues) {
 			const pathString = issue.path
 				? issue.path.map((segment) => String(segment.key)).join('.')
 				: 'unknown'
 
-			console.error(`• ${pathString}: ${issue.message}`)
-			console.error(`  Current value: ${processEnv[pathString] || 'missing'}\n`)
+			logger.error(`• ${pathString}: ${issue.message}`)
+			logger.error(`  Current value: ${processEnv[pathString] || 'missing'}\n`)
 		}
 
 		throw new Error(
@@ -77,9 +78,17 @@ const parseEnv = () => {
 	return result.output
 }
 
-const _env = parseEnv()
+const safeParseEnv = () => {
+	try {
+		return parseEnv()
+	} catch {
+		return null
+	}
+}
 
-export const env = new Proxy(_env, {
+const _env = safeParseEnv()
+
+export const env = new Proxy(_env!, {
 	get(target, prop) {
 		if (typeof window !== 'undefined') {
 			throw new Error(
