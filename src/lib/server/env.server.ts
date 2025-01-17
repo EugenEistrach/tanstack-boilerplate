@@ -87,7 +87,7 @@ const safeParseEnv = () => {
 
 const _env = safeParseEnv()
 
-export const env = new Proxy(_env!, {
+export const env = new Proxy(_env ?? ({} as Env), {
 	get(target, prop) {
 		if (typeof window !== 'undefined') {
 			throw new Error(
