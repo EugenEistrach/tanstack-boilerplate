@@ -140,9 +140,55 @@ jobs:
           path: playwright-report/
           retention-days: 30
 
+  deploy:
+    name: Deploy app
+    needs: [checks, playwright]
+    runs-on: ubuntu-latest
+    concurrency: deploy-group
+    steps:
+      - uses: actions/checkout@v4
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - run: flyctl deploy --remote-only
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+      - name: 🏥 Health check
+        run: |
+          timeout=60
+          elapsed=0
+          # Get the app URL from flyctl status
+          url=$(flyctl status --json | jq -r '.Hostname')
+
+          if [ -z "$url" ]; then
+            echo "Failed to get application URL from flyctl"
+            exit 1
+          fi
+
+          url="https://$url"
+          echo "Checking health of $url"
+
+          while true; do
+            if [[ $elapsed -ge $timeout ]]; then
+              echo "Health check failed: Timeout after ${timeout} seconds"
+              exit 1
+            fi
+
+            status_code=$(curl -s -o /dev/null -w "%{http_code}" $url || echo "failed")
+
+            if [[ $status_code == "200" ]]; then
+              echo "Health check passed! Site is up and running."
+              break
+            fi
+
+            echo "Waiting for site to be ready... (${elapsed}s elapsed)"
+            sleep 5
+            elapsed=$((elapsed + 5))
+          done
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
   deploy-trigger:
     name: 🎯 Deploy Trigger.dev
-    needs: [checks, playwright]
+    needs: [checks, playwright, deploy]
     runs-on: ubuntu-latest
     concurrency: trigger-deploy-group
     steps:
@@ -171,21 +217,11 @@ jobs:
 
       - name: 🚀 Deploy Trigger.dev
         id: deploy
-        continue-on-error: true
         env:
           TRIGGER_ACCESS_TOKEN: ${{ secrets.TRIGGER_ACCESS_TOKEN }}
           TRIGGER_API_URL: https://trigger.perfux.dev
         run: |
+          # disable exit code check
+          set +e
           pnpm dlx trigger.dev@latest deploy --self-hosted --load-image --registry registry.perfux.dev --namespace perfux
-
-  deploy:
-    name: Deploy app
-    needs: [checks, playwright, deploy-trigger]
-    runs-on: ubuntu-latest
-    concurrency: deploy-group
-    steps:
-      - uses: actions/checkout@v4
-      - uses: superfly/flyctl-actions/setup-flyctl@master
-      - run: flyctl deploy --remote-only
-        env:
-          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+          cat /tmp/trigger-*/build-*.log || true
