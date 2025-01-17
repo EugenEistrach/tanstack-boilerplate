@@ -22,17 +22,16 @@ test('login with github ', async ({ page, baseURL }) => {
 	await page.goto(`/dashboard/settings`)
 	await page.waitForURL('**\/login*')
 
-	await delayed(() =>
-		page.getByRole('button', { name: 'Sign in with GitHub' }).click(),
-	)
+	await page.getByRole('button', { name: 'Sign in with GitHub' }).click()
+	await page.waitForLoadState('networkidle')
 
-	await delayed(
-		async () => await page.getByPlaceholder('Enter your name').fill('Test ABC'),
-	)
+	await page.getByPlaceholder('Enter your name').fill('Test ABC')
 
 	await page.getByPlaceholder('Enter your favorite color').fill('red')
 
-	await page.getByRole('button', { name: 'Complete Onboarding' }).click()
+	await delayed(() =>
+		page.getByRole('button', { name: 'Complete Onboarding' }).click(),
+	)
 
 	await expect(page.getByLabel("What's your name?")).toHaveValue('Test ABC')
 	await expect(page.getByRole('heading', { name: 'Settings' })).toBeVisible()

@@ -1,8 +1,7 @@
-import { redirect, useRouter } from '@tanstack/react-router'
+import { redirect, useRouteContext, useRouter } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/start'
 import { createAuthClient } from 'better-auth/client'
 import { adminClient, organizationClient } from 'better-auth/client/plugins'
-import { createContext, useContext } from 'react'
 import { getWebRequest } from 'vinxi/http'
 import { authServer } from '@/lib/server/auth.server'
 
@@ -12,20 +11,8 @@ export const authClient = createAuthClient({
 	plugins: [adminClient(), organizationClient()],
 })
 
-const AuthContext = createContext<typeof authClient.$Infer.Session | null>(null)
-
-export const AuthProvider = ({
-	children,
-	auth,
-}: {
-	children: React.ReactNode
-	auth: typeof authClient.$Infer.Session | null
-}) => {
-	return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>
-}
-
 export const useAuth = () => {
-	const auth = useContext(AuthContext)
+	const auth = useOptionalAuth()
 	const router = useRouter()
 	if (!auth) {
 		throw redirect({
@@ -40,7 +27,8 @@ export const useAuth = () => {
 }
 
 export const useOptionalAuth = () => {
-	return useContext(AuthContext)
+	const { auth } = useRouteContext({ from: '__root__' })
+	return auth
 }
 
 export const $getSession = createServerFn({ method: 'GET' }).handler(

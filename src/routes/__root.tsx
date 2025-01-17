@@ -11,11 +11,7 @@ import * as React from 'react'
 
 import { Toaster } from '@/components/ui/sonner'
 import { TooltipProvider } from '@/components/ui/tooltip'
-import {
-	$getSession,
-	$getVinxiSession,
-	AuthProvider,
-} from '@/lib/client/auth.client'
+import { $getSession, $getVinxiSession } from '@/lib/client/auth.client'
 import { $getHints, ClientHintChecker } from '@/lib/client/client-hints.client'
 
 import { useLocale } from '@/lib/client/i18n.client'
@@ -76,15 +72,15 @@ export const Route = createRootRouteWithContext<{
 		],
 		links: [
 			{ rel: 'stylesheet', href: appCss },
-			{
-				rel: 'preload',
-				href: 'https://api.fontshare.com/v2/css?f[]=satoshi@300,301,400,401,500,501,700,701,900,901,1,2&display=swap',
-				as: 'style',
-			},
-			{
-				rel: 'stylesheet',
-				href: 'https://api.fontshare.com/v2/css?f[]=satoshi@300,301,400,401,500,501,700,701,900,901,1,2&display=swap',
-			},
+			// {
+			// 	rel: 'preload',
+			// 	href: 'https://api.fontshare.com/v2/css?f[]=satoshi@300,301,400,401,500,501,700,701,900,901,1,2&display=swap',
+			// 	as: 'style',
+			// },
+			// {
+			// 	rel: 'stylesheet',
+			// 	href: 'https://api.fontshare.com/v2/css?f[]=satoshi@300,301,400,401,500,501,700,701,900,901,1,2&display=swap',
+			// },
 		],
 	}),
 	component: RootComponent,
@@ -99,7 +95,7 @@ function RootComponent() {
 }
 
 function RootDocument({ children }: { children: React.ReactNode }) {
-	const { hints, auth, theme } = Route.useRouteContext()
+	const { hints, theme } = Route.useRouteContext()
 	const lang = useLocale()
 	return (
 		<html lang={lang}>
@@ -108,15 +104,13 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 			</head>
 			<body className={theme}>
 				<ClientHintChecker />
-				<AuthProvider auth={auth}>
-					<TimezoneContext.Provider value={hints.timeZone}>
-						<TooltipProvider>
-							<div className="font-sans">{children}</div>
+				<TimezoneContext.Provider value={hints.timeZone}>
+					<TooltipProvider>
+						<div className="font-sans">{children}</div>
 
-							<Toaster />
-						</TooltipProvider>
-					</TimezoneContext.Provider>
-				</AuthProvider>
+						<Toaster />
+					</TooltipProvider>
+				</TimezoneContext.Provider>
 				<ScrollRestoration />
 				<TanStackRouterDevtools position="bottom-right" />
 				<ReactQueryDevtools buttonPosition="bottom-right" />

@@ -3,6 +3,7 @@ import { useMutation } from '@tanstack/react-query'
 import { createFileRoute, useRouter } from '@tanstack/react-router'
 import { createServerFn, useServerFn } from '@tanstack/start'
 import { eq } from 'drizzle-orm'
+import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { useSpinDelay } from 'spin-delay'
@@ -42,9 +43,16 @@ function Settings() {
 	const { user } = useAuth()
 	const router = useRouter()
 
+	console.log('Render - Auth state:', {
+		name: user.name,
+		isAuthAvailable: !!user,
+	})
+
 	const {
+		watch,
 		register,
 		handleSubmit,
+		getValues,
 		formState: { errors, isValidating },
 	} = useForm({
 		resolver: valibotResolver(updateNameSchema),
@@ -52,6 +60,16 @@ function Settings() {
 			name: user.name || '',
 		},
 	})
+
+	// Log form values after initialization
+	console.log('Form values after init:', getValues())
+
+	useEffect(() => {
+		const subscription = watch((value) => {
+			console.log('Form values changed:', value)
+		})
+		return () => subscription.unsubscribe()
+	}, [watch])
 
 	const updateNameMutation = useMutation({
 		mutationFn: useServerFn($updateName),
@@ -92,7 +110,11 @@ function Settings() {
 								</div>
 								<div className="space-y-1">
 									<Label htmlFor="name">{m.onboarding_name_label()}</Label>
-									<Input id="name" {...register('name')} />
+									<Input
+										id="name"
+										{...register('name')}
+										defaultValue={user.name}
+									/>
 									<FieldErrorMessage error={errors.name} />
 								</div>
 							</div>
