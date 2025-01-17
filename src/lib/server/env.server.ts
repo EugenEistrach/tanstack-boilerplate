@@ -55,25 +55,26 @@ Object.entries(processEnv).forEach(([key, value]) => {
 
 // Parse and create env object with client-side protection
 const parseEnv = () => {
-	try {
-		return v.parse(serverSchema, processEnv)
-	} catch (error) {
-		if (error instanceof v.ValiError) {
-			console.error('\n❌ Invalid Environment Variables:\n')
+	const result = v.safeParse(serverSchema, processEnv)
 
-			error.issues.forEach((issue) => {
-				const path = issue.path?.map((p) => p.key).join('.') || 'unknown'
-				console.error(`• ${path}: ${issue.message}`)
-				console.error(`  Required value: ${processEnv[path] || 'missing'}\n`)
-			})
+	if (!result.success) {
+		console.error('\n❌ Invalid Environment Variables:\n')
 
-			throw new Error(
-				'🚨 Invalid environment variables. Check the logs above and update your .env file.',
-			)
+		for (const issue of result.issues) {
+			const pathString = issue.path
+				? issue.path.map((segment) => String(segment.key)).join('.')
+				: 'unknown'
+
+			console.error(`• ${pathString}: ${issue.message}`)
+			console.error(`  Current value: ${processEnv[pathString] || 'missing'}\n`)
 		}
 
-		throw error
+		throw new Error(
+			'🚨 Invalid environment variables. Check the logs above and update your .env file.',
+		)
 	}
+
+	return result.output
 }
 
 const _env = parseEnv()
