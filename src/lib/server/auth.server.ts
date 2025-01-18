@@ -21,7 +21,7 @@ const discord =
 		: undefined
 
 export const authServer = betterAuth({
-	baseURL: env.BASE_URL,
+	baseURL: env.APPLICATION_URL,
 	secret: env.SESSION_SECRET,
 	database: drizzleAdapter(db, {
 		provider: 'sqlite',

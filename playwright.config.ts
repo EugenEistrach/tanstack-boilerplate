@@ -9,6 +9,10 @@ if (!process.env['TEST_DB_PATH']) {
 	process.env['TEST_DB_PATH'] = env.LOCAL_DATABASE_PATH
 }
 
+if (!process.env['TEST_DB_PATH']) {
+	throw new Error('TEST_DB_PATH is required.')
+}
+
 export default defineConfig({
 	testDir: './src/tests/e2e',
 	timeout: 15 * 1000,

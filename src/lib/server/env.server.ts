@@ -17,12 +17,12 @@ const serverSchema = v.object({
 		),
 	),
 	NODE_ENV: v.optional(v.string()),
-	BASE_URL: v.pipe(v.string(), v.nonEmpty()),
+	APPLICATION_URL: v.pipe(v.string(), v.nonEmpty()),
 
 	TURSO_DATABASE_URL: v.optional(v.string()),
 	TURSO_AUTH_TOKEN: v.optional(v.string()),
 
-	LOCAL_DATABASE_PATH: v.pipe(v.string(), v.nonEmpty()),
+	LOCAL_DATABASE_PATH: v.optional(v.string(), 'db.sqlite'),
 
 	GITHUB_CLIENT_ID: v.optional(v.string()),
 	GITHUB_CLIENT_SECRET: v.optional(v.string()),
@@ -39,12 +39,7 @@ const serverSchema = v.object({
 		v.array(v.pipe(v.string(), v.trim())),
 	),
 
-	ENABLE_EMBEDDED_DB: v.optional(
-		v.pipe(
-			v.string(),
-			v.transform((val) => val === 'true'),
-		),
-	),
+	API_KEY: v.optional(v.string()),
 
 	LOG_LEVEL: v.optional(v.string(), 'info'),
 })
@@ -96,11 +91,7 @@ export const env = new Proxy({} as Env, {
 
 		// Lazy parse env if not already parsed
 		if (!parsedEnv) {
-			try {
-				parsedEnv = parseEnv()
-			} catch {
-				return null
-			}
+			parsedEnv = parseEnv()
 		}
 
 		return Reflect.get(parsedEnv, prop)

@@ -1,6 +1,6 @@
 import { createMiddleware, registerGlobalMiddleware } from '@tanstack/start'
 import { getWebRequest } from 'vinxi/http'
-import { pino } from '@/lib/server/logger.server'
+import { logger } from '@/lib/server/logger.server'
 
 export const loggingMiddleware = createMiddleware().server(
 	async ({ next, data }) => {
@@ -22,14 +22,14 @@ export const loggingMiddleware = createMiddleware().server(
 				const body = await clonedRequest.text()
 				requestInfo.body = body
 			} catch (error) {
-				pino.debug(
+				logger.debug(
 					{ error, operation: 'parseRequestBody' },
 					'Could not parse request body',
 				)
 			}
 		}
 
-		pino.debug(
+		logger.debug(
 			{
 				request: requestInfo,
 				routeData: data,
@@ -41,7 +41,7 @@ export const loggingMiddleware = createMiddleware().server(
 			const result = await next()
 			const durationInMs = performance.now() - startTime
 
-			pino.debug(
+			logger.debug(
 				{
 					method: requestInfo.method,
 					url: requestInfo.url,
@@ -54,7 +54,7 @@ export const loggingMiddleware = createMiddleware().server(
 		} catch (error) {
 			const durationInMs = performance.now() - startTime
 
-			pino.debug(
+			logger.debug(
 				{
 					method: requestInfo.method,
 					url: requestInfo.url,

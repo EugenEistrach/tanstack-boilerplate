@@ -8,7 +8,7 @@ const getDbClient = () => {
 	// Case 1: Remote Turso DB with auth
 	if (env.TURSO_DATABASE_URL && env.TURSO_AUTH_TOKEN) {
 		// Case 1a: Remote only mode
-		if (!env.ENABLE_EMBEDDED_DB) {
+		if (!env.LOCAL_DATABASE_PATH) {
 			console.info(
 				{
 					url: env.TURSO_DATABASE_URL,
@@ -37,6 +37,12 @@ const getDbClient = () => {
 			syncUrl: env.TURSO_DATABASE_URL,
 			syncInterval: 60,
 		})
+	}
+
+	if (!env.LOCAL_DATABASE_PATH) {
+		throw new Error(
+			'LOCAL_DATABASE_PATH is required if no remote database is provided',
+		)
 	}
 
 	// Case 2: Local-only mode

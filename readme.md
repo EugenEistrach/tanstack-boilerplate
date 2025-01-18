@@ -8,7 +8,7 @@ a long running server for things like cron jobs and sockets.**
 For the app to work, the following environment variables need to be set:
 
 ```env
-BASE_URL=https://localhost:3000
+APPLICATION_URL=https://localhost:3000
 SESSION_SECRET=
 REDIS_URL=
 

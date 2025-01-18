@@ -3,7 +3,7 @@ import 'dotenv/config'
 import { execSync } from 'node:child_process'
 import { resolve } from 'node:path'
 
-console.log('Clearing database...')
+console.log('Clearing local database...')
 
 const databaseUrl = process.env['LOCAL_DATABASE_PATH']
 if (!databaseUrl) {
