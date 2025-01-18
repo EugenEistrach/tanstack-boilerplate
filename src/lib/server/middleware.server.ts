@@ -21,51 +21,42 @@ export const loggingMiddleware = createMiddleware().server(
 				const clonedRequest = request.clone()
 				const body = await clonedRequest.text()
 				requestInfo.body = body
-			} catch (error) {
-				logger.debug(
-					{ error, operation: 'parseRequestBody' },
-					'Could not parse request body',
-				)
+			} catch (err) {
+				logger.debug('Could not parse request body', {
+					err,
+					operation: 'parseRequestBody',
+				})
 			}
 		}
 
-		logger.debug(
-			{
-				request: requestInfo,
-				routeData: data,
-			},
-			'Server function received request',
-		)
+		logger.debug('Server function received request', {
+			request: requestInfo,
+			routeData: data,
+		})
 
 		try {
 			const result = await next()
 			const durationInMs = performance.now() - startTime
 
-			logger.debug(
-				{
-					method: requestInfo.method,
-					url: requestInfo.url,
-					durationInMs,
-				},
-				'Server function completed',
-			)
+			logger.debug('Server function completed', {
+				method: requestInfo.method,
+				url: requestInfo.url,
+				durationInMs,
+			})
 
 			return result
-		} catch (error) {
+		} catch (err) {
 			const durationInMs = performance.now() - startTime
 
-			logger.debug(
-				{
-					method: requestInfo.method,
-					url: requestInfo.url,
-					durationInMs,
-					error,
-					operation: 'requestHandler',
-				},
-				'Server function failed',
-			)
+			logger.debug('Server function failed', {
+				method: requestInfo.method,
+				url: requestInfo.url,
+				durationInMs,
+				err,
+				operation: 'requestHandler',
+			})
 
-			throw error
+			throw err
 		}
 	},
 )

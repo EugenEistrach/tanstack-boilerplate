@@ -30,19 +30,17 @@ try {
 		migrationsFolder: './src/drizzle/migrations',
 	})
 	logger.info('Database migration completed successfully')
-} catch (error) {
-	logger.error({
-		msg: 'Database migration failed',
-		error,
+} catch (err) {
+	logger.error('Database migration failed', {
+		err,
 		operation: 'dbMigration',
 	})
-	throw error
+	throw err
 }
 
 const customStreamHandler: HandlerCallback<AnyRouter> = (ctx) => {
 	const language = detectLanguage(ctx.request)
-	logger.debug({
-		msg: 'Language detection',
+	logger.debug('Language detection', {
 		detectedLanguage: language,
 		url: ctx.request.url,
 	})
@@ -51,8 +49,7 @@ const customStreamHandler: HandlerCallback<AnyRouter> = (ctx) => {
 	setLanguageTag(() => language)
 	responseHeaders.append('Set-Cookie', `lang=${language}; Path=/;`)
 
-	logger.trace({
-		msg: 'Stream handler execution',
+	logger.trace('Stream handler execution', {
 		language,
 		url: ctx.request.url,
 		method: ctx.request.method,

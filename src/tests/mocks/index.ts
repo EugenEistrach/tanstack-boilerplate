@@ -1,6 +1,7 @@
 import crypto from 'node:crypto'
 import fs from 'node:fs'
 import path from 'node:path'
+import { logger } from 'better-auth'
 import closeWithGrace from 'close-with-grace'
 import { bypass } from 'msw'
 import { setupServer } from 'msw/node'
@@ -89,7 +90,7 @@ server.listen({
 })
 
 if (process.env['NODE_ENV'] !== 'test') {
-	console.info('🔶 Mock server installed')
+	logger.info('🔶 Mock server installed')
 
 	closeWithGrace(() => {
 		server.close()
