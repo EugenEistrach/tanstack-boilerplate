@@ -1,7 +1,9 @@
 import 'dotenv/config'
 
 import { defineConfig, logger } from '@trigger.dev/sdk/v3'
-import { env } from '@/lib/server/env.server'
+
+const APPLICATION_URL = process.env['APPLICATION_URL']
+const API_KEY = process.env['API_KEY']
 
 export default defineConfig({
 	project: 'proj_tlgfryfhwprwupwefzie',
@@ -22,17 +24,22 @@ export default defineConfig({
 	},
 	dirs: ['src/tasks'],
 	onSuccess: async () => {
-		const applicationUrl = env.APPLICATION_URL
+		const applicationUrl = APPLICATION_URL
 
-		if (!env.API_KEY) {
+		if (!API_KEY) {
 			logger.error('API_KEY not set. Cannot sync application database')
+			return
+		}
+
+		if (!applicationUrl) {
+			logger.error('APPLICATION_URL not set. Cannot sync application database')
 			return
 		}
 
 		const response = await fetch(`${applicationUrl}/api/sync-db`, {
 			method: 'POST',
 			headers: {
-				Authorization: env.API_KEY,
+				Authorization: API_KEY,
 			},
 		})
 

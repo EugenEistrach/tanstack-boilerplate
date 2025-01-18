@@ -27,8 +27,8 @@ export const exaxpleTask = schemaTask({
 				.returning()
 
 			logger.log('New user created', { newUser })
-		} catch (error) {
-			logger.error('Error creating user', { error })
+		} catch (err) {
+			logger.error('Error creating user', { err })
 		}
 	},
 })
