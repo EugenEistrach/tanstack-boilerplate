@@ -29,11 +29,32 @@ Required Documentation:
    - Database operations
    - Transaction handling
    - Auth session management
+
+4. routing.md
+   - Route creation patterns
+   - Authentication handling
+   - Navigation integration
 ```
 
 ## 2. Implementation Flow
 
-### 2.1 UI Components (src/features/[feature]/ui/)
+### 2.1 Route Setup (src/routes/)
+
+> 📖 Detailed guidelines: `docs/routing.md`
+
+1. Create route file in appropriate directory:
+
+   - Public routes in `_marketing/`
+   - Auth routes in `(auth)/`
+   - Protected routes in `dashboard/`
+   - Admin routes in `dashboard/admin/`
+
+2. Add to navigation if needed:
+   - Update dashboard navigation
+   - Add breadcrumbs
+   - Configure page title
+
+### 2.2 UI Components (src/features/[feature]/ui/)
 
 > 📖 Detailed guidelines: `docs/client.md`
 
@@ -71,7 +92,7 @@ Required Documentation:
    - Implement form validation
    - Handle loading states
 
-### 2.2 API Layer (src/features/[feature]/api/)
+### 2.3 API Layer (src/features/[feature]/api/)
 
 > 📖 Detailed guidelines: `docs/api.md`
 
@@ -115,7 +136,7 @@ Required Documentation:
    - Set up cache invalidation
    - Handle loading/error states
 
-### 2.3 Domain Logic (src/features/[feature]/domain/)
+### 2.4 Domain Logic (src/features/[feature]/domain/)
 
 > 📖 Detailed guidelines: `docs/server.md`
 

@@ -75,6 +75,7 @@ Detailed guidelines for specific areas can be found in the following files:
 - `docs/deployments.md` - Deployment procedures
 - `docs/i18n.md` - Internationalization
 - `docs/logging.md` - Logging standards
+- `docs/routing.md` - Route creation and navigation
 - `docs/server.md` - Server-side development
 - `docs/unit-testing.md` - Testing guidelines
 - `docs/validation.md` - Data validation patterns
@@ -89,11 +90,15 @@ For each feature or task, follow this workflow (detailed guide in
 
    - Review relevant documentation for your task
    - For UI changes: `client.md`, for API: `api.md`, etc.
+   - For routes: `routing.md` for navigation and auth patterns
    - Document key requirements and patterns to follow
 
 2. **Implementation Flow**
 
-   - Start with UI components (src/features/[feature]/ui/)
+   - Start with route setup (src/routes/)
+     - Create route files following routing.md patterns
+     - Configure navigation and auth requirements
+   - Build UI components (src/features/[feature]/ui/)
      - Create components following client.md patterns
      - Use shadcn/ui components and TailwindCSS
    - Build API layer (src/features/[feature]/api/)
