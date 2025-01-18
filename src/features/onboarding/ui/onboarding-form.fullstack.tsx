@@ -3,7 +3,7 @@ import { valibotResolver } from '@hookform/resolvers/valibot'
 import { useForm } from 'react-hook-form'
 import { useSpinDelay } from 'spin-delay'
 import * as v from 'valibot'
-import { Button } from '@/components/ui/button'
+import { Button, LoadingButton } from '@/components/ui/button'
 import {
 	Card,
 	CardContent,
@@ -103,9 +103,14 @@ export function OnboardingForm({ redirectTo }: { redirectTo?: string }) {
 								)}
 							/>
 							<CardFooter>
-								<Button type="submit" className="w-full" disabled={isPending}>
-									{isPending ? m.loading() : m.complete_onboarding()}
-								</Button>
+								<LoadingButton
+									type="submit"
+									className="w-full"
+									disabled={isPending}
+									loading={isPending}
+								>
+									{m.complete_onboarding()}
+								</LoadingButton>
 							</CardFooter>
 						</CardContent>
 					</form>

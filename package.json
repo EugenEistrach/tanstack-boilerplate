@@ -90,6 +90,7 @@
     "vinxi": "^0.5.1"
   },
   "devDependencies": {
+    "@clack/prompts": "^0.7.0",
     "@epic-web/config": "^1.16.5",
     "@faker-js/faker": "^9.4.0",
     "@flydotio/dockerfile": "^0.7.0",
@@ -119,6 +120,7 @@
     "execa": "^9.5.2",
     "fs-extra": "^11.3.0",
     "msw": "^2.7.0",
+    "picocolors": "^1.0.0",
     "postcss": "^8.5.1",
     "prettier": "^3.4.2",
     "prettier-plugin-tailwindcss": "^0.6.10",
