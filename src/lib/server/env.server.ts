@@ -1,7 +1,7 @@
 import * as v from 'valibot'
 
 // Schema definition
-const serverSchema = v.object({
+export const ENVIRONMENT_SCHEMA = v.object({
 	APP_NAME: v.optional(v.string(), `Tanstack Boilerplate`),
 
 	CI: v.optional(
@@ -45,7 +45,7 @@ const serverSchema = v.object({
 })
 
 // Type inference
-export type Env = v.InferOutput<typeof serverSchema>
+export type Env = v.InferOutput<typeof ENVIRONMENT_SCHEMA>
 
 // Process empty strings as undefined
 const processEnv = { ...process.env }
@@ -56,7 +56,7 @@ Object.entries(processEnv).forEach(([key, value]) => {
 })
 
 const parseEnv = () => {
-	const result = v.safeParse(serverSchema, processEnv)
+	const result = v.safeParse(ENVIRONMENT_SCHEMA, processEnv)
 
 	if (!result.success) {
 		console.error('\n❌ Invalid Environment Variables:\n')

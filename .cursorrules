@@ -1,44 +1,111 @@
-You are a Senior Front-End Developer and an Expert in ReactJS, Tanstack (Start, Router, Query), JavaScript, TypeScript, HTML, CSS and modern UI/UX frameworks (e.g., TailwindCSS, Shadcn, Radix). You are thoughtful, give nuanced answers, and are brilliant at reasoning. You carefully provide accurate, factual, thoughtful answers, and are a genius at reasoning.
+**Every time you choose to apply a rule(s), explicitly state the rule(s) in the
+output. You can abbreviate the rule description to a single word or phrase.**
 
-- Follow the user’s requirements carefully & to the letter.
-- First think step-by-step - describe your plan for what to build in pseudocode, written out in great detail.
-- Confirm, then write code!
-- Always write correct, best practice, WET principle (Write Everything Twice, e.g. don't over-abstract or over-engineer), bug free, fully functional and working code also it should be aligned to listed rules down below at Code Implementation Guidelines .
-- Focus on easy, simple and readable code, over being performant.
-- Fully implement all requested functionality.
-- Leave NO todo’s, placeholders or missing pieces.
-- Ensure code is complete! Verify thoroughly finalised.
-- Include all required imports, and ensure proper naming of key components.
-- Be concise Minimize any other prose.
-- If you think there might not be a correct answer, you say so.
-- If you do not know the answer, say so, instead of guessing.
+## Project Context
 
-### Style Guidelines
+A comprehensive boilerplate project to jumpstart new React applications with
+modern tooling and best practices.
 
-- Use snake case for all file names, e.g. `use-fetch-data.ts` or `user-button.tsx`.
+- Type-safe full-stack development with TanStack
+- Modern authentication with GitHub/Discord SSO
+- Hybrid database approach:
+  - Local: Direct SQLite for development
+  - Production: Turso for global distribution
+- Component library with shadcn/ui
+- Comprehensive testing setup
 
-### Coding Environment
+## Tech Stack
 
-The user asks questions about the following coding languages and frameworks:
-
-- ReactJS
-- Tanstack (Start, Router, Query)
-- React Hook Form
-- Vite
-- JavaScript
+- React 19
+- TanStack (Router, Query, Start)
 - TypeScript
-- TailwindCSS
-- HTML
-- CSS
+- SQLite (local) / Turso (production) with Drizzle ORM
+- Better-auth with GitHub/Discord SSO
+- TailwindCSS with shadcn/ui
+- trigger.dev for background jobs
+- Fly.io for deployment and hosting
+- vitest for testing
+- valibot for type-safe validation
 
-### Code Implementation Guidelines
+## Code Style and Structure
 
-Follow these rules when you write code:
+- Write concise, technical TypeScript code with accurate examples
+- Use functional and declarative programming patterns; avoid classes
+- Prefer duplicating code over premature abstraction (Write Everything Twice
+  principle)
+- Use descriptive variable names with auxiliary verbs (e.g., isLoading,
+  hasError)
+- Structure repository files as follows:
 
-- Use early returns whenever possible to make the code more readable.
-- Always use Tailwind classes for styling HTML elements; avoid using CSS or tags.
-- When creating a reusable component use forwardRef and pass through all props. Treat className seperately by using the cn helper function.
-- Use descriptive variable and function/const names. Also, event functions should be named with a “handle” prefix, like “handleClick” for onClick and “handleKeyDown” for onKeyDown.
-- Implement accessibility features on elements. For example, a tag should have a tabindex=“0”, aria-label, on:click, and on:keydown, and similar attributes.
-- Use consts instead of functions, for example, “const toggle = () =>”. Also, define a type if possible.
-- Use cn() to merge tailwind classes.
+```
+src/
+├── components/     # Shared UI components
+├── data/          # Data layer utilities
+├── drizzle/       # Database schemas and migrations
+├── features/      # Feature-specific code
+│   └── feature-name/
+│       ├── ui/         # UI components
+│       ├── api/        # Server functions + React Query
+│       ├── domain/     # Business logic + DB operations
+│       └── templates/  # Templates
+├── hooks/         # Shared React hooks
+├── lib/           # Shared utilities
+├── routes/        # Route components
+├── styles/        # Global styles
+├── tasks/         # Background tasks
+└── tests/         # Test utilities and mocks
+```
+
+## Naming Conventions
+
+- Use lowercase with dashes for directories (e.g., components/form-wizard)
+- Favor named exports for components and utilities
+- Component files: component-name.tsx
+- Server/API files:
+  - Server logic: module-name.server.ts
+  - API layer: module-name.api.ts
+
+## Additional Documentation
+
+Detailed guidelines for specific areas can be found in the following files:
+
+- `docs/api.md` - API development and integration
+- `docs/client.md` - Client-side and UI development
+- `docs/commit-conventions.md` - Git commit message standards
+- `docs/deployments.md` - Deployment procedures
+- `docs/i18n.md` - Internationalization
+- `docs/logging.md` - Logging standards
+- `docs/server.md` - Server-side development
+- `docs/unit-testing.md` - Testing guidelines
+- `docs/validation.md` - Data validation patterns
+- `docs/workflow.md` - Development workflows
+
+## Development Workflow
+
+For each feature or task, follow this workflow (detailed guide in
+`docs/workflow.md`):
+
+1. **Documentation Analysis**
+
+   - Review relevant documentation for your task
+   - For UI changes: `client.md`, for API: `api.md`, etc.
+   - Document key requirements and patterns to follow
+
+2. **Implementation Flow**
+
+   - Start with UI components (src/features/[feature]/ui/)
+     - Create components following client.md patterns
+     - Use shadcn/ui components and TailwindCSS
+   - Build API layer (src/features/[feature]/api/)
+     - Define server functions with validation
+     - Set up React Query hooks
+   - Add domain logic (src/features/[feature]/domain/)
+     - Implement business logic in .server.ts
+     - Add database operations with Drizzle
+
+3. **Testing & Validation**
+   - Write tests following unit-testing.md
+   - Validate against documentation guidelines
+
+This workflow ensures consistent development from UI to database. For detailed
+examples and best practices, refer to `docs/workflow.md`.

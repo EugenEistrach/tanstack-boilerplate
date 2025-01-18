@@ -20,7 +20,7 @@ import '@/lib/server/middleware.server'
 
 if (env.MOCKS) {
 	logger.info('Loading mock data for development')
-	await import('./tests/mocks')
+	await import('./tests/mocks/setupMsw')
 }
 
 // migrate db
@@ -29,31 +29,28 @@ try {
 	await migrate(db, {
 		migrationsFolder: './src/drizzle/migrations',
 	})
+
 	logger.info('Database migration completed successfully')
 } catch (err) {
-	logger.error('Database migration failed', {
-		err,
-		operation: 'dbMigration',
-	})
+	logger.error({ operation: 'dbMigration', err }, 'Database migration failed')
 	throw err
 }
 
 const customStreamHandler: HandlerCallback<AnyRouter> = (ctx) => {
 	const language = detectLanguage(ctx.request)
-	logger.debug('Language detection', {
-		detectedLanguage: language,
-		url: ctx.request.url,
-	})
+	logger.debug(
+		{ language, url: ctx.request.url },
+		'Language detected for request',
+	)
 
 	const responseHeaders = new Headers(ctx.responseHeaders)
 	setLanguageTag(() => language)
 	responseHeaders.append('Set-Cookie', `lang=${language}; Path=/;`)
 
-	logger.trace('Stream handler execution', {
-		language,
-		url: ctx.request.url,
-		method: ctx.request.method,
-	})
+	logger.trace(
+		{ language, url: ctx.request.url, method: ctx.request.method },
+		'Processing stream handler request',
+	)
 
 	return defaultStreamHandler({
 		...ctx,

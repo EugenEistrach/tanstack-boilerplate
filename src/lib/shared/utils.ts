@@ -50,3 +50,7 @@ export const formatMilliseconds = (ms: number): string => {
 	if (minutes > 0) return `${minutes} minute${minutes > 1 ? 's' : ''}`
 	return `${seconds} second${seconds > 1 ? 's' : ''}`
 }
+
+export function wait(timeInMs: number) {
+	return new Promise((resolve) => setTimeout(resolve, timeInMs))
+}

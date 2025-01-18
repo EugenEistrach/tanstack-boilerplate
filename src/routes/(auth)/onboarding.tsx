@@ -1,10 +1,8 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
 import * as v from 'valibot'
 
-import {
-	$getOnboardingInfo,
-	OnboardingForm,
-} from '@/features/onboarding/ui/onboarding-form.fullstack'
+import { getOnboardingInfoQueryOptions } from '@/features/onboarding/api/onboarding.api'
+import { OnboardingForm } from '@/features/onboarding/ui/onboarding-form.fullstack'
 
 export const Route = createFileRoute('/(auth)/onboarding')({
 	validateSearch: v.object({
@@ -20,7 +18,9 @@ export const Route = createFileRoute('/(auth)/onboarding')({
 			})
 		}
 
-		const onboardingInfo = await $getOnboardingInfo()
+		const onboardingInfo = await context.queryClient.ensureQueryData(
+			getOnboardingInfoQueryOptions(),
+		)
 
 		if (onboardingInfo) {
 			throw redirect({

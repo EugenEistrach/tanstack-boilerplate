@@ -1,12 +1,8 @@
 import { valibotResolver } from '@hookform/resolvers/valibot'
-import { useMutation } from '@tanstack/react-query'
-import { redirect } from '@tanstack/react-router'
-import { createServerFn, useServerFn } from '@tanstack/start'
 
 import { useForm } from 'react-hook-form'
 import { useSpinDelay } from 'spin-delay'
 import * as v from 'valibot'
-import { getWebRequest } from 'vinxi/http'
 import { Button } from '@/components/ui/button'
 import {
 	Card,
@@ -26,11 +22,8 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 
-import {
-	completeOnboarding,
-	getOnboardingInfo,
-} from '@/features/onboarding/domain/onboarding.server'
-import { $requireAuthSession, useAuth } from '@/lib/client/auth.client'
+import { useCompleteOnboardingMutation } from '@/features/onboarding/api/onboarding.api'
+import { useAuth } from '@/lib/client/auth.client'
 
 import * as m from '@/lib/paraglide/messages'
 
@@ -39,50 +32,6 @@ const onboardingFormSchema = v.object({
 	favoriteColor: v.pipe(v.string(), v.minLength(1)),
 	redirectTo: v.optional(v.string()),
 })
-
-export const $getOnboardingInfo = createServerFn({ method: 'GET' }).handler(
-	async () => {
-		const { user } = await $requireAuthSession()
-		return getOnboardingInfo(user.id)
-	},
-)
-
-export const $requireOnboardingInfo = createServerFn({ method: 'GET' }).handler(
-	async () => {
-		const onboardingInfo = await $getOnboardingInfo()
-		const request = getWebRequest()
-
-		if (!onboardingInfo) {
-			throw redirect({
-				to: '/onboarding',
-				search: { redirectTo: new URL(request.url).pathname },
-			})
-		}
-		return onboardingInfo
-	},
-)
-
-export const $completeOnboarding = createServerFn({ method: 'POST' })
-	.validator(
-		v.object({
-			name: v.string(),
-			favoriteColor: v.string(),
-			redirectTo: v.optional(v.string()),
-		}),
-	)
-	.handler(async ({ data: { name, favoriteColor, redirectTo } }) => {
-		const { user } = await $requireAuthSession()
-
-		await completeOnboarding({
-			userId: user.id,
-			name,
-			favoriteColor,
-		})
-
-		throw redirect({
-			to: redirectTo || '/dashboard',
-		})
-	})
 
 export function OnboardingForm({ redirectTo }: { redirectTo?: string }) {
 	const auth = useAuth()
@@ -96,9 +45,7 @@ export function OnboardingForm({ redirectTo }: { redirectTo?: string }) {
 		},
 	})
 
-	const completeOnboardingMutation = useMutation({
-		mutationFn: useServerFn($completeOnboarding),
-	})
+	const completeOnboardingMutation = useCompleteOnboardingMutation()
 
 	const isPending = useSpinDelay(completeOnboardingMutation.isPending)
 

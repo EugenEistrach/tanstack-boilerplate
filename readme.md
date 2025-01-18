@@ -1,73 +1,151 @@
-# Tanstack Boilerplate (WIP)
+# TanStack Boilerplate
 
-This is a personal boilerplate to jumpstart new projects.
+A comprehensive boilerplate project to jumpstart new React applications with
+modern tooling and best practices.
 
-**It's node only and will not work for serverless deployments, as this requires
-a long running server for things like cron jobs and sockets.**
+## Features
 
-For the app to work, the following environment variables need to be set:
+- 🔒 Type-safe full-stack development with TanStack
+- 🔑 Modern authentication with GitHub SSO
+- 💾 Database integration with Drizzle ORM
+- 🎨 Beautiful UI with shadcn/ui
+- 🧪 Comprehensive testing setup
 
-```env
-APPLICATION_URL=https://localhost:3000
-SESSION_SECRET=
-REDIS_URL=
+## Tech Stack
 
-# Optional (one sso provider is required):
-GITHUB_CLIENT_ID=
-GITHUB_CLIENT_SECRET=
-DISCORD_CLIENT_ID=
-DISCORD_CLIENT_SECRET=
-RESEND_API_KEY=
-EMAIL_FROM=
-```
+- **Frontend**
 
-## Already done
+  - React 19
+  - TanStack (Router, Query, Start)
+  - TailwindCSS with shadcn/ui
+  - TypeScript
 
-- Tanstack Start, Router, Query
-- Shadcn UI
-- Tailwind CSS
-- Light & Dark mode (next-themes <- yes this works here too, as its not using
-  next specific APIs)
-- Better Auth (sso, rbac, etc.)
-- Simple onboarding flow after first signup (to set name)
-- SQLite
-- Drizzle ORM
-- Emails (Resend & React Email)
-- i18n (use-intl)
-- user timezone on server (without flashes)
-- Cron jobs & background jobs (BullMQ)
-- react hook form (still evaluating if tanstack form could be used instead)
-- docker deployment with fly.io (see deployments.md for more info)
+- **Backend & Data**
 
-## TODO
+  - SQLite (local) / Turso (production) with Drizzle ORM
+  - Better-auth with GitHub/Discord SSO
+  - trigger.dev for background jobs
+  - Fly.io for deployment and hosting
 
-- [ ] magic links & otp (better auth has this)
-- [ ] stripe
-- [ ] file uploads
-- [ ] notifications
-- [ ] data tables example
-- [ ] sentry
-- [ ] playwright tests
-- [ ] proper documentation
+- **Testing & Quality**
+  - vitest for testing
+  - valibot for type-safe validation
+  - ESLint + Prettier
+  - playwright for E2E testing
 
-## Exploring (not sure if this will be added)
+## Quick Start
 
-- [ ] feature flags
-- [ ] logging
-- [ ] analytics
-
-## Development
-
-Clone the repo using degit and run setup:
+See [Local Development Guide](docs/local-development.md) for detailed setup
+instructions.
 
 ```bash
-pnpm dlx degit EugenEistrach/tanstack-boilerplate my-project
+# Clone using degit
+pnpm dlx degit your-org/tanstack-boilerplate my-project
 cd my-project
+
+# Run setup script (env, git, dependencies, database)
 node scripts/setup.js
-```
 
-Start the dev server:
-
-```bash
+# Start development server
 pnpm dev
 ```
+
+## Database Setup
+
+This boilerplate uses a hybrid database approach:
+
+- **Local Development**:
+
+  - Direct SQLite file for simplicity and zero-config setup
+  - File location: `./data/db.sqlite`
+  - Built-in management UI via `pnpm db:studio`
+
+- **Production**:
+  - [Turso](https://turso.tech) - Distributed SQLite database
+  - Global data distribution with minimal latency
+  - Embedded database support for Fly.io deployment
+  - See [Deployment Guide](docs/deployments.md) for setup
+
+Both environments use [Drizzle ORM](https://orm.drizzle.team) for type-safe
+database operations, ensuring consistent API regardless of environment.
+
+## Project Structure
+
+```
+src/
+├── components/     # Shared UI components
+├── data/          # Data layer utilities
+├── drizzle/       # Database schemas and migrations
+├── features/      # Feature-specific code
+│   └── feature-name/
+│       ├── ui/         # UI components
+│       ├── api/        # Server functions + React Query
+│       ├── domain/     # Business logic + DB operations
+│       └── templates/  # Templates
+├── hooks/         # Shared React hooks
+├── lib/           # Shared utilities
+├── routes/        # Route components
+├── styles/        # Global styles
+├── tasks/         # Background tasks
+└── tests/         # Test utilities and mocks
+```
+
+## Development Guidelines
+
+### Code Style
+
+- Write concise, technical TypeScript code
+- Use functional and declarative programming patterns
+- Follow "Write Everything Twice" principle before abstracting
+- Use descriptive variable names with auxiliary verbs (e.g., isLoading,
+  hasError)
+
+### Naming Conventions
+
+- Use lowercase with dashes for directories (e.g., components/form-wizard)
+- Favor named exports for components and utilities
+- Component files: component-name.tsx
+
+- Server/API files:
+  - Server logic: module-name.server.ts
+  - API layer: module-name.api.ts
+
+### Development Workflow
+
+1. **Documentation Analysis**
+
+   - Review relevant documentation
+   - Document requirements and patterns
+
+2. **Implementation Flow**
+
+   - Start with UI components
+   - Build API layer
+   - Add domain logic
+
+3. **Testing & Validation**
+   - Write comprehensive tests
+   - Follow validation guidelines
+
+## Documentation
+
+- [Local Development Guide](docs/local-development.md) - Setup and scripts
+- [API Guidelines](docs/api.md) - API development and integration
+- [Client Guidelines](docs/client.md) - UI development
+- [Server Guidelines](docs/server.md) - Server-side development
+- [Testing Guidelines](docs/unit-testing.md) - Testing practices
+- [Validation Guidelines](docs/validation.md) - Data validation
+- [Workflow Guide](docs/workflow.md) - Development workflow
+- [Deployment Guide](docs/deployments.md) - Deployment procedures
+- [i18n Guide](docs/i18n.md) - Internationalization
+- [Logging Guide](docs/logging.md) - Logging standards
+- [Commit Conventions](docs/commit-conventions.md) - Git practices
+
+## Scripts
+
+See [Local Development Guide](docs/local-development.md) for a complete list of
+available scripts.
+
+## License
+
+ISC
