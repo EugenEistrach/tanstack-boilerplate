@@ -14,24 +14,24 @@ import { createRouter } from './router'
 import { setLanguageTag } from '@/lib/paraglide/runtime'
 import { env } from '@/lib/server/env.server'
 import { detectLanguage } from '@/lib/server/i18n.server'
-import { pino } from '@/lib/server/logger.server'
+import { logger } from '@/lib/server/logger.server'
 
 import '@/lib/server/middleware.server'
 
 if (env.MOCKS) {
-	pino.info('Loading mock data for development')
+	logger.info('Loading mock data for development')
 	await import('./tests/mocks')
 }
 
 // migrate db
 try {
-	pino.info('Starting database migration')
+	logger.info('Starting database migration')
 	await migrate(db, {
 		migrationsFolder: './src/drizzle/migrations',
 	})
-	pino.info('Database migration completed successfully')
+	logger.info('Database migration completed successfully')
 } catch (error) {
-	pino.error({
+	logger.error({
 		msg: 'Database migration failed',
 		error,
 		operation: 'dbMigration',
@@ -41,7 +41,7 @@ try {
 
 const customStreamHandler: HandlerCallback<AnyRouter> = (ctx) => {
 	const language = detectLanguage(ctx.request)
-	pino.debug({
+	logger.debug({
 		msg: 'Language detection',
 		detectedLanguage: language,
 		url: ctx.request.url,
@@ -51,7 +51,7 @@ const customStreamHandler: HandlerCallback<AnyRouter> = (ctx) => {
 	setLanguageTag(() => language)
 	responseHeaders.append('Set-Cookie', `lang=${language}; Path=/;`)
 
-	pino.trace({
+	logger.trace({
 		msg: 'Stream handler execution',
 		language,
 		url: ctx.request.url,
@@ -69,6 +69,6 @@ const handler = createStartHandler({
 	getRouterManifest,
 })(customStreamHandler)
 
-pino.info('Server handler initialized successfully')
+logger.info('Server handler initialized successfully')
 
 export default handler

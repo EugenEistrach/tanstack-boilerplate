@@ -1,12 +1,12 @@
 import Headers from '@mjackson/headers'
 import { availableLanguageTags } from '@/lib/paraglide/runtime'
-import { pino } from '@/lib/server/logger.server'
+import { logger } from '@/lib/server/logger.server'
 import { isSupportedLanguage, normalizeLanguage } from '@/lib/shared/i18n'
 
 export const detectLanguage = (request: Request) => {
 	const headers = new Headers(request.headers)
 
-	pino.debug(
+	logger.debug(
 		{
 			operation: 'detectLanguage',
 			headers: {
@@ -21,7 +21,7 @@ export const detectLanguage = (request: Request) => {
 
 	if (cookieLanguage) {
 		const isSupported = isSupportedLanguage(cookieLanguage)
-		pino.debug(
+		logger.debug(
 			{
 				operation: 'detectLanguage',
 				cookieLanguage,
@@ -32,7 +32,7 @@ export const detectLanguage = (request: Request) => {
 
 		if (isSupported) {
 			const normalizedLanguage = normalizeLanguage(cookieLanguage)
-			pino.debug(
+			logger.debug(
 				{
 					operation: 'detectLanguage',
 					source: 'cookie',
@@ -49,7 +49,7 @@ export const detectLanguage = (request: Request) => {
 
 	if (acceptLanguage) {
 		const normalizedLanguage = normalizeLanguage(acceptLanguage)
-		pino.debug(
+		logger.debug(
 			{
 				operation: 'detectLanguage',
 				source: 'acceptLanguage',
@@ -60,7 +60,7 @@ export const detectLanguage = (request: Request) => {
 		return normalizedLanguage
 	}
 
-	pino.debug(
+	logger.debug(
 		{
 			operation: 'detectLanguage',
 			source: 'default',
