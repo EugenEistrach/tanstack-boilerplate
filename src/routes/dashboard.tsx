@@ -38,7 +38,7 @@ import {
 } from '@/components/ui/sidebar'
 
 import { ThemeToggle } from '@/components/ui/theme-toggle'
-import { $requireOnboardingInfo } from '@/features/onboarding/ui/onboarding-form.fullstack'
+import { getOnboardingInfoQueryOptions } from '@/features/onboarding/api/onboarding.api'
 import { useAuth, $logout } from '@/lib/client/auth.client'
 import * as m from '@/lib/paraglide/messages'
 import { getVinxiSession } from '@/lib/server/session.server'
@@ -65,12 +65,19 @@ export const Route = createFileRoute('/dashboard')({
 				},
 			})
 		}
+		const [sidebarOpen, onboardingInfo] = await Promise.all([
+			$getSidebarState(),
+			context.queryClient.ensureQueryData(getOnboardingInfoQueryOptions()),
+		])
 
-		const sidebarOpen = await $getSidebarState()
-		const onboardingInfo = await $requireOnboardingInfo()
+		if (!onboardingInfo) {
+			throw redirect({
+				to: '/onboarding',
+				search: { redirectTo: location.pathname },
+			})
+		}
 
 		return {
-			onboardingInfo,
 			defaultSidebarOpen: sidebarOpen,
 		}
 	},
@@ -114,7 +121,12 @@ export default function DashboardLayout() {
 						<SidebarMenu>
 							<SidebarMenuItem>
 								<SidebarMenuButton tooltip={m.nav_dashboard()} asChild>
-									<NavLink to="/dashboard">
+									<NavLink
+										to="/dashboard"
+										activeOptions={{
+											exact: true,
+										}}
+									>
 										<HomeIcon />
 										<span>{m.nav_dashboard()}</span>
 									</NavLink>

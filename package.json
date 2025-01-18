@@ -101,6 +101,7 @@
     "@tanstack/router-devtools": "^1.97.1",
     "@trigger.dev/build": "^3.3.11",
     "@types/better-sqlite3": "^7.6.12",
+    "@types/estree": "^1.0.6",
     "@types/fs-extra": "^11.0.4",
     "@types/react": "^19.0.7",
     "@types/react-dom": "^19.0.3",

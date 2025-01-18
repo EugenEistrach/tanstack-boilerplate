@@ -1,5 +1,7 @@
+import { useQueryClient } from '@tanstack/react-query'
 import { type UserWithRole } from 'better-auth/plugins'
-import { MoreHorizontal, Ban, Key, UserCircle, Trash2 } from 'lucide-react'
+import { MoreHorizontal, Ban, Key, UserCircle } from 'lucide-react'
+import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import {
 	DropdownMenu,
@@ -8,30 +10,55 @@ import {
 	DropdownMenuLabel,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { useAuth } from '@/lib/client/auth.client'
+import { listUsersQueryOptions } from '@/features/admin/ui/users-list'
+import { authClient, useAuth } from '@/lib/client/auth.client'
 import * as m from '@/lib/paraglide/messages'
 
 export const UserActions = ({ user }: { user: UserWithRole }) => {
 	const { user: currentUser } = useAuth()
+	const queryClient = useQueryClient()
 
-	const handleBanUnban = () => {
-		console.log(`${user.banned ? 'Unban' : 'Ban'} user:`, user.id)
-		// TODO: Implement ban/unban functionality
+	const handleBanUnban = async () => {
+		if (user.banned) {
+			const result = await authClient.admin.unbanUser({ userId: user.id })
+
+			if (result.error) {
+				toast.error(result.error.message)
+			}
+		} else {
+			const result = await authClient.admin.banUser({ userId: user.id })
+
+			if (result.error) {
+				toast.error(result.error.message)
+			}
+		}
+		await queryClient.invalidateQueries(listUsersQueryOptions())
 	}
 
-	const handleRevokeAllSessions = () => {
-		console.log('Revoke all sessions for user:', user.id)
-		// TODO: Implement revoke all sessions functionality
+	const handleRevokeAllSessions = async () => {
+		const result = await authClient.admin.revokeUserSessions({
+			userId: user.id,
+		})
+
+		if (result.error) {
+			toast.error(result.error.message)
+		} else {
+			toast.success('Sessions revoked')
+		}
+
+		await queryClient.invalidateQueries(listUsersQueryOptions())
 	}
 
-	const handleImpersonate = () => {
-		console.log('Impersonate user:', user.id)
-		// TODO: Implement impersonate functionality
-	}
+	const handleImpersonate = async () => {
+		const result = await authClient.admin.impersonateUser({
+			userId: user.id,
+		})
 
-	const handleRemoveUser = () => {
-		console.log('Remove user:', user.id)
-		// TODO: Implement remove user functionality
+		if (result.error) {
+			toast.error(result.error.message)
+		}
+
+		window.location.reload()
 	}
 
 	return (
@@ -59,10 +86,6 @@ export const UserActions = ({ user }: { user: UserWithRole }) => {
 				<DropdownMenuItem onClick={handleImpersonate}>
 					<UserCircle className="mr-2 h-4 w-4" />
 					{m.impersonate_user()}
-				</DropdownMenuItem>
-				<DropdownMenuItem onClick={handleRemoveUser}>
-					<Trash2 className="mr-2 h-4 w-4" />
-					{m.remove_user()}
 				</DropdownMenuItem>
 			</DropdownMenuContent>
 		</DropdownMenu>

@@ -1,6 +1,8 @@
+import { redirect } from '@tanstack/react-router'
 import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 import { admin, organization } from 'better-auth/plugins'
+import { getWebRequest } from 'vinxi/http'
 import { db } from '@/drizzle/db'
 import { env } from '@/lib/server/env.server'
 
@@ -32,3 +34,37 @@ export const authServer = betterAuth({
 	},
 	plugins: [admin(), organization()],
 })
+
+export const requireAuthSession = async (server = authServer) => {
+	const request = getWebRequest()
+	const auth = await server.api.getSession({ headers: request.headers })
+
+	const redirectToPath = new URL(request.url).pathname
+
+	if (!auth) {
+		throw redirect({
+			to: '/login',
+			search: {
+				redirectTo: redirectToPath,
+			},
+		})
+	}
+
+	return auth
+}
+
+export async function requireApiKey(request: Request) {
+	if (!env.API_KEY) {
+		throw new Error('API key not set')
+	}
+
+	const apiKey = request.headers.get('Authorization')
+
+	if (!apiKey) {
+		throw new Error('Unauthorized')
+	}
+
+	if (apiKey !== env.API_KEY) {
+		throw new Error('Unauthorized')
+	}
+}

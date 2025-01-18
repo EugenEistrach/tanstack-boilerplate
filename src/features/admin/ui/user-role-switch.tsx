@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { type UserWithRole } from 'better-auth/plugins'
-import { listUsersQueryOptions } from './users-list'
 import { Switch } from '@/components/ui/switch'
+import { listUsersQueryOptions } from '@/features/admin/ui/users-list'
 import { authClient, useAuth } from '@/lib/client/auth.client'
 
 export const UserRoleSwitch = ({ user }: { user: UserWithRole }) => {
@@ -11,10 +11,10 @@ export const UserRoleSwitch = ({ user }: { user: UserWithRole }) => {
 	const isAdmin = user.role === 'admin'
 
 	const updateRoleMutation = useMutation({
-		mutationFn: (isAdmin: boolean) => {
+		mutationFn: (setToAdmin: boolean) => {
 			return authClient.admin.setRole({
 				userId: user.id,
-				role: !isAdmin ? 'admin' : 'user',
+				role: setToAdmin ? 'admin' : 'user',
 			})
 		},
 		onSuccess: () => {

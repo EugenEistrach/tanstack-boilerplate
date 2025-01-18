@@ -4,7 +4,7 @@ import { UniqueEnforcer } from 'enforce-unique'
 
 import { SessionTable, UserTable } from '@/drizzle/schemas/auth-schema'
 import { OnboardingInfoTable } from '@/drizzle/schemas/onboarding-schema'
-import { cuid } from '@/lib/shared/utils'
+import { cuid, wait } from '@/lib/shared/utils'
 import { testDb } from '@/tests/setup/test-db'
 const uniqueUsernameEnforcer = new UniqueEnforcer()
 
@@ -12,6 +12,7 @@ export type UserOptions = {
 	id?: string
 	email?: string
 	name?: string
+	role?: 'admin' | 'user'
 }
 
 export function createFakeUser() {
@@ -51,6 +52,7 @@ export function createUser(options: UserOptions = {}) {
 				emailVerified: true,
 				createdAt: new Date(),
 				updatedAt: new Date(),
+				role: options.role ?? 'user',
 			})
 			.returning()
 			.get()
@@ -62,7 +64,7 @@ export function createUser(options: UserOptions = {}) {
 export async function createUserAndSession(options: UserOptions = {}) {
 	return testDb.transaction(async (tx) => {
 		if (options.id) {
-			const user = await tx
+			const user = tx
 				.select()
 				.from(UserTable)
 				.where(eq(UserTable.id, options.id))
@@ -71,7 +73,7 @@ export async function createUserAndSession(options: UserOptions = {}) {
 			if (!user) throw new Error('User not found. You must use a valid id.')
 
 			const id = cuid()
-			const session = await tx
+			const session = tx
 				.insert(SessionTable)
 				.values({
 					id,
@@ -84,15 +86,14 @@ export async function createUserAndSession(options: UserOptions = {}) {
 				.returning()
 				.get()
 
-			await tx
-				.insert(OnboardingInfoTable)
+			tx.insert(OnboardingInfoTable)
 				.values({ id: cuid(), userId: user.id })
 				.returning({ id: OnboardingInfoTable.id })
 				.get()
 			return [user, session] as const
 		} else {
 			const fakeUser = createFakeUser()
-			const user = await tx
+			const user = tx
 				.insert(UserTable)
 				.values({
 					id: cuid(),
@@ -101,12 +102,13 @@ export async function createUserAndSession(options: UserOptions = {}) {
 					emailVerified: true,
 					createdAt: new Date(),
 					updatedAt: new Date(),
+					role: options.role ?? 'user',
 				})
 				.returning()
 				.get()
 
 			const id = cuid()
-			const session = await tx
+			const session = tx
 				.insert(SessionTable)
 				.values({
 					id,
@@ -118,8 +120,7 @@ export async function createUserAndSession(options: UserOptions = {}) {
 				})
 				.returning()
 				.get()
-			await tx
-				.insert(OnboardingInfoTable)
+			tx.insert(OnboardingInfoTable)
 				.values({ id: cuid(), userId: user.id })
 				.returning({ id: OnboardingInfoTable.id })
 				.get()
@@ -128,11 +129,7 @@ export async function createUserAndSession(options: UserOptions = {}) {
 	})
 }
 
-export function wait(timeInMs: number) {
-	return new Promise((resolve) => setTimeout(resolve, timeInMs))
-}
-
 export const delayed = async <T>(callback: () => Promise<T>): Promise<T> => {
 	await wait(250)
-	return await callback()
+	return callback()
 }

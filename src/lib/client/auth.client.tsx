@@ -3,7 +3,7 @@ import { createServerFn } from '@tanstack/start'
 import { createAuthClient } from 'better-auth/client'
 import { adminClient, organizationClient } from 'better-auth/client/plugins'
 import { getWebRequest } from 'vinxi/http'
-import { authServer } from '@/lib/server/auth.server'
+import { authServer, requireAuthSession } from '@/lib/server/auth.server'
 
 import { getVinxiSession } from '@/lib/server/session.server'
 
@@ -56,24 +56,17 @@ export const $getVinxiSession = createServerFn({ method: 'GET' }).handler(
 
 export const $requireAuthSession = createServerFn({ method: 'GET' }).handler(
 	async () => {
-		const request = getWebRequest()
-		const auth = await authServer.api.getSession({ headers: request.headers })
+		return requireAuthSession()
+	},
+)
 
-		const redirectToPath = new URL(request.url).pathname
-
-		if (!auth) {
-			throw redirect({
-				to: '/login',
-				search: {
-					redirectTo: redirectToPath,
-				},
-			})
+export const $requireAdminSession = createServerFn({ method: 'GET' }).handler(
+	async () => {
+		const auth = await requireAuthSession()
+		if (auth.user.role !== 'admin') {
+			throw new Error('Unauthorized')
 		}
-
-		return {
-			session: auth.session,
-			user: auth.user,
-		}
+		return auth
 	},
 )
 

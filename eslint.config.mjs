@@ -2,133 +2,13 @@ import { default as defaultConfig } from '@epic-web/config/eslint'
 import * as tanstackQuery from '@tanstack/eslint-plugin-query'
 import pluginRouter from '@tanstack/eslint-plugin-router'
 import gitignore from 'eslint-config-flat-gitignore'
-
 import pluginBoundaries from 'eslint-plugin-boundaries'
 import i18next from 'eslint-plugin-i18next'
 
-const noRelativeImports = {
-	meta: {
-		type: 'problem',
-		docs: {
-			description:
-				'Enforce absolute imports using @/ except for sibling and children imports',
-		},
-	},
-	create(context) {
-		return {
-			ImportDeclaration(node) {
-				const source = node.source.value
-
-				// Skip if not a relative import
-				if (!source.startsWith('.')) return
-
-				// Allow sibling and children imports
-				if (source.startsWith('./')) return
-
-				// Report parent directory imports
-				if (source.startsWith('../')) {
-					context.report({
-						node,
-						message:
-							'Use absolute imports with @/ instead of relative parent paths',
-					})
-				}
-			},
-		}
-	},
-}
-
-const enforceServerFnPrefix = {
-	meta: {
-		type: 'suggestion',
-		docs: {
-			description:
-				"Enforce '$' prefix for variables created with createServerFn",
-			category: 'Stylistic Issues',
-			recommended: false,
-		},
-		fixable: 'code',
-		schema: [],
-	},
-
-	create(context) {
-		return {
-			VariableDeclarator(node) {
-				if (
-					node.init &&
-					node.init.type === 'CallExpression' &&
-					node.init.callee.name === 'createServerFn'
-				) {
-					const variableName = node.id.name
-					if (!variableName.startsWith('$')) {
-						context.report({
-							node: node.id,
-							message:
-								"Variable name created with createServerFn should start with '$'",
-
-							fix: (fixer) => {
-								return fixer.replaceText(node.id, '$' + variableName)
-							},
-						})
-					}
-				}
-			},
-		}
-	},
-}
-
-const paraglideMissingImport = {
-	meta: {
-		type: 'suggestion',
-		docs: {
-			description: 'Enforce paraglide messages import when using m.',
-			category: 'Imports',
-			recommended: true,
-		},
-		fixable: 'code',
-		schema: [],
-	},
-
-	create(context) {
-		let hasParaglideImport = false
-
-		return {
-			// Check if the import already exists
-			ImportDeclaration(node) {
-				if (
-					node.source.value === '@/lib/paraglide/messages' &&
-					node.specifiers.some(
-						(spec) =>
-							spec.type === 'ImportNamespaceSpecifier' &&
-							spec.local.name === 'm',
-					)
-				) {
-					hasParaglideImport = true
-				}
-			},
-
-			// Check for m. usage
-			MemberExpression(node) {
-				if (
-					node.object.type === 'Identifier' &&
-					node.object.name === 'm' &&
-					!hasParaglideImport
-				) {
-					context.report({
-						node,
-						message: 'Missing paraglide messages import',
-						fix: (fixer) => {
-							return fixer.insertTextBefore(
-								context.getSourceCode().ast.body[0],
-								"import * as m from '@/lib/paraglide/messages';\n",
-							)
-						},
-					})
-				}
-			},
-		}
-	},
-}
+import { enforceServerFnPrefix } from './lint-rules/enforce-server-fn-prefix.mjs'
+import { loggerErrorFormat } from './lint-rules/logger-error-format.mjs'
+import { noRelativeImports } from './lint-rules/no-relative-imports.mjs'
+import { paraglideMissingImport } from './lint-rules/paraglide-missing-import.mjs'
 
 export default [
 	{
@@ -137,10 +17,9 @@ export default [
 	...defaultConfig,
 	{
 		files: ['**/*.{js,jsx,ts,tsx}'],
-		ignores: ['src/email/**/*'], // Add this line to ignore the email folder
+		ignores: ['src/email/**/*'],
 		...i18next.configs['flat/recommended'],
 	},
-
 	gitignore(),
 	...pluginRouter.configs['flat/recommended'],
 	{
@@ -160,15 +39,16 @@ export default [
 				rules: {
 					'enforce-server-fn-prefix': enforceServerFnPrefix,
 					'paraglide-missing-import': paraglideMissingImport,
+					'logger-error-format': loggerErrorFormat,
 				},
 			},
 		},
 		rules: {
 			'custom/enforce-server-fn-prefix': 'error',
 			'custom/paraglide-missing-import': 'error',
+			'custom/logger-error-format': 'error',
 		},
 	},
-	// Add boundaries configuration
 	{
 		files: ['**/*.{js,jsx,ts,tsx}'],
 		plugins: {
@@ -308,6 +188,18 @@ export default [
 		},
 		rules: {
 			'no-relative-imports/no-relative-imports': 'error',
+		},
+	},
+	{
+		files: ['**/*.{ts,tsx}'],
+		languageOptions: {
+			parserOptions: {
+				project: true,
+			},
+		},
+		rules: {
+			'@typescript-eslint/await-thenable': 'error',
+			'no-return-await': 'error',
 		},
 	},
 ]

@@ -24,10 +24,12 @@ export default defineConfig({
 				'**/*.spec.ts',
 				'**/templates/**',
 				// We test ui via e2e playwright tests
-				// TODO: maybe also add storybook
 				'**/ui/**',
-
-				'**/*.api.ts',
+				'**/*.client.{ts,tsx}',
+				'**/*.api.{ts,tsx}',
+				'**/client/**',
+				'**/hooks/**',
+				'**/drizzle/**',
 			],
 		},
 	},

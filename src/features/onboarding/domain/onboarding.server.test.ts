@@ -1,22 +1,23 @@
 import { eq } from 'drizzle-orm'
-import { describe, expect, it, beforeEach, afterEach } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { completeOnboarding, getOnboardingInfo } from './onboarding.server'
 
 import { UserTable } from '@/drizzle/schemas/_exports'
-import { env } from '@/lib/server/env.server'
+
+import { mockEnvOverrides } from '@/tests/mocks/vitest.mocks'
 import { testDb } from '@/tests/setup/test-db'
 import { createUser } from '@/tests/test-utils'
 
 describe('onboarding.server', () => {
 	describe('getOnboardingInfo', () => {
 		it('should return null for user without onboarding info', async () => {
-			const user = await createUser()
+			const user = createUser()
 			const result = await getOnboardingInfo(user.id)
 			expect(result).toBeNull()
 		})
 
 		it('should return onboarding info for completed user', async () => {
-			const user = await createUser()
+			const user = createUser()
 			await completeOnboarding({
 				userId: user.id,
 				favoriteColor: 'blue',
@@ -32,18 +33,8 @@ describe('onboarding.server', () => {
 	})
 
 	describe('completeOnboarding', () => {
-		const originalAdminEmails = env.ADMIN_USER_EMAILS
-
-		beforeEach(() => {
-			env.ADMIN_USER_EMAILS = ['admin@example.com']
-		})
-
-		afterEach(() => {
-			env.ADMIN_USER_EMAILS = originalAdminEmails
-		})
-
 		it('should complete onboarding for regular user', async () => {
-			const user = await createUser()
+			const user = createUser()
 
 			await completeOnboarding({
 				userId: user.id,
@@ -51,7 +42,7 @@ describe('onboarding.server', () => {
 				name: 'New Name',
 			})
 
-			const updatedUser = await testDb
+			const updatedUser = testDb
 				.select()
 				.from(UserTable)
 				.where(eq(UserTable.id, user.id))
@@ -70,7 +61,11 @@ describe('onboarding.server', () => {
 		})
 
 		it('should set admin role for admin email', async () => {
-			const user = await createUser({ email: 'admin@example.com' })
+			mockEnvOverrides({
+				ADMIN_USER_EMAILS: ['admin@example.com'],
+			})
+
+			const user = createUser({ email: 'admin@example.com' })
 
 			await completeOnboarding({
 				userId: user.id,
@@ -78,7 +73,7 @@ describe('onboarding.server', () => {
 				name: 'Admin User',
 			})
 
-			const updatedUser = await testDb
+			const updatedUser = testDb
 				.select()
 				.from(UserTable)
 				.where(eq(UserTable.id, user.id))
