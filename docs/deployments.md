@@ -70,7 +70,25 @@ This guide covers all necessary steps to deploy your application to production.
    - Choose region closest to your users
    - Say no to immediate deployment
 
-3. **Set Environment Variables**
+3. **Set Up SQLite Volume**
+
+   ```bash
+   # Create a volume for SQLite database
+   fly volumes create sqlite_data --size 1 --region ams
+
+   # Verify volume is created
+   fly volumes list
+   ```
+
+   Note: The `fly.toml` should include volume configuration:
+
+   ```toml
+   [[mounts]]
+     source = 'data'
+     destination = '/data'
+   ```
+
+4. **Set Environment Variables**
 
    ```bash
    # App Configuration
