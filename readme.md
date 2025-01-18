@@ -90,43 +90,6 @@ src/
 └── tests/         # Test utilities and mocks
 ```
 
-## Development Guidelines
-
-### Code Style
-
-- Write concise, technical TypeScript code
-- Use functional and declarative programming patterns
-- Follow "Write Everything Twice" principle before abstracting
-- Use descriptive variable names with auxiliary verbs (e.g., isLoading,
-  hasError)
-
-### Naming Conventions
-
-- Use lowercase with dashes for directories (e.g., components/form-wizard)
-- Favor named exports for components and utilities
-- Component files: component-name.tsx
-
-- Server/API files:
-  - Server logic: module-name.server.ts
-  - API layer: module-name.api.ts
-
-### Development Workflow
-
-1. **Documentation Analysis**
-
-   - Review relevant documentation
-   - Document requirements and patterns
-
-2. **Implementation Flow**
-
-   - Start with UI components
-   - Build API layer
-   - Add domain logic
-
-3. **Testing & Validation**
-   - Write comprehensive tests
-   - Follow validation guidelines
-
 ## Documentation
 
 - [Local Development Guide](docs/local-development.md) - Setup and scripts
@@ -148,4 +111,4 @@ available scripts.
 
 ## License
 
-ISC
+[License](license.md)

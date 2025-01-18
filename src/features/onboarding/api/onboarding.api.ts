@@ -4,7 +4,7 @@ import {
 	useQueryClient,
 } from '@tanstack/react-query'
 import { redirect } from '@tanstack/react-router'
-import { createServerFn } from '@tanstack/start'
+import { createServerFn, useServerFn } from '@tanstack/start'
 import * as v from 'valibot'
 import {
 	completeOnboarding,
@@ -22,7 +22,7 @@ export const useCompleteOnboardingMutation = () => {
 	const queryClient = useQueryClient()
 
 	return useMutation({
-		mutationFn: $completeOnboarding,
+		mutationFn: useServerFn($completeOnboarding),
 		onSuccess: async () => {
 			await queryClient.invalidateQueries(getOnboardingInfoQueryOptions())
 		},

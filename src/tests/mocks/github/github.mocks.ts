@@ -7,7 +7,7 @@ export const githubHandlers = [
 		return HttpResponse.json({
 			access_token: 'mock-access-token',
 			token_type: 'bearer',
-			scope: 'repo,workflow',
+			scope: 'read:user,user:email',
 		})
 	}),
 

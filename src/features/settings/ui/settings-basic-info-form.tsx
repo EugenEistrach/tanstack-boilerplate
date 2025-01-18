@@ -57,7 +57,11 @@ export function SettingsBasicInfoForm() {
 							</div>
 							<div className="space-y-1">
 								<Label htmlFor="name">{m.onboarding_name_label()}</Label>
-								<Input {...register('name')} defaultValue={user.name} />
+								<Input
+									id="name"
+									{...register('name')}
+									defaultValue={user.name}
+								/>
 								<FieldErrorMessage error={errors.name} />
 							</div>
 						</div>
