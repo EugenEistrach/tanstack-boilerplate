@@ -2,16 +2,7 @@ import { execSync } from 'node:child_process'
 import crypto from 'node:crypto'
 import fs from 'node:fs/promises'
 import path from 'node:path'
-import {
-	intro,
-	outro,
-	text,
-	confirm,
-	spinner,
-	note,
-	select,
-	multiselect,
-} from '@clack/prompts'
+import { intro, outro, text, spinner, note, multiselect } from '@clack/prompts'
 import color from 'picocolors'
 import {
 	email,
