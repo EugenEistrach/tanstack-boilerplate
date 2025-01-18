@@ -98,6 +98,7 @@ src/
 - [Server Guidelines](docs/server.md) - Server-side development
 - [Testing Guidelines](docs/unit-testing.md) - Testing practices
 - [Validation Guidelines](docs/validation.md) - Data validation
+- [Routing Guidelines](docs/routing.md) - Route creation and navigation
 - [Workflow Guide](docs/workflow.md) - Development workflow
 - [Deployment Guide](docs/deployments.md) - Deployment procedures
 - [i18n Guide](docs/i18n.md) - Internationalization
