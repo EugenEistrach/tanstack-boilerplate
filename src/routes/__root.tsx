@@ -7,6 +7,7 @@ import {
 } from '@tanstack/react-router'
 import { Meta, Scripts } from '@tanstack/start'
 
+import filePondCss from 'filepond/dist/filepond.min.css?url'
 import * as React from 'react'
 
 import { Toaster } from '@/components/ui/sonner'
@@ -72,6 +73,7 @@ export const Route = createRootRouteWithContext<{
 		],
 		links: [
 			{ rel: 'stylesheet', href: appCss },
+			{ rel: 'stylesheet', href: filePondCss },
 			// {
 			// 	rel: 'preload',
 			// 	href: 'https://api.fontshare.com/v2/css?f[]=satoshi@300,301,400,401,500,501,700,701,900,901,1,2&display=swap',

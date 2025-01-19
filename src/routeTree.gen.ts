@@ -23,6 +23,7 @@ import { Route as authOnboardingImport } from './routes/(auth)/onboarding'
 import { Route as authLoginImport } from './routes/(auth)/login'
 import { Route as DashboardSettingsIndexImport } from './routes/dashboard/settings/index'
 import { Route as DashboardAdminUsersImport } from './routes/dashboard/admin/users'
+import { Route as DashboardAdminUploadsImport } from './routes/dashboard/admin/uploads'
 
 // Create/Update Routes
 
@@ -94,6 +95,12 @@ const DashboardSettingsIndexRoute = DashboardSettingsIndexImport.update({
 const DashboardAdminUsersRoute = DashboardAdminUsersImport.update({
   id: '/users',
   path: '/users',
+  getParentRoute: () => DashboardAdminRoute,
+} as any)
+
+const DashboardAdminUploadsRoute = DashboardAdminUploadsImport.update({
+  id: '/uploads',
+  path: '/uploads',
   getParentRoute: () => DashboardAdminRoute,
 } as any)
 
@@ -171,6 +178,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardIndexImport
       parentRoute: typeof DashboardImport
     }
+    '/dashboard/admin/uploads': {
+      id: '/dashboard/admin/uploads'
+      path: '/uploads'
+      fullPath: '/dashboard/admin/uploads'
+      preLoaderRoute: typeof DashboardAdminUploadsImport
+      parentRoute: typeof DashboardAdminImport
+    }
     '/dashboard/admin/users': {
       id: '/dashboard/admin/users'
       path: '/users'
@@ -207,10 +221,12 @@ const MarketingRouteWithChildren = MarketingRoute._addFileChildren(
 )
 
 interface DashboardAdminRouteChildren {
+  DashboardAdminUploadsRoute: typeof DashboardAdminUploadsRoute
   DashboardAdminUsersRoute: typeof DashboardAdminUsersRoute
 }
 
 const DashboardAdminRouteChildren: DashboardAdminRouteChildren = {
+  DashboardAdminUploadsRoute: DashboardAdminUploadsRoute,
   DashboardAdminUsersRoute: DashboardAdminUsersRoute,
 }
 
@@ -256,6 +272,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/settings': typeof DashboardSettingsRouteWithChildren
   '/': typeof MarketingIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
+  '/dashboard/admin/uploads': typeof DashboardAdminUploadsRoute
   '/dashboard/admin/users': typeof DashboardAdminUsersRoute
   '/dashboard/settings/': typeof DashboardSettingsIndexRoute
 }
@@ -268,6 +285,7 @@ export interface FileRoutesByTo {
   '/dashboard/admin': typeof DashboardAdminRouteWithChildren
   '/': typeof MarketingIndexRoute
   '/dashboard': typeof DashboardIndexRoute
+  '/dashboard/admin/uploads': typeof DashboardAdminUploadsRoute
   '/dashboard/admin/users': typeof DashboardAdminUsersRoute
   '/dashboard/settings': typeof DashboardSettingsIndexRoute
 }
@@ -284,6 +302,7 @@ export interface FileRoutesById {
   '/dashboard/settings': typeof DashboardSettingsRouteWithChildren
   '/_marketing/': typeof MarketingIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
+  '/dashboard/admin/uploads': typeof DashboardAdminUploadsRoute
   '/dashboard/admin/users': typeof DashboardAdminUsersRoute
   '/dashboard/settings/': typeof DashboardSettingsIndexRoute
 }
@@ -301,6 +320,7 @@ export interface FileRouteTypes {
     | '/dashboard/settings'
     | '/'
     | '/dashboard/'
+    | '/dashboard/admin/uploads'
     | '/dashboard/admin/users'
     | '/dashboard/settings/'
   fileRoutesByTo: FileRoutesByTo
@@ -312,6 +332,7 @@ export interface FileRouteTypes {
     | '/dashboard/admin'
     | '/'
     | '/dashboard'
+    | '/dashboard/admin/uploads'
     | '/dashboard/admin/users'
     | '/dashboard/settings'
   id:
@@ -326,6 +347,7 @@ export interface FileRouteTypes {
     | '/dashboard/settings'
     | '/_marketing/'
     | '/dashboard/'
+    | '/dashboard/admin/uploads'
     | '/dashboard/admin/users'
     | '/dashboard/settings/'
   fileRoutesById: FileRoutesById
@@ -395,6 +417,7 @@ export const routeTree = rootRoute
       "filePath": "dashboard/admin.tsx",
       "parent": "/dashboard",
       "children": [
+        "/dashboard/admin/uploads",
         "/dashboard/admin/users"
       ]
     },
@@ -412,6 +435,10 @@ export const routeTree = rootRoute
     "/dashboard/": {
       "filePath": "dashboard/index.tsx",
       "parent": "/dashboard"
+    },
+    "/dashboard/admin/uploads": {
+      "filePath": "dashboard/admin/uploads.tsx",
+      "parent": "/dashboard/admin"
     },
     "/dashboard/admin/users": {
       "filePath": "dashboard/admin/users.tsx",

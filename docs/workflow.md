@@ -38,7 +38,15 @@ Required Documentation:
 
 ## 2. Implementation Flow
 
-### 2.1 Route Setup (src/routes/)
+### 2.1 Database Schema (if needed)
+
+> 📖 Detailed guidelines: `docs/schema.md`
+
+1. Create schema file in `src/drizzle/schemas/`
+2. Add exports to `_exports.ts` and `schema.ts`
+3. Run migrations: `pnpm db:generate && pnpm db:migrate`
+
+### 2.2 Route Setup (src/routes/)
 
 > 📖 Detailed guidelines: `docs/routing.md`
 
@@ -54,7 +62,7 @@ Required Documentation:
    - Add breadcrumbs
    - Configure page title
 
-### 2.2 UI Components (src/features/[feature]/ui/)
+### 2.3 UI Components (src/features/[feature]/ui/)
 
 > 📖 Detailed guidelines: `docs/client.md`
 
@@ -92,7 +100,7 @@ Required Documentation:
    - Implement form validation
    - Handle loading states
 
-### 2.3 API Layer (src/features/[feature]/api/)
+### 2.4 API Layer (src/features/[feature]/api/)
 
 > 📖 Detailed guidelines: `docs/api.md`
 
@@ -136,7 +144,7 @@ Required Documentation:
    - Set up cache invalidation
    - Handle loading/error states
 
-### 2.4 Domain Logic (src/features/[feature]/domain/)
+### 2.5 Domain Logic (src/features/[feature]/domain/)
 
 > 📖 Detailed guidelines: `docs/server.md`
 

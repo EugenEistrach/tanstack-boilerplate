@@ -68,3 +68,14 @@ export async function requireApiKey(request: Request) {
 		throw new Error('Unauthorized')
 	}
 }
+
+export const requireAuthSessionApi = async (server = authServer) => {
+	const request = getWebRequest()
+	const auth = await server.api.getSession({ headers: request.headers })
+
+	if (!auth) {
+		throw new Response('Unauthorized', { status: 401 })
+	}
+
+	return auth
+}

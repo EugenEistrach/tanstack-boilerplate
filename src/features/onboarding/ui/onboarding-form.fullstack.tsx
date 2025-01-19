@@ -3,7 +3,7 @@ import { valibotResolver } from '@hookform/resolvers/valibot'
 import { useForm } from 'react-hook-form'
 import { useSpinDelay } from 'spin-delay'
 import * as v from 'valibot'
-import { Button, LoadingButton } from '@/components/ui/button'
+import { LoadingButton } from '@/components/ui/button'
 import {
 	Card,
 	CardContent,

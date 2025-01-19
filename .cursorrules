@@ -1,6 +1,3 @@
-**Every time you choose to apply a rule(s), explicitly state the rule(s) in the
-output. You can abbreviate the rule description to a single word or phrase.**
-
 ## Project Context
 
 A comprehensive boilerplate project to jumpstart new React applications with
@@ -81,36 +78,15 @@ Detailed guidelines for specific areas can be found in the following files:
 - `docs/validation.md` - Data validation patterns
 - `docs/workflow.md` - Development workflows
 
-## Development Workflow
+## Initial Workflow Analysis
 
-For each feature or task, follow this workflow (detailed guide in
-`docs/workflow.md`):
+IMPORTANT: At the start of EVERY new conversation:
 
-1. **Documentation Analysis**
+1. Read `docs/workflow.md` FIRST
+2. CREATE a plan that:
+   - Lists relevant workflow sections for this task
+   - Explains which parts can be skipped
+   - Lists implementation steps
+3. Get user confirmation before proceeding
 
-   - Review relevant documentation for your task
-   - For UI changes: `client.md`, for API: `api.md`, etc.
-   - For routes: `routing.md` for navigation and auth patterns
-   - Document key requirements and patterns to follow
-
-2. **Implementation Flow**
-
-   - Start with route setup (src/routes/)
-     - Create route files following routing.md patterns
-     - Configure navigation and auth requirements
-   - Build UI components (src/features/[feature]/ui/)
-     - Create components following client.md patterns
-     - Use shadcn/ui components and TailwindCSS
-   - Build API layer (src/features/[feature]/api/)
-     - Define server functions with validation
-     - Set up React Query hooks
-   - Add domain logic (src/features/[feature]/domain/)
-     - Implement business logic in .server.ts
-     - Add database operations with Drizzle
-
-3. **Testing & Validation**
-   - Write tests following unit-testing.md
-   - Validate against documentation guidelines
-
-This workflow ensures consistent development from UI to database. For detailed
-examples and best practices, refer to `docs/workflow.md`.
+If unsure about anything, ask for clarification.

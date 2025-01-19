@@ -127,5 +127,13 @@
 	"cute_arable_felix_gleam": "Hoppla! Da ist etwas schiefgelaufen",
 	"pink_odd_crab_gleam": "Fehlerdetails:",
 	"extra_caring_zebra_advise": "Nachricht:",
-	"keen_mellow_jaguar_aspire": "Seite aktualisieren"
+	"keen_mellow_jaguar_aspire": "Seite aktualisieren",
+	"nav_uploads": "Uploads",
+	"uploads_title": "Datei-Upload",
+	"choose_file": "Datei auswählen",
+	"uploading": "Wird hochgeladen...",
+	"upload": "Hochladen",
+	"drop_files_here": "Dateien hier ablegen",
+	"or_click_to_select": "oder klicken zum Auswählen",
+	"only_one_file_allowed": "Es kann nur eine Datei gleichzeitig hochgeladen werden"
 }
