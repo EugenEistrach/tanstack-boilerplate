@@ -22,6 +22,8 @@
 		--accent-foreground: 0 0% 9%;
 		--destructive: 0 84.2% 60.2%;
 		--destructive-foreground: 0 0% 98%;
+		--success: 142 76% 36%;
+		--success-foreground: 0 0% 98%;
 		--border: 0 0% 89.8%;
 		--input: 0 0% 89.8%;
 		--ring: 0 0% 3.9%;
@@ -58,6 +60,8 @@
 		--accent-foreground: 0 0% 98%;
 		--destructive: 0 62.8% 30.6%;
 		--destructive-foreground: 0 0% 98%;
+		--success: 142 72% 29%;
+		--success-foreground: 0 0% 98%;
 		--border: 0 0% 14.9%;
 		--input: 0 0% 14.9%;
 		--ring: 0 0% 83.1%;
@@ -84,4 +88,124 @@
 	body {
 		@apply bg-background text-foreground;
 	}
+}
+
+/* FilePond Theme */
+.filepond--root {
+	font-family: var(--font-sans);
+}
+
+/* the background color of the filepond drop area */
+.filepond--panel-root {
+	background-color: transparent;
+	border: 2px dashed hsl(var(--border));
+	border-radius: var(--radius);
+}
+
+/* the text color of the drop label */
+.filepond--drop-label {
+	color: hsl(var(--muted-foreground));
+}
+
+/* underline color for "Browse" button */
+.filepond--label-action {
+	text-decoration-color: hsl(var(--primary));
+	color: hsl(var(--primary));
+}
+
+/* the background color of the file and file panel */
+.filepond--item-panel {
+	background-color: hsl(var(--muted));
+}
+
+/* the text color of the file status and info labels */
+.filepond--file-status,
+.filepond--file-info {
+	color: hsl(var(--muted-foreground));
+}
+
+/* the background color of the black action buttons */
+.filepond--file-action-button {
+	background-color: hsl(var(--muted));
+	color: hsl(var(--muted-foreground));
+}
+
+/* hover state for action buttons */
+.filepond--file-action-button:hover {
+	background-color: hsl(var(--accent));
+	color: hsl(var(--accent-foreground));
+}
+
+/* error state colors */
+.filepond--root [data-filepond-item-state*='invalid'] .filepond--item-panel,
+.filepond--root
+	[data-filepond-item-state='load-invalid']
+	.filepond--item-panel {
+	background-color: hsl(var(--destructive));
+}
+
+.filepond--root [data-filepond-item-state*='invalid'] .filepond--file,
+.filepond--root [data-filepond-item-state='load-invalid'] .filepond--file {
+	color: hsl(var(--destructive-foreground));
+}
+
+.filepond--root [data-filepond-item-state*='invalid'] .filepond--file-info-main,
+.filepond--root [data-filepond-item-state*='invalid'] .filepond--file-info-sub,
+.filepond--root
+	[data-filepond-item-state*='invalid']
+	.filepond--file-status-main,
+.filepond--root
+	[data-filepond-item-state*='invalid']
+	.filepond--file-status-sub,
+.filepond--root
+	[data-filepond-item-state='load-invalid']
+	.filepond--file-info-main,
+.filepond--root
+	[data-filepond-item-state='load-invalid']
+	.filepond--file-info-sub,
+.filepond--root
+	[data-filepond-item-state='load-invalid']
+	.filepond--file-status-main,
+.filepond--root
+	[data-filepond-item-state='load-invalid']
+	.filepond--file-status-sub {
+	color: hsl(var(--destructive-foreground));
+}
+
+/* success state colors */
+.filepond--root
+	[data-filepond-item-state='processing-complete']
+	.filepond--item-panel {
+	background-color: hsl(var(--accent));
+}
+
+.filepond--root
+	[data-filepond-item-state='processing-complete']
+	.filepond--file {
+	color: hsl(var(--accent-foreground));
+}
+
+.filepond--root
+	[data-filepond-item-state='processing-complete']
+	.filepond--file-status,
+.filepond--root
+	[data-filepond-item-state='processing-complete']
+	.filepond--file-info {
+	color: hsl(var(--accent-foreground));
+}
+
+/* uploading state */
+[data-filepond-item-state*='processing'] .filepond--item-panel {
+	background-color: hsl(var(--muted));
+}
+
+[data-filepond-item-state*='processing'] .filepond--file-status,
+[data-filepond-item-state*='processing'] .filepond--file-info {
+	color: hsl(var(--muted-foreground));
+}
+
+/* the background color of the drop circle */
+.filepond--drip-blob {
+	background-color: hsl(var(--muted));
+	opacity: 0.1;
 }

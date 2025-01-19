@@ -127,5 +127,13 @@
 	"cute_arable_felix_gleam": "Oops! Something went wrong",
 	"pink_odd_crab_gleam": "Error Details:",
 	"extra_caring_zebra_advise": "Message:",
-	"keen_mellow_jaguar_aspire": "Refresh page"
+	"keen_mellow_jaguar_aspire": "Refresh page",
+	"nav_uploads": "Uploads",
+	"uploads_title": "File Upload",
+	"choose_file": "Choose file",
+	"uploading": "Uploading...",
+	"upload": "Upload",
+	"drop_files_here": "Drop files here",
+	"or_click_to_select": "or click to select",
+	"only_one_file_allowed": "Only one file can be uploaded at a time"
 }

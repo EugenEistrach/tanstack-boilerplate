@@ -1,4 +1,4 @@
-import { HomeIcon, CubeIcon } from '@radix-ui/react-icons'
+import { HomeIcon, CubeIcon, UploadIcon } from '@radix-ui/react-icons'
 import { createFileRoute, Link, Outlet, redirect } from '@tanstack/react-router'
 import { createServerFn, useServerFn } from '@tanstack/start'
 import { ChevronsUpDown, LogOut, Settings, UsersIcon } from 'lucide-react'
@@ -143,6 +143,14 @@ export default function DashboardLayout() {
 										<NavLink to="/dashboard/admin/users">
 											<UsersIcon />
 											<span>{m.nav_users()}</span>
+										</NavLink>
+									</SidebarMenuButton>
+								</SidebarMenuItem>
+								<SidebarMenuItem>
+									<SidebarMenuButton tooltip={m.nav_uploads()} asChild>
+										<NavLink to="/dashboard/admin/uploads">
+											<UploadIcon />
+											<span>{m.nav_uploads()}</span>
 										</NavLink>
 									</SidebarMenuButton>
 								</SidebarMenuItem>
