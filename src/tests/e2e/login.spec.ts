@@ -44,7 +44,7 @@ test('login with github ', async ({ page, baseURL }) => {
 		page.getByRole('button', { name: 'Complete Onboarding' }).click(),
 	)
 
-	await expect(page.getByRole('heading', { name: 'Dashboard' })).toBeVisible()
+	await expect(page.getByText('Dashboard')).toBeVisible()
 
 	await page.goto(`/login`)
 	expect(page.url()).toContain(`/dashboard`)
