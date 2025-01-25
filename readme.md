@@ -94,8 +94,8 @@ src/
 
 - [Local Development Guide](docs/local-development.md) - Setup and scripts
 - [API Guidelines](docs/api.md) - API development and integration
-- [Client Guidelines](docs/client.md) - UI development
-- [Server Guidelines](docs/server.md) - Server-side development
+- [Client Guidelines](docs/ui.md) - UI development
+- [Server Guidelines](docs/domain.md) - Server-side development
 - [Testing Guidelines](docs/unit-testing.md) - Testing practices
 - [Validation Guidelines](docs/validation.md) - Data validation
 - [Routing Guidelines](docs/routing.md) - Route creation and navigation

@@ -70,51 +70,41 @@ This guide covers all necessary steps to deploy your application to production.
    - Choose region closest to your users
    - Say no to immediate deployment
 
-3. **Set Up SQLite Volume**
+3. **Set Environment Variables**
 
-   ```bash
-   # Create a volume for SQLite database
-   fly volumes create sqlite_data --size 1 --region ams
-
-   # Verify volume is created
-   fly volumes list
-   ```
-
-   Note: The `fly.toml` should include volume configuration:
-
-   ```toml
-   [[mounts]]
-     source = 'data'
-     destination = '/data'
-   ```
-
-4. **Set Environment Variables**
+   Stage your secrets first:
 
    ```bash
    # App Configuration
-   fly secrets set APPLICATION_URL=https://your-app.fly.dev
-   fly secrets set SESSION_SECRET=$(openssl rand -base64 32)
+   fly secrets set --stage APPLICATION_URL=https://your-app.fly.dev
+   fly secrets set --stage SESSION_SECRET=$(openssl rand -base64 32)
 
    # Database
-   fly secrets set TURSO_DATABASE_URL="libsql://your-db-url"
-   fly secrets set TURSO_AUTH_TOKEN="your-auth-token"
+   fly secrets set --stage TURSO_DATABASE_URL="libsql://your-db-url"
+   fly secrets set --stage TURSO_AUTH_TOKEN="your-auth-token"
 
    # Authentication
-   fly secrets set GITHUB_CLIENT_ID="your-github-client-id"
-   fly secrets set GITHUB_CLIENT_SECRET="your-github-client-secret"
-   fly secrets set DISCORD_CLIENT_ID="your-discord-client-id"
-   fly secrets set DISCORD_CLIENT_SECRET="your-discord-client-secret"
+   fly secrets set --stage GITHUB_CLIENT_ID="your-github-client-id"
+   fly secrets set --stage GITHUB_CLIENT_SECRET="your-github-client-secret"
+   fly secrets set --stage DISCORD_CLIENT_ID="your-discord-client-id"
+   fly secrets set --stage DISCORD_CLIENT_SECRET="your-discord-client-secret"
 
    # Email
-   fly secrets set RESEND_API_KEY="your-resend-api-key"
-   fly secrets set EMAIL_FROM="your@verified-domain.com"
+   fly secrets set --stage RESEND_API_KEY="your-resend-api-key"
+   fly secrets set --stage EMAIL_FROM="your@verified-domain.com"
 
    # Admin Access
-   fly secrets set ADMIN_USER_EMAILS="admin1@example.com,admin2@example.com"
+   fly secrets set --stage ADMIN_USER_EMAILS="admin1@example.com,admin2@example.com"
 
    # Trigger.dev
-   fly secrets set TRIGGER_API_KEY="your-trigger-api-key"
-   fly secrets set TRIGGER_API_URL="your-trigger-api-url" # if self-hosted
+   fly secrets set --stage TRIGGER_API_KEY="your-trigger-api-key"
+   fly secrets set --stage TRIGGER_API_URL="your-trigger-api-url" # if self-hosted
+   ```
+
+   Then deploy the staged secrets:
+
+   ```bash
+   fly secrets deploy
    ```
 
 ## GitHub Actions Setup

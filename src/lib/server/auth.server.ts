@@ -33,6 +33,14 @@ export const authServer = betterAuth({
 		...(discord && { discord }),
 	},
 	plugins: [admin(), organization()],
+	user: {
+		additionalFields: {
+			hasAccess: {
+				type: 'boolean',
+				default: false,
+			},
+		},
+	},
 })
 
 export const requireAuthSession = async (server = authServer) => {

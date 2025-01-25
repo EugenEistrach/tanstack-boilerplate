@@ -135,5 +135,22 @@
 	"upload": "Hochladen",
 	"drop_files_here": "Dateien hier ablegen",
 	"or_click_to_select": "oder klicken zum Auswählen",
-	"only_one_file_allowed": "Es kann nur eine Datei gleichzeitig hochgeladen werden"
+	"only_one_file_allowed": "Es kann nur eine Datei gleichzeitig hochgeladen werden",
+	"approval_needed_title": "Freischaltung erforderlich",
+	"approval_needed_description": "Dein Konto wartet auf Freischaltung",
+	"approval_needed_message": "Hallo {name}! Dein Konto wurde erfolgreich erstellt, benötigt aber die Freischaltung durch einen Administrator, bevor du auf die Anwendung zugreifen kannst. Bitte versuche es später erneut oder kontaktiere den Administrator.",
+	"approval_needed_check_again": "Erneut prüfen",
+	"page_size": "Einträge pro Seite",
+	"showing_results": "{from} bis {to} von {total} Einträgen",
+	"page": "Seite",
+	"of": "von",
+	"page_go_to": "Gehe zu Seite...",
+	"page_not_found": "Keine Seite gefunden.",
+	"page_number": "Seite {number}",
+	"page_of_total": "von {total}",
+	"pick_date": "Datum auswählen",
+	"remove_tag": "{tag} entfernen",
+	"tag_delete": "Tag löschen",
+	"tag_delete_confirm": "Zum Bestätigen klicken",
+	"tag_delete_error": "Tag kann nicht gelöscht werden"
 }

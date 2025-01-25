@@ -175,13 +175,15 @@
 /* success state colors */
 .filepond--root
 	[data-filepond-item-state='processing-complete']
-	.filepond--item-panel {
+	.filepond--item-panel,
+.filepond--root [data-filepond-item-state='idle'] .filepond--item-panel {
 	background-color: hsl(var(--accent));
 }
 
 .filepond--root
 	[data-filepond-item-state='processing-complete']
-	.filepond--file {
+	.filepond--file,
+.filepond--root [data-filepond-item-state='idle'] .filepond--file {
 	color: hsl(var(--accent-foreground));
 }
 
@@ -190,7 +192,9 @@
 	.filepond--file-status,
 .filepond--root
 	[data-filepond-item-state='processing-complete']
-	.filepond--file-info {
+	.filepond--file-info,
+.filepond--root [data-filepond-item-state='idle'] .filepond--file-status,
+.filepond--root [data-filepond-item-state='idle'] .filepond--file-info {
 	color: hsl(var(--accent-foreground));
 }
 

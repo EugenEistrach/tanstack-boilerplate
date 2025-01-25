@@ -151,7 +151,16 @@ async function setup() {
 			defaultValue: 'admin@example.com',
 			validate: (value) => {
 				const emails = value.split(',').map((e) => e.trim())
-				if (!emails.every((e) => email().safeParse(e).success)) {
+				if (
+					!emails.every((e) => {
+						try {
+							parse(email(), e)
+							return true
+						} catch {
+							return false
+						}
+					})
+				) {
 					return 'Please enter valid email addresses'
 				}
 			},
@@ -220,7 +229,32 @@ async function setup() {
 		)
 		execSync('git add .')
 		execSync('git commit -m "Initial commit from boilerplate"')
-		s.stop('Initialized git repository')
+
+		note(
+			'I will now open GitHub to create a new repository.\n' +
+				'Please follow these steps:\n' +
+				'1. Click "New repository"\n' +
+				`2. Name it "${config.appName}"\n` +
+				'3. DO NOT initialize with README, license, or gitignore\n' +
+				'4. Click "Create repository"\n' +
+				'5. Copy the repository URL',
+		)
+
+		await openBrowser('https://github.com/new')
+
+		const repoUrl = await text({
+			message: 'Enter your GitHub repository URL',
+			validate: (value) => {
+				if (!value) return 'Repository URL is required'
+				if (!value.startsWith('https://github.com/'))
+					return 'Invalid GitHub repository URL'
+			},
+		})
+
+		execSync('git remote remove origin || true') // Remove origin if it exists
+		execSync(`git remote add origin ${repoUrl}`)
+		execSync('git push -u origin main')
+		s.stop('Git repository initialized and pushed to GitHub')
 
 		// Set up OAuth providers
 		const oauthConfig = {}

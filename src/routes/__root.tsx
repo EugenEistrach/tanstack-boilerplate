@@ -19,6 +19,7 @@ import { useLocale } from '@/lib/client/i18n.client'
 import { $handleRedirectTo } from '@/lib/client/redirect.client'
 
 import { TimezoneContext } from '@/lib/client/timezone.client'
+import * as m from '@/lib/paraglide/messages'
 import appCss from '@/styles/globals.css?url'
 
 const TanStackRouterDevtools =
@@ -68,12 +69,15 @@ export const Route = createRootRouteWithContext<{
 				content: 'width=device-width, initial-scale=1',
 			},
 			{
-				title: 'Tanstack Boilerplate',
+				title: m.dashboard_title(),
 			},
 		],
 		links: [
 			{ rel: 'stylesheet', href: appCss },
 			{ rel: 'stylesheet', href: filePondCss },
+			{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+			{ rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+
 			// {
 			// 	rel: 'preload',
 			// 	href: 'https://api.fontshare.com/v2/css?f[]=satoshi@300,301,400,401,500,501,700,701,900,901,1,2&display=swap',

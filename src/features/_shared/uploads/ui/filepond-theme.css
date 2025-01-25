@@ -1,0 +1,92 @@
+/* FilePond custom theme to match shadcn */
+
+.file-pond-custom.filepond--root {
+	font-family: var(--font-sans);
+	margin-bottom: 0;
+}
+
+/* The drop area */
+.file-pond-custom.filepond--drop-label {
+	border: 2px dashed hsl(var(--border));
+	border-radius: var(--radius);
+	color: hsl(var(--muted-foreground));
+}
+
+.file-pond-custom.filepond--drop-label.filepond--drop-label label {
+	color: hsl(var(--muted-foreground));
+	font-size: 0.875rem;
+	line-height: 1.25rem;
+}
+
+/* Panel */
+.file-pond-custom .filepond--panel-root {
+	background-color: hsl(var(--background));
+	border-radius: var(--radius);
+}
+
+/* Progress indicator */
+.file-pond-custom .filepond--progress-indicator {
+	background: hsl(var(--primary));
+}
+
+/* File item */
+.file-pond-custom .filepond--item {
+	margin-top: 0.5rem;
+}
+
+.file-pond-custom .filepond--file {
+	color: hsl(var(--foreground));
+	background-color: hsl(var(--muted));
+	border-radius: var(--radius);
+}
+
+/* File action buttons */
+.file-pond-custom .filepond--file-action-button {
+	background-color: hsl(var(--primary));
+	color: hsl(var(--primary-foreground));
+	border-radius: 9999px;
+}
+
+.file-pond-custom .filepond--file-action-button:hover {
+	background-color: hsl(var(--primary));
+	opacity: 0.9;
+}
+
+/* Loading indicator */
+.file-pond-custom .filepond--drip {
+	background-color: hsl(var(--primary));
+}
+
+/* Error state */
+.file-pond-custom
+	.filepond--file-wrapper[data-filepond-item-state*='error']
+	.filepond--file {
+	background-color: hsl(var(--destructive) / 0.1);
+	color: hsl(var(--destructive));
+}
+
+/* Processing state */
+.file-pond-custom
+	.filepond--file-wrapper[data-filepond-item-state*='processing']
+	.filepond--file {
+	background-color: hsl(var(--primary) / 0.1);
+	color: hsl(var(--primary));
+}
+
+/* Success state */
+.file-pond-custom
+	.filepond--file-wrapper[data-filepond-item-state*='success']
+	.filepond--file {
+	background-color: hsl(var(--background));
+	color: hsl(var(--foreground));
+	border: 1px solid hsl(var(--border));
+}
+
+/* Focus state */
+.file-pond-custom.filepond--root
+	.filepond--drop-label.filepond--drop-label:focus,
+.file-pond-custom.filepond--root
+	.filepond--drop-label.filepond--drop-label:hover {
+	background-color: hsl(var(--accent));
+	border-color: hsl(var(--ring));
+}

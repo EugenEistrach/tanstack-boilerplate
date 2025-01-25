@@ -1,3 +1,5 @@
+import { db } from '@/drizzle/db'
+import { UserTable } from '@/drizzle/schemas/auth-schema'
 import { expect, test } from '@/tests/playwright'
 import { delayed } from '@/tests/test-utils'
 
@@ -25,7 +27,16 @@ test('login with github ', async ({ page, baseURL }) => {
 	await page.getByRole('button', { name: 'Sign in with GitHub' }).click()
 	await page.waitForLoadState('networkidle')
 
-	await page.getByPlaceholder('Enter your name').fill('Test ABC')
+	await expect(
+		page.getByRole('heading', { name: 'Approval Required' }),
+	).toBeVisible()
+
+	await db.update(UserTable).set({
+		hasAccess: true,
+	})
+
+	await page.reload()
+	await page.waitForLoadState('networkidle')
 
 	await page.getByPlaceholder('Enter your favorite color').fill('red')
 
@@ -33,8 +44,9 @@ test('login with github ', async ({ page, baseURL }) => {
 		page.getByRole('button', { name: 'Complete Onboarding' }).click(),
 	)
 
-	await expect(page.getByLabel("What's your name?")).toHaveValue('Test ABC')
-	await expect(page.getByRole('heading', { name: 'Settings' })).toBeVisible()
+	await expect(
+		page.getByRole('heading', { name: 'Transactions' }),
+	).toBeVisible()
 
 	await page.goto(`/login`)
 	expect(page.url()).toContain(`/dashboard`)

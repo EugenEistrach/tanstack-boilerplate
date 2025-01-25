@@ -19,6 +19,9 @@ export default [
 		files: ['**/*.{js,jsx,ts,tsx}'],
 		ignores: ['src/email/**/*'],
 		...i18next.configs['flat/recommended'],
+		rules: {
+			'i18next/no-literal-string': 'warn',
+		},
 	},
 	gitignore(),
 	...pluginRouter.configs['flat/recommended'],
@@ -81,6 +84,7 @@ export default [
 						'src/hooks/**/*',
 						'src/lib/**/*',
 						'src/styles/**/*',
+						'src/features/_shared/**/*',
 					],
 				},
 				{

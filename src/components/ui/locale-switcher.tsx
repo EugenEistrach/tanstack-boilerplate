@@ -1,6 +1,6 @@
 'use client'
 
-import { CheckIcon, ChevronDownIcon, GlobeIcon } from '@radix-ui/react-icons'
+import { Check, ChevronDown, Globe } from 'lucide-react'
 import { useState } from 'react'
 
 import { Button } from '@/components/ui/button'
@@ -28,9 +28,9 @@ export function LocaleSwitcher() {
 		<DropdownMenu open={open} onOpenChange={setOpen}>
 			<DropdownMenuTrigger asChild>
 				<Button variant="outline" size="sm" className="min-w-[8rem]">
-					<GlobeIcon className="mr-2 h-4 w-4" />
+					<Globe className="mr-2 h-4 w-4" />
 					{labels[locale]}
-					<ChevronDownIcon className="ml-2 h-4 w-4" />
+					<ChevronDown className="ml-2 h-4 w-4" />
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent align="end">
@@ -54,7 +54,7 @@ export function LocaleSwitcher() {
 						}}
 					>
 						{labels[availableTag]}
-						{availableTag === locale && <CheckIcon className="ml-2 h-4 w-4" />}
+						{availableTag === locale && <Check className="ml-2 h-4 w-4" />}
 					</DropdownMenuItem>
 				))}
 			</DropdownMenuContent>
