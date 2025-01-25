@@ -1,0 +1,1 @@
+ALTER TABLE `user` ADD `hasAccess` integer DEFAULT false;

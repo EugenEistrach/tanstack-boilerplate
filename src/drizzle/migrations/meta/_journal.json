@@ -15,6 +15,13 @@
       "when": 1737217548555,
       "tag": "0001_abnormal_satana",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1737795633063,
+      "tag": "0002_panoramic_zodiak",
+      "breakpoints": true
     }
   ]
 }
