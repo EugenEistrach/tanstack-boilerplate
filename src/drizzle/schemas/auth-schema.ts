@@ -19,6 +19,7 @@ export const UserTable = sqliteTable('user', (t) => ({
 	banned: t.integer({ mode: 'boolean' }),
 	banReason: t.text(),
 	banExpires: t.integer(),
+	hasAccess: t.integer({ mode: 'boolean' }).default(false),
 }))
 
 export const SessionTable = sqliteTable('session', (t) => ({

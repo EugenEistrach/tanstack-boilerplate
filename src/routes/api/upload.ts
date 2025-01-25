@@ -1,5 +1,8 @@
 import { createAPIFileRoute } from '@tanstack/start/api'
-import { handleFileUpload } from '@/features/uploads/domain/upload-handler.server'
+import {
+	handleFileUpload,
+	handleFileDelete,
+} from '@/features/_shared/uploads/domain/upload-handler.server'
 import { requireAuthSessionApi } from '@/lib/server/auth.server'
 
 export const APIRoute = createAPIFileRoute('/api/upload')({
@@ -13,5 +16,21 @@ export const APIRoute = createAPIFileRoute('/api/upload')({
 				'Content-Type': 'text/plain',
 			},
 		})
+	},
+	DELETE: async ({ request }) => {
+		const auth = await requireAuthSessionApi()
+		const fileId = await request.text()
+
+		if (!fileId) {
+			return new Response('File ID is required', {
+				status: 400,
+				headers: {
+					'Content-Type': 'text/plain',
+				},
+			})
+		}
+
+		await handleFileDelete(fileId, auth)
+		return new Response(null, { status: 204 })
 	},
 })

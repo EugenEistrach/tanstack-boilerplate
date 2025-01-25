@@ -21,6 +21,7 @@ import { Route as MarketingTermsImport } from './routes/_marketing/terms'
 import { Route as MarketingPrivacyImport } from './routes/_marketing/privacy'
 import { Route as authOnboardingImport } from './routes/(auth)/onboarding'
 import { Route as authLoginImport } from './routes/(auth)/login'
+import { Route as authApprovalNeededImport } from './routes/(auth)/approval-needed'
 import { Route as DashboardSettingsIndexImport } from './routes/dashboard/settings/index'
 import { Route as DashboardAdminUsersImport } from './routes/dashboard/admin/users'
 import { Route as DashboardAdminUploadsImport } from './routes/dashboard/admin/uploads'
@@ -86,6 +87,12 @@ const authLoginRoute = authLoginImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const authApprovalNeededRoute = authApprovalNeededImport.update({
+  id: '/(auth)/approval-needed',
+  path: '/approval-needed',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const DashboardSettingsIndexRoute = DashboardSettingsIndexImport.update({
   id: '/',
   path: '/',
@@ -120,6 +127,13 @@ declare module '@tanstack/react-router' {
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof DashboardImport
+      parentRoute: typeof rootRoute
+    }
+    '/(auth)/approval-needed': {
+      id: '/(auth)/approval-needed'
+      path: '/approval-needed'
+      fullPath: '/approval-needed'
+      preLoaderRoute: typeof authApprovalNeededImport
       parentRoute: typeof rootRoute
     }
     '/(auth)/login': {
@@ -264,6 +278,7 @@ const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
 export interface FileRoutesByFullPath {
   '': typeof MarketingRouteWithChildren
   '/dashboard': typeof DashboardRouteWithChildren
+  '/approval-needed': typeof authApprovalNeededRoute
   '/login': typeof authLoginRoute
   '/onboarding': typeof authOnboardingRoute
   '/privacy': typeof MarketingPrivacyRoute
@@ -278,6 +293,7 @@ export interface FileRoutesByFullPath {
 }
 
 export interface FileRoutesByTo {
+  '/approval-needed': typeof authApprovalNeededRoute
   '/login': typeof authLoginRoute
   '/onboarding': typeof authOnboardingRoute
   '/privacy': typeof MarketingPrivacyRoute
@@ -294,6 +310,7 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/_marketing': typeof MarketingRouteWithChildren
   '/dashboard': typeof DashboardRouteWithChildren
+  '/(auth)/approval-needed': typeof authApprovalNeededRoute
   '/(auth)/login': typeof authLoginRoute
   '/(auth)/onboarding': typeof authOnboardingRoute
   '/_marketing/privacy': typeof MarketingPrivacyRoute
@@ -312,6 +329,7 @@ export interface FileRouteTypes {
   fullPaths:
     | ''
     | '/dashboard'
+    | '/approval-needed'
     | '/login'
     | '/onboarding'
     | '/privacy'
@@ -325,6 +343,7 @@ export interface FileRouteTypes {
     | '/dashboard/settings/'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/approval-needed'
     | '/login'
     | '/onboarding'
     | '/privacy'
@@ -339,6 +358,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/_marketing'
     | '/dashboard'
+    | '/(auth)/approval-needed'
     | '/(auth)/login'
     | '/(auth)/onboarding'
     | '/_marketing/privacy'
@@ -356,6 +376,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   MarketingRoute: typeof MarketingRouteWithChildren
   DashboardRoute: typeof DashboardRouteWithChildren
+  authApprovalNeededRoute: typeof authApprovalNeededRoute
   authLoginRoute: typeof authLoginRoute
   authOnboardingRoute: typeof authOnboardingRoute
 }
@@ -363,6 +384,7 @@ export interface RootRouteChildren {
 const rootRouteChildren: RootRouteChildren = {
   MarketingRoute: MarketingRouteWithChildren,
   DashboardRoute: DashboardRouteWithChildren,
+  authApprovalNeededRoute: authApprovalNeededRoute,
   authLoginRoute: authLoginRoute,
   authOnboardingRoute: authOnboardingRoute,
 }
@@ -379,6 +401,7 @@ export const routeTree = rootRoute
       "children": [
         "/_marketing",
         "/dashboard",
+        "/(auth)/approval-needed",
         "/(auth)/login",
         "/(auth)/onboarding"
       ]
@@ -398,6 +421,9 @@ export const routeTree = rootRoute
         "/dashboard/settings",
         "/dashboard/"
       ]
+    },
+    "/(auth)/approval-needed": {
+      "filePath": "(auth)/approval-needed.tsx"
     },
     "/(auth)/login": {
       "filePath": "(auth)/login.tsx"

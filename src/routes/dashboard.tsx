@@ -65,6 +65,13 @@ export const Route = createFileRoute('/dashboard')({
 				},
 			})
 		}
+
+		if (!context.auth.user.hasAccess) {
+			throw redirect({
+				to: '/approval-needed',
+			})
+		}
+
 		const [sidebarOpen, onboardingInfo] = await Promise.all([
 			$getSidebarState(),
 			context.queryClient.ensureQueryData(getOnboardingInfoQueryOptions()),

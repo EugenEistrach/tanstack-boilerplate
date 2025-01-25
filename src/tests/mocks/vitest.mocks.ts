@@ -28,6 +28,7 @@ export function mockAuthSession(user: User, session: Session) {
 			banReason: user.banReason ?? undefined,
 			banExpires: undefined,
 			role: user.role ?? undefined,
+			hasAccess: user.hasAccess ?? false,
 		},
 	})
 }

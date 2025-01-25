@@ -9,10 +9,10 @@ modern tooling and best practices.
   - Local: Direct SQLite for development
   - Production: Turso for global distribution
 - Component library with shadcn/ui
-- Comprehensive testing setup
 
 ## Tech Stack
 
+- pnpm
 - React 19
 - TanStack (Router, Query, Start)
 - TypeScript
@@ -21,7 +21,6 @@ modern tooling and best practices.
 - TailwindCSS with shadcn/ui
 - trigger.dev for background jobs
 - Fly.io for deployment and hosting
-- vitest for testing
 - valibot for type-safe validation
 
 ## Code Style and Structure
@@ -32,7 +31,19 @@ modern tooling and best practices.
   principle)
 - Use descriptive variable names with auxiliary verbs (e.g., isLoading,
   hasError)
-- Structure repository files as follows:
+
+### TypeScript Patterns
+
+- Use TypeScript for all code; prefer interfaces over types
+- Avoid enums; use const objects with 'as const' assertion
+- Use functional components with TypeScript interfaces
+- Use absolute imports with @/ prefix
+- Avoid try/catch blocks unless there's good reason to translate or handle error
+  in that abstraction
+- Return types for functions should be inferred and not explicitly defined
+- Use proper TypeScript discriminated unions for message types
+
+### Repository Structure
 
 ```
 src/
@@ -41,16 +52,15 @@ src/
 ├── drizzle/       # Database schemas and migrations
 ├── features/      # Feature-specific code
 │   └── feature-name/
-│       ├── ui/         # UI components
-│       ├── api/        # Server functions + React Query
 │       ├── domain/     # Business logic + DB operations
+│       ├── api/        # API layer (server functions + React Query)
+│       ├── ui/         # UI components
 │       └── templates/  # Templates
 ├── hooks/         # Shared React hooks
 ├── lib/           # Shared utilities
 ├── routes/        # Route components
 ├── styles/        # Global styles
-├── tasks/         # Background tasks
-└── tests/         # Test utilities and mocks
+└── tasks/         # Background tasks
 ```
 
 ## Naming Conventions
@@ -58,35 +68,20 @@ src/
 - Use lowercase with dashes for directories (e.g., components/form-wizard)
 - Favor named exports for components and utilities
 - Component files: component-name.tsx
-- Server/API files:
-  - Server logic: module-name.server.ts
+- Backend files:
+  - Domain logic: module-name.server.ts
   - API layer: module-name.api.ts
 
 ## Additional Documentation
 
 Detailed guidelines for specific areas can be found in the following files:
 
-- `docs/api.md` - API development and integration
-- `docs/client.md` - Client-side and UI development
+- `docs/schema.md` - Database schema development
+- `docs/domain.md` - Domain logic implementation
+- `docs/api.md` - API layer development
+- `docs/validation.md` - Type-safe validation patterns
+- `docs/ui.md` - Client-side and UI development
+- `docs/routing.md` - Route creation and navigation
 - `docs/commit-conventions.md` - Git commit message standards
 - `docs/deployments.md` - Deployment procedures
-- `docs/i18n.md` - Internationalization
 - `docs/logging.md` - Logging standards
-- `docs/routing.md` - Route creation and navigation
-- `docs/server.md` - Server-side development
-- `docs/unit-testing.md` - Testing guidelines
-- `docs/validation.md` - Data validation patterns
-- `docs/workflow.md` - Development workflows
-
-## Initial Workflow Analysis
-
-IMPORTANT: At the start of EVERY new conversation:
-
-1. Read `docs/workflow.md` FIRST
-2. CREATE a plan that:
-   - Lists relevant workflow sections for this task
-   - Explains which parts can be skipped
-   - Lists implementation steps
-3. Get user confirmation before proceeding
-
-If unsure about anything, ask for clarification.

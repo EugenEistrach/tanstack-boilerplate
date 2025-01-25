@@ -135,5 +135,22 @@
 	"upload": "Upload",
 	"drop_files_here": "Drop files here",
 	"or_click_to_select": "or click to select",
-	"only_one_file_allowed": "Only one file can be uploaded at a time"
+	"only_one_file_allowed": "Only one file can be uploaded at a time",
+	"approval_needed_title": "Approval Required",
+	"approval_needed_description": "Your account is pending administrator approval",
+	"approval_needed_message": "Hello {name}! Your account has been created successfully, but requires administrator approval before you can access the application. Please check back later or contact your administrator.",
+	"approval_needed_check_again": "Check Again",
+	"page_size": "Entries per page",
+	"showing_results": "{from} to {to} of {total} entries",
+	"page": "Page",
+	"of": "of",
+	"page_go_to": "Go to page...",
+	"page_not_found": "No page found.",
+	"page_number": "Page {number}",
+	"page_of_total": "of {total}",
+	"pick_date": "Pick a date",
+	"remove_tag": "Remove {tag} tag",
+	"tag_delete": "Delete tag",
+	"tag_delete_confirm": "Click to confirm",
+	"tag_delete_error": "Can not delete the tag."
 }
