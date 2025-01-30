@@ -1,3 +1,7 @@
+---
+description: Commit message guidelines
+globs: 
+---
 # Commit Message Conventions
 
 We follow a structured approach to commit messages to maintain a clean and
@@ -7,10 +11,6 @@ meaningful git history.
 
 ```
 <type>(<scope>): <subject>
-
-[optional body]
-
-[optional footer]
 ```
 
 ## Types
@@ -46,10 +46,6 @@ meaningful git history.
 
 ```
 refactor(database): Split reports table to separate raw payload storage
-
-- Move raw payloads to new raw_reports table
-- Maintain data relationship for re-running imports
-- Improve schema organization by decoupling storage concerns
 ```
 
 #### Dependency Updates
