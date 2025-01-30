@@ -1,18 +1,16 @@
-# Routing Guide
+---
+description: Routing guidelines for TanStack Router including route types, creation, and navigation patterns.
+globs: src/routes/**/*
+---
 
-## Overview
-
-This project uses TanStack Router for type-safe routing. Routes are organized in
-the `src/routes` directory with a file-based routing system.
+# Routing Guidelines
 
 ## Route Types
 
 - **Public Routes** (`src/routes/_marketing/`): Marketing/public pages
 - **Auth Routes** (`src/routes/(auth)/`): Authentication-related pages
-- **Dashboard Routes** (`src/routes/dashboard/`): Protected pages requiring
-  authentication (handled by dashboard layout)
-- **Admin Routes** (`src/routes/dashboard/admin/`): Protected pages requiring
-  admin role (handled by admin layout)
+- **Dashboard Routes** (`src/routes/dashboard/`): Protected pages requiring authentication (handled by dashboard layout)
+- **Admin Routes** (`src/routes/dashboard/admin/`): Protected pages requiring admin role (handled by admin layout)
 
 ## Creating New Routes
 
@@ -30,8 +28,7 @@ export const Route = createFileRoute('/path/to/route')({
 
 ### Dashboard Route
 
-Simply create a file in the dashboard directory - auth is automatically handled
-by the layout:
+Simply create a file in the dashboard directory - auth is automatically handled by the layout:
 
 ```tsx
 import { createFileRoute } from '@tanstack/react-router'
@@ -47,8 +44,7 @@ export const Route = createFileRoute('/dashboard/your-route')({
 
 ### Admin Route
 
-Simply create a file in the admin directory - auth and admin role check is
-automatically handled by the layout:
+Simply create a file in the admin directory - auth and admin role check is automatically handled by the layout:
 
 ```tsx
 import { createFileRoute } from '@tanstack/react-router'
@@ -63,7 +59,7 @@ export const Route = createFileRoute('/dashboard/admin/your-route')({
 
 ## Adding to Navigation
 
-To add a route to the dashboard navigation, edit `src/routes/dashboard.tsx`:
+To add a route to the dashboard navigation, edit [dashboard.tsx](mdc:src/routes/dashboard.tsx):
 
 1. Import your icon:
 
@@ -132,10 +128,9 @@ export const Route = createFileRoute('/dashboard/parent/child')({
 
 Authentication and role checks are handled automatically by the parent layouts:
 
-- `src/routes/dashboard.tsx` handles authentication for all dashboard routes
-- `src/routes/dashboard/admin.tsx` handles admin role check for all admin routes
+- [dashboard.tsx](mdc:src/routes/dashboard.tsx) handles authentication for all dashboard routes
+- [admin.tsx](mdc:src/routes/dashboard/admin.tsx) handles admin role check for all admin routes
 - Routes under `/_marketing/*` are public
 - Routes under `/(auth)/*` handle authentication flow
 
-You don't need to add any explicit auth checks in your route files - just place
-them in the correct directory and the parent layout will handle the protection.
+You don't need to add any explicit auth checks in your route files - just place them in the correct directory and the parent layout will handle the protection.

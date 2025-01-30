@@ -1,3 +1,8 @@
+---
+description: Internationalization guidelines for managing translations and language support.
+globs: *.tsx
+---
+
 # Internationalization (i18n) Guidelines
 
 ## Usage
@@ -8,15 +13,13 @@ Import and use translations in client components:
 import * as m from '@/lib/paraglide/messages'
 
 // Use in client components
-<Button>{m.wild_blue_snake_update()}</Button>
+<Button>{m.page()}</Button>
 ```
 
 ## Translation Keys
 
 - Use random unique phrases ("wild_blue_snake_update": "Update")
-- Keep wording simple, suitable for CI/CD
-- Reuse existing for generic terms
-- Add translations to all language files in `./messages/`
+- The main language is [en.json](mdc:messages/en.json), but please make sure you search other files in same directory and add translations there. 
 - Only translate text content, not technical values
 
 ## Best Practices
@@ -25,4 +28,8 @@ import * as m from '@/lib/paraglide/messages'
 - Use semantic keys that describe the purpose
 - Avoid string concatenation
 - Use pluralization when needed
-- Include context comments for translators
+
+## Component Guidelines
+
+- Always use translation keys for user-facing text
+- Use proper pluralization rules

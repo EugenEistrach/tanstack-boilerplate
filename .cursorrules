@@ -1,15 +1,3 @@
-## Project Context
-
-A comprehensive boilerplate project to jumpstart new React applications with
-modern tooling and best practices.
-
-- Type-safe full-stack development with TanStack
-- Modern authentication with GitHub/Discord SSO
-- Hybrid database approach:
-  - Local: Direct SQLite for development
-  - Production: Turso for global distribution
-- Component library with shadcn/ui
-
 ## Tech Stack
 
 - pnpm
@@ -71,17 +59,3 @@ src/
 - Backend files:
   - Domain logic: module-name.server.ts
   - API layer: module-name.api.ts
-
-## Additional Documentation
-
-Detailed guidelines for specific areas can be found in the following files:
-
-- `docs/schema.md` - Database schema development
-- `docs/domain.md` - Domain logic implementation
-- `docs/api.md` - API layer development
-- `docs/validation.md` - Type-safe validation patterns
-- `docs/ui.md` - Client-side and UI development
-- `docs/routing.md` - Route creation and navigation
-- `docs/commit-conventions.md` - Git commit message standards
-- `docs/deployments.md` - Deployment procedures
-- `docs/logging.md` - Logging standards

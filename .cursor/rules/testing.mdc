@@ -1,6 +1,11 @@
-## Test Implementation Guidelines
+---
+description: Testing guidelines including unit testing, E2E testing, and test implementation patterns.
+globs: src/**/*.test.ts, src/**/*.spec.ts, src/tests/**/*
+---
 
-### Core Principles
+# Testing Guidelines
+
+## Core Principles
 
 - Understand the implementation before writing tests
 - Never modify the code being tested
@@ -8,15 +13,13 @@
 - Ask for clarification if uncertain about test requirements
 - Always use MSW for mocking HTTP requests - never mock fetch directly
 - Never proceed to next describe block until all tests pass
-- When tests fail, first repeat the exact failure messages and analyze possible
-  causes before proceeding
 
-### Test Environment
+## Test Environment
 
 - Database cleanup is handled automatically by `setup-test-env.ts`
 - Create abstractions for shared test functionality when needed
 
-### Test Outline
+## Test Structure
 
 Before implementation, create a test outline that:
 
@@ -51,7 +54,7 @@ describe('functionName', () => {
 })
 ```
 
-### Database Usage
+## Database Usage in Tests
 
 - Use Drizzle ORM for all database operations
 - Database state is automatically cleaned between tests
@@ -61,7 +64,7 @@ describe('functionName', () => {
   import { EnvironmentTable } from '@/drizzle/schemas/deployments-schema'
   ```
 
-#### Example: Database Operations in Tests
+### Example: Database Operations in Tests
 
 ```typescript
 import { eq } from 'drizzle-orm'
@@ -93,22 +96,15 @@ beforeEach(async () => {
 })
 ```
 
-### Mocking External APIs
+## Mocking External APIs
 
 - Use MSW (Mock Service Worker) for external API calls
 - Add mocks directly in the test files where needed
 - Never mock `fetch` directly - always use MSW
-- Never add expect statements in the mock functions. Instead if body needs to be
-  validated, use conditional logic and return an error response
-- Existing mock resources:
-  - Factory functions in `src/tests/mocks/**/*.fixtures.ts`
-  - Happy path mocks in `.mocks.ts` files
-  - Pre-built mocks available for GitHub and Jira
-  - Extend or create new factory functions as needed
-  - Do not modify existing happy path mocks
-  - New happy path mocks can be added
+- Never add expect statements in the mock functions
+- Use conditional logic and return error responses for validation
 
-#### Example: Mocking API Request
+### Example: Mocking API Request
 
 ```typescript
 import { http, HttpResponse } from 'msw'
@@ -136,15 +132,13 @@ it('handles API request with validation', async () => {
 })
 ```
 
-### Implementation Workflow
+## Implementation Workflow
 
-1. Review the implementation to be tested by reading the file
+1. Review the implementation to be tested
 2. Start with the first describe block
 3. Implement the describe block
-4. Run terminal command
-   `pnpm vitest run src/path/to/file.test.ts -t "describe block name" --no-coverage`
-   to validate the tests
-5. Wait for tests to pass before proceeding to next describe block
+4. Execute `pnpm vitest run` to run all test. Add appropriate args if we only need to run specific tests.
+5. Repeat from step 1 until tests pass, then move to next. 
 
 If tests fail:
 
@@ -152,6 +146,3 @@ If tests fail:
 2. Analyze and list possible causes for the failure
 3. Explain your thought process about why the test might be failing
 4. Propose a solution or ask for guidance if needed
-
-Before starting with the workflow, please explain in your words the required
-steps you need to take next to make sure you understand the instructions.

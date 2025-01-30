@@ -1,4 +1,25 @@
-# Logging Guidelines
+---
+description: Server-side development guidelines including business logic, error handling, logging..
+globs: 
+---
+ # Server Guidelines
+
+## Core Principles
+
+- Keep business logic and database operations in `.server.ts` files
+- Never use translations in server code - return error codes for handled errrors. 
+- Handle errors appropriately and log meaningful error messages
+
+## File Organization
+
+- Place all server-side code in `.server.ts` files
+- Group related functionality in feature-specific directories
+
+## Error Handling
+
+- When returning errors from our domain functions return const tuples. The error code should always be first. 
+
+## Logging
 
 Use pino logger for all application logging (except trigger.dev tasks):
 
@@ -10,7 +31,7 @@ logger.info({ operation: 'updateUser', userId }, 'Operation completed')
 logger.error({ operation: 'updateUser', err: err.message }, 'Operation failed')
 ```
 
-## Rules
+### Logging Rules
 
 1. Logger calls must have at least one argument
 2. When using both an object and message:
@@ -25,8 +46,6 @@ logger.error({ operation: 'updateUser', err: err.message }, 'Operation failed')
    - `info`: General information about system operation
    - `debug`: Detailed information for debugging
 
-## Exception: trigger.dev Tasks
+### Exception: trigger.dev Tasks
 
-For trigger.dev background tasks, use the logger provided by the trigger.dev
-context instead of our application logger. These tasks follow trigger.dev's
-logging conventions rather than our application logging rules.
+For trigger.dev background tasks, use the logger provided by the trigger.dev context instead of our application logger.

@@ -1,10 +1,15 @@
-# Database Schema Conventions
+---
+description: Guidelines on how to create update database schemas or create new schemas
+globs: src/drizzle/**/*
+---
+
+# Database Guidelines
 
 ## Structure
 
 - `src/drizzle/schemas/` - All database schemas
-  - `_exports.ts` - Exports all schemas for drizzle-kit
-  - `schema.ts` - Combines all tables into a single schema object
+  - [_exports.ts](mdc:src/drizzle/schemas/_exports.ts) - Exports all schemas for drizzle-kit
+  - [schema.ts](mdc:src/drizzle/schemas/schema.ts) - Combines all tables into a single schema object
   - `[feature]-schema.ts` - Individual feature schemas
 
 ## Creating New Schemas
@@ -31,7 +36,7 @@
    ```
 
 3. Add to `schema.ts`:
-
+  
    ```ts
    import * as featureSchema from './feature-schema'
 
@@ -86,7 +91,7 @@ export const tableRelations = relations(Table, ({ one, many }) => ({
 }))
 ```
 
-### Common Patterns
+## Common Patterns
 
 1. Always use `textId()` for primary keys
 2. Include `dateTableFields` for created/updated timestamps
@@ -101,3 +106,10 @@ export const tableRelations = relations(Table, ({ one, many }) => ({
    	$table: tableSchema.tableRelations,
    } as const
    ```
+
+## Schema Changes & Migrations
+
+After schema changes run: 
+`pnpm db:generate`
+
+
