@@ -88,11 +88,16 @@ export const Route = createFileRoute('/dashboard')({
 			defaultSidebarOpen: sidebarOpen,
 		}
 	},
+	loader: async ({ context }) => {
+		return {
+			defaultSidebarOpen: context.defaultSidebarOpen,
+		}
+	},
 	component: DashboardLayout,
 })
 
 export default function DashboardLayout() {
-	const { defaultSidebarOpen } = Route.useRouteContext()
+	const { defaultSidebarOpen } = Route.useLoaderData()
 	const [sidebarOpen, _setSidebarOpen] = useState(defaultSidebarOpen)
 
 	const setSidebarOpen = async (state: boolean) => {

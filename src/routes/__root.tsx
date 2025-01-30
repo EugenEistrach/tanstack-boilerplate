@@ -59,6 +59,9 @@ export const Route = createRootRouteWithContext<{
 			theme: vinxiSession?.theme ?? hints.colorScheme,
 		}
 	},
+	loader: async ({ context }) => {
+		return { auth: context.auth, hints: context.hints, theme: context.theme }
+	},
 	head: () => ({
 		meta: [
 			{
@@ -88,8 +91,21 @@ export const Route = createRootRouteWithContext<{
 			// 	href: 'https://api.fontshare.com/v2/css?f[]=satoshi@300,301,400,401,500,501,700,701,900,901,1,2&display=swap',
 			// },
 		],
+		// workaround for hmr https://github.com/TanStack/router/issues/1992
+		scripts: import.meta.env.DEV
+			? [
+					{
+						type: 'module',
+						children: `import RefreshRuntime from "/_build/@react-refresh";
+RefreshRuntime.injectIntoGlobalHook(window)
+window.$RefreshReg$ = () => {}
+window.$RefreshSig$ = () => (type) => type`,
+					},
+				]
+			: [],
 	}),
 	component: RootComponent,
+	// I get a ts error here saying: Object literal may only specify known properties, and 'scripts' does not exist in type 'RootRouteOptions<undefined, {}, AnyContext, AnyContext, {}, undefined>'.ts(2353)
 })
 
 function RootComponent() {
@@ -101,7 +117,7 @@ function RootComponent() {
 }
 
 function RootDocument({ children }: { children: React.ReactNode }) {
-	const { hints, theme } = Route.useRouteContext()
+	const { hints, theme } = Route.useLoaderData()
 	const lang = useLocale()
 	return (
 		<html lang={lang}>

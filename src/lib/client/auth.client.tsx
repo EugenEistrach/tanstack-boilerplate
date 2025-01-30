@@ -1,4 +1,4 @@
-import { redirect, useRouteContext, useRouter } from '@tanstack/react-router'
+import { redirect, useMatch, useRouter } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/start'
 import { createAuthClient } from 'better-auth/client'
 import { adminClient, organizationClient } from 'better-auth/client/plugins'
@@ -27,8 +27,8 @@ export const useAuth = () => {
 }
 
 export const useOptionalAuth = () => {
-	const { auth } = useRouteContext({ from: '__root__' })
-	return auth
+	const { loaderData } = useMatch({ from: '__root__', strict: true })
+	return loaderData?.auth
 }
 
 export const $getSession = createServerFn({ method: 'GET' }).handler(
