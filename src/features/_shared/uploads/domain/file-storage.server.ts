@@ -62,6 +62,10 @@ export class SQLiteFileStorage implements FileStorage {
 		})
 	}
 
+	async put(_key: string, _file: File): Promise<File> {
+		throw new Error('Not implemented')
+	}
+
 	async remove(key: string): Promise<void> {
 		const result = await db
 			.delete(FileTable)

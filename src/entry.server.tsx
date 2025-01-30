@@ -1,13 +1,12 @@
 /// <reference types="vinxi/types/server" />
 import Headers from '@mjackson/headers'
-import { type AnyRouter } from '@tanstack/react-router'
+
 import { getRouterManifest } from '@tanstack/start/router-manifest'
 import {
 	createStartHandler,
 	defaultStreamHandler,
 } from '@tanstack/start/server'
 import { migrate } from 'drizzle-orm/libsql/migrator'
-import { type HandlerCallback } from 'node_modules/@tanstack/start/dist/esm/server/defaultStreamHandler'
 
 import { db } from './drizzle/db'
 import { createRouter } from './router'
@@ -36,7 +35,10 @@ try {
 	throw err
 }
 
-const customStreamHandler: HandlerCallback<AnyRouter> = (ctx) => {
+const handler = createStartHandler({
+	createRouter,
+	getRouterManifest,
+})((ctx) => {
 	const language = detectLanguage(ctx.request)
 	logger.debug(
 		{ language, url: ctx.request.url },
@@ -56,12 +58,7 @@ const customStreamHandler: HandlerCallback<AnyRouter> = (ctx) => {
 		...ctx,
 		responseHeaders,
 	})
-}
-
-const handler = createStartHandler({
-	createRouter,
-	getRouterManifest,
-})(customStreamHandler)
+})
 
 logger.info('Server handler initialized successfully')
 
