@@ -1,0 +1,61 @@
+---
+description: 
+globs: *.tsx
+---
+ # Client Guidelines
+
+## State Management
+
+- Use TanStack Router and Query as source of truth for server state
+- Avoid useState unless absolutely necessary for UI-only state
+- Avoid useEffect at all costs. Only should be used for syncronizing with external systems
+- Keep components simple and focused on rendering data from router/query
+
+## UI and Styling
+
+- Use Shadcn UI and Radix for components
+- Execute terminal command `npx shadcn@latest add <component-name>` to add new shadcn components
+- Use tailwind CSS for styling
+- When adding new shadcn component, document the installation command
+
+## React 19 Usage
+
+- Refs are automatically forwarded to DOM elements - no need for forwardRef:
+
+```tsx
+// Before (React 18)
+const Input = forwardRef<HTMLInputElement>((props, ref) => (
+	<input ref={ref} {...props} />
+))
+
+// After (React 19)
+const Input = ({ ref, ...props }) => <input ref={ref} {...props} />
+
+// Usage remains the same
+const MyForm = () => {
+	const inputRef = useRef<HTMLInputElement>(null)
+	return <Input ref={inputRef} />
+}
+```
+
+## Component Best Practices
+
+- Keep components focused on a single responsibility
+- Use composition over inheritance
+- Extract reusable logic into custom hooks
+- Implement proper TypeScript discriminated unions for component props
+- Use proper prop naming conventions (e.g., onSubmit, isLoading)
+- Avoid inline styles - use Tailwind classes
+- Keep components small and manageable
+- Use proper error boundaries for error handling
+
+## Form Handling
+
+- Use react-hook-form for form state management
+- Implement valibot schemas for form validation [validation.mdc](mdc:.cursor/rules/validation.mdc)
+- Use controlled components sparingly - prefer uncontrolled when possible
+- Implement proper form submission handling with loading states
+
+## Performance Considerations
+
+- We will use react compiler so please do not add any optimization hooks to our codebase. 

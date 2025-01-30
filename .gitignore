@@ -19,7 +19,7 @@ node_modules
 /coverage/
 /playwright-report/
 /blob-report/
-/playwright/.cache/a
+/playwright/.cache/
 
 unhandled-requests/
 
