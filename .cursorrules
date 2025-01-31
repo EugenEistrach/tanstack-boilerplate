@@ -6,6 +6,7 @@
 - TypeScript
 - SQLite (local) / Turso (production) with Drizzle ORM
 - Better-auth with GitHub/Discord SSO
+- react-hook-form for form handling
 - TailwindCSS with shadcn/ui
 - trigger.dev for background jobs
 - Fly.io for deployment and hosting
@@ -26,10 +27,10 @@
 - Avoid enums; use const objects with 'as const' assertion
 - Use functional components with TypeScript interfaces
 - Use absolute imports with @/ prefix
-- Avoid try/catch blocks unless there is good reason to translate or handle error in that abstraction
+- Avoid try/catch blocks unless there is good reason to translate or handle
+  error in that abstraction
 - Return types for functions should be inferred and not explicitly defined
 - Use proper TypeScript discriminated unions for message types
-
 
 ## Naming Conventions
 
