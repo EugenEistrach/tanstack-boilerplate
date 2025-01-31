@@ -1,8 +1,9 @@
 import { redirect, useMatch, useRouter } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/start'
+import { getWebRequest } from '@tanstack/start/server'
 import { createAuthClient } from 'better-auth/client'
 import { adminClient, organizationClient } from 'better-auth/client/plugins'
-import { getWebRequest } from 'vinxi/http'
+
 import { authServer, requireAuthSession } from '@/lib/server/auth.server'
 
 export const authClient = createAuthClient({
@@ -34,6 +35,10 @@ export const $getSession = createServerFn({ method: 'GET' }).handler(
 		try {
 			const request = getWebRequest()
 
+			if (!request) {
+				throw new Error('Request not found')
+			}
+
 			const session = await authServer.api.getSession({
 				headers: request.headers,
 			})
@@ -63,6 +68,11 @@ export const $requireAdminSession = createServerFn({ method: 'GET' }).handler(
 
 export const $logout = createServerFn({ method: 'POST' }).handler(async () => {
 	const request = getWebRequest()
+
+	if (!request) {
+		throw new Error('Request not found')
+	}
+
 	await authServer.api.signOut({ headers: request.headers })
 	throw redirect({ to: '/login' })
 })

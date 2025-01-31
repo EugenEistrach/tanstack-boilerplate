@@ -1,5 +1,5 @@
 ---
-description: Validation guidelines using valibot for type-safe validation in both client and server code.
+description: Validation guidelines using valibot for type-safe validation in both client and server code
 globs: ["src/**/*.api.ts", "src/**/*.server.ts", "src/components/forms/**/*"]
 ---
 

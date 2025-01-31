@@ -1,5 +1,5 @@
 ---
-description: API layer guidelines including TanStack Start server functions, query/mutation patterns, and best practices.
+description: API layer guidelines including TanStack Start server functions, query/mutation patterns, and best practices
 globs: 
 ---
  # API Layer Guidelines

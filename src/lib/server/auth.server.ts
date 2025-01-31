@@ -1,8 +1,8 @@
 import { redirect } from '@tanstack/react-router'
+import { getWebRequest } from '@tanstack/start/server'
 import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 import { admin, organization } from 'better-auth/plugins'
-import { getWebRequest } from 'vinxi/http'
 import { db } from '@/drizzle/db'
 import { env } from '@/lib/server/env.server'
 
@@ -45,6 +45,11 @@ export const authServer = betterAuth({
 
 export const requireAuthSession = async (server = authServer) => {
 	const request = getWebRequest()
+
+	if (!request) {
+		throw new Error('Request not found')
+	}
+
 	const auth = await server.api.getSession({ headers: request.headers })
 
 	const redirectToPath = new URL(request.url).pathname
@@ -79,6 +84,11 @@ export async function requireApiKey(request: Request) {
 
 export const requireAuthSessionApi = async (server = authServer) => {
 	const request = getWebRequest()
+
+	if (!request) {
+		throw new Error('Request not found')
+	}
+
 	const auth = await server.api.getSession({ headers: request.headers })
 
 	if (!auth) {

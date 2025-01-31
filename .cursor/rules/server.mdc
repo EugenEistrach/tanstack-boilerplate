@@ -1,5 +1,5 @@
 ---
-description: Server-side development guidelines including business logic, error handling, logging..
+description: Server-side development guidelines including business logic, error handling, logging
 globs: 
 ---
  # Server Guidelines

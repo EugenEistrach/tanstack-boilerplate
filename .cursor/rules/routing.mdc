@@ -1,5 +1,5 @@
 ---
-description: Routing guidelines for TanStack Router including route types, creation, and navigation patterns.
+description: Routing guidelines for TanStack Router including route types, creation, and navigation patterns
 globs: src/routes/**/*
 ---
 

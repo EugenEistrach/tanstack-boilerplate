@@ -1,7 +1,14 @@
-import { HomeIcon, CubeIcon, UploadIcon } from '@radix-ui/react-icons'
 import { createFileRoute, Link, Outlet, redirect } from '@tanstack/react-router'
 import { createServerFn, useServerFn } from '@tanstack/start'
-import { ChevronsUpDown, LogOut, Settings, UsersIcon } from 'lucide-react'
+import {
+	HomeIcon,
+	Box,
+	UploadIcon,
+	ChevronsUpDown,
+	LogOut,
+	Settings,
+	UsersIcon,
+} from 'lucide-react'
 import { useState } from 'react'
 import * as v from 'valibot'
 import { AdminOnly } from '@/components/ui/admin-only'
@@ -114,7 +121,7 @@ export default function DashboardLayout() {
 								className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
 							>
 								<div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-									<CubeIcon className="size-4 transition-all group-hover:scale-110" />
+									<Box className="size-4 transition-all group-hover:scale-110" />
 								</div>
 								<div className="grid flex-1 text-left text-sm leading-tight">
 									<span className="truncate font-semibold">

@@ -1,5 +1,5 @@
-import { CheckIcon } from '@radix-ui/react-icons'
 import { createFileRoute, Link } from '@tanstack/react-router'
+import { Check } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -121,15 +121,15 @@ function LandingPage() {
 								<p className="text-4xl font-bold">{m.plan_starter_price()}</p>
 								<ul className="mt-4 space-y-2">
 									<li className="flex items-center">
-										<CheckIcon className="mr-2 h-4 w-4 text-green-500" />
+										<Check className="mr-2 h-4 w-4 text-green-500" />
 										{m.plan_starter_feature_1()}
 									</li>
 									<li className="flex items-center">
-										<CheckIcon className="mr-2 h-4 w-4 text-green-500" />
+										<Check className="mr-2 h-4 w-4 text-green-500" />
 										{m.plan_starter_feature_2()}
 									</li>
 									<li className="flex items-center">
-										<CheckIcon className="mr-2 h-4 w-4 text-green-500" />
+										<Check className="mr-2 h-4 w-4 text-green-500" />
 										{m.plan_starter_feature_3()}
 									</li>
 								</ul>
@@ -147,19 +147,19 @@ function LandingPage() {
 								<p className="text-4xl font-bold">{m.plan_pro_price()}</p>
 								<ul className="mt-4 space-y-2">
 									<li className="flex items-center">
-										<CheckIcon className="mr-2 h-4 w-4 text-green-500" />
+										<Check className="mr-2 h-4 w-4 text-green-500" />
 										{m.plan_pro_feature_1()}
 									</li>
 									<li className="flex items-center">
-										<CheckIcon className="mr-2 h-4 w-4 text-green-500" />
+										<Check className="mr-2 h-4 w-4 text-green-500" />
 										{m.plan_pro_feature_2()}
 									</li>
 									<li className="flex items-center">
-										<CheckIcon className="mr-2 h-4 w-4 text-green-500" />
+										<Check className="mr-2 h-4 w-4 text-green-500" />
 										{m.plan_pro_feature_3()}
 									</li>
 									<li className="flex items-center">
-										<CheckIcon className="mr-2 h-4 w-4 text-green-500" />
+										<Check className="mr-2 h-4 w-4 text-green-500" />
 										{m.plan_pro_feature_4()}
 									</li>
 								</ul>
@@ -181,23 +181,23 @@ function LandingPage() {
 								</p>
 								<ul className="mt-4 space-y-2">
 									<li className="flex items-center">
-										<CheckIcon className="mr-2 h-4 w-4 text-green-500" />
+										<Check className="mr-2 h-4 w-4 text-green-500" />
 										{m.plan_enterprise_feature_1()}
 									</li>
 									<li className="flex items-center">
-										<CheckIcon className="mr-2 h-4 w-4 text-green-500" />
+										<Check className="mr-2 h-4 w-4 text-green-500" />
 										{m.plan_enterprise_feature_2()}
 									</li>
 									<li className="flex items-center">
-										<CheckIcon className="mr-2 h-4 w-4 text-green-500" />
+										<Check className="mr-2 h-4 w-4 text-green-500" />
 										{m.plan_enterprise_feature_3()}
 									</li>
 									<li className="flex items-center">
-										<CheckIcon className="mr-2 h-4 w-4 text-green-500" />
+										<Check className="mr-2 h-4 w-4 text-green-500" />
 										{m.plan_enterprise_feature_4()}
 									</li>
 									<li className="flex items-center">
-										<CheckIcon className="mr-2 h-4 w-4 text-green-500" />
+										<Check className="mr-2 h-4 w-4 text-green-500" />
 										{m.plan_enterprise_feature_5()}
 									</li>
 								</ul>

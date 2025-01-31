@@ -1,6 +1,6 @@
 ---
-description: Internationalization guidelines for managing translations and language support.
-globs: *.tsx
+description: MANDATORY: Internationalization guidelines for managing translations and language support
+globs: *
 ---
 # Internationalization (i18n) Guidelines
 
