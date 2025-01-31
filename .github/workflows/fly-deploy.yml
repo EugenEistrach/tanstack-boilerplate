@@ -222,12 +222,15 @@ jobs:
           TRIGGER_API_URL: https://trigger.perfux.dev
         run: |
           set -euxo pipefail
-          # Run deploy command but allow continuation on error
-          pnpm dlx trigger.dev@latest deploy --self-hosted --load-image --registry registry.perfux.dev --namespace perfux || true
+          # Capture exit code explicitly
+          pnpm dlx trigger.dev@latest deploy --self-hosted --load-image --registry registry.perfux.dev --namespace perfux || DEPLOY_EXIT=$?
 
-          # Check if build logs exist and print them if deployment failed
-          if [ $? -ne 0 ]; then
-            echo "::error::Trigger.dev deployment failed - showing build logs:"
-            cat /tmp/trigger-*/build-*.log || echo "No build logs found"
+          # Always attempt to print logs if they exist
+          echo "=== Trigger.dev Build Logs ==="
+          cat /tmp/trigger-*/build-*.log || echo "No build logs found"
+
+          # Exit with proper code based on deployment success
+          if [ -n "${DEPLOY_EXIT:-}" ]; then
+            echo "::error::Trigger.dev deployment failed with exit code $DEPLOY_EXIT"
             exit 1
           fi
