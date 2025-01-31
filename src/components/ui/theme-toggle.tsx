@@ -16,15 +16,13 @@ import {
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import * as m from '@/lib/paraglide/messages'
-
-import { getVinxiSession } from '@/lib/server/session.server'
+import { themeCookie } from '@/lib/server/session.server'
 import { cn } from '@/lib/shared/utils'
 
 const $setTheme = createServerFn({ method: 'POST' })
 	.validator(v.object({ theme: v.picklist(['light', 'dark', 'system']) }))
 	.handler(async ({ data: { theme } }) => {
-		const session = await getVinxiSession()
-		await session.update({ theme: theme === 'system' ? undefined : theme })
+		themeCookie.set(theme)
 	})
 
 export function ThemeToggle({ className }: { className?: string }) {

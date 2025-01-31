@@ -12,11 +12,13 @@ import * as React from 'react'
 
 import { Toaster } from '@/components/ui/sonner'
 import { TooltipProvider } from '@/components/ui/tooltip'
-import { $getSession, $getVinxiSession } from '@/lib/client/auth.client'
-import { $getHints, ClientHintChecker } from '@/lib/client/client-hints.client'
+import { $getSession } from '@/lib/client/auth.client'
+import {
+	$getHintsAndPrefs,
+	ClientHintChecker,
+} from '@/lib/client/client-hints.client'
 
 import { useLocale } from '@/lib/client/i18n.client'
-import { $handleRedirectTo } from '@/lib/client/redirect.client'
 
 import { TimezoneContext } from '@/lib/client/timezone.client'
 import * as m from '@/lib/paraglide/messages'
@@ -38,25 +40,25 @@ export const Route = createRootRouteWithContext<{
 	queryClient: QueryClient
 }>()({
 	beforeLoad: async () => {
-		await $handleRedirectTo()
-		const [auth, hints, vinxiSession] = await Promise.all([
+		const [auth, hintsAndPrefs] = await Promise.all([
 			$getSession(),
-			$getHints(),
-			$getVinxiSession(),
+			$getHintsAndPrefs(),
 		])
+
+		const { hints, theme: selectedTheme } = hintsAndPrefs
 
 		if (!auth) {
 			return {
 				auth: null,
 				hints,
-				theme: vinxiSession?.theme ?? hints.colorScheme,
+				theme: selectedTheme ?? hints.colorScheme,
 			}
 		}
 
 		return {
 			auth,
 			hints,
-			theme: vinxiSession?.theme ?? hints.colorScheme,
+			theme: selectedTheme ?? hints.colorScheme,
 		}
 	},
 	loader: async ({ context }) => {
@@ -105,7 +107,6 @@ window.$RefreshSig$ = () => (type) => type`,
 			: [],
 	}),
 	component: RootComponent,
-	// I get a ts error here saying: Object literal may only specify known properties, and 'scripts' does not exist in type 'RootRouteOptions<undefined, {}, AnyContext, AnyContext, {}, undefined>'.ts(2353)
 })
 
 function RootComponent() {

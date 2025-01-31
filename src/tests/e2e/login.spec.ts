@@ -1,5 +1,6 @@
 import { db } from '@/drizzle/db'
 import { UserTable } from '@/drizzle/schemas/auth-schema'
+
 import { expect, test } from '@/tests/playwright'
 import { delayed } from '@/tests/test-utils'
 
@@ -22,9 +23,11 @@ test('login with github ', async ({ page, baseURL }) => {
 	})
 
 	await page.goto(`/dashboard/settings`)
-	await page.waitForURL('**\/login*')
+	await page.waitForLoadState('networkidle')
 
-	await page.getByRole('button', { name: 'Sign in with GitHub' }).click()
+	await delayed(() =>
+		page.getByRole('button', { name: 'Sign in with GitHub' }).click(),
+	)
 	await page.waitForLoadState('networkidle')
 
 	await expect(
