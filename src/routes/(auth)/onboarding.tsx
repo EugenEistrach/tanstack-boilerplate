@@ -27,20 +27,11 @@ export const Route = createFileRoute('/(auth)/onboarding')({
 				to: search.redirectTo || '/dashboard',
 			})
 		}
-
-		return {
-			redirectTo: search.redirectTo,
-		}
-	},
-	loader: async ({ context }) => {
-		return {
-			redirectTo: context.redirectTo,
-		}
 	},
 	component: OnboardingPage,
 })
 
 function OnboardingPage() {
-	const { redirectTo } = Route.useLoaderData()
+	const { redirectTo } = Route.useSearch()
 	return <OnboardingForm redirectTo={redirectTo} />
 }

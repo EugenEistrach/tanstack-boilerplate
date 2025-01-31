@@ -6,7 +6,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { LocaleSwitcher } from '@/components/ui/locale-switcher'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
 import { authClient } from '@/lib/client/auth.client'
-import { $setRedirectTo } from '@/lib/client/redirect.client'
 import * as m from '@/lib/paraglide/messages'
 
 export const Route = createFileRoute('/(auth)/login')({
@@ -47,11 +46,9 @@ function Login() {
 						<Button
 							className="w-full"
 							onClick={async () => {
-								await $setRedirectTo({
-									data: { redirectTo: redirectTo ?? '/dashboard' },
-								})
 								await authClient.signIn.social({
 									provider: 'github',
+									callbackURL: redirectTo ?? '/dashboard',
 								})
 							}}
 						>
@@ -74,10 +71,10 @@ function Login() {
 							className="w-full"
 							variant="secondary"
 							onClick={async () => {
-								await $setRedirectTo({
-									data: { redirectTo: redirectTo ?? '/dashboard' },
+								await authClient.signIn.social({
+									provider: 'discord',
+									callbackURL: redirectTo ?? '/dashboard',
 								})
-								await authClient.signIn.social({ provider: 'discord' })
 							}}
 						>
 							<span className="flex items-center">

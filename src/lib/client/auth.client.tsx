@@ -5,8 +5,6 @@ import { adminClient, organizationClient } from 'better-auth/client/plugins'
 import { getWebRequest } from 'vinxi/http'
 import { authServer, requireAuthSession } from '@/lib/server/auth.server'
 
-import { getVinxiSession } from '@/lib/server/session.server'
-
 export const authClient = createAuthClient({
 	plugins: [adminClient(), organizationClient()],
 })
@@ -44,13 +42,6 @@ export const $getSession = createServerFn({ method: 'GET' }).handler(
 			console.error(error)
 			return null
 		}
-	},
-)
-
-export const $getVinxiSession = createServerFn({ method: 'GET' }).handler(
-	async () => {
-		const session = await getVinxiSession()
-		return session.data
 	},
 )
 

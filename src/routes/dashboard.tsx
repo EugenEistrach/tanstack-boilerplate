@@ -41,18 +41,16 @@ import { ThemeToggle } from '@/components/ui/theme-toggle'
 import { getOnboardingInfoQueryOptions } from '@/features/onboarding/api/onboarding.api'
 import { useAuth, $logout } from '@/lib/client/auth.client'
 import * as m from '@/lib/paraglide/messages'
-import { getVinxiSession } from '@/lib/server/session.server'
+import { sidebarOpenCookie } from '@/lib/server/session.server'
 
 const $getSidebarState = createServerFn({ method: 'GET' }).handler(async () => {
-	const session = await getVinxiSession()
-	return session.data.sidebarOpen ?? true
+	return sidebarOpenCookie.get() ?? true
 })
 
 const $setSidebarState = createServerFn({ method: 'POST' })
 	.validator(v.object({ state: v.boolean() }))
 	.handler(async ({ data: { state } }) => {
-		const session = await getVinxiSession()
-		await session.update({ sidebarOpen: state })
+		sidebarOpenCookie.set(state)
 	})
 
 export const Route = createFileRoute('/dashboard')({
