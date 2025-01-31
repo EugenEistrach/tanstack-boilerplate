@@ -69,41 +69,21 @@ This boilerplate uses a hybrid database approach:
 Both environments use [Drizzle ORM](https://orm.drizzle.team) for type-safe
 database operations, ensuring consistent API regardless of environment.
 
-## Project Structure
-
-```
-src/
-├── components/     # Shared UI components
-├── data/          # Data layer utilities
-├── drizzle/       # Database schemas and migrations
-├── features/      # Feature-specific code
-│   └── feature-name/
-│       ├── ui/         # UI components
-│       ├── api/        # Server functions + React Query
-│       ├── domain/     # Business logic + DB operations
-│       └── templates/  # Templates
-├── hooks/         # Shared React hooks
-├── lib/           # Shared utilities
-├── routes/        # Route components
-├── styles/        # Global styles
-├── tasks/         # Background tasks
-└── tests/         # Test utilities and mocks
-```
-
 ## Documentation
 
 - [Local Development Guide](docs/local-development.md) - Setup and scripts
-- [API Guidelines](docs/api.md) - API development and integration
-- [Client Guidelines](docs/ui.md) - UI development
-- [Server Guidelines](docs/domain.md) - Server-side development
-- [Testing Guidelines](docs/unit-testing.md) - Testing practices
-- [Validation Guidelines](docs/validation.md) - Data validation
-- [Routing Guidelines](docs/routing.md) - Route creation and navigation
-- [Workflow Guide](docs/workflow.md) - Development workflow
+- [Project Structure](.cursor/project-structure.mdc) - Overview of the project
+  structure
+- [API Guidelines](.cursor/api-layer.mdc) - API development and integration
+- [Client Guidelines](.cursor/rules/client.mdc) - UI development
+- [Server Guidelines](.cursor/rules/server.mdc) - Server-side development
+- [Testing Guidelines](.cursor/rules/testing.mdc) - Testing practices
+- [Validation Guidelines](.cursor/rules/validation.mdc) - Data validation
+- [Routing Guidelines](.cursor/rules/routing.mdc) - Route creation and
+  navigation
 - [Deployment Guide](docs/deployments.md) - Deployment procedures
-- [i18n Guide](docs/i18n.md) - Internationalization
-- [Logging Guide](docs/logging.md) - Logging standards
-- [Commit Conventions](docs/commit-conventions.md) - Git practices
+- [i18n Guide](.cursor/rules/i18n.mdc) - Internationalization
+- [Commit Conventions](.cursor/rules/commit-conventions.mdc) - Git practices
 
 ## Scripts
 
