@@ -26,30 +26,10 @@
 - Avoid enums; use const objects with 'as const' assertion
 - Use functional components with TypeScript interfaces
 - Use absolute imports with @/ prefix
-- Avoid try/catch blocks unless there's good reason to translate or handle error
-  in that abstraction
+- Avoid try/catch blocks unless there is good reason to translate or handle error in that abstraction
 - Return types for functions should be inferred and not explicitly defined
 - Use proper TypeScript discriminated unions for message types
 
-### Repository Structure
-
-```
-src/
-├── components/     # Shared UI components
-├── data/          # Data layer utilities
-├── drizzle/       # Database schemas and migrations
-├── features/      # Feature-specific code
-│   └── feature-name/
-│       ├── domain/     # Business logic + DB operations
-│       ├── api/        # API layer (server functions + React Query)
-│       ├── ui/         # UI components
-│       └── templates/  # Templates
-├── hooks/         # Shared React hooks
-├── lib/           # Shared utilities
-├── routes/        # Route components
-├── styles/        # Global styles
-└── tasks/         # Background tasks
-```
 
 ## Naming Conventions
 

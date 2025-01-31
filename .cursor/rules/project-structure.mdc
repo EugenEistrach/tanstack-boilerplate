@@ -1,0 +1,33 @@
+---
+description: The project structure, mandatory reading
+globs: *
+---
+### Repository Structure
+
+```
+src/
+├── components/     # Shared UI components
+├── drizzle/       # Database schemas and migrations
+├── email/        # Email templates (react-email)
+├── features/      # Feature-specific code
+│   ├── _shared/     # Shared features that can be imported by any feature
+│   │   └── shared-feature-name/
+│   │       ├── domain/     # Business logic + DB operations
+│   │       ├── api/        # API layer (server functions + React Query)
+│   │       ├── ui/         # UI components
+│   │       └── templates/  # Templates
+│   └── feature-name/
+│       ├── domain/     # Business logic + DB operations
+│       ├── api/        # API layer (server functions + React Query)
+│       ├── ui/         # UI components
+│       └── templates/  # Templates
+├── hooks/         # Shared React hooks
+├── lib/           # Shared utilities
+│   ├── client/     # Client-side core functionality
+│   ├── server/     # Server-side core functionality
+│   └── shared/     # Isomorphic utilities
+├── routes/                   # Route components
+├── styles/globals.css        # Global styles
+├── tasks/                    # Background tasks and cron jobs
+└── tests/                    # Test related files
+```

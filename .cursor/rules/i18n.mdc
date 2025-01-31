@@ -2,34 +2,72 @@
 description: Internationalization guidelines for managing translations and language support.
 globs: *.tsx
 ---
-
 # Internationalization (i18n) Guidelines
 
-## Usage
+## Adding Translations
 
-Import and use translations in client components:
+1. Add translations to JSON files:
+   ```json
+   // messages/en.json
+   {
+     "save_changes": "Save Changes",
+     "welcome_message": "Welcome back, {name}!",
+     "showing_results": "{from} to {to} of {total} entries",
+     "theme_light": "Light",
+     "theme_dark": "Dark",
+     "theme_system": "System"
+   }
+   ```
 
-```typescript
-import * as m from '@/lib/paraglide/messages'
+2. Compile translations:
+   ```bash
+   pnpm build:paraglide
+   ```
 
-// Use in client components
-<Button>{m.page()}</Button>
-```
+3. Use in components:
+   ```tsx
+   import * as m from '@/lib/paraglide/messages'
 
-## Translation Keys
+   // Basic usage
+   function SaveButton() {
+     return <Button>{m.save_changes()}</Button>
+   }
 
-- Use random unique phrases ("wild_blue_snake_update": "Update")
-- The main language is [en.json](mdc:messages/en.json), but please make sure you search other files in same directory and add translations there. 
+   // With parameters
+   function WelcomeMessage({ name }: { name: string }) {
+     return <span>{m.welcome_message({ name })}</span>
+   }
+
+   function PaginationInfo({ from, to, total }: { from: number; to: number; total: number }) {
+     return <span>{m.showing_results({ from, to, total })}</span>
+   }
+
+   // Conditional translations - define maps outside components
+   const themeMessages = {
+     light: m.theme_light,
+     dark: m.theme_dark,
+     system: m.theme_system,
+   } as const
+
+   function ThemeLabel({ theme }: "light" | "dark" | "system") {
+     return <span>{themeMessages[theme]()}</span>
+   }
+
+   // Usage
+   function ThemeSelector() {
+     return (
+       <div>
+         <ThemeLabel theme="light" />
+         <ThemeLabel theme="dark" />
+         <ThemeLabel theme="system" />
+       </div>
+     )
+   }
+   ```
+
+## Guidelines
+
+- Add translations for all supported languages
 - Only translate text content, not technical values
-
-## Best Practices
-
-- Keep translations close to where they are used
-- Use semantic keys that describe the purpose
-- Avoid string concatenation
-- Use pluralization when needed
-
-## Component Guidelines
-
-- Always use translation keys for user-facing text
-- Use proper pluralization rules
+- Always compile after adding new translations
+- Never hardcode text strings
