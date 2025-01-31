@@ -7,7 +7,7 @@
     "dev": "vinxi dev",
     "dev:mocks": "cross-env MOCKS=true ENV=test vinxi dev",
     "dev:email": "email dev --port 3002 --dir ./src/email/templates",
-    "dev:trigger": "pnpm dlx trigger.dev@latest dev",
+    "dev:trigger": "pnpm dlx trigger.dev@3.3.11 dev",
     "build": "pnpm build:paraglide && vinxi build",
     "build:paraglide": "paraglide-js compile --project ./project.inlang --outdir ./src/lib/paraglide",
     "start": "cross-env NODE_ENV=production node -r dotenv/config .output/server/index.mjs",
@@ -30,7 +30,8 @@
     "test:coverage": "vitest run --coverage",
     "test:e2e:run": "cross-env CI=true MOCKS=true playwright test",
     "test:e2e:install": "npx playwright install --with-deps chromium",
-    "verify": "pnpm lint && pnpm typecheck && pnpm test && pnpm test:e2e:run"
+    "verify": "pnpm lint && pnpm typecheck && pnpm test && pnpm test:e2e:run",
+    "deploy-trigger": "pnpm dlx trigger.dev@3.3.11 deploy --self-hosted --load-image --registry registry.perfux.dev --namespace perfux"
   },
   "keywords": [],
   "author": "",
@@ -143,7 +144,6 @@
     "prettier-plugin-tailwindcss": "^0.6.11",
     "react-email": "^3.0.6",
     "tailwindcss": "^3.4.17",
-    "trigger.dev": "3.3.11",
     "typescript": "^5.7.3",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^3.0.4"
