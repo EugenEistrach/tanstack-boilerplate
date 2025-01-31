@@ -1,5 +1,5 @@
 ---
-description: Testing guidelines including unit testing, E2E testing, and test implementation patterns.
+description: Testing guidelines including unit testing, E2E testing, and test implementation patterns
 globs: src/**/*.test.ts, src/**/*.spec.ts, src/tests/**/*
 ---
 

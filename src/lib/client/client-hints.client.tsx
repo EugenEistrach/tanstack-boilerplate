@@ -2,7 +2,7 @@ import { getHintUtils } from '@epic-web/client-hints'
 import { clientHint as colorSchemeHint } from '@epic-web/client-hints/color-scheme'
 import { clientHint as timeZoneHint } from '@epic-web/client-hints/time-zone'
 import { createServerFn } from '@tanstack/start'
-import { getWebRequest } from 'vinxi/http'
+import { getWebRequest } from '@tanstack/start/server'
 import { themeCookie } from '@/lib/server/session.server'
 
 const hintsUtils = getHintUtils({

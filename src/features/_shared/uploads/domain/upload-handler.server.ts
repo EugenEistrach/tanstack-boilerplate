@@ -1,6 +1,6 @@
 import { parseFormData, type FileUpload } from '@mjackson/form-data-parser'
 import { SQLiteFileStorage } from './file-storage.server'
-import { AcceptedFileTypes } from '@/features/_shared/uploads/shared/constants'
+import { AcceptedFileTypes } from '@/features/_shared/uploads/constants'
 import { type authServer } from '@/lib/server/auth.server'
 import { logger } from '@/lib/server/logger.server'
 

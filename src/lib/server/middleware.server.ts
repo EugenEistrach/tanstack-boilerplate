@@ -1,10 +1,15 @@
 import { createMiddleware, registerGlobalMiddleware } from '@tanstack/start'
-import { getWebRequest } from 'vinxi/http'
+import { getWebRequest } from '@tanstack/start/server'
 import { logger } from '@/lib/server/logger.server'
 
 export const loggingMiddleware = createMiddleware().server(
 	async ({ next, data }) => {
 		const request = getWebRequest()
+
+		if (!request) {
+			throw new Error('Request not found')
+		}
+
 		const startTime = performance.now()
 
 		// Extract useful request information
