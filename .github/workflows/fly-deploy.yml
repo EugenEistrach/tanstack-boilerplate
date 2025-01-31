@@ -223,7 +223,7 @@ jobs:
         run: |
           set -euxo pipefail
           # Capture exit code explicitly
-          pnpm trigger.dev deploy --self-hosted --load-image --registry registry.perfux.dev --namespace perfux || DEPLOY_EXIT=$?
+          pnpm deploy-trigger || DEPLOY_EXIT=$?
 
           # Always attempt to print logs if they exist
           echo "=== Trigger.dev Build Logs ==="
