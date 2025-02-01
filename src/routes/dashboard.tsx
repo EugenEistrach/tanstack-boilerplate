@@ -1,5 +1,6 @@
 import { createFileRoute, Link, Outlet, redirect } from '@tanstack/react-router'
 import { createServerFn, useServerFn } from '@tanstack/start'
+import { type } from 'arktype'
 import {
 	HomeIcon,
 	Box,
@@ -10,7 +11,6 @@ import {
 	UsersIcon,
 } from 'lucide-react'
 import { useState } from 'react'
-import * as v from 'valibot'
 import { AdminOnly } from '@/components/ui/admin-only'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Breadcrumbs } from '@/components/ui/breadcrumbs'
@@ -55,7 +55,7 @@ const $getSidebarState = createServerFn({ method: 'GET' }).handler(async () => {
 })
 
 const $setSidebarState = createServerFn({ method: 'POST' })
-	.validator(v.object({ state: v.boolean() }))
+	.validator(type({ state: 'boolean' }))
 	.handler(async ({ data: { state } }) => {
 		sidebarOpenCookie.set(state)
 	})

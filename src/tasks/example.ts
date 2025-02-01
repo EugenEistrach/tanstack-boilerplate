@@ -1,19 +1,17 @@
 import { logger, schemaTask } from '@trigger.dev/sdk/v3'
-import * as v from 'valibot'
+import { type } from 'arktype'
 import { db } from '@/drizzle/db'
 import { UserTable } from '@/drizzle/schemas/auth-schema'
 
-const valibotParser = v.parser(
-	v.object({
-		email: v.string(),
-		name: v.string(),
-	}),
-)
+const taskSchema = type({
+	email: 'string',
+	name: 'string',
+})
 
 export const exaxpleTask = schemaTask({
 	id: 'example-task-create-user',
 	maxDuration: 300,
-	schema: valibotParser,
+	schema: taskSchema,
 	run: async (payload) => {
 		try {
 			const newUser = await db

@@ -1,13 +1,15 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
-import * as v from 'valibot'
+import { type } from 'arktype'
 
 import { getOnboardingInfoQueryOptions } from '@/features/onboarding/api/onboarding.api'
 import { OnboardingForm } from '@/features/onboarding/ui/onboarding-form.fullstack'
 
+const searchSchema = type({
+	'redirectTo?': 'string',
+})
+
 export const Route = createFileRoute('/(auth)/onboarding')({
-	validateSearch: v.object({
-		redirectTo: v.optional(v.string()),
-	}),
+	validateSearch: searchSchema,
 	beforeLoad: async ({ context, search }) => {
 		if (!context.auth) {
 			throw redirect({

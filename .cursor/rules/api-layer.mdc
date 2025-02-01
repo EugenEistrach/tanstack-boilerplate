@@ -2,15 +2,30 @@
 description: API layer guidelines including TanStack Start server functions, query/mutation patterns, and best practices
 globs: 
 ---
- # API Layer Guidelines
+# API Layer Guidelines
 
-## Core Concepts
+## Core Concepts & Structure
 
-- Uses TanStack Start for type-safe server functions
-- Server functions are private and prefixed with `$`
-- Exposed through query/mutation options
-- Follows a consistent file organization pattern
-- validation details can be found here [validation.mdc](mdc:.cursor/rules/validation.mdc)
+Refer to [validation.mdc](mdc:.cursor/rules/validation.mdc) for more details on validations.
+
+```typescript
+// 1. Query/Mutation Options (top)
+export const useDataQueryOptions = (params: DataParams) =>
+  queryOptions({
+    queryKey: ['data', params],
+    queryFn: () => $getData({ data: params }),
+  })
+
+// 2. Private Server Functions (bottom, prefixed with $)
+const $getData = createServerFn({ method: 'GET' })
+  .validator(type({ 
+    name: 'string >= 1' 
+  }))
+  .handler(async ({ data }) => {
+    const {user, session} = requireAuthSession()
+    // Implementation
+  })
+```
 
 ## File Organization
 
@@ -18,166 +33,102 @@ globs:
 src/features/
 └── feature-name/
     └── api/
-        └── module-name.api.ts  # API endpoints for specific module
+        └── module-name.api.ts  # API endpoints
 ```
 
-## Basic Structure
-
-A `.api.ts` file follows this pattern:
+## Query Examples
 
 ```typescript
-// 1. Query/Mutation Options (top)
-export const useDataQueryOptions = (params: DataParams) =>
-	queryOptions({
-		queryKey: ['data', params],
-		queryFn: () => $getData({ data: params }),
-	})
+// Basic Query
+export const useUserQueryOptions = (id: string) =>
+  queryOptions({
+    queryKey: ['user', id],
+    queryFn: () => $getUser({ data: { id } }),
+  })
 
-// 2. Private Server Functions (bottom)
-const $getData = createServerFn({ method: 'GET' })
-	.middleware([loggingMiddleware])
-	.validator(validationSchema)
-	.handler(async ({ data }) => {
-		// Implementation
-	})
+// With Pagination & Cache
+export const useUsersQueryOptions = ({ page = 1, pageSize = 10 }) =>
+  queryOptions({
+    queryKey: ['users', { page, pageSize }],
+    queryFn: () => $getUsers({ data: { page, pageSize } }),
+    placeholderData: keepPreviousData,
+  })
+
+// With Search/Filter
+export const useSearchQueryOptions = (search: string) =>
+  queryOptions({
+    queryKey: ['search', search],
+    queryFn: () => $search({ data: { query: search } }),
+  })
+
+// Private Server Function Example
+const $getUsers = createServerFn({ method: 'GET' })
+  .validator(type({ 
+    page: 'number > 0',
+    pageSize: '0 < number <= 100',
+    "filter?": 'string > 0'
+  }))
+  .handler(async ({ data }) => {
+    await requireAuthSession() // Auth check
+    return someDomainFunction()
+  })
 ```
 
-## Query Pattern
+## Mutation Examples
 
 ```typescript
-// Export query options for data fetching
-export const useItemsQueryOptions = (params: ItemsParams) =>
-	queryOptions({
-		queryKey: ['items', params],
-		queryFn: () => $getItems({ data: params }),
-		refetchInterval: 10000,
-	})
+// Basic Mutation with Cache Invalidation
+export const useCreateUserMutation = () =>
+  useMutation({
+    mutationFn: (data: CreateUserData) => $createUser({ data }),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ['users'] })
+    },
+  })
 
-// Private server function
-const $getItems = createServerFn({ method: 'GET' })
-	.middleware([loggingMiddleware])
-	.validator(itemsSchema)
-	.handler(async ({ data }) => {
-		// Implementation
-	})
-
-// Usage in component:
-const { data } = useSuspenseQuery(useItemsQueryOptions(params))
+// Private Server Function Example
+const $createUser = createServerFn({ method: 'POST' })
+  .validator(type({
+    id: 'string',
+    'profile?': {
+      'avatar?': 'string',
+      'bio?': 'string <= 1000'
+    },
+    preferences: {
+      theme: "'light' | 'dark' = 'light'",
+      'notifications?': 'boolean = true'
+    }
+  }))
+  .handler(async ({ data }) => {
+    try {
+      requireAuthSession()
+      return await createUser()
+    } catch (error) {
+      if (error instanceof DatabaseError) {
+        return { success: false, error: error.message }
+      }
+      throw error
+    }
+  })
 ```
 
-## Mutation Pattern
-
-```typescript
-// Export mutation function for state changes
-export const useCreateItemMutation = () =>
-	useMutation({
-		mutationFn: (data: CreateItemData) => $createItem({ data }),
-		// ... other options
-	})
-
-// Private server function
-const $createItem = createServerFn({ method: 'POST' })
-	.middleware([loggingMiddleware])
-	.validator(createItemSchema)
-	.handler(async ({ data }) => {
-		// Implementation
-	})
-
-// Usage in component:
-const { mutate } = useCreateItemMutation()
-```
-
-## Best Practices
+## Key Guidelines
 
 1. File Organization
-   - Place all API code in `.api.ts` files
-   - Keep related endpoints in the same file
-   - Group by feature/module
+   - Group by feature in `feature-name/api/module-name.api.ts`
+   - Keep related endpoints in same file
 
-2. Naming Conventions
-   - Private server functions: prefix with `$` (e.g., `$getItems`)
-   - Query options: `use[Resource]QueryOptions`
+2. Naming
+   - Server functions: prefix with `$` (e.g., `$getUsers`)
+   - Queries: `use[Resource]QueryOptions`
    - Mutations: `use[Action][Resource]Mutation`
 
 3. Query Keys
-   - Use consistent patterns for query keys
-   - Include all dependencies in the key
-   - Example: `['items', { page, filter }]`
+   - Include all dependencies: `['users', { page, filter }]`
+   - Keep consistent across related queries
 
-4. Error Handling
-   ```typescript
-   const $handleErrors = createServerFn({ method: 'POST' })
-   	.middleware([loggingMiddleware])
-   	.validator(schema)
-   	.handler(async ({ data }) => {
-   		try {
-   			const result = await someOperation(data)
-   			return { success: true, data: result }
-   		} catch (error) {
-   			if (error instanceof Error) {
-   				return { success: false, error: error.message }
-   			}
-   			throw error
-   		}
-   	})
-   ```
-
-5. Authentication
-   ```typescript
-   const $protectedEndpoint = createServerFn({ method: 'POST' })
-   	.middleware([loggingMiddleware])
-   	.validator(schema)
-   	.handler(async ({ data }) => {
-   		await requireAuthSession()
-   		// Implementation
-   	})
-   ```
-
-6. Pagination
-   ```typescript
-   export const useItemsQueryOptions = ({
-   	page = 1,
-   	pageSize = DEFAULT_PAGE_SIZE,
-   }) =>
-   	queryOptions({
-   		queryKey: ['items', page, pageSize],
-   		queryFn: () => $getItems({ data: { page, pageSize } }),
-   		placeholderData: keepPreviousData,
-   	})
-   ```
-
-## Common Patterns
-
-### Complete Feature API File
-
-```typescript
-// items.api.ts
-
-// Query Options
-export const useItemsQueryOptions = (params: ItemParams) =>
-	queryOptions({
-		queryKey: ['items', params],
-		queryFn: () => $getItems({ data: params }),
-	})
-
-export const useCreateItemMutation = () =>
-	useMutation({
-		mutationFn: (data: CreateItemData) => $createItem({ data }),
-	})
-
-// Private Server Functions
-const $getItems = createServerFn({ method: 'GET' })
-	.middleware([loggingMiddleware])
-	.validator(itemsSchema)
-	.handler(async ({ data }) => {
-		// Implementation
-	})
-
-const $createItem = createServerFn({ method: 'POST' })
-	.middleware([loggingMiddleware])
-	.validator(createItemSchema)
-	.handler(async ({ data }) => {
-		// Implementation
-	})
-```
-
+4. Best Practices
+   - Always use validation with valibot
+   - Always use `requireAuthSession()`
+   - Handle errors appropriately
+  

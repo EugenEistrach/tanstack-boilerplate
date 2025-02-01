@@ -1,8 +1,7 @@
-import { valibotResolver } from '@hookform/resolvers/valibot'
-
+import { arktypeResolver } from '@hookform/resolvers/arktype'
+import { type } from 'arktype'
 import { useForm } from 'react-hook-form'
 import { useSpinDelay } from 'spin-delay'
-import * as v from 'valibot'
 import { LoadingButton } from '@/components/ui/button'
 import {
 	Card,
@@ -27,17 +26,17 @@ import { useAuth } from '@/lib/client/auth.client'
 
 import * as m from '@/lib/paraglide/messages'
 
-const onboardingFormSchema = v.object({
-	name: v.pipe(v.string(), v.minLength(1)),
-	favoriteColor: v.pipe(v.string(), v.minLength(1)),
-	redirectTo: v.optional(v.string()),
+const onboardingFormSchema = type({
+	name: 'string >= 1',
+	favoriteColor: 'string >= 1',
+	'redirectTo?': 'string',
 })
 
 export function OnboardingForm({ redirectTo }: { redirectTo?: string }) {
 	const auth = useAuth()
 
-	const form = useForm<v.InferOutput<typeof onboardingFormSchema>>({
-		resolver: valibotResolver(onboardingFormSchema),
+	const form = useForm({
+		resolver: arktypeResolver(onboardingFormSchema),
 		defaultValues: {
 			name: auth.user.name,
 			favoriteColor: '',

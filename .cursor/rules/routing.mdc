@@ -2,135 +2,82 @@
 description: Routing guidelines for TanStack Router including route types, creation, and navigation patterns
 globs: src/routes/**/*
 ---
-
 # Routing Guidelines
 
 ## Route Types
 
 - **Public Routes** (`src/routes/_marketing/`): Marketing/public pages
 - **Auth Routes** (`src/routes/(auth)/`): Authentication-related pages
-- **Dashboard Routes** (`src/routes/dashboard/`): Protected pages requiring authentication (handled by dashboard layout)
-- **Admin Routes** (`src/routes/dashboard/admin/`): Protected pages requiring admin role (handled by admin layout)
+- **Dashboard Routes** (`src/routes/dashboard/`): Protected pages requiring authentication
+- **Admin Routes** (`src/routes/dashboard/admin/`): Protected pages requiring admin role
 
-## Creating New Routes
+## Adding a New Route
 
-### Basic Route
+1. **Add translations**
+   - Add required texts (labels, titles, etc. to [en.json](mdc:Users/eugeneistrach/Projects/perfux/repositories/perfux-accounting/messages/en.json)
+   - Check [i18n.mdc](mdc:.cursor/rules/i18n.mdc) for more details
 
-Create a new file in the appropriate directory:
+2. **Create route file**
+   - Public route: Create in `src/routes/_marketing/`
+   - Auth route: Create in `src/routes/(auth)/`
+   - Dashboard route: Create in `src/routes/dashboard/`
+   - Admin route: Create in `src/routes/dashboard/admin/`
 
+3. **Implement route**
+   ```tsx
+   import * as m from '@/lib/paraglide/messages'
+   import { createFileRoute } from '@tanstack/react-router'
+
+   export const Route = createFileRoute('/your-path')({
+     // Optional: Add breadcrumb
+     loader: () => ({
+       crumb: m.your_crumb(),
+     }),
+     component: YourComponent,
+   })
+   ```
+
+4. **For dashboard/admin routes only: Add to navigation**
+   Edit [dashboard.tsx](mdc:src/routes/dashboard.tsx):
+   ```tsx
+   import { YourIcon } from 'lucide-react'
+   
+   <SidebarMenu>
+     <SidebarMenuItem>
+       <SidebarMenuButton tooltip={m.nav_label()} asChild>
+         <NavLink to="/dashboard/your-route">
+           <YourIcon />
+           <span>{m.nav_label()}</span>
+         </NavLink>
+       </SidebarMenuButton>
+     tem>
+   </SidebarMenu>
+   ```
+
+## Additional Features
+
+### Nested Routes
 ```tsx
-import { createFileRoute } from '@tanstack/react-router'
-
-export const Route = createFileRoute('/path/to/route')({
-	component: YourComponent,
+// Parent: /dashboard/parent/index.tsx
+export const Route = createFileRoute('/dashboard/parent')({
+  component: () => <Outlet />,
 })
-```
 
-### Dashboard Route
-
-Simply create a file in the dashboard directory - auth is automatically handled by the layout:
-
-```tsx
-import { createFileRoute } from '@tanstack/react-router'
-
-export const Route = createFileRoute('/dashboard/your-route')({
-	// Optional: Add breadcrumb
-	loader: () => ({
-		crumb: 'Your Route',
-	}),
-	component: YourComponent,
-})
-```
-
-### Admin Route
-
-Simply create a file in the admin directory - auth and admin role check is automatically handled by the layout:
-
-```tsx
-import { createFileRoute } from '@tanstack/react-router'
-
-export const Route = createFileRoute('/dashboard/admin/your-route')({
-	loader: () => ({
-		crumb: 'Your Admin Route',
-	}),
-	component: YourComponent,
-})
-```
-
-## Adding to Navigation
-
-To add a route to the dashboard navigation, edit [dashboard.tsx](mdc:src/routes/dashboard.tsx):
-
-1. Import your icon:
-
-```tsx
-import { YourIcon } from 'lucide-react'
-```
-
-2. Add to the SidebarContent component:
-
-```tsx
-<SidebarMenu>
-	<SidebarMenuItem>
-		<SidebarMenuButton tooltip="Your Route" asChild>
-			<NavLink to="/dashboard/your-route">
-				<YourIcon />
-				<span>Your Route</span>
-			</NavLink>
-		</SidebarMenuButton>
-	</SidebarMenuItem>
-</SidebarMenu>
-```
-
-## Route Features
-
-### Breadcrumbs
-
-Add a `crumb` in the loader to show in breadcrumb navigation:
-
-```tsx
-loader: () => ({
-	crumb: 'Your Route',
+// Child: /dashboard/parent/child.tsx
+export const Route = createFileRoute('/dashboard/parent/child')({
+  component: ChildComponent,
 })
 ```
 
 ### Page Title
-
-Add meta information in the route:
-
 ```tsx
 head: () => ({
-	meta: [
-		{
-			title: 'Your Route - Dashboard',
-		},
-	],
+  meta: [{ title: m.page_title() }],
 })
 ```
 
-### Nested Routes
+## Authorization
 
-Create a parent route with `Outlet` for nested routes:
-
-```tsx
-// /dashboard/parent/index.tsx
-export const Route = createFileRoute('/dashboard/parent')({
-	component: () => <Outlet />,
-})
-
-// /dashboard/parent/child.tsx
-export const Route = createFileRoute('/dashboard/parent/child')({
-	component: ChildComponent,
-})
-```
-
-## Authentication
-
-Authentication and role checks are handled automatically by the parent layouts:
-
-- [dashboard.tsx](mdc:src/routes/dashboard.tsx) handles authentication for all dashboard routes
-- [admin.tsx](mdc:src/routes/dashboard/admin.tsx) handles admin role check for all admin routes
-- Routes under `/_marketing/*` are public
-- Routes under `/(auth)/*` handle authentication flow
-
-You don't need to add any explicit auth checks in your route files - just place them in the correct directory and the parent layout will handle the protection.
+- Authorization is handled automatically by parent layouts
+- Place routes in correct directory for proper protection
+- No explicit auth checks needed in route files
