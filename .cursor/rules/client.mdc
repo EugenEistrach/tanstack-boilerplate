@@ -6,7 +6,7 @@ globs: *.tsx
 
 ## State Management
 
-- Use TanStack Router and Query as source of truth for server state
+- Use TanStack Router and Tanstack Query as source of truth for server state
 - Avoid useState unless absolutely necessary for UI-only state
 - Avoid useEffect at all costs. Only should be used for syncronizing with external systems
 - Keep components simple and focused on rendering data from router/query
@@ -52,7 +52,7 @@ const MyForm = () => {
 ## Form Handling
 
 - Use react-hook-form for form state management
-- Implement valibot schemas for form validation [validation.mdc](mdc:.cursor/rules/validation.mdc)
+- Refer to [validation.mdc](mdc:.cursor/rules/validation.mdc) for validation instructions
 - Use controlled components sparingly - prefer uncontrolled when possible
 - Implement proper form submission handling with loading states
 

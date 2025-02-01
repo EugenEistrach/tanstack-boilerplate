@@ -128,7 +128,7 @@ const $createUser = createServerFn({ method: 'POST' })
    - Keep consistent across related queries
 
 4. Best Practices
-   - Always use validation with valibot
+   - Always use validation
    - Always use `requireAuthSession()`
    - Handle errors appropriately
   

@@ -2,62 +2,53 @@ import { execSync } from 'node:child_process'
 import crypto from 'node:crypto'
 import fs from 'node:fs/promises'
 import path from 'node:path'
-import { intro, outro, text, spinner, note, multiselect } from '@clack/prompts'
-import color from 'picocolors'
 import {
-	email,
-	string,
-	array,
-	object,
-	parse,
-	custom,
-	minLength,
-	union,
-	literal,
-} from 'valibot'
+	intro,
+	outro,
+	text,
+	spinner,
+	note,
+	multiselect,
+	isCancel,
+} from '@clack/prompts'
+import { type, type Type } from 'arktype'
+import color from 'picocolors'
 
-const setupSchema = object({
-	appName: string([
-		minLength(1, 'App name is required'),
-		custom(
-			(value) => /^[a-z0-9-]+$/.test(value),
-			'App name can only contain lowercase letters, numbers, and dashes',
-		),
-	]),
-	adminEmails: string([
-		minLength(1, 'At least one admin email is required'),
-		custom((value) => {
-			const emails = value.split(',').map((e) => e.trim())
-			return emails.every((e) => email().safeParse(e).success)
-		}, 'Invalid email format'),
-	]),
-	applicationUrl: string([
-		minLength(1, 'Application URL is required'),
-		custom((value) => {
-			try {
-				new URL(value)
-				return true
-			} catch {
-				return false
-			}
-		}, 'Invalid URL format'),
-	]),
-	oauthProviders: array(union([literal('github'), literal('discord')]), [
-		custom(
-			(value) => value.length > 0,
-			'At least one OAuth provider is required',
-		),
-	]),
-})
+interface OAuthConfig {
+	github?: {
+		clientId: string
+		clientSecret: string
+	}
+	discord?: {
+		clientId: string
+		clientSecret: string
+	}
+}
 
-async function openBrowser(url) {
+function validate(schema: Type) {
+	return (value: unknown) => {
+		const result = schema(value)
+		if (result instanceof type.errors) {
+			return result.summary
+		}
+		return undefined
+	}
+}
+
+function handleCancel<T>(response: T | symbol): asserts response is T {
+	if (isCancel(response)) {
+		process.exit(1)
+	}
+}
+
+async function openBrowser(url: string) {
 	const platform = process.platform
 	const cmd =
 		platform === 'win32' ? 'start' : platform === 'darwin' ? 'open' : 'xdg-open'
 	execSync(`${cmd} ${url}`)
 }
 
-async function setupGitHubOAuth(appName, applicationUrl) {
+async function setupGitHubOAuth(appName: string, applicationUrl: string) {
 	const s = spinner()
 	s.start('Setting up GitHub OAuth')
 
@@ -76,23 +67,26 @@ async function setupGitHubOAuth(appName, applicationUrl) {
 
 	const clientId = await text({
 		message: 'Enter your GitHub Client ID',
-		validate: (value) => {
-			if (!value) return 'Client ID is required'
-		},
+		validate: validate(type('string >= 1')),
 	})
+
+	handleCancel(clientId)
 
 	const clientSecret = await text({
 		message: 'Enter your GitHub Client Secret',
-		validate: (value) => {
-			if (!value) return 'Client Secret is required'
-		},
+		validate: validate(type('string >= 1')),
 	})
+
+	handleCancel(clientSecret)
 
 	s.stop('GitHub OAuth configured')
 	return { clientId, clientSecret }
 }
 
-async function setupDiscordOAuth(appName, applicationUrl) {
+async function setupDiscordOAuth(
+	appName: string,
+	applicationUrl: string,
+): Promise<{ clientId: string; clientSecret: string }> {
 	const s = spinner()
 	s.start('Setting up Discord OAuth')
 
@@ -111,23 +105,23 @@ async function setupDiscordOAuth(appName, applicationUrl) {
 
 	const clientId = await text({
 		message: 'Enter your Discord Client ID',
-		validate: (value) => {
-			if (!value) return 'Client ID is required'
-		},
+		validate: validate(type('string >= 1')),
 	})
+
+	handleCancel(clientId)
 
 	const clientSecret = await text({
 		message: 'Enter your Discord Client Secret',
-		validate: (value) => {
-			if (!value) return 'Client Secret is required'
-		},
+		validate: validate(type('string >= 1')),
 	})
+
+	handleCancel(clientSecret)
 
 	s.stop('Discord OAuth configured')
 	return { clientId, clientSecret }
 }
 
-async function setup() {
+async function setup(): Promise<void> {
 	try {
 		intro(color.blue('TanStack Boilerplate Setup'))
 
@@ -139,65 +133,49 @@ async function setup() {
 			message: 'What is your app name?',
 			defaultValue: defaultAppName,
 			placeholder: 'my-awesome-app',
-			validate: (value) => {
-				if (!/^[a-z0-9-]+$/.test(value)) {
-					return 'App name can only contain lowercase letters, numbers, and dashes'
-				}
-			},
+			validate: validate(type(/^[a-z0-9-]+$/)),
 		})
 
-		const adminEmails = await text({
+		handleCancel(appName)
+
+		const adminEmailText = await text({
 			message: 'Enter admin email addresses (comma-separated)',
 			defaultValue: 'admin@example.com',
-			validate: (value) => {
-				const emails = value.split(',').map((e) => e.trim())
-				if (
-					!emails.every((e) => {
-						try {
-							parse(email(), e)
-							return true
-						} catch {
-							return false
-						}
-					})
-				) {
-					return 'Please enter valid email addresses'
-				}
-			},
+			validate: validate(
+				type(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i),
+			),
 		})
+
+		handleCancel(adminEmailText)
+
+		const adminEmails = adminEmailText.split(',').map((e) => e.trim())
 
 		const applicationUrl = await text({
 			message: 'Enter your application URL',
 			defaultValue: 'http://localhost:3000',
-			validate: (value) => {
-				try {
-					new URL(value)
-				} catch {
-					return 'Please enter a valid URL'
-				}
-			},
+			validate: validate(type('string.url')),
 		})
+
+		handleCancel(applicationUrl)
 
 		// OAuth provider selection
 		const oauthProviders = await multiselect({
 			message: 'Select OAuth providers to configure (at least one required)',
 			options: [
-				{ value: 'github', label: 'GitHub' },
-				{ value: 'discord', label: 'Discord' },
+				{ value: 'github' as const, label: 'GitHub' },
+				{ value: 'discord' as const, label: 'Discord' },
 			],
 			required: true,
-			validate: (value) => {
-				if (value.length === 0) return 'At least one OAuth provider is required'
-			},
 		})
 
-		// Validate all inputs
-		const config = parse(setupSchema, {
+		handleCancel(oauthProviders)
+
+		const config = {
 			appName,
 			adminEmails,
 			applicationUrl,
 			oauthProviders,
-		})
+		}
 
 		// Update package.json
 		s.start('Updating package.json')
@@ -217,7 +195,7 @@ async function setup() {
 			)
 			await fs.writeFile('fly.toml', updatedFlyConfig)
 			s.stop('Updated fly.toml')
-		} catch (error) {
+		} catch {
 			s.stop('No fly.toml found, skipping')
 		}
 
@@ -242,14 +220,14 @@ async function setup() {
 
 		await openBrowser('https://github.com/new')
 
-		const repoUrl = await text({
+		const repoUrl = (await text({
 			message: 'Enter your GitHub repository URL',
-			validate: (value) => {
-				if (!value) return 'Repository URL is required'
-				if (!value.startsWith('https://github.com/'))
-					return 'Invalid GitHub repository URL'
-			},
-		})
+			validate: validate(
+				type('string.url').pipe(type(/^https:\/\/github\.com\/.*/)),
+			),
+		})) as string
+
+		handleCancel(repoUrl)
 
 		execSync('git remote remove origin || true') // Remove origin if it exists
 		execSync(`git remote add origin ${repoUrl}`)
@@ -257,7 +235,7 @@ async function setup() {
 		s.stop('Git repository initialized and pushed to GitHub')
 
 		// Set up OAuth providers
-		const oauthConfig = {}
+		const oauthConfig: OAuthConfig = {}
 
 		if (oauthProviders.includes('github')) {
 			const github = await setupGitHubOAuth(
@@ -339,11 +317,12 @@ async function setup() {
 			'Next Steps',
 		)
 
-		outro(color.green('Setup completed successfully! 🎉'))
+		outro(color.blue('Setup completed successfully! 🎉'))
 	} catch (error) {
 		console.error(color.red('An error occurred during setup:'), error)
 		process.exit(1)
 	}
 }
 
-setup()
+// Start the setup process
+void setup()

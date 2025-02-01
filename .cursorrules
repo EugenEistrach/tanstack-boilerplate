@@ -10,7 +10,7 @@
 - TailwindCSS with shadcn/ui
 - trigger.dev for background jobs
 - Fly.io for deployment and hosting
-- valibot for type-safe validation
+- arktype for type-safe validation
 
 ## Code Style and Structure
 
