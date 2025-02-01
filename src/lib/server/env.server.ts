@@ -17,8 +17,9 @@ export const environmentSchema = type({
 	SESSION_SECRET: 'string >= 1',
 	'RESEND_API_KEY?': 'string >= 1',
 	'EMAIL_FROM?': 'string >= 1',
-	ADMIN_USER_EMAILS: type('string >= 1').pipe((val) =>
-		val.split(',').map((s) => s.trim()),
+	'ADMIN_USER_EMAILS?': type('string >= 1').pipe(
+		(val) => (val || '').split(',').map((s) => s.trim()),
+		type('string.email[]'),
 	),
 	'API_KEY?': 'string >= 1',
 	LOG_LEVEL: "string >= 1 = 'info'",

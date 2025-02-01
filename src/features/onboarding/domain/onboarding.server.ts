@@ -40,7 +40,7 @@ export function completeOnboarding({
 			.update(UserTable)
 			.set({
 				name,
-				role: env.ADMIN_USER_EMAILS.includes(user?.email ?? '')
+				role: env.ADMIN_USER_EMAILS?.includes(user?.email ?? '')
 					? 'admin'
 					: 'user',
 			})
