@@ -5,6 +5,7 @@ import gitignore from 'eslint-config-flat-gitignore'
 import pluginBoundaries from 'eslint-plugin-boundaries'
 import i18next from 'eslint-plugin-i18next'
 
+import { enforceParaglideImportName } from './lint-rules/enforce-paraglide-import-name.mjs'
 import { enforceServerFnPrefix } from './lint-rules/enforce-server-fn-prefix.mjs'
 import { loggerErrorFormat } from './lint-rules/logger-error-format.mjs'
 import { noRelativeImports } from './lint-rules/no-relative-imports.mjs'
@@ -43,6 +44,7 @@ export default [
 					'enforce-server-fn-prefix': enforceServerFnPrefix,
 					'paraglide-missing-import': paraglideMissingImport,
 					'logger-error-format': loggerErrorFormat,
+					'enforce-paraglide-import-name': enforceParaglideImportName,
 				},
 			},
 		},
@@ -50,6 +52,7 @@ export default [
 			'custom/enforce-server-fn-prefix': 'error',
 			'custom/paraglide-missing-import': 'error',
 			'custom/logger-error-format': 'error',
+			'custom/enforce-paraglide-import-name': 'error',
 		},
 	},
 	{

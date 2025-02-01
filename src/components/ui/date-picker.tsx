@@ -10,7 +10,7 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from '@/components/ui/popover'
-import * as messages from '@/lib/paraglide/messages'
+import * as m from '@/lib/paraglide/messages'
 import { cn } from '@/lib/shared/utils'
 
 interface DatePickerProps {
@@ -42,7 +42,7 @@ export function DatePicker({ date, onSelect, className }: DatePickerProps) {
 					)}
 				>
 					<CalendarIcon className="mr-2 h-4 w-4" />
-					{date ? format(date, 'PPP') : messages.pick_date()}
+					{date ? format(date, 'PPP') : m.pick_date()}
 				</Button>
 			</PopoverTrigger>
 			<PopoverContent className="w-auto p-0" align="start" modal>

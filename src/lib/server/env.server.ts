@@ -7,8 +7,8 @@ export const environmentSchema = type({
 	'MOCKS?': type('string >= 1').pipe((val) => val === 'true'),
 	'NODE_ENV?': 'string >= 1',
 	APPLICATION_URL: 'string >= 1',
-	'TURSO_DATABASE_URL?': 'string >= 1',
-	'TURSO_AUTH_TOKEN?': 'string >= 1',
+	'TURSO_DATABASE_URL?': 'string',
+	'TURSO_AUTH_TOKEN?': 'string',
 	LOCAL_DATABASE_PATH: "string = 'db.sqlite'",
 	'GITHUB_CLIENT_ID?': 'string >= 1',
 	'GITHUB_CLIENT_SECRET?': 'string >= 1',
@@ -31,8 +31,6 @@ const parseEnv = () => {
 	const result = environmentSchema(process.env)
 
 	if (result instanceof type.errors) {
-		console.error('\n❌ Invalid Environment Variables:\n')
-		console.error(`• ${result.summary}`)
 		throw new Error(`🚨 Invalid environment variables.\n ${result.summary}`)
 	}
 

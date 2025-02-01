@@ -267,6 +267,9 @@ importers:
       better-call:
         specifier: 0.3.3
         version: 0.3.3
+      chalk:
+        specifier: ^5.3.0
+        version: 5.4.1
       close-with-grace:
         specifier: ^2.2.0
         version: 2.2.0
@@ -294,6 +297,9 @@ importers:
       fs-extra:
         specifier: ^11.3.0
         version: 11.3.0
+      glob:
+        specifier: ^10.3.10
+        version: 10.4.5
       msw:
         specifier: ^2.7.0
         version: 2.7.0(@types/node@22.7.7)(typescript@5.7.3)
@@ -4171,10 +4177,6 @@ packages:
   chalk@4.1.2:
     resolution: {integrity: sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==}
     engines: {node: '>=10'}
-
-  chalk@5.3.0:
-    resolution: {integrity: sha512-dLitG79d+GV1Nb/VYcCDFivJeK1hiukt9QjRNVOsUtTy1rR1YJsmpGGTZ3qJos+uw7WmWF4wUwBd9jxjocFC2w==}
-    engines: {node: ^12.17.0 || ^14.13 || >=16.0.0}
 
   chalk@5.4.1:
     resolution: {integrity: sha512-zgVZuo2WcZgfUEmsn6eO3kINexW8RAE4maiQ8QNs8CtpPCSyMiYsULR3HQYkm3w8FIA3SberyMJMSldGsW+U3w==}
@@ -8841,7 +8843,7 @@ snapshots:
 
   '@flydotio/dockerfile@0.7.4':
     dependencies:
-      chalk: 5.3.0
+      chalk: 5.4.1
       diff: 5.2.0
       ejs: 3.1.10
       shell-quote: 1.8.2
@@ -12255,7 +12257,7 @@ snapshots:
     dependencies:
       ansi-align: 3.0.1
       camelcase: 7.0.1
-      chalk: 5.3.0
+      chalk: 5.4.1
       cli-boxes: 3.0.0
       string-width: 5.1.2
       type-fest: 2.19.0
@@ -12351,8 +12353,6 @@ snapshots:
     dependencies:
       ansi-styles: 4.3.0
       supports-color: 7.2.0
-
-  chalk@5.3.0: {}
 
   chalk@5.4.1: {}
 
