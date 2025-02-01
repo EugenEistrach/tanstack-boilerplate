@@ -142,7 +142,10 @@ async function setup(): Promise<void> {
 			message: 'Enter admin email addresses (comma-separated)',
 			defaultValue: 'admin@example.com',
 			validate: validate(
-				type(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i),
+				type('string >= 1').pipe(
+					(val) => (val || '').split(',').map((s) => s.trim()),
+					type('string.email[]'),
+				),
 			),
 		})
 

@@ -3,6 +3,7 @@ import path from 'path'
 import chalk from 'chalk'
 import { execa } from 'execa'
 import { glob } from 'glob'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import * as m from '@/lib/paraglide/messages'
 
 interface MessageUsage {
