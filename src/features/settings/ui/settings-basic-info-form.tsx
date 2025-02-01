@@ -1,8 +1,7 @@
-import { valibotResolver } from '@hookform/resolvers/valibot'
+import { arktypeResolver } from '@hookform/resolvers/arktype'
+import { type } from 'arktype'
 import { useForm } from 'react-hook-form'
 import { useSpinDelay } from 'spin-delay'
-
-import * as v from 'valibot'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { LoadingButton } from '@/components/ui/button'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
@@ -15,10 +14,6 @@ import { useUpdateNameMutation } from '@/features/settings/api/settings.api'
 import { useAuth } from '@/lib/client/auth.client'
 import * as m from '@/lib/paraglide/messages'
 
-const updateNameSchema = v.object({
-	name: v.pipe(v.string(), v.nonEmpty()),
-})
-
 export function SettingsBasicInfoForm() {
 	const { user } = useAuth()
 
@@ -27,7 +22,11 @@ export function SettingsBasicInfoForm() {
 		handleSubmit,
 		formState: { errors, isValidating },
 	} = useForm({
-		resolver: valibotResolver(updateNameSchema),
+		resolver: arktypeResolver(
+			type({
+				name: 'string >= 1',
+			}),
+		),
 		defaultValues: {
 			name: user.name || '',
 		},

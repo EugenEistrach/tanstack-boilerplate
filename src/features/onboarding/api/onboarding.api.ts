@@ -5,7 +5,7 @@ import {
 } from '@tanstack/react-query'
 import { redirect } from '@tanstack/react-router'
 import { createServerFn, useServerFn } from '@tanstack/start'
-import * as v from 'valibot'
+import { type } from 'arktype'
 import {
 	completeOnboarding,
 	getOnboardingInfo,
@@ -38,10 +38,10 @@ const $getOnboardingInfo = createServerFn({ method: 'GET' }).handler(
 
 const $completeOnboarding = createServerFn({ method: 'POST' })
 	.validator(
-		v.object({
-			name: v.string(),
-			favoriteColor: v.string(),
-			redirectTo: v.optional(v.string()),
+		type({
+			name: 'string >= 1',
+			favoriteColor: 'string >= 1',
+			'redirectTo?': 'string',
 		}),
 	)
 	.handler(async ({ data: { name, favoriteColor, redirectTo } }) => {

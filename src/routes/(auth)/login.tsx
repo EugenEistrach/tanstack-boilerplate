@@ -1,6 +1,6 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
+import { type } from 'arktype'
 import { DatabaseZap } from 'lucide-react'
-import * as v from 'valibot'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { LocaleSwitcher } from '@/components/ui/locale-switcher'
@@ -8,10 +8,13 @@ import { ThemeToggle } from '@/components/ui/theme-toggle'
 import { authClient } from '@/lib/client/auth.client'
 import * as m from '@/lib/paraglide/messages'
 
+const searchSchema = type({
+	'redirectTo?': 'string',
+})
+
 export const Route = createFileRoute('/(auth)/login')({
-	validateSearch: v.object({
-		redirectTo: v.optional(v.string()),
-	}),
+	validateSearch: searchSchema,
+
 	beforeLoad: ({ context }) => {
 		if (!context.auth) {
 			return

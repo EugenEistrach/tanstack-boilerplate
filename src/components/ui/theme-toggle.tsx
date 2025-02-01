@@ -4,9 +4,9 @@ import { subscribeToSchemeChange } from '@epic-web/client-hints/color-scheme'
 
 import { useRouter } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/start'
+import { type } from 'arktype'
 import { Moon, Sun } from 'lucide-react'
 import { useEffect } from 'react'
-import * as v from 'valibot'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -20,7 +20,7 @@ import { themeCookie } from '@/lib/server/session.server'
 import { cn } from '@/lib/shared/utils'
 
 const $setTheme = createServerFn({ method: 'POST' })
-	.validator(v.object({ theme: v.picklist(['light', 'dark', 'system']) }))
+	.validator(type({ theme: "'light' | 'dark' | 'system'" }))
 	.handler(async ({ data: { theme } }) => {
 		themeCookie.set(theme)
 	})

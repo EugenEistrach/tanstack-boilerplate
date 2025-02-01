@@ -1,81 +1,42 @@
-import * as v from 'valibot'
+import { type } from 'arktype'
 
 // Schema definition
-export const ENVIRONMENT_SCHEMA = v.object({
-	APP_NAME: v.optional(v.string(), `Tanstack Boilerplate`),
-
-	CI: v.optional(
-		v.pipe(
-			v.string(),
-			v.transform((val) => val === 'true'),
-		),
+export const environmentSchema = type({
+	APP_NAME: "string >= 1 = 'Tanstack Boilerplate'",
+	'CI?': type('string >= 1').pipe((val) => val === 'true'),
+	'MOCKS?': type('string >= 1').pipe((val) => val === 'true'),
+	'NODE_ENV?': 'string >= 1',
+	APPLICATION_URL: 'string >= 1',
+	'TURSO_DATABASE_URL?': 'string >= 1',
+	'TURSO_AUTH_TOKEN?': 'string >= 1',
+	LOCAL_DATABASE_PATH: "string = 'db.sqlite'",
+	'GITHUB_CLIENT_ID?': 'string >= 1',
+	'GITHUB_CLIENT_SECRET?': 'string >= 1',
+	'DISCORD_CLIENT_ID?': 'string >= 1',
+	'DISCORD_CLIENT_SECRET?': 'string >= 1',
+	SESSION_SECRET: 'string >= 1',
+	'RESEND_API_KEY?': 'string >= 1',
+	'EMAIL_FROM?': 'string >= 1',
+	ADMIN_USER_EMAILS: type('string >= 1').pipe((val) =>
+		val.split(',').map((s) => s.trim()),
 	),
-	MOCKS: v.optional(
-		v.pipe(
-			v.string(),
-			v.transform((val) => val === 'true'),
-		),
-	),
-	NODE_ENV: v.optional(v.string()),
-	APPLICATION_URL: v.pipe(v.string(), v.nonEmpty()),
-
-	TURSO_DATABASE_URL: v.optional(v.string()),
-	TURSO_AUTH_TOKEN: v.optional(v.string()),
-
-	LOCAL_DATABASE_PATH: v.optional(v.string(), 'db.sqlite'),
-
-	GITHUB_CLIENT_ID: v.optional(v.string()),
-	GITHUB_CLIENT_SECRET: v.optional(v.string()),
-	DISCORD_CLIENT_ID: v.optional(v.string()),
-	DISCORD_CLIENT_SECRET: v.optional(v.string()),
-
-	SESSION_SECRET: v.pipe(v.string(), v.nonEmpty()),
-	RESEND_API_KEY: v.optional(v.string()),
-	EMAIL_FROM: v.optional(v.pipe(v.string(), v.email())),
-	ADMIN_USER_EMAILS: v.pipe(
-		v.optional(v.string(), ''),
-		v.trim(),
-		v.transform((val) => val.split(',')),
-		v.array(v.pipe(v.string(), v.trim())),
-	),
-
-	API_KEY: v.optional(v.string()),
-
-	LOG_LEVEL: v.optional(v.string(), 'info'),
+	'API_KEY?': 'string >= 1',
+	LOG_LEVEL: "string >= 1 = 'info'",
 })
 
 // Type inference
-export type Env = v.InferOutput<typeof ENVIRONMENT_SCHEMA>
-
-// Process empty strings as undefined
-const processEnv = { ...process.env }
-Object.entries(processEnv).forEach(([key, value]) => {
-	if (value === '') {
-		delete processEnv[key]
-	}
-})
+export type Env = typeof environmentSchema.infer
 
 const parseEnv = () => {
-	const result = v.safeParse(ENVIRONMENT_SCHEMA, processEnv)
+	const result = environmentSchema(process.env)
 
-	if (!result.success) {
+	if (result instanceof type.errors) {
 		console.error('\n❌ Invalid Environment Variables:\n')
-
-		for (const issue of result.issues) {
-			const pathString = issue.path
-				? issue.path.map((segment) => String(segment.key)).join('.')
-				: 'unknown'
-
-			console.error(`• ${pathString}: ${issue.message}`)
-			console.error(`  Current value: ${processEnv[pathString] || 'missing'}\n`)
-		}
-
-		throw new Error(
-			'🚨 Invalid environment variables. Check the logs above and update your .env file.',
-		)
+		console.error(`• ${result.summary}`)
+		throw new Error(`🚨 Invalid environment variables.\n ${result.summary}`)
 	}
 
-	return result.output
+	return result
 }
 
 // Cache for parsed env

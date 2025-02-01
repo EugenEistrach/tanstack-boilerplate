@@ -1,125 +1,146 @@
 ---
-description: Validation guidelines using valibot for type-safe validation in both client and server code
-globs: ["src/**/*.api.ts", "src/**/*.server.ts", "src/components/forms/**/*"]
+description: Validation guidelines using arktype for type-safe validation in both client and server code
+globs: src/**/*.api.ts, src/**/*.server.ts, src/components/forms/**/*
 ---
+# ArkType Guidelines
 
-# Validation Guidelines
-
-## Key Concepts
-
-1. **Pipelines Instead of Chaining**
-
-   ```typescript
-   // ❌ Don't (Zod style)
-   const schema = z.string().email().endsWith('@company.com')
-
-   // ✅ Do (Valibot style)
-   const schema = v.pipe(v.string(), v.email(), v.endsWith('@company.com'))
-   ```
-
-2. **Standalone Functions Instead of Methods**
-
-   ```typescript
-   // ❌ Don't (Zod style)
-   const result = schema.parse(data)
-
-   // ✅ Do (Valibot style)
-   const result = v.parse(schema, data)
-   ```
-
-## Common Patterns
-
-### Form Validation
+## Form Validation
 
 ```typescript
-// Form schema with validation
-const formSchema = v.object({
-	email: v.pipe(v.string('Email is required'), v.email('Must be valid email')),
-	password: v.pipe(
-		v.string('Password is required'),
-		v.minLength(8, 'Must be at least 8 characters'),
-	),
+import { arktypeResolver } from '@hookform/resolvers/arktype'
+import { type } from 'arktype'
+
+// Basic form with required fields and react-hook-form
+const formSchema = type({
+  name: 'string >= 1',      // non-empty string
+  email: 'string >= 1',     // non-empty string
+  'age?': 'number > 0',     // optional positive number
 })
 
-// Use with react-hook-form
-const form = useForm({
-	resolver: valibotResolver(formSchema),
+const Form = () => {
+  const form = useForm({
+    resolver: arktypeResolver(formSchema),
+    defaultValues: {
+      name: '',
+      email: '',
+    }
+  })
+
+  return (
+    <form onSubmit={form.handleSubmit((data) => mutate({ data }))}>
+      {/* form fields */}
+    </form>
+  )
+}
+
+// Complex form with nested objects and arrays
+const userFormSchema = type({
+  name: 'string >= 1',
+  'addresses?': {
+    street: 'string >= 1',
+    'unit?': 'string',
+    city: 'string >= 1',
+    country: "'US' | 'CA' | 'UK'"  // union of literal strings
+  }[]  // array of address objects
 })
 ```
 
-### API Input Validation
+## API Layer (TanStack Start)
 
 ```typescript
-const $createUser = createServerFn({ method: 'POST' })
-	.validator(
-		v.object({
-			name: v.string(),
-			email: v.pipe(v.string(), v.email()),
-			role: v.enum(['user', 'admin']),
-		}),
-	)
-	.handler(async ({ data }) => {
-		// Type-safe data access
-	})
+// Basic mutation with string validation
+const $updateName = createServerFn({ method: 'POST' })
+  .validator(type({ 
+    name: 'string >= 1' 
+  }))
+  .handler(async ({ data: { name } }) => {
+    // handler code
+  })
+
+// Complex mutation with nested validation
+const $updateUser = createServerFn({ method: 'POST' })
+  .validator(type({
+    user: {
+      name: 'string >= 1',
+      'role?': "'admin' | 'user'",
+      preferences: {
+        theme: "'light' | 'dark' | 'system'",
+        'notifications?': 'boolean'
+      }
+    }
+  }))
+  .handler(async ({ data }) => {
+    // handler code
+  })
 ```
 
-### Object Validation
+## Route Search Params
 
 ```typescript
-// Strict object (no unknown properties)
-const strictSchema = v.strictObject({
-	id: v.string(),
-	count: v.number(),
+// Always define schema outside route for proper type inference
+const searchSchema = type({
+  'redirectTo?': 'string',
+  'tab?': "'overview' | 'settings' | 'billing'",
+  'page?': type('string').pipe(val => parseInt(val, 10))  // transform to number
 })
 
-// Optional properties
-const userSchema = v.object({
-	id: v.string(),
-	name: v.string(),
-	email: v.optional(v.pipe(v.string(), v.email())),
+export const Route = createFileRoute('/path')({
+  validateSearch: searchSchema,
+  component: YourComponent
 })
-```
 
-### Type Inference
-
-```typescript
-// Get type from schema
-type FormData = v.InferOutput<typeof formSchema>
-
-// Use in component props
-interface Props {
-	data: v.InferOutput<typeof dataSchema>
+// Usage in component
+function YourComponent() {
+  const { redirectTo, tab, page } = Route.useSearch()
+  // redirectTo?: string
+  // tab?: 'overview' | 'settings' | 'billing'
+  // page?: number
 }
 ```
 
-## Error Messages
+## Common Patterns
 
 ```typescript
-// Single error message
-const schema = v.string('Must be a string')
+// String length constraints
+type({
+  username: 'string >= 3 <= 20',  // between 3 and 20 chars
+  bio: 'string <= 500'            // max 500 chars
+})
 
-// Multiple validation steps
-const schema = v.pipe(
-	v.string('Must be a string'),
-	v.minLength(3, 'Too short'),
-	v.maxLength(10, 'Too long'),
-)
-```
+// Numeric constraints
+type({
+  age: 'number >= 18',            // min 18
+  score: 'number >= 0 <= 100'     // between 0 and 100
+})
 
-## Type Coercion
+// Transformations
+type({
+  // Transform after validation
+  createdAt: type('string')
+    .pipe(val => new Date(val)),
+  
+  // Array of specific values
+  roles: type('string')
+    .pipe(val => val.split(','))
+    .to("('admin' | 'user')[]"),
+  
+  // Trim and lowercase email
+  email: type('string')
+    .pipe(val => val.trim().toLowerCase())
+})
 
-```typescript
-// String to number
-const numberSchema = v.pipe(
-	v.string(),
-	v.decimal('Must be decimal string'),
-	v.transform(Number),
-)
-
-// String to date
-const dateSchema = v.pipe(
-	v.string(),
-	v.isoDateTime('Must be ISO date'),
-	v.transform((str) => new Date(str)),
-)
+// Complex objects
+type({
+  user: {
+    id: 'string',
+    'profile?': {
+      'avatar?': 'string',
+      'bio?': 'string <= 1000'
+    },
+    preferences: {
+      theme: "'light' | 'dark' = 'light'",
+      'notifications?': 'boolean = true'
+    }
+  }
+})
 ```
