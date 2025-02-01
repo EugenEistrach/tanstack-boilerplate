@@ -153,8 +153,8 @@ jobs:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
       - name: 🏥 Health check
         run: |
-          timeout=120
-          elapsed=0
+          max_attempts=24  # 2 minutes with 5 second intervals
+          attempt=1
           # Get the app URL from flyctl status
           url=$(flyctl status --json | jq -r '.Hostname')
 
@@ -166,23 +166,27 @@ jobs:
           url="https://$url"
           echo "Checking health of $url"
 
-          while true; do
-            if [[ $elapsed -ge $timeout ]]; then
-              echo "Health check failed: Timeout after ${timeout} seconds"
+          while [ $attempt -le $max_attempts ]; do
+            status_code=$(curl -s -o /dev/null -w "%{http_code}" "$url" || echo "failed")
+
+            if [ "$status_code" = "200" ]; then
+              echo "Health check passed! Site is up and running."
+              exit 0
+            fi
+
+            echo "Attempt $attempt/$max_attempts: Site returned status $status_code"
+
+            if [ $attempt -eq $max_attempts ]; then
+              echo "Health check failed: Maximum attempts reached"
               exit 1
             fi
 
-            status_code=$(curl -s -o /dev/null -w "%{http_code}" $url || echo "failed")
-
-            if [[ $status_code == "200" ]]; then
-              echo "Health check passed! Site is up and running."
-              break
-            fi
-
-            echo "Waiting for site to be ready... (${elapsed}s elapsed)"
             sleep 5
-            elapsed=$((elapsed + 5))
+            attempt=$((attempt + 1))
           done
+
+          echo "Health check failed: Script should not reach this point"
+          exit 1
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 
