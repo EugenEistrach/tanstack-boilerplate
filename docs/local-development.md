@@ -17,7 +17,7 @@
    cd my-project
 
    # Run the setup script (sets up env, git, dependencies, and database)
-   node scripts/setup.js
+   tsx scripts/setup.ts
    ```
 
    The setup script will:

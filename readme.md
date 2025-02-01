@@ -5,33 +5,43 @@ modern tooling and best practices.
 
 ## Features
 
-- 🔒 Type-safe full-stack development with TanStack
-- 🔑 Modern authentication with GitHub SSO
-- 💾 Database integration with Drizzle ORM
-- 🎨 Beautiful UI with shadcn/ui
+- 🤖 Cursor-ready with predefined `.cursor/rules` for AI-assisted development
+- 🔒 Type-safe full-stack development with [TanStack](https://tanstack.com)
+- 🔑 Modern authentication with [GitHub](https://github.com) SSO
+- 💾 Database integration with [Drizzle ORM](https://orm.drizzle.team)
+- 🎨 Beautiful UI with [shadcn/ui](https://ui.shadcn.com)
+- 🌍 Tree-shakeable i18n with
+  [Paraglide](https://inlang.com/m/gerre34r/library-inlang-paraglideJs)
 - 🧪 Comprehensive testing setup
 
 ## Tech Stack
 
 - **Frontend**
 
-  - React 19
-  - TanStack (Router, Query, Start)
-  - TailwindCSS with shadcn/ui
-  - TypeScript
+  - [React 19](https://react.dev)
+  - [TanStack](https://tanstack.com) ([Router](https://tanstack.com/router),
+    [Query](https://tanstack.com/query), [Start](https://tanstack.com/start))
+  - [TailwindCSS](https://tailwindcss.com) with
+    [shadcn/ui](https://ui.shadcn.com)
+  - [TypeScript](https://typescriptlang.org)
+  - [Paraglide](https://inlang.com/m/gerre34r/library-inlang-paraglideJs) for
+    type-safe i18n
 
 - **Backend & Data**
 
-  - SQLite (local) / Turso (production) with Drizzle ORM
-  - Better-auth with GitHub/Discord SSO
-  - trigger.dev for background jobs
-  - Fly.io for deployment and hosting
+  - [SQLite](https://sqlite.org) (local) / [Turso](https://turso.tech)
+    (production) with [Drizzle ORM](https://orm.drizzle.team)
+  - [Better-auth](https://better-auth.com) with
+    [GitHub](https://github.com)/[Discord](https://discord.com) SSO
+  - [trigger.dev](https://trigger.dev) for background jobs
+  - [Fly.io](https://fly.io) for deployment and hosting
 
 - **Testing & Quality**
-  - vitest for testing
-  - valibot for type-safe validation
-  - ESLint + Prettier
-  - playwright for E2E testing
+
+  - [vitest](https://vitest.dev) for testing
+  - [arktype](https://arktype.io) for type-safe validation
+  - [ESLint](https://eslint.org) + [Prettier](https://prettier.io)
+  - [Playwright](https://playwright.dev) for E2E testing
 
 ## Quick Start
 
@@ -44,7 +54,7 @@ pnpm dlx degit your-org/tanstack-boilerplate my-project
 cd my-project
 
 # Run setup script (env, git, dependencies, database)
-node scripts/setup.js
+tsx scripts/setup.ts
 
 # Start development server
 pnpm dev
