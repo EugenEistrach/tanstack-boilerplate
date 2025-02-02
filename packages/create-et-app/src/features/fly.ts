@@ -61,7 +61,7 @@ export const fly = feature('fly', {
 })
 
 async function askForAdminEmails() {
-	return ensureNotCanceled(
+	const result = ensureNotCanceled(
 		await text({
 			message:
 				'To set up admin users for production, enter their emails, separated by commas (leave blank for no admins):',
@@ -74,4 +74,10 @@ async function askForAdminEmails() {
 			),
 		}),
 	)
+
+	if (!result || result === 'undefined') {
+		return undefined
+	}
+
+	return result
 }

@@ -1,6 +1,10 @@
 # et-stack
 
-A comprehensive boilerplate project to jumpstart new React applications with
+```bash
+pnpm create et-app
+```
+
+An opinionated boilerplate project to jumpstart new React applications with
 modern tooling and best practices.
 
 ## Features
@@ -42,12 +46,6 @@ modern tooling and best practices.
   - [vitest](https://vitest.dev) for testing
   - [ESLint](https://eslint.org) + [Prettier](https://prettier.io)
   - [Playwright](https://playwright.dev) for E2E testing
-
-## Quick Start
-
-```bash
-wip
-```
 
 ## Database Setup
 
