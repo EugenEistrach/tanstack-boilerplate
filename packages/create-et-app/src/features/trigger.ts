@@ -1,5 +1,5 @@
 import path from 'path'
-import { confirm, log, note, text } from '@clack/prompts'
+import { confirm, log, note, password } from '@clack/prompts'
 import { execa } from 'execa'
 import fs from 'fs-extra'
 import open from 'open'
@@ -36,6 +36,10 @@ export const trigger = feature('trigger', {
 			'Will initialize Trigger.dev next. Select the project you just created.',
 		)
 
+		log.warn(
+			'Make sure to keep the default trigger folder name. Otherwise you will need to do manual changes to fix CI linting',
+		)
+
 		await execa('pnpm', ['dlx', 'trigger.dev@latest', 'init'], {
 			cwd: ctx.projectDir,
 			stdio: 'inherit',
@@ -66,7 +70,7 @@ export const trigger = feature('trigger', {
 			await open('https://cloud.trigger.dev/')
 
 			apiKey = ensureNotCanceled(
-				await text({
+				await password({
 					message: 'Enter the Trigger.dev PROD API key',
 				}),
 			)
@@ -81,7 +85,7 @@ export const trigger = feature('trigger', {
 			await open('https://cloud.trigger.dev/account/tokens')
 
 			token = ensureNotCanceled(
-				await text({
+				await password({
 					message: 'Enter the Trigger.dev access token',
 				}),
 			)

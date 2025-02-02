@@ -22,7 +22,7 @@ export default defineConfig({
 	build: {
 		external: ['libsql'],
 	},
-	dirs: ['src/tasks'],
+	dirs: ['src/trigger'],
 	onSuccess: async () => {
 		if (!APPLICATION_URL) {
 			logger.error('APPLICATION_URL not set. Cannot sync application database')

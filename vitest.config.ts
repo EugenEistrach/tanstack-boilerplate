@@ -19,7 +19,7 @@ export default defineConfig({
 				'src/components/',
 				'src/email/',
 				'src/routes',
-				'src/tasks',
+				'src/trigger',
 				'**/*.test.ts',
 				'**/*.spec.ts',
 				'**/templates/**',
