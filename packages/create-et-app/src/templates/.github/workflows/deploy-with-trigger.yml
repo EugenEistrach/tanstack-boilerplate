@@ -177,6 +177,6 @@ jobs:
 
           # Exit with proper code based on deployment success
           if [ -n "${DEPLOY_EXIT:-}" ]; then
-            echo "::error::Trigger.dev deployment failed with exit code $DEPLOY_EXIT"
+            echo "Trigger.dev deployment failed with exit code $DEPLOY_EXIT"
             exit 1
           fi

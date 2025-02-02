@@ -106,20 +106,20 @@ export const trigger = feature('trigger', {
 })
 
 const onSuccessCallback = `async () => {
-  if (!process.env.APPLICATION_URL) {
+  if (!process.env['APPLICATION_URL']) {
     logger.error('APPLICATION_URL not set. Cannot sync application database')
     return
   }
 
-  if (!process.env.API_KEY) {
+  if (!process.env['API_KEY']) {
     logger.error('API_KEY not set. Cannot sync application database')
     return
   }
 
-  const response = await fetch(\`\${process.env.APPLICATION_URL}/api/sync-db\`, {
+  const response = await fetch(\`\${process.env['APPLICATION_URL']}/api/sync-db\`, {
     method: 'POST',
     headers: {
-      Authorization: process.env.API_KEY,
+      Authorization: process.env['API_KEY'],
     },
   })
 
@@ -134,6 +134,25 @@ const onSuccessCallback = `async () => {
 async function addOnSuccessToTriggerConfig(configPath: string) {
 	const project = new Project()
 	const sourceFile = project.addSourceFileAtPath(configPath)
+
+	// Handle imports
+	const triggerImport = sourceFile.getImportDeclaration(
+		(i) => i.getModuleSpecifierValue() === '@trigger.dev/sdk/v3',
+	)
+
+	if (triggerImport) {
+		// If import exists, ensure it has logger
+		const namedImports = triggerImport.getNamedImports()
+		if (!namedImports.some((imp) => imp.getName() === 'logger')) {
+			triggerImport.addNamedImport('logger')
+		}
+	} else {
+		// Add new import with both defineConfig and logger
+		sourceFile.addImportDeclaration({
+			moduleSpecifier: '@trigger.dev/sdk/v3',
+			namedImports: [{ name: 'defineConfig' }, { name: 'logger' }],
+		})
+	}
 
 	// Find the defineConfig call
 	const defineConfigCall = sourceFile.getFirstDescendantByKind(

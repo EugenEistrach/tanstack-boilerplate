@@ -216,6 +216,7 @@ jobs:
         id: deploy
         env:
           TRIGGER_ACCESS_TOKEN: ${{ secrets.TRIGGER_ACCESS_TOKEN }}
+          TRIGGER_API_URL: https://trigger.perfux.dev
         run: |
           set -euxo pipefail
           # Capture exit code explicitly
@@ -227,6 +228,6 @@ jobs:
 
           # Exit with proper code based on deployment success
           if [ -n "${DEPLOY_EXIT:-}" ]; then
-            echo "::error::Trigger.dev deployment failed with exit code $DEPLOY_EXIT"
+            echo "Trigger.dev deployment failed with exit code $DEPLOY_EXIT"
             exit 1
           fi
