@@ -20,6 +20,9 @@ import {
 import { trigger } from '@/features/trigger.js'
 import { ensureNotCanceled, validate, waitForAutomatedAction } from '@/utils.js'
 
+const repo = 'EugenEistrach/tanstack-boilerplate'
+const cliPath = 'packages/create-et-app/src'
+
 const features = {
 	trigger,
 	fly,
@@ -37,7 +40,7 @@ async function cloneAndSetupLocalProject() {
 		successMessage: 'et-stack cloned successfully ✅',
 		errorMessage: 'Failed to clone et-stack project ❌',
 		action: async () => {
-			const emitter = degit('EugenEistrach/tanstack-boilerplate', {
+			const emitter = degit(repo, {
 				cache: false,
 				force: true,
 				verbose: true,
@@ -111,10 +114,7 @@ async function cloneAndSetupLocalProject() {
 			await fs.writeFile(
 				path.join(projectDir, '.github/workflows/deploy.yml'),
 				await fs.readFile(
-					path.join(
-						projectDir,
-						'packages/create-et-app/src/2/templates/deploy.yml',
-					),
+					path.join(projectDir, `${cliPath}/templates/deploy.yml`),
 					'utf8',
 				),
 			)
@@ -340,7 +340,7 @@ async function applyTemplates(ctx: FeatureContext) {
 				await fs.copy(
 					path.join(
 						process.cwd(),
-						'packages/create-et-app/src/templates/.github/workflows/deploy-with-fly-and-trigger.yml',
+						`${cliPath}/templates/.github/workflows/deploy-with-fly-and-trigger.yml`,
 					),
 					path.join(ctx.projectDir, '.github/workflows/deploy.yml'),
 				)
@@ -348,7 +348,7 @@ async function applyTemplates(ctx: FeatureContext) {
 				await fs.copy(
 					path.join(
 						process.cwd(),
-						'packages/create-et-app/src/templates/.github/workflows/deploy-with-fly.yml',
+						`${cliPath}/templates/.github/workflows/deploy-with-fly.yml`,
 					),
 					path.join(ctx.projectDir, '.github/workflows/deploy.yml'),
 				)
@@ -356,7 +356,7 @@ async function applyTemplates(ctx: FeatureContext) {
 				await fs.copy(
 					path.join(
 						process.cwd(),
-						'packages/create-et-app/src/templates/.github/workflows/deploy-with-trigger.yml',
+						`${cliPath}/templates/.github/workflows/deploy-with-trigger.yml`,
 					),
 					path.join(ctx.projectDir, '.github/workflows/deploy.yml'),
 				)
