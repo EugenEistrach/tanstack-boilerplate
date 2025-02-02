@@ -3,6 +3,11 @@ name: Publish create-et-app Package
 on:
   workflow_dispatch:
 
+# Add these permissions
+permissions:
+  contents: write
+  packages: write
+
 jobs:
   publish:
     runs-on: ubuntu-latest
