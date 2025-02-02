@@ -12,21 +12,25 @@ import {
 	verifyCliDependencies,
 } from '@/check-cli-dependencies.js'
 import { fly } from '@/features/fly.js'
+import { githubOauth } from '@/features/github-oauth.js'
 import { githubRepo } from '@/features/github-repo.js'
 import {
 	type AvailableFeatures,
 	type FeatureContext,
 } from '@/features/index.js'
 import { trigger } from '@/features/trigger.js'
+import { turso } from '@/features/turso.js'
 import { ensureNotCanceled, validate, waitForAutomatedAction } from '@/utils.js'
 
 const repo = 'EugenEistrach/tanstack-boilerplate'
 const cliPath = 'packages/create-et-app/src'
 
 const features = {
-	trigger,
-	fly,
 	githubRepo,
+	turso,
+	fly,
+	trigger,
+	githubOauth,
 }
 
 async function cloneAndSetupLocalProject() {
@@ -166,12 +170,15 @@ async function askWhichFeaturesToSetup() {
 				{
 					value: 'githubRepo',
 					label: 'GitHub Repository',
-					hint: 'With gh action for automated deployments',
 				},
 				{ value: 'turso', label: 'Turso Database' },
 				{ value: 'fly', label: 'Fly.io Deployment' },
 				{ value: 'trigger', label: 'Trigger.dev Integration' },
-				{ value: 'githubOauth', label: 'GitHub OAuth sso' },
+				{
+					value: 'githubOauth',
+					label: 'GitHub OAuth sso',
+					hint: 'Only applies if Fly.io was selected',
+				},
 			],
 			initialValues: ['githubRepo', 'turso', 'fly', 'trigger', 'githubOauth'],
 			required: false,
@@ -365,6 +372,129 @@ async function applyTemplates(ctx: FeatureContext) {
 	})
 }
 
+async function generateProductionChecklist(ctx: FeatureContext) {
+	const pendingFeatures = ctx.selectedFeatures.filter(
+		(f) => !ctx.completedFeatures.includes(f),
+	)
+
+	if (
+		pendingFeatures.length === 0 &&
+		Object.keys(ctx.flySecretsToSet).length === 0 &&
+		Object.keys(ctx.triggerSecretsToSet).length === 0 &&
+		Object.keys(ctx.githubSecretsToSet).length === 0
+	) {
+		return false
+	}
+
+	let markdown = '# Production Setup Checklist\n\n'
+	markdown +=
+		'This file contains manual steps that need to be completed for production setup.\n\n'
+
+	// Add pending features manual instructions
+	if (pendingFeatures.length > 0) {
+		markdown += '## Pending Features Setup\n\n'
+		for (const featureCode of pendingFeatures) {
+			const feature = features[featureCode]
+			if (feature.manualInstructions) {
+				markdown += `### ${feature.label}\n\n`
+				feature.manualInstructions
+					.filter(
+						(instruction) =>
+							!instruction.includes('Set') || !instruction.includes('secret'),
+					)
+					.forEach((instruction) => {
+						markdown += `- [ ] ${instruction}\n`
+					})
+				markdown += '\n'
+			}
+		}
+	}
+
+	// Add environment variables section
+	const allSecrets = {
+		'Fly.io Secrets': ctx.flySecretsToSet,
+		'Trigger.dev Secrets': ctx.triggerSecretsToSet,
+		'GitHub Secrets': ctx.githubSecretsToSet,
+	}
+
+	const hasSecrets = Object.values(allSecrets).some(
+		(secrets) => Object.keys(secrets).length > 0,
+	)
+
+	if (hasSecrets) {
+		markdown += '## Environment Variables to Set\n\n'
+
+		for (const [platform, secrets] of Object.entries(allSecrets)) {
+			if (Object.keys(secrets).length > 0) {
+				markdown += `### ${platform}\n\n`
+				for (const [key, value] of Object.entries(secrets)) {
+					markdown += `- [ ] \`${key}\`${value ? ` (example: ${value})` : ''}\n`
+				}
+				markdown += '\n'
+			}
+		}
+	}
+
+	await fs.writeFile(
+		path.join(ctx.projectDir, 'PRODUCTION-CHECKLIST.md'),
+		markdown,
+	)
+
+	log.info('Created PRODUCTION-CHECKLIST.md with pending setup instructions')
+	return true
+}
+
+async function generateReadme(ctx: FeatureContext, appDisplayName: string) {
+	let markdown = `# ${appDisplayName}\n\n`
+
+	// Quick start section
+	markdown += '## Quick Start\n\n'
+	markdown += '```bash\n'
+	markdown += '# Install dependencies\n'
+	markdown += 'pnpm install\n\n'
+	markdown += '# Start development server\n'
+	markdown += 'pnpm dev\n'
+	markdown += '```\n\n'
+
+	// Key Commands section
+	markdown += '## Key Commands\n\n'
+	markdown += '```bash\n'
+	markdown += '# Development\n'
+	markdown += 'pnpm dev           # Start development server\n'
+	markdown += 'pnpm build         # Build for production\n'
+	markdown += 'pnpm start         # Start production server\n\n'
+
+	markdown += '# Database\n'
+	markdown += 'pnpm db:migrate    # Run database migrations\n'
+	markdown += 'pnpm db:studio     # Open database UI\n'
+	markdown += 'pnpm db:reset      # Reset database (clear + migrate + seed)\n\n'
+
+	if (ctx.selectedFeatures.includes('trigger')) {
+		markdown += '# Background Jobs\n'
+		markdown +=
+			'pnpm dlx trigger.dev@latest dev   # Start Trigger.dev development server\n\n'
+	}
+
+	markdown += '# Testing\n'
+	markdown += 'pnpm test          # Run tests\n'
+	markdown += 'pnpm typecheck     # Run typecheck\n'
+	markdown += 'pnpm lint          # Run lint\n'
+	markdown += 'pnpm verify        # Run all checks (lint, typecheck, test)\n'
+	markdown += '```\n\n'
+
+	// Add reference to production checklist if it exists
+	const hasChecklist = await fs.pathExists(
+		path.join(ctx.projectDir, 'PRODUCTION-CHECKLIST.md'),
+	)
+	if (hasChecklist) {
+		markdown += '\n## Production Setup\n\n'
+		markdown +=
+			'See `PRODUCTION-CHECKLIST.md` for production deployment steps.\n'
+	}
+
+	await fs.writeFile(path.join(ctx.projectDir, 'readme.md'), markdown)
+}
+
 async function cleanUp() {
 	await waitForAutomatedAction({
 		waitingMessage: 'Cleaning up...',
@@ -380,6 +510,7 @@ async function main() {
 	intro('Welcome to create-et-app!')
 
 	const { projectName } = await cloneAndSetupLocalProject()
+	const appDisplayName = await askAppDisplayName()
 	const selectedFeatures = await askWhichFeaturesToSetup()
 
 	const requiredClis: CliDependencyName[] = []
@@ -451,7 +582,8 @@ async function main() {
 	await executeTriggerPostActions(context)
 
 	await applyTemplates(context)
-
+	const checklistGenerated = await generateProductionChecklist(context)
+	await generateReadme(context, appDisplayName)
 	await cleanUp()
 
 	await waitForAutomatedAction({
@@ -486,6 +618,38 @@ async function main() {
 			})
 		}
 	}
+
+	log.info('\n🎉 Setup complete! Your project is ready.\n')
+
+	const links: string[] = []
+
+	if (context.completedFeatures.includes('githubRepo')) {
+		const { stdout } = await execa('git', ['remote', 'get-url', 'origin'], {
+			cwd: context.projectDir,
+		})
+		links.push(`GitHub Repository: ${stdout.trim()}`)
+	}
+
+	if (context.completedFeatures.includes('fly')) {
+		const flyUrl = `https://${context.projectName}.fly.dev`
+		links.push(`Production URL: ${flyUrl}`)
+	}
+
+	if (links.length > 0) {
+		log.info('\nQuick Links:')
+		links.forEach((link) => log.info(`  ${link}`))
+	}
+
+	if (checklistGenerated) {
+		log.info(
+			'Please review the PRODUCTION-CHECKLIST.md file for pending setup instructions.',
+		)
+	}
+
+	log.info('\nNext steps:')
+	log.info(`  1. cd ${context.projectName}`)
+	log.info('  2. pnpm dev    # Start development server')
+	log.info('  3. Open http://localhost:3000 in your browser\n')
 }
 
 process.on('uncaughtException', async (error) => {

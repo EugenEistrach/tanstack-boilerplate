@@ -165,7 +165,7 @@ export async function verifyCliDependencies(dependencies: CliDependencyName[]) {
 		if (!isInstalled) {
 			note(
 				[
-					`${cli.name} is required for automated setup of some features.`,
+					`${cli.name} is required for automated setup.`,
 					'',
 					'Installation instructions:',
 					...cli.installInstructions,
@@ -182,7 +182,7 @@ export async function verifyCliDependencies(dependencies: CliDependencyName[]) {
 
 			if (shouldWait) {
 				// Wait for installation and verify again
-				note('Installing... Press Enter once installation is complete')
+				note('Hit Enter after installation is complete')
 				await new Promise((resolve) => process.stdin.once('data', resolve))
 
 				isInstalled = await waitForCheck({
@@ -194,14 +194,14 @@ export async function verifyCliDependencies(dependencies: CliDependencyName[]) {
 
 				if (!isInstalled) {
 					note(
-						`${cli.name} is still not available. Some features will require manual setup.`,
+						`${cli.name} is still not available.\nSome features will need manual setup.`,
 						'Setup Continues',
 					)
 					continue
 				}
 			} else {
 				note(
-					`Continuing without ${cli.name}. Some features will require manual setup.`,
+					`Continuing without ${cli.name}.\nSome features will need manual setup.`,
 					'Setup Continues',
 				)
 				continue
@@ -237,13 +237,13 @@ export async function verifyCliDependencies(dependencies: CliDependencyName[]) {
 							log.error(error.message)
 						}
 						note(
-							`Failed to log in to ${cli.name}. Some features will require manual setup.`,
+							`Login to ${cli.name} failed.\nSome features will need manual setup.`,
 							'Login Failed',
 						)
 					}
 				} else {
 					note(
-						`Continuing without ${cli.name} login. Some features will require manual setup.`,
+						`Continuing without ${cli.name} login.\nSome features will need manual setup.`,
 						'Setup Continues',
 					)
 				}

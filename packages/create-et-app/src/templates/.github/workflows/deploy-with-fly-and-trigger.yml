@@ -219,7 +219,7 @@ jobs:
         run: |
           set -euxo pipefail
           # Capture exit code explicitly
-          pnpm deploy-trigger || DEPLOY_EXIT=$?
+          pnpm dlx trigger.dev@latest deploy || DEPLOY_EXIT=$?
 
           # Always attempt to print logs if they exist
           echo "=== Trigger.dev Build Logs ==="
