@@ -7,6 +7,18 @@ import { ensureNotCanceled, validate } from '@/utils.js'
 
 export const fly = feature('fly', {
 	label: 'Fly.io',
+	manualInstructions: [
+		'1. Install Fly CLI: brew install flyctl',
+		'2. Login to Fly: fly auth login',
+		'3. Create new app: fly apps create [your-app-name]',
+		'4. Create deploy token: fly tokens create deploy',
+		'5. Set required secrets in GitHub repo:',
+		'   - FLY_API_TOKEN',
+		'   - SESSION_SECRET (32+ char random string)',
+		'   - API_KEY (32+ char random string)',
+		'   - APPLICATION_URL (https://[your-app].fly.dev)',
+		'   - ADMIN_USER_EMAILS (comma-separated list)',
+	],
 	onSelected: async (ctx) => {
 		if (!ctx.cliStatus.gh?.isLoggedIn) {
 			throw new Error('GitHub CLI not available or not logged in')

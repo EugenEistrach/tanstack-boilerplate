@@ -15,6 +15,8 @@ export type FlySecrets = {
 	TURSO_DATABASE_URL?: string
 	TURSO_AUTH_TOKEN?: string
 	TRIGGER_API_KEY?: string
+	GITHUB_CLIENT_ID?: string
+	GITHUB_CLIENT_SECRET?: string
 }
 
 export type TriggerSecrets = {
