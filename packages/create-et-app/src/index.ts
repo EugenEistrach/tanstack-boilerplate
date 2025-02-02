@@ -105,19 +105,14 @@ async function cloneAndSetupLocalProject() {
 				await fs.remove(triggerConfigPath)
 			}
 
-			await fs.remove(path.join(projectDir, 'src/tasks'))
+			await fs.remove(path.join(projectDir, 'src/trigger'))
+			await fs.remove(path.join(projectDir, 'pnpm-workspace.yaml'))
 
 			// update locale files
 			const messagesDir = path.join(projectDir, 'messages')
 			const localeFiles = ['en.json', 'de.json']
 
-			await fs.writeFile(
-				path.join(projectDir, '.github/workflows/deploy.yml'),
-				await fs.readFile(
-					path.join(projectDir, `${cliPath}/templates/workflows/deploy.yml`),
-					'utf8',
-				),
-			)
+			await fs.remove(path.join(projectDir, '.github/workflows/deploy.yml'))
 
 			for (const file of localeFiles) {
 				const filePath = path.join(messagesDir, file)
@@ -146,6 +141,11 @@ async function cloneAndSetupLocalProject() {
 		successMessage: 'Git initialized ✅',
 		errorMessage: 'Failed to initialize git ❌',
 		action: async () => {
+			await fs.appendFile(
+				path.join(projectDir, '.gitignore'),
+				'\npackages/create-et-app',
+			)
+
 			await execa('git', ['init'], { cwd: projectDir })
 			await execa('git', ['add', '.'], { cwd: projectDir })
 			await execa('git', ['commit', '-m', 'Initial commit'], {
@@ -339,7 +339,7 @@ async function applyTemplates(ctx: FeatureContext) {
 			) {
 				await fs.copy(
 					path.join(
-						process.cwd(),
+						ctx.projectDir,
 						`${cliPath}/templates/.github/workflows/deploy-with-fly-and-trigger.yml`,
 					),
 					path.join(ctx.projectDir, '.github/workflows/deploy.yml'),
@@ -347,7 +347,7 @@ async function applyTemplates(ctx: FeatureContext) {
 			} else if (ctx.completedFeatures.includes('fly')) {
 				await fs.copy(
 					path.join(
-						process.cwd(),
+						ctx.projectDir,
 						`${cliPath}/templates/.github/workflows/deploy-with-fly.yml`,
 					),
 					path.join(ctx.projectDir, '.github/workflows/deploy.yml'),
@@ -355,7 +355,7 @@ async function applyTemplates(ctx: FeatureContext) {
 			} else if (ctx.completedFeatures.includes('trigger')) {
 				await fs.copy(
 					path.join(
-						process.cwd(),
+						ctx.projectDir,
 						`${cliPath}/templates/.github/workflows/deploy-with-trigger.yml`,
 					),
 					path.join(ctx.projectDir, '.github/workflows/deploy.yml'),
@@ -372,7 +372,6 @@ async function cleanUp() {
 		errorMessage: 'Failed to cleanup ❌',
 		action: async () => {
 			await fs.remove(path.join(process.cwd(), 'packages'))
-			await fs.remove(path.join(process.cwd(), 'pnpm-workspace.yaml'))
 		},
 	})
 }
@@ -454,6 +453,39 @@ async function main() {
 	await applyTemplates(context)
 
 	await cleanUp()
+
+	await waitForAutomatedAction({
+		waitingMessage: 'Squashing changes into initial commit',
+		successMessage: 'Changes squashed into initial commit ✅',
+		errorMessage: 'Failed to squash changes ❌',
+		action: async () => {
+			await execa('git', ['add', '.'], { cwd: context.projectDir })
+			await execa('git', ['commit', '--amend', '--no-edit'], {
+				cwd: context.projectDir,
+			})
+		},
+	})
+
+	if (context.selectedFeatures.includes('githubRepo')) {
+		const yes = ensureNotCanceled(
+			await confirm({
+				message:
+					'Should we push to GitHub? This should also trigger deploy action.',
+			}),
+		)
+		if (yes) {
+			await waitForAutomatedAction({
+				waitingMessage: 'Pushing to GitHub',
+				successMessage: 'Pushed to GitHub ✅',
+				errorMessage: 'Failed to push to GitHub ❌',
+				action: async () => {
+					await execa('git', ['push', '--force'], {
+						cwd: context.projectDir,
+					})
+				},
+			})
+		}
+	}
 }
 
 process.on('uncaughtException', async (error) => {

@@ -114,8 +114,8 @@ export default [
 				},
 				{
 					mode: 'full',
-					type: 'tasks',
-					pattern: ['src/tasks/**/*'],
+					type: 'trigger',
+					pattern: ['src/trigger/**/*'],
 				},
 				{
 					mode: 'full',
@@ -133,8 +133,8 @@ export default [
 					default: 'disallow',
 					rules: [
 						{
-							from: ['tasks'],
-							allow: ['tasks'],
+							from: ['trigger'],
+							allow: ['trigger'],
 						},
 						{
 							from: ['core'],
@@ -152,7 +152,7 @@ export default [
 							],
 						},
 						{
-							from: ['routes', 'neverImport', 'tasks'],
+							from: ['routes', 'neverImport', 'trigger'],
 							allow: ['shared', 'feature'],
 						},
 						{
