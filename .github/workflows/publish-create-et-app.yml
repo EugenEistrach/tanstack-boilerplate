@@ -1,0 +1,61 @@
+name: Publish create-et-app Package
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'packages/create-et-app/**'
+      - '!packages/create-et-app/package.json'
+      - '!packages/create-et-app/pnpm-lock.yaml'
+
+jobs:
+  publish:
+    if:
+      ${{ !contains(github.event.head_commit.message, '[skip ci]') &&
+      github.actor != 'github-actions[bot]' }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: packages/create-et-app
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm build
+
+      - name: Git configuration
+        run: |
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "GitHub Actions"
+
+      - name: Bump version
+        run: |
+          pnpm version patch -m "chore: release create-et-app@%s [skip ci]"
+          echo "VERSION=$(node -p 'require(\"./package.json\").version')" >> $GITHUB_ENV
+
+      - name: Push changes
+        run: |
+          git push --follow-tags
+
+      - name: Publish to NPM
+        run: pnpm publish --no-git-checks --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

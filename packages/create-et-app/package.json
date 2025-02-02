@@ -1,6 +1,8 @@
 {
   "name": "create-et-app",
-  "version": "0.1.0",
+  "author": "Eugen Eistrach",
+  "version": "1.0",
+  "license": "MIT",
   "description": "CLI tool to create a new application using the et-stack",
   "type": "module",
   "bin": {
@@ -9,6 +11,21 @@
   "files": [
     "dist"
   ],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EugenEistrach/create-et-app.git"
+  },
+  "bugs": {
+    "url": "https://github.com/EugenEistrach/create-et-app/issues"
+  },
   "scripts": {
     "build": "tsup src/index.ts --format esm --dts",
     "dev": "tsup src/index.ts --format esm --dts --watch",
@@ -40,7 +57,7 @@
     "v3": "link:@trigger.dev/sdk/v3"
   },
   "engines": {
-    "node": ">=22fs.0.0"
+    "node": ">=22.0.0"
   },
   "publishConfig": {
     "access": "public"
