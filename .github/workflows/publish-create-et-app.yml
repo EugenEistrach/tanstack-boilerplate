@@ -1,6 +1,7 @@
 name: Publish create-et-app Package
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
