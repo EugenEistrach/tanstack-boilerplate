@@ -1,0 +1,47 @@
+{
+  "name": "create-et-app",
+  "version": "0.1.0",
+  "description": "CLI tool to create a new application using the et-stack",
+  "type": "module",
+  "bin": {
+    "create-et-app": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts",
+    "dev": "tsup src/index.ts --format esm --dts --watch",
+    "lint": "eslint src --ext .ts",
+    "clean": "rm -rf dist",
+    "verify": "tsx scripts/verify.ts"
+  },
+  "keywords": [
+    "create-app",
+    "tanstack",
+    "boilerplate",
+    "cli"
+  ],
+  "dependencies": {
+    "@clack/prompts": "^0.7.0",
+    "arktype": "^2.0.4",
+    "degit": "^2.8.4",
+    "execa": "^8.0.1",
+    "fs-extra": "^11.2.0",
+    "ora": "^8.0.1",
+    "v3": "link:@trigger.dev/sdk/v3",
+    "@types/degit": "^2.8.6",
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^20.11.16",
+    "open": "^10.1.0",
+    "tsup": "^8.0.1",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=22fs.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

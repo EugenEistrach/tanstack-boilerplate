@@ -28,6 +28,5 @@ src/
 │   └── shared/     # Isomorphic utilities
 ├── routes/                   # Route components
 ├── styles/globals.css        # Global styles
-├── tasks/                    # Background tasks and cron jobs
 └── tests/                    # Test related files
 ```

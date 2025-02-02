@@ -1,6 +1,6 @@
 ---
 description: Server-side development guidelines including business logic, error handling, logging
-globs: 
+globs: *.server.ts
 ---
  # Server Guidelines
 
@@ -45,7 +45,3 @@ logger.error({ operation: 'updateUser', err: err.message }, 'Operation failed')
    - `warn`: Warning conditions
    - `info`: General information about system operation
    - `debug`: Detailed information for debugging
-
-### Exception: trigger.dev Tasks
-
-For trigger.dev background tasks, use the logger provided by the trigger.dev context instead of our application logger.

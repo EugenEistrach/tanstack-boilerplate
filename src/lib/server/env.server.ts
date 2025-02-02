@@ -2,7 +2,6 @@ import { type } from 'arktype'
 
 // Schema definition
 export const environmentSchema = type({
-	APP_NAME: "string >= 1 = 'Tanstack Boilerplate'",
 	'CI?': type('string >= 1').pipe((val) => val === 'true'),
 	'MOCKS?': type('string >= 1').pipe((val) => val === 'true'),
 	'NODE_ENV?': 'string >= 1',
@@ -12,8 +11,6 @@ export const environmentSchema = type({
 	LOCAL_DATABASE_PATH: "string = 'db.sqlite'",
 	'GITHUB_CLIENT_ID?': 'string >= 1',
 	'GITHUB_CLIENT_SECRET?': 'string >= 1',
-	'DISCORD_CLIENT_ID?': 'string >= 1',
-	'DISCORD_CLIENT_SECRET?': 'string >= 1',
 	SESSION_SECRET: 'string >= 1',
 	'RESEND_API_KEY?': 'string >= 1',
 	'EMAIL_FROM?': 'string >= 1',

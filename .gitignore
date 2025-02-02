@@ -24,3 +24,5 @@ node_modules
 unhandled-requests/
 
 .trigger
+
+.test-app/
