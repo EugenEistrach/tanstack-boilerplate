@@ -90,7 +90,7 @@ jobs:
       - name: ⎔ Setup node
         uses: actions/setup-node@v3
         with:
-          node-version: 20
+          node-version: 22
           cache: 'pnpm'
 
       - name: 📁 Get pnpm store directory
@@ -206,7 +206,7 @@ jobs:
       - name: ⎔ Setup node
         uses: actions/setup-node@v3
         with:
-          node-version: 20
+          node-version: 22
           cache: 'pnpm'
 
       - name: 📦 Install dependencies
