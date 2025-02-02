@@ -158,7 +158,7 @@ async function cloneAndSetupLocalProject() {
 		},
 	})
 
-	return { projectName }
+	return { projectName, appDisplayName }
 }
 
 async function askWhichFeaturesToSetup() {
@@ -249,19 +249,6 @@ async function executeFlyPostActions(ctx: FeatureContext) {
 			)
 		},
 	})
-
-	const yes = ensureNotCanceled(
-		await confirm({
-			message: 'Should we run fly deploy?',
-		}),
-	)
-
-	if (yes) {
-		await execa('fly', ['deploy', '--app', ctx.projectName], {
-			cwd: ctx.projectDir,
-			stdio: 'inherit',
-		})
-	}
 }
 
 async function executeGitHubPostActions(ctx: FeatureContext) {
@@ -377,12 +364,19 @@ async function generateProductionChecklist(ctx: FeatureContext) {
 		(f) => !ctx.completedFeatures.includes(f),
 	)
 
-	if (
-		pendingFeatures.length === 0 &&
-		Object.keys(ctx.flySecretsToSet).length === 0 &&
-		Object.keys(ctx.triggerSecretsToSet).length === 0 &&
-		Object.keys(ctx.githubSecretsToSet).length === 0
-	) {
+	// Add environment variables section
+	const allSecrets = {
+		'Fly.io Secrets': ctx.flySecretsToSet,
+		'Trigger.dev Secrets': ctx.triggerSecretsToSet,
+		'GitHub Secrets': ctx.githubSecretsToSet,
+	}
+
+	// Check if there are any missing secrets (secrets that need to be set)
+	const hasMissingSecrets = Object.values(allSecrets).some((secrets) =>
+		Object.values(secrets).some((value) => !value),
+	)
+
+	if (pendingFeatures.length === 0 && !hasMissingSecrets) {
 		return false
 	}
 
@@ -410,25 +404,19 @@ async function generateProductionChecklist(ctx: FeatureContext) {
 		}
 	}
 
-	// Add environment variables section
-	const allSecrets = {
-		'Fly.io Secrets': ctx.flySecretsToSet,
-		'Trigger.dev Secrets': ctx.triggerSecretsToSet,
-		'GitHub Secrets': ctx.githubSecretsToSet,
-	}
-
-	const hasSecrets = Object.values(allSecrets).some(
-		(secrets) => Object.keys(secrets).length > 0,
-	)
-
-	if (hasSecrets) {
-		markdown += '## Environment Variables to Set\n\n'
+	// Add missing secrets section
+	if (hasMissingSecrets) {
+		markdown += '## Required Secrets\n\n'
+		markdown += 'The following secrets need to be set:\n\n'
 
 		for (const [platform, secrets] of Object.entries(allSecrets)) {
-			if (Object.keys(secrets).length > 0) {
+			const missingSecrets = Object.entries(secrets).filter(
+				([_, value]) => !value,
+			)
+			if (missingSecrets.length > 0) {
 				markdown += `### ${platform}\n\n`
-				for (const [key, value] of Object.entries(secrets)) {
-					markdown += `- [ ] \`${key}\`${value ? ` (example: ${value})` : ''}\n`
+				for (const [key] of missingSecrets) {
+					markdown += `- [ ] \`${key}\`\n`
 				}
 				markdown += '\n'
 			}
@@ -489,7 +477,7 @@ async function generateReadme(ctx: FeatureContext, appDisplayName: string) {
 	if (hasChecklist) {
 		markdown += '\n## Production Setup\n\n'
 		markdown +=
-			'See `PRODUCTION-CHECKLIST.md` for production deployment steps.\n'
+			'See [`PRODUCTION-CHECKLIST.md`](./PRODUCTION-CHECKLIST.md) for production deployment steps.\n'
 	}
 
 	await fs.writeFile(path.join(ctx.projectDir, 'readme.md'), markdown)
@@ -509,8 +497,7 @@ async function cleanUp() {
 async function main() {
 	intro('Welcome to create-et-app!')
 
-	const { projectName } = await cloneAndSetupLocalProject()
-	const appDisplayName = await askAppDisplayName()
+	const { projectName, appDisplayName } = await cloneAndSetupLocalProject()
 	const selectedFeatures = await askWhichFeaturesToSetup()
 
 	const requiredClis: CliDependencyName[] = []
