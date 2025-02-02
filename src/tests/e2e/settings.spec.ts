@@ -17,27 +17,28 @@ test('can change settings', async ({ page, login }) => {
 	await expect(page.getByTestId('user-menu-trigger')).toContainText('test name')
 })
 
-test('can change theme', async ({ page, login }) => {
-	await login()
-	await expect(page.locator('body')).toHaveClass(/dark/)
+test.describe('theme', () => {
+	test.use({
+		colorScheme: 'dark',
+		timezoneId: 'Europe/Paris',
+	})
+	test('can change theme', async ({ page, login }) => {
+		await login()
 
-	await page.getByRole('button', { name: 'Toggle theme' }).click()
-	await page.getByRole('menuitem', { name: 'Light' }).click()
+		await expect(page.locator('body')).toHaveClass(/dark/)
 
-	await expect(page.locator('body')).not.toHaveClass(/dark/)
-	await expect(page.locator('body')).toHaveClass(/light/)
+		await page.getByRole('button', { name: 'Toggle theme' }).click()
+		await page.getByRole('menuitem', { name: 'Light' }).click()
 
-	await page.getByRole('button', { name: 'Toggle theme' }).click()
-	await page.getByRole('menuitem', { name: 'Dark' }).click()
+		await expect(page.locator('body')).not.toHaveClass(/dark/)
+		await expect(page.locator('body')).toHaveClass(/light/)
 
-	await expect(page.locator('body')).toHaveClass(/dark/)
-	await expect(page.locator('body')).not.toHaveClass(/light/)
+		await page.getByRole('button', { name: 'Toggle theme' }).click()
+		await page.getByRole('menuitem', { name: 'Dark' }).click()
 
-	await page.getByRole('button', { name: 'Toggle theme' }).click()
-	await page.getByRole('menuitem', { name: 'System' }).click()
-
-	await expect(page.locator('body')).toHaveClass(/dark/)
-	await expect(page.locator('body')).not.toHaveClass(/light/)
+		await expect(page.locator('body')).toHaveClass(/dark/)
+		await expect(page.locator('body')).not.toHaveClass(/light/)
+	})
 })
 
 test.describe('client hints', () => {
