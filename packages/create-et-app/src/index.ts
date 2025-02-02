@@ -114,7 +114,7 @@ async function cloneAndSetupLocalProject() {
 			await fs.writeFile(
 				path.join(projectDir, '.github/workflows/deploy.yml'),
 				await fs.readFile(
-					path.join(projectDir, `${cliPath}/templates/deploy.yml`),
+					path.join(projectDir, `${cliPath}/templates/workflows/deploy.yml`),
 					'utf8',
 				),
 			)
