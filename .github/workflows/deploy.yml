@@ -22,7 +22,7 @@ jobs:
     strategy:
       matrix:
         check: [typecheck, lint, test]
-        node-version: [20]
+        node-version: [22]
       fail-fast: false
     steps:
       - name: ⬇️ Checkout repo
