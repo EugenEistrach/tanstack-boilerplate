@@ -39,7 +39,7 @@ jobs:
       - name: Bump version
         working-directory: packages/create-et-app
         run: |
-          pnpm version patch -m "chore: release create-et-app@%s [skip ci]"
+          pnpm version minor -m "chore: release create-et-app@%s [skip ci]"
           echo "VERSION=$(node -p 'require(\"./package.json\").version')" >> $GITHUB_ENV
 
       - name: Push changes
