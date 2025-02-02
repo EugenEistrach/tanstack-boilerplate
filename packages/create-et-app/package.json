@@ -1,7 +1,7 @@
 {
   "name": "create-et-app",
   "author": "Eugen Eistrach",
-  "version": "1.0",
+  "version": "1.0.0",
   "license": "MIT",
   "description": "CLI tool to create a new application using the et-stack",
   "type": "module",
