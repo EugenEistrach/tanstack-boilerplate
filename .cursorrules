@@ -5,7 +5,7 @@
 - TanStack (Router, Query, Start)
 - TypeScript
 - SQLite (local) / Turso (production) with Drizzle ORM
-- Better-auth with GitHub/Discord SSO
+- Better-auth with GitHub SSO
 - react-hook-form for form handling
 - TailwindCSS with shadcn/ui
 - trigger.dev for background jobs

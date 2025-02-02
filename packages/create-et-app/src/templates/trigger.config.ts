@@ -4,9 +4,10 @@ import { defineConfig, logger } from '@trigger.dev/sdk/v3'
 
 const APPLICATION_URL = process.env['APPLICATION_URL']
 const API_KEY = process.env['API_KEY']
+const TRIGGER_PROJECT_ID = process.env['TRIGGER_PROJECT_ID']
 
 export default defineConfig({
-	project: 'proj_tlgfryfhwprwupwefzie',
+	project: TRIGGER_PROJECT_ID ?? '',
 	runtime: 'node',
 	maxDuration: 300,
 	retries: {

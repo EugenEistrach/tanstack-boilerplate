@@ -14,14 +14,6 @@ const github =
 			}
 		: undefined
 
-const discord =
-	env.DISCORD_CLIENT_ID && env.DISCORD_CLIENT_SECRET
-		? {
-				clientId: env.DISCORD_CLIENT_ID,
-				clientSecret: env.DISCORD_CLIENT_SECRET,
-			}
-		: undefined
-
 export const authServer = betterAuth({
 	baseURL: env.APPLICATION_URL,
 	secret: env.SESSION_SECRET,
@@ -30,7 +22,6 @@ export const authServer = betterAuth({
 	}),
 	socialProviders: {
 		...(github && { github }),
-		...(discord && { discord }),
 	},
 	plugins: [admin(), organization()],
 	user: {

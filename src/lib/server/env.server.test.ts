@@ -3,13 +3,13 @@ import { env } from '@/lib/server/env.server'
 import { mockEnvOverrides } from '@/tests/mocks/vitest.mocks'
 
 test('basic env validation', () => {
-	expect(env.APP_NAME).toBe('Tanstack Boilerplate')
+	expect(env.APPLICATION_URL).toBe('http://localhost:3000')
 })
 
 test('mock works', () => {
 	mockEnvOverrides({
-		APP_NAME: 'Mocked App Name',
+		APPLICATION_URL: 'http://localhost:3002',
 	})
 
-	expect(env.APP_NAME).toBe('Mocked App Name')
+	expect(env.APPLICATION_URL).toBe('http://localhost:3002')
 })
