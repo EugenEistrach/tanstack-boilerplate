@@ -45,8 +45,11 @@ jobs:
       - name: Bump version
         working-directory: packages/create-et-app
         run: |
-          pnpm version minor -m "chore: release create-et-app@%s [skip ci]"
-          echo "VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_ENV
+          pnpm version minor --no-git-tag-version
+          git add package.json
+          git commit -m "chore: bump version to $(node -p \"require('./package.json').version\") [skip ci]"
+          git tag "v$(node -p \"require('./package.json').version\")"
+          echo "VERSION=$(node -p \"require('./package.json').version\")" >> $GITHUB_ENV
 
       - name: Push changes
         run: |
