@@ -62,7 +62,7 @@ export function UsersList() {
 	if (isError) return <div>{m.error_generic()}</div>
 
 	return (
-		<div className="">
+		<div>
 			<DataTable columns={columns} data={data?.data?.users || []} />
 		</div>
 	)

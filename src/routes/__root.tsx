@@ -93,18 +93,6 @@ export const Route = createRootRouteWithContext<{
 			// 	href: 'https://api.fontshare.com/v2/css?f[]=satoshi@300,301,400,401,500,501,700,701,900,901,1,2&display=swap',
 			// },
 		],
-		// workaround for hmr https://github.com/TanStack/router/issues/1992
-		scripts: import.meta.env.DEV
-			? [
-					{
-						type: 'module',
-						children: `import RefreshRuntime from "/_build/@react-refresh";
-RefreshRuntime.injectIntoGlobalHook(window)
-window.$RefreshReg$ = () => {}
-window.$RefreshSig$ = () => (type) => type`,
-					},
-				]
-			: [],
 	}),
 	component: RootComponent,
 })
