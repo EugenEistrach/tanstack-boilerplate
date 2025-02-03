@@ -27,17 +27,17 @@ function ResetPasswordSuccess() {
 					<CheckCircle2 className="h-6 w-6" />
 				</div>
 				<CardTitle className="text-center text-2xl font-bold">
-					{m.reset_password_email_sent_title()}
+					{m.curly_knotty_iguana_cut()}
 				</CardTitle>
 			</CardHeader>
 			<CardContent className="space-y-6">
 				<div className="space-y-4 text-center text-sm text-muted-foreground">
-					<p>{m.reset_password_email_sent_description()}</p>
-					<p className="text-xs">{m.reset_password_email_sent_note()}</p>
+					<p>{m.helpful_each_dolphin_tend()}</p>
+					<p className="text-xs">{m.grassy_orange_wren_dial()}</p>
 				</div>
 				<div className="flex justify-center">
 					<Button asChild variant="link">
-						<Link to="/login">{m.reset_password_return_to_login()}</Link>
+						<Link to="/login">{m.trite_east_alligator_grin()}</Link>
 					</Button>
 				</div>
 			</CardContent>
@@ -73,7 +73,7 @@ function NewPasswordForm({ token }: { token: string }) {
 			return result
 		},
 		onError: (error) => {
-			toast.error(error.message || m.error_generic())
+			toast.error(error.message || m.few_bland_rooster_trip())
 		},
 	})
 
@@ -89,16 +89,16 @@ function NewPasswordForm({ token }: { token: string }) {
 						<CheckCircle2 className="h-6 w-6" />
 					</div>
 					<CardTitle className="text-center text-2xl font-bold">
-						{m.reset_password_success()}
+						{m.polite_fine_sawfish_hike()}
 					</CardTitle>
 				</CardHeader>
 				<CardContent className="space-y-6">
 					<p className="text-center text-sm text-muted-foreground">
-						{m.reset_password_success_description()}
+						{m.wise_sound_tiger_dream()}
 					</p>
 					<div className="flex justify-center">
 						<Button asChild>
-							<Link to="/login">{m.reset_password_success_login()}</Link>
+							<Link to="/login">{m.full_many_meerkat_lock()}</Link>
 						</Button>
 					</div>
 				</CardContent>
@@ -113,12 +113,12 @@ function NewPasswordForm({ token }: { token: string }) {
 					<KeyRound className="h-6 w-6" />
 				</div>
 				<CardTitle className="text-center text-2xl font-bold">
-					{m.new_password_title()}
+					{m.dirty_quick_vole_flow()}
 				</CardTitle>
 			</CardHeader>
 			<CardContent className="space-y-4">
 				<p className="text-center text-sm text-muted-foreground">
-					{m.new_password_subtitle()}
+					{m.cozy_funny_nils_revive()}
 				</p>
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -127,10 +127,10 @@ function NewPasswordForm({ token }: { token: string }) {
 							name="password"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>{m.register_password_label()}</FormLabel>
+									<FormLabel>{m.bald_brief_otter_swim()}</FormLabel>
 									<FormControl>
 										<PasswordInput
-											placeholder={m.register_password_placeholder()}
+											placeholder={m.factual_bold_lamb_arise()}
 											{...field}
 										/>
 									</FormControl>
@@ -145,7 +145,7 @@ function NewPasswordForm({ token }: { token: string }) {
 								className="w-full"
 								loading={resetPasswordMutation.isPending}
 							>
-								{m.new_password_button()}
+								{m.slow_mad_donkey_ripple()}
 							</LoadingButton>
 						</div>
 					</form>
@@ -177,7 +177,7 @@ export function ResetPasswordForm() {
 			return result
 		},
 		onError: (error) => {
-			toast.error(error.message || m.error_generic())
+			toast.error(error.message || m.few_bland_rooster_trip())
 		},
 	})
 
@@ -200,12 +200,12 @@ export function ResetPasswordForm() {
 					<DatabaseZap className="h-6 w-6" />
 				</div>
 				<CardTitle className="text-center text-2xl font-bold">
-					{m.reset_password_title()}
+					{m.inner_fine_osprey_clip()}
 				</CardTitle>
 			</CardHeader>
 			<CardContent className="space-y-4">
 				<p className="text-center text-sm text-muted-foreground">
-					{m.reset_password_subtitle()}
+					{m.dull_mushy_barbel_trip()}
 				</p>
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -214,15 +214,15 @@ export function ResetPasswordForm() {
 							name="email"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>{m.register_email_label()}</FormLabel>
+									<FormLabel>{m.tame_next_lobster_succeed()}</FormLabel>
 									<FormControl>
 										<Input
 											type="email"
-											placeholder={m.register_email_placeholder()}
+											placeholder={m.curly_fair_racoon_honor()}
 											{...field}
 										/>
 									</FormControl>
-									<FormMessage>{m.validation_email()}</FormMessage>
+									<FormMessage>{m.patchy_direct_ocelot_burn()}</FormMessage>
 								</FormItem>
 							)}
 						/>
@@ -232,14 +232,14 @@ export function ResetPasswordForm() {
 								className="w-full"
 								loading={resetPasswordMutation.isPending}
 							>
-								{m.reset_password_button()}
+								{m.house_arable_haddock_rest()}
 							</LoadingButton>
 						</div>
 					</form>
 				</Form>
 				<div className="flex justify-center">
 					<Button asChild variant="link">
-						<Link to="/login">{m.reset_password_back()}</Link>
+						<Link to="/login">{m.maroon_empty_jackal_boost()}</Link>
 					</Button>
 				</div>
 			</CardContent>

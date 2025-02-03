@@ -14,12 +14,12 @@ export const ErrorPage = ({ error }: ErrorComponentProps) => (
 	<div className="flex min-h-screen flex-col items-center justify-center bg-background p-4">
 		<h1 className="mb-4 text-6xl font-bold text-destructive">500</h1>
 		<p className="mb-4 text-xl text-muted-foreground">
-			{m.cute_arable_felix_gleam()}
+			{m.candid_fluffy_alpaca_quell()}
 		</p>
 		<div className="mb-4 w-full max-w-2xl overflow-auto rounded-lg bg-muted p-4">
-			<h2 className="mb-2 text-lg font-semibold">{m.pink_odd_crab_gleam()}</h2>
+			<h2 className="mb-2 text-lg font-semibold">{m.frail_fuzzy_porpoise_wish()}</h2>
 			<p className="mb-2 text-sm">
-				<strong>{m.extra_caring_zebra_advise()}</strong> {error.message}
+				<strong>{m.every_caring_sparrow_dust()}</strong> {error.message}
 			</p>
 		</div>
 
@@ -28,14 +28,14 @@ export const ErrorPage = ({ error }: ErrorComponentProps) => (
 				to="/"
 				className="rounded-lg bg-secondary px-6 py-3 text-secondary-foreground transition-colors hover:bg-secondary/90"
 			>
-				{m.male_brave_alligator_type()}
+				{m.frail_wild_monkey_trip()}
 			</Link>
 			<button
 				type="button"
 				onClick={() => window.location.reload()}
 				className="rounded-lg bg-primary px-6 py-3 text-primary-foreground transition-colors hover:bg-primary/90"
 			>
-				{m.keen_mellow_jaguar_aspire()}
+				{m.grand_east_orangutan_enrich()}
 			</button>
 		</div>
 	</div>

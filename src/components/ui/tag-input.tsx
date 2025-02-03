@@ -280,7 +280,7 @@ export function TagInput<
 							>
 								<X className="h-3 w-3" />
 								<span className="sr-only">
-									{m.remove_tag({ tag: tag.text })}
+									{m.fuzzy_witty_orangutan_splash({ tag: tag.text })}
 								</span>
 							</button>
 						</Badge>
@@ -390,15 +390,15 @@ export function TagInput<
 																<Trash className="h-4 w-4" />
 																<span className="sr-only">
 																	{deleteConfirmId === item.id
-																		? m.tag_delete_confirm({ tag: item.text })
-																		: m.tag_delete({ tag: item.text })}
+																		? m.vexed_east_gorilla_stir({ tag: item.text })
+																		: m.wild_major_jannes_surge({ tag: item.text })}
 																</span>
 															</button>
 														</TooltipTrigger>
 														<TooltipContent side="right" sideOffset={5}>
 															{deleteConfirmId === item.id
-																? m.tag_delete_confirm({ tag: item.text })
-																: m.tag_delete({ tag: item.text })}
+																? m.vexed_east_gorilla_stir({ tag: item.text })
+																: m.wild_major_jannes_surge({ tag: item.text })}
 														</TooltipContent>
 													</Tooltip>
 												</TooltipProvider>

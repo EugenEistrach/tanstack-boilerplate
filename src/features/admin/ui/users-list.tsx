@@ -58,8 +58,8 @@ export const listUsersQueryOptions = () =>
 export function UsersList() {
 	const { data, isLoading, isError } = useQuery(listUsersQueryOptions())
 
-	if (isLoading) return <div>{m.loading()}</div>
-	if (isError) return <div>{m.error_generic()}</div>
+	if (isLoading) return <div>{m.tasty_cozy_mongoose_aspire()}</div>
+	if (isError) return <div>{m.few_bland_rooster_trip()}</div>
 
 	return (
 		<div>

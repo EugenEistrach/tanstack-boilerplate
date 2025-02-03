@@ -69,23 +69,23 @@ export const UserActions = ({ user }: { user: UserWithRole }) => {
 					className="h-8 w-8 p-0"
 					disabled={user.id === currentUser.id}
 				>
-					<span className="sr-only">{m.user_actions_menu()}</span>
+					<span className="sr-only">{m.true_east_mule_assure()}</span>
 					<MoreHorizontal className="h-4 w-4" />
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent align="end">
-				<DropdownMenuLabel>{m.user_actions()}</DropdownMenuLabel>
+				<DropdownMenuLabel>{m.stock_agent_blackbird_sprout()}</DropdownMenuLabel>
 				<DropdownMenuItem onClick={handleBanUnban}>
 					<Ban className="mr-2 h-4 w-4" />
-					{user.banned ? m.user_unban() : m.user_ban()}
+					{user.banned ? m.deft_gross_hound_grasp() : m.nice_teal_wren_pave()}
 				</DropdownMenuItem>
 				<DropdownMenuItem onClick={handleRevokeAllSessions}>
 					<Key className="mr-2 h-4 w-4" />
-					{m.revoke_all_sessions()}
+					{m.honest_tame_chicken_vent()}
 				</DropdownMenuItem>
 				<DropdownMenuItem onClick={handleImpersonate}>
 					<UserCircle className="mr-2 h-4 w-4" />
-					{m.impersonate_user()}
+					{m.strong_away_gorilla_ask()}
 				</DropdownMenuItem>
 			</DropdownMenuContent>
 		</DropdownMenu>

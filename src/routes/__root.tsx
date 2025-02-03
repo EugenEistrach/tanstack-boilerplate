@@ -74,7 +74,7 @@ export const Route = createRootRouteWithContext<{
 				content: 'width=device-width, initial-scale=1',
 			},
 			{
-				title: m.dashboard_title(),
+				title: m.super_tired_kestrel_grip(),
 			},
 		],
 		links: [
