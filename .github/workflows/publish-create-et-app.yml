@@ -42,15 +42,26 @@ jobs:
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --global user.name "GitHub Actions"
 
-      - name: Bump version
+      - name: Bump version manually
         working-directory: packages/create-et-app
         run: |
+          # Bump the version without creating a git commit or tag
           pnpm version minor --no-git-tag-version
-          git add package.json
-          git commit -m "chore: bump version to $(node -p \"require('./package.json').version\") [skip ci]"
-          git tag "v$(node -p \"require('./package.json').version\")"
-          echo "VERSION=$(node -p \"require('./package.json').version\")" >> $GITHUB_ENV
 
+          # Stage the package.json change
+          git add package.json
+
+          # Retrieve the new version from package.json
+          VERSION=$(node -p "require('./package.json').version")
+
+          # Create a commit with the new version
+          git commit -m "chore: bump version to ${VERSION} [skip ci]"
+
+          # Create a corresponding git tag
+          git tag "v${VERSION}"
+
+          # Export the version to the GitHub environment for later steps (if needed)
+          echo "VERSION=${VERSION}" >> $GITHUB_ENV
       - name: Push changes
         run: |
           git push origin HEAD:main
