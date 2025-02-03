@@ -117,7 +117,7 @@ export function LoginForm() {
 					</LoadingButton>
 					<div className="text-center text-sm">
 						<span className="text-muted-foreground">
-							{m.register_login_prompt()}{' '}
+							{m.login_register_prompt()}{' '}
 						</span>
 						<Link
 							to="/register"

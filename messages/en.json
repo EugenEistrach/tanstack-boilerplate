@@ -115,6 +115,7 @@
 	"login_password_label": "Password",
 	"login_password_placeholder": "Enter your password",
 	"login_button": "Login with Password",
+	"login_register_prompt": "Don't have an account?",
 	"register_title": "Create an Account",
 	"register_subtitle": "Sign up to get started",
 	"register_name_label": "Full Name",
@@ -125,6 +126,7 @@
 	"register_password_placeholder": "Create a password",
 	"register_button": "Create Account",
 	"register_login_prompt": "Already have an account?",
+
 	"register_login_link": "Sign in",
 	"reset_password_title": "Reset Password",
 	"reset_password_subtitle": "Enter your email address and we'll send you instructions to reset your password.",
