@@ -3,22 +3,55 @@
 
 app = 'tanstack-boilerplate'
 primary_region = 'ams'
+kill_signal = "SIGINT"
+kill_timeout = 5
+processes = [ ]
+swap_size_mb = 512
 
 [build]
 
-[[mounts]]
-  source = 'data'
-  destination = '/data'
+[experimental]
+allowed_public_ports = [ ]
+auto_rollback = true
 
-[http_service]
-  internal_port = 3000
+[[mounts]]
+source = 'data'
+destination = '/data'
+
+[[services]]
+internal_port = 3000
+processes = [ "app" ]
+protocol = "tcp"
+script_checks = [ ]
+
+  [services.concurrency]
+  hard_limit = 100
+  soft_limit = 80
+  type = "requests"
+
+  [[services.ports]]
+  handlers = [ "http" ]
+  port = 80
   force_https = true
-  auto_stop_machines = 'stop'
-  auto_start_machines = true
-  min_machines_running = 0
-  processes = ['app']
+
+  [[services.ports]]
+  handlers = [ "tls", "http" ]
+  port = 443
+
+  [[services.http_checks]]
+  interval = "10s"
+  grace_period = "5s"
+  method = "get"
+  path = "/api/healthcheck"
+  protocol = "http"
+  timeout = "2s"
+  tls_skip_verify = false
+  headers = { }
+
+
+
 
 [[vm]]
-  memory = '1gb'
+  memory = '256mb'
   cpu_kind = 'shared'
   cpus = 1
