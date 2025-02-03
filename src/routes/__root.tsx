@@ -12,7 +12,7 @@ import * as React from 'react'
 
 import { Toaster } from '@/components/ui/sonner'
 import { TooltipProvider } from '@/components/ui/tooltip'
-import { $getSession } from '@/lib/client/auth.client'
+import { $getSession } from '@/features/_shared/user/api/auth.api'
 import {
 	$getHintsAndPrefs,
 	ClientHintChecker,

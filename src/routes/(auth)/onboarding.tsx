@@ -1,8 +1,7 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
 import { type } from 'arktype'
 
-import { getOnboardingInfoQueryOptions } from '@/features/onboarding/api/onboarding.api'
-import { OnboardingForm } from '@/features/onboarding/ui/onboarding-form.fullstack'
+import { OnboardingForm } from '@/features/_shared/user/ui/onboarding-form.fullstack'
 
 const searchSchema = type({
 	'redirectTo?': 'string',
@@ -20,11 +19,13 @@ export const Route = createFileRoute('/(auth)/onboarding')({
 			})
 		}
 
-		const onboardingInfo = await context.queryClient.ensureQueryData(
-			getOnboardingInfoQueryOptions(),
-		)
+		if (!context.auth.user.hasAccess) {
+			throw redirect({
+				to: '/approval-needed',
+			})
+		}
 
-		if (onboardingInfo) {
+		if (context.auth.user.onboardingInfo) {
 			throw redirect({
 				to: search.redirectTo || '/dashboard',
 			})

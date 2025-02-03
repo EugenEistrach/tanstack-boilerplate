@@ -3,7 +3,7 @@ import {
 	handleFileUpload,
 	handleFileDelete,
 } from '@/features/_shared/uploads/domain/upload-handler.server'
-import { requireAuthSessionApi } from '@/lib/server/auth.server'
+import { requireAuthSessionApi } from '@/features/_shared/user/domain/auth.server'
 
 export const APIRoute = createAPIFileRoute('/api/upload')({
 	POST: async ({ request }) => {

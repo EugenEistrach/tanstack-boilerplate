@@ -21,15 +21,15 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 
-import { useCompleteOnboardingMutation } from '@/features/onboarding/api/onboarding.api'
-import { useAuth } from '@/lib/client/auth.client'
+import { useAuth } from '@/features/_shared/user/api/auth.api'
+import { useCompleteOnboardingMutation } from '@/features/_shared/user/api/onboarding.api'
 
 import * as m from '@/lib/paraglide/messages'
 
 const onboardingFormSchema = type({
 	name: 'string >= 1',
 	favoriteColor: 'string >= 1',
-	'redirectTo?': 'string',
+	'redirectTo?': 'string | undefined',
 })
 
 export function OnboardingForm({ redirectTo }: { redirectTo?: string }) {
@@ -43,6 +43,8 @@ export function OnboardingForm({ redirectTo }: { redirectTo?: string }) {
 			redirectTo,
 		},
 	})
+
+	console.log(form)
 
 	const completeOnboardingMutation = useCompleteOnboardingMutation()
 
@@ -61,9 +63,13 @@ export function OnboardingForm({ redirectTo }: { redirectTo?: string }) {
 				</CardHeader>
 				<Form {...form}>
 					<form
-						onSubmit={form.handleSubmit((values) => {
-							void completeOnboardingMutation.mutateAsync({ data: values })
-						})}
+						onSubmit={(e) => {
+							console.log('onboarding form submittedd:', e)
+							void form.handleSubmit((values) => {
+								console.log('onboarding form submitted:', values)
+								void completeOnboardingMutation.mutateAsync({ data: values })
+							})(e)
+						}}
 						className="space-y-8"
 					>
 						<CardContent className="space-y-4">
@@ -77,7 +83,6 @@ export function OnboardingForm({ redirectTo }: { redirectTo?: string }) {
 											<Input
 												placeholder={m.onboarding_name_placeholder()}
 												{...field}
-												defaultValue={auth.user.name}
 											/>
 										</FormControl>
 										<FormMessage />
@@ -94,7 +99,6 @@ export function OnboardingForm({ redirectTo }: { redirectTo?: string }) {
 											<Input
 												placeholder={m.onboarding_color_placeholder()}
 												{...field}
-												defaultValue=""
 											/>
 										</FormControl>
 										<FormMessage />
@@ -105,7 +109,6 @@ export function OnboardingForm({ redirectTo }: { redirectTo?: string }) {
 								<LoadingButton
 									type="submit"
 									className="w-full"
-									disabled={isPending}
 									loading={isPending}
 								>
 									{m.complete_onboarding()}

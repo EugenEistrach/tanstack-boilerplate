@@ -4,13 +4,13 @@ import { type ColumnDef } from '@tanstack/react-table'
 import { type UserWithRole } from 'better-auth/plugins'
 
 import { DataTable } from '@/components/data-table'
+import { authClient } from '@/features/_shared/user/api/auth.api'
 import { UserActions } from '@/features/admin/ui/user-actions'
 import { UserRoleSwitch } from '@/features/admin/ui/user-role-switch'
 
-import { authClient } from '@/lib/client/auth.client'
 import * as m from '@/lib/paraglide/messages'
 
-export const columns: ColumnDef<UserWithRole>[] = [
+const columns: ColumnDef<UserWithRole>[] = [
 	{
 		accessorKey: 'email',
 		header: 'Email',

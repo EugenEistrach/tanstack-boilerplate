@@ -10,8 +10,8 @@ import {
 	DropdownMenuLabel,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { authClient, useAuth } from '@/features/_shared/user/api/auth.api'
 import { listUsersQueryOptions } from '@/features/admin/ui/users-list'
-import { authClient, useAuth } from '@/lib/client/auth.client'
 import * as m from '@/lib/paraglide/messages'
 
 export const UserActions = ({ user }: { user: UserWithRole }) => {

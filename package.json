@@ -13,7 +13,6 @@
     "build:paraglide": "paraglide-js compile --project ./project.inlang --outdir ./src/lib/paraglide",
     "start": "cross-env NODE_ENV=production node -r dotenv/config .output/server/index.mjs",
     "start:mocks": "cross-env NODE_ENV=production MOCKS=true node -r dotenv/config .output/server/index.mjs",
-    "start-with-clean-db": "pnpm db:clear && pnpm start",
     "db:migrate": "drizzle-kit migrate",
     "db:generate": "drizzle-kit generate",
     "db:studio": "drizzle-kit studio",

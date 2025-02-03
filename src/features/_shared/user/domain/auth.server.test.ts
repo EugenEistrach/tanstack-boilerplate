@@ -1,8 +1,10 @@
 import { eq } from 'drizzle-orm'
 import { describe, expect, it } from 'vitest'
-import { completeOnboarding, getOnboardingInfo } from './onboarding.server'
-
 import { UserTable } from '@/drizzle/schemas/_exports'
+import {
+	completeOnboarding,
+	getOnboardingInfo,
+} from '@/features/_shared/user/domain/auth.server'
 
 import { mockEnvOverrides } from '@/tests/mocks/vitest.mocks'
 import { testDb } from '@/tests/setup/test-db'
@@ -53,7 +55,7 @@ describe('onboarding.server', () => {
 				role: 'user',
 			})
 
-			const onboardingInfo = getOnboardingInfo(user.id)
+			const onboardingInfo = await getOnboardingInfo(user.id)
 			expect(onboardingInfo).toMatchObject({
 				userId: user.id,
 				favoriteColor: 'red',

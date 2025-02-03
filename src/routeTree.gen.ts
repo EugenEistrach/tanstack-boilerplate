@@ -19,6 +19,8 @@ import { Route as DashboardSettingsImport } from './routes/dashboard/settings'
 import { Route as DashboardAdminImport } from './routes/dashboard/admin'
 import { Route as MarketingTermsImport } from './routes/_marketing/terms'
 import { Route as MarketingPrivacyImport } from './routes/_marketing/privacy'
+import { Route as authResetPasswordImport } from './routes/(auth)/reset-password'
+import { Route as authRegisterImport } from './routes/(auth)/register'
 import { Route as authOnboardingImport } from './routes/(auth)/onboarding'
 import { Route as authLoginImport } from './routes/(auth)/login'
 import { Route as authApprovalNeededImport } from './routes/(auth)/approval-needed'
@@ -73,6 +75,18 @@ const MarketingPrivacyRoute = MarketingPrivacyImport.update({
   id: '/privacy',
   path: '/privacy',
   getParentRoute: () => MarketingRoute,
+} as any)
+
+const authResetPasswordRoute = authResetPasswordImport.update({
+  id: '/(auth)/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const authRegisterRoute = authRegisterImport.update({
+  id: '/(auth)/register',
+  path: '/register',
+  getParentRoute: () => rootRoute,
 } as any)
 
 const authOnboardingRoute = authOnboardingImport.update({
@@ -148,6 +162,20 @@ declare module '@tanstack/react-router' {
       path: '/onboarding'
       fullPath: '/onboarding'
       preLoaderRoute: typeof authOnboardingImport
+      parentRoute: typeof rootRoute
+    }
+    '/(auth)/register': {
+      id: '/(auth)/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof authRegisterImport
+      parentRoute: typeof rootRoute
+    }
+    '/(auth)/reset-password': {
+      id: '/(auth)/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof authResetPasswordImport
       parentRoute: typeof rootRoute
     }
     '/_marketing/privacy': {
@@ -281,6 +309,8 @@ export interface FileRoutesByFullPath {
   '/approval-needed': typeof authApprovalNeededRoute
   '/login': typeof authLoginRoute
   '/onboarding': typeof authOnboardingRoute
+  '/register': typeof authRegisterRoute
+  '/reset-password': typeof authResetPasswordRoute
   '/privacy': typeof MarketingPrivacyRoute
   '/terms': typeof MarketingTermsRoute
   '/dashboard/admin': typeof DashboardAdminRouteWithChildren
@@ -296,6 +326,8 @@ export interface FileRoutesByTo {
   '/approval-needed': typeof authApprovalNeededRoute
   '/login': typeof authLoginRoute
   '/onboarding': typeof authOnboardingRoute
+  '/register': typeof authRegisterRoute
+  '/reset-password': typeof authResetPasswordRoute
   '/privacy': typeof MarketingPrivacyRoute
   '/terms': typeof MarketingTermsRoute
   '/dashboard/admin': typeof DashboardAdminRouteWithChildren
@@ -313,6 +345,8 @@ export interface FileRoutesById {
   '/(auth)/approval-needed': typeof authApprovalNeededRoute
   '/(auth)/login': typeof authLoginRoute
   '/(auth)/onboarding': typeof authOnboardingRoute
+  '/(auth)/register': typeof authRegisterRoute
+  '/(auth)/reset-password': typeof authResetPasswordRoute
   '/_marketing/privacy': typeof MarketingPrivacyRoute
   '/_marketing/terms': typeof MarketingTermsRoute
   '/dashboard/admin': typeof DashboardAdminRouteWithChildren
@@ -332,6 +366,8 @@ export interface FileRouteTypes {
     | '/approval-needed'
     | '/login'
     | '/onboarding'
+    | '/register'
+    | '/reset-password'
     | '/privacy'
     | '/terms'
     | '/dashboard/admin'
@@ -346,6 +382,8 @@ export interface FileRouteTypes {
     | '/approval-needed'
     | '/login'
     | '/onboarding'
+    | '/register'
+    | '/reset-password'
     | '/privacy'
     | '/terms'
     | '/dashboard/admin'
@@ -361,6 +399,8 @@ export interface FileRouteTypes {
     | '/(auth)/approval-needed'
     | '/(auth)/login'
     | '/(auth)/onboarding'
+    | '/(auth)/register'
+    | '/(auth)/reset-password'
     | '/_marketing/privacy'
     | '/_marketing/terms'
     | '/dashboard/admin'
@@ -379,6 +419,8 @@ export interface RootRouteChildren {
   authApprovalNeededRoute: typeof authApprovalNeededRoute
   authLoginRoute: typeof authLoginRoute
   authOnboardingRoute: typeof authOnboardingRoute
+  authRegisterRoute: typeof authRegisterRoute
+  authResetPasswordRoute: typeof authResetPasswordRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -387,6 +429,8 @@ const rootRouteChildren: RootRouteChildren = {
   authApprovalNeededRoute: authApprovalNeededRoute,
   authLoginRoute: authLoginRoute,
   authOnboardingRoute: authOnboardingRoute,
+  authRegisterRoute: authRegisterRoute,
+  authResetPasswordRoute: authResetPasswordRoute,
 }
 
 export const routeTree = rootRoute
@@ -403,7 +447,9 @@ export const routeTree = rootRoute
         "/dashboard",
         "/(auth)/approval-needed",
         "/(auth)/login",
-        "/(auth)/onboarding"
+        "/(auth)/onboarding",
+        "/(auth)/register",
+        "/(auth)/reset-password"
       ]
     },
     "/_marketing": {
@@ -430,6 +476,12 @@ export const routeTree = rootRoute
     },
     "/(auth)/onboarding": {
       "filePath": "(auth)/onboarding.tsx"
+    },
+    "/(auth)/register": {
+      "filePath": "(auth)/register.tsx"
+    },
+    "/(auth)/reset-password": {
+      "filePath": "(auth)/reset-password.tsx"
     },
     "/_marketing/privacy": {
       "filePath": "_marketing/privacy.tsx",

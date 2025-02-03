@@ -56,6 +56,9 @@ const MyForm = () => {
 - Use controlled components sparingly - prefer uncontrolled when possible
 - Implement proper form submission handling with loading states
 
+## Localization 
+Make sure to review our [i18n.mdc](mdc:.cursor/rules/i18n.mdc) instructions too, and make sure you take care of localizations after your task.
+
 ## Performance Considerations
 
 - We will use react compiler so please do not add any optimization hooks to our codebase. 

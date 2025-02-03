@@ -10,7 +10,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from '@/components/ui/card'
-import { useOptionalAuth } from '@/lib/client/auth.client'
+import { useOptionalAuth } from '@/features/_shared/user/api/auth.api'
 import * as m from '@/lib/paraglide/messages'
 
 export const Route = createFileRoute('/_marketing/')({

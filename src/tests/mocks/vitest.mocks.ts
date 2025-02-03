@@ -1,6 +1,6 @@
 import { vi } from 'vitest'
 
-import { requireAuthSession } from '@/lib/server/auth.server'
+import { requireAuthSession } from '@/features/_shared/user/domain/auth.server'
 import { env } from '@/lib/server/env.server'
 import { createUserAndSession } from '@/tests/test-utils'
 
@@ -29,6 +29,7 @@ export function mockAuthSession(user: User, session: Session) {
 			banExpires: undefined,
 			role: user.role ?? undefined,
 			hasAccess: user.hasAccess ?? false,
+
 		},
 	})
 }

@@ -19,6 +19,7 @@ export const environmentSchema = type({
 		type('string.email[]'),
 	),
 	'API_KEY?': 'string >= 1',
+	'ENABLE_ADMIN_APPROVAL?': type('string >= 1').pipe((val) => val === 'true'),
 	LOG_LEVEL: "string >= 1 = 'info'",
 })
 

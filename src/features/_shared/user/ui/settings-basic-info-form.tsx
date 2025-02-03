@@ -10,8 +10,8 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { H2 } from '@/components/ui/typography'
 
-import { useUpdateNameMutation } from '@/features/settings/api/settings.api'
-import { useAuth } from '@/lib/client/auth.client'
+import { useAuth } from '@/features/_shared/user/api/auth.api'
+import { useUpdateNameMutation } from '@/features/_shared/user/api/settings.api'
 import * as m from '@/lib/paraglide/messages'
 
 export function SettingsBasicInfoForm() {
