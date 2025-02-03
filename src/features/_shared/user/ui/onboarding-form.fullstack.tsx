@@ -44,8 +44,6 @@ export function OnboardingForm({ redirectTo }: { redirectTo?: string }) {
 		},
 	})
 
-	console.log(form)
-
 	const completeOnboardingMutation = useCompleteOnboardingMutation()
 
 	const isPending = useSpinDelay(completeOnboardingMutation.isPending)
@@ -63,13 +61,9 @@ export function OnboardingForm({ redirectTo }: { redirectTo?: string }) {
 				</CardHeader>
 				<Form {...form}>
 					<form
-						onSubmit={(e) => {
-							console.log('onboarding form submittedd:', e)
-							void form.handleSubmit((values) => {
-								console.log('onboarding form submitted:', values)
-								void completeOnboardingMutation.mutateAsync({ data: values })
-							})(e)
-						}}
+						onSubmit={form.handleSubmit((values) => {
+							void completeOnboardingMutation.mutateAsync({ data: values })
+						})}
 						className="space-y-8"
 					>
 						<CardContent className="space-y-4">

@@ -6,9 +6,10 @@ globs: *.tsx
 
 ## Adding Translations
 
-1. Add translations to JSON files:
+1. Search for existing translations json files. They are in our ./messages directory
+2. Add translations to ALL files e.g:
    ```json
-   // messages/en.json
+   // ./messages/en.json
    {
      "save_changes": "Save Changes",
      "welcome_message": "Welcome back, {name}!",
@@ -19,12 +20,12 @@ globs: *.tsx
    }
    ```
 
-2. Compile translations:
+3. Compile translations !IMPORTANT:
    ```bash
    pnpm build:paraglide
    ```
 
-3. Use in components:
+4. Use in components:
    ```tsx
    import * as m from '@/lib/paraglide/messages'
 
@@ -65,9 +66,11 @@ globs: *.tsx
    }
    ```
 
-## Guidelines
+## Steps 
 
-- Add translations for all supported languages
-- Only translate text content, not technical values
-- Always compile after adding new translations
-- Never hardcode text strings
+1. Search for existing translations json files inside **./messages** directory
+2. Add translations to **ALL** files
+3. Run `pnpm build:paraglide` to compile translations
+4. Add to components
+
+

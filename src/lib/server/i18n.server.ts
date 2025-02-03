@@ -1,7 +1,17 @@
 import Headers from '@mjackson/headers'
-import { availableLanguageTags } from '@/lib/paraglide/runtime'
+import {
+	availableLanguageTags,
+	languageTag,
+	setLanguageTag,
+} from '@/lib/paraglide/runtime'
 import { logger } from '@/lib/server/logger.server'
 import { isSupportedLanguage, normalizeLanguage } from '@/lib/shared/i18n'
+
+export const applyLanguage = (request?: Request) => {
+	const lang = request ? detectLanguage(request) : languageTag()
+	setLanguageTag(() => lang)
+	return lang
+}
 
 export const detectLanguage = (request: Request) => {
 	const headers = new Headers(request.headers)

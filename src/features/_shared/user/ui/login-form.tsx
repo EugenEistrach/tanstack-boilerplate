@@ -2,7 +2,6 @@ import { arktypeResolver } from '@hookform/resolvers/arktype'
 import { Link, useNavigate } from '@tanstack/react-router'
 import { type } from 'arktype'
 import { useForm } from 'react-hook-form'
-import { toast } from 'sonner'
 import { LoadingButton } from '@/components/ui/button'
 import {
 	Form,
@@ -38,7 +37,14 @@ export function LoginForm() {
 				void navigate({ to: '/dashboard' })
 			},
 			onError: () => {
-				toast.error('some error')
+				form.setError('email', {
+					type: 'manual',
+					message: m.password_or_username_incorrect(),
+				})
+				form.setError('password', {
+					type: 'manual',
+					message: m.password_or_username_incorrect(),
+				})
 			},
 		})
 	}
@@ -59,7 +65,7 @@ export function LoginForm() {
 				<FormField
 					control={form.control}
 					name="email"
-					render={({ field }) => (
+					render={({ field, fieldState }) => (
 						<FormItem>
 							<FormLabel>{m.login_username_label()}</FormLabel>
 							<FormControl>
@@ -69,14 +75,18 @@ export function LoginForm() {
 									{...field}
 								/>
 							</FormControl>
-							<FormMessage>{<>{m.validation_email()}</>}</FormMessage>
+							<FormMessage>
+								{fieldState.error?.type === 'manual'
+									? fieldState.error.message
+									: m.validation_required()}
+							</FormMessage>
 						</FormItem>
 					)}
 				/>
 				<FormField
 					control={form.control}
 					name="password"
-					render={({ field }) => (
+					render={({ field, fieldState }) => (
 						<FormItem>
 							<div className="flex items-center justify-between">
 								<FormLabel>{m.login_password_label()}</FormLabel>
@@ -93,7 +103,11 @@ export function LoginForm() {
 									{...field}
 								/>
 							</FormControl>
-							<FormMessage>{m.validation_required()}</FormMessage>
+							<FormMessage>
+								{fieldState.error?.type === 'manual'
+									? fieldState.error.message
+									: m.validation_required()}
+							</FormMessage>
 						</FormItem>
 					)}
 				/>

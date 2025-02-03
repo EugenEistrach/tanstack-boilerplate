@@ -142,13 +142,14 @@ export default [
 						},
 						{
 							from: ['shared'],
-							allow: ['shared'],
+							allow: ['shared', 'email'],
 						},
 						{
 							from: ['feature'],
 							allow: [
 								'shared',
 								['feature', { featureName: '${from.featureName}' }],
+								'email',
 							],
 						},
 						{

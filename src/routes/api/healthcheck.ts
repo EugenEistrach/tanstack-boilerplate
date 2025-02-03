@@ -2,6 +2,7 @@ import { createAPIFileRoute } from '@tanstack/start/api'
 import { count } from 'drizzle-orm'
 import { db } from '@/drizzle/db'
 import { UserTable } from '@/drizzle/schemas/auth-schema'
+import { logger } from '@/lib/server/logger.server'
 
 export const APIRoute = createAPIFileRoute('/api/healthcheck')({
 	GET: async ({ request }) => {
@@ -24,8 +25,8 @@ export const APIRoute = createAPIFileRoute('/api/healthcheck')({
 			}
 
 			return new Response('OK')
-		} catch (error: unknown) {
-			console.log('healthcheck ❌', { error })
+		} catch (err: unknown) {
+			logger.error({ operation: 'healthcheck', err }, 'healthcheck ❌')
 			return new Response('ERROR', { status: 500 })
 		}
 	},
