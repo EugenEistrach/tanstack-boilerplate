@@ -51,7 +51,7 @@ export async function sendEmail({
 		if (result.error) {
 			throw result.error
 		}
-		logger.info({ email, operation: 'sendEmail', result }, `Email sent`)
+		logger.debug({ email, operation: 'sendEmail', result }, `Email sent`)
 		return result
 	} catch (err) {
 		logger.error({ email, operation: 'sendEmail', err }, `Failed to send email`)
