@@ -22,7 +22,7 @@ import { trigger } from '@/features/trigger.js'
 import { turso } from '@/features/turso.js'
 import { ensureNotCanceled, validate, waitForAutomatedAction } from '@/utils.js'
 
-const repo = 'EugenEistrach/tanstack-boilerplate'
+const repo = 'EugenEistrach/et-stack'
 const cliPath = 'packages/create-et-app/src'
 
 const features = {
