@@ -25,9 +25,7 @@ test('login with github ', async ({ page, baseURL }) => {
 	await page.goto(`/dashboard/settings`)
 	await page.waitForLoadState('networkidle')
 
-	await delayed(() =>
-		page.getByRole('button', { name: 'Sign in with GitHub' }).click(),
-	)
+	await delayed(() => page.getByRole('button', { name: 'GitHub' }).click())
 	await page.waitForLoadState('networkidle')
 
 	await expect(
