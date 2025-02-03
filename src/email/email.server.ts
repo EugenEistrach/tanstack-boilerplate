@@ -43,11 +43,26 @@ export async function sendEmail({
 		} as const satisfies CreateEmailResponse
 	}
 
-	if (!resend) {
-		resend = new Resend(env.RESEND_API_KEY)
+	try {
+		if (!resend) {
+			resend = new Resend(env.RESEND_API_KEY)
+		}
+		const result = await resend.emails.send(email)
+		if (result.error) {
+			throw result.error
+		}
+		logger.info({ email, operation: 'sendEmail', result }, `Email sent`)
+		return result
+	} catch (err) {
+		logger.error({ email, operation: 'sendEmail', err }, `Failed to send email`)
+		return {
+			data: { id: 'mocked' },
+			error: {
+				message: 'Failed to send email',
+				name: 'internal_server_error',
+			},
+		} as const satisfies CreateEmailResponse
 	}
-
-	return resend.emails.send(email)
 }
 
 async function getHtmlAndText(opts: EmailOptions) {
