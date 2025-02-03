@@ -58,7 +58,7 @@ export function RegisterForm() {
 				void navigate({ to: '/onboarding' })
 			},
 			onError: () => {
-				toast.error(m.register_error())
+				toast.error(m.fair_pink_martin_nurture())
 			},
 		})
 	}
@@ -86,7 +86,7 @@ export function RegisterForm() {
 					>
 						<path d="M128.001 0C57.317 0 0 57.307 0 128.001c0 56.554 36.676 104.535 87.535 121.46 6.397 1.185 8.746-2.777 8.746-6.158 0-3.052-.12-13.135-.174-23.83-35.61 7.742-43.124-15.103-43.124-15.103-5.823-14.795-14.213-18.73-14.213-18.73-11.613-7.944.876-7.78.876-7.78 12.853.902 19.621 13.19 19.621 13.19 11.417 19.568 29.945 13.911 37.249 10.64 1.149-8.272 4.466-13.92 8.127-17.116-28.431-3.236-58.318-14.212-58.318-63.258 0-13.975 5-25.394 13.188-34.358-1.329-3.224-5.71-16.242 1.24-33.874 0 0 10.749-3.44 35.21 13.121 10.21-2.836 21.16-4.258 32.038-4.307 10.878.049 21.837 1.47 32.066 4.307 24.431-16.56 35.165-13.12 35.165-13.12 6.967 17.63 2.584 30.65 1.255 33.873 8.207 8.964 13.173 20.383 13.173 34.358 0 49.163-29.944 59.988-58.447 63.157 4.591 3.972 8.682 11.762 8.682 23.704 0 17.126-.148 30.91-.148 35.126 0 3.407 2.304 7.398 8.792 6.14C219.37 232.5 256 184.537 256 128.002 256 57.307 198.691 0 128.001 0Z" />
 					</svg>
-					{m.sign_in_github()}
+					{m.aloof_direct_worm_trim()}
 				</span>
 			</Button>
 
@@ -97,7 +97,7 @@ export function RegisterForm() {
 					</div>
 					<div className="relative flex justify-center text-sm">
 						<span className="bg-card px-2 text-muted-foreground">
-							{m.login_form_divider()}
+							{m.cozy_icy_lark_dance()}
 						</span>
 					</div>
 				</div>
@@ -111,14 +111,11 @@ export function RegisterForm() {
 						name="name"
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>{m.register_name_label()}</FormLabel>
+								<FormLabel>{m.giant_awake_crow_forgive()}</FormLabel>
 								<FormControl>
-									<Input
-										placeholder={m.register_name_placeholder()}
-										{...field}
-									/>
+									<Input placeholder={m.civil_late_poodle_race()} {...field} />
 								</FormControl>
-								<FormMessage>{m.validation_required()}</FormMessage>
+								<FormMessage>{m.gray_brief_pug_jump()}</FormMessage>
 							</FormItem>
 						)}
 					/>
@@ -127,18 +124,18 @@ export function RegisterForm() {
 						name="email"
 						render={({ field, fieldState }) => (
 							<FormItem>
-								<FormLabel>{m.register_email_label()}</FormLabel>
+								<FormLabel>{m.tame_next_lobster_succeed()}</FormLabel>
 								<FormControl>
 									<Input
 										type="email"
-										placeholder={m.register_email_placeholder()}
+										placeholder={m.curly_fair_racoon_honor()}
 										{...field}
 									/>
 								</FormControl>
 								<FormMessage>
 									{fieldState.error?.type === 'already_used'
-										? m.validation_email_in_use()
-										: m.validation_email()}
+										? m.wise_green_jackdaw_prosper()
+										: m.patchy_direct_ocelot_burn()}
 								</FormMessage>
 							</FormItem>
 						)}
@@ -148,16 +145,16 @@ export function RegisterForm() {
 						name="password"
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>{m.register_password_label()}</FormLabel>
+								<FormLabel>{m.bald_brief_otter_swim()}</FormLabel>
 
 								<FormControl>
 									<PasswordInput
-										placeholder={m.register_password_placeholder()}
+										placeholder={m.factual_bold_lamb_arise()}
 										{...field}
 									/>
 								</FormControl>
 								<FormMessage>
-									{m.validation_min_length({ length: 8 })}
+									{m.close_mild_lemur_scoop({ length: 8 })}
 								</FormMessage>
 							</FormItem>
 						)}
@@ -169,7 +166,9 @@ export function RegisterForm() {
 							className="w-full"
 							loading={form.formState.isSubmitting}
 						>
-							<span className="flex items-center">{m.register_button()}</span>
+							<span className="flex items-center">
+								{m.least_raw_zebra_dine()}
+							</span>
 						</LoadingButton>
 					</div>
 				</form>

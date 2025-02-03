@@ -76,23 +76,23 @@ export const ForgotPasswordEmail = ({
 	return (
 		<Html>
 			<Head />
-			<Preview>{m.email_forgot_password_subject()}</Preview>
+			<Preview>{m.aqua_great_swan_blink()}</Preview>
 			<Body style={main}>
 				<Container style={container}>
-					<Heading style={heading}>{m.email_forgot_password_heading()}</Heading>
+					<Heading style={heading}>{m.ornate_livid_mammoth_twist()}</Heading>
 					<Text style={text}>
 						{userEmail
-							? m.email_forgot_password_request_with_email({ email: userEmail })
-							: m.email_forgot_password_request_generic()}{' '}
-						{m.email_forgot_password_click_button()}
+							? m.brave_dirty_earthworm_edit({ email: userEmail })
+							: m.zany_empty_lionfish_bless()}{' '}
+						{m.light_orange_falcon_absorb()}
 					</Text>
 					<Section style={{ textAlign: 'center', margin: '32px 0' }}>
 						<Button style={button} href={resetLink}>
-							{m.email_forgot_password_button()}
+							{m.light_minor_cockroach_hurl()}
 						</Button>
 					</Section>
 					<Text style={{ ...text, fontSize: '14px' }}>
-						{m.email_forgot_password_ignore()}
+						{m.stale_silly_shrike_hike()}
 					</Text>
 					<Hr
 						style={{
@@ -102,7 +102,7 @@ export const ForgotPasswordEmail = ({
 						}}
 					/>
 					<Text style={footer}>
-						{m.email_forgot_password_fallback()}{' '}
+						{m.east_bold_porpoise_walk()}{' '}
 						<Link style={anchor} href={resetLink}>
 							{resetLink}
 						</Link>

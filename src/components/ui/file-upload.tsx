@@ -34,7 +34,7 @@ export function FileUpload({
 					}
 				}}
 				onremovefile={() => onChange?.(null)}
-				labelIdle={`${m.drop_files_here()} ${m.or_click_to_select()}`}
+				labelIdle={`${m.vivid_lower_walrus_cure()} ${m.tangy_super_wren_ripple()}`}
 			/>
 		</div>
 	)

@@ -42,15 +42,15 @@ function ApprovalNeeded() {
 							<ClockIcon className="h-6 w-6 text-yellow-600" />
 						</div>
 						<CardTitle className="text-center text-2xl font-bold">
-							{m.approval_needed_title()}
+							{m.sunny_tense_herring_bloom()}
 						</CardTitle>
 						<CardDescription className="text-center">
-							{m.approval_needed_description()}
+							{m.zany_deft_cockroach_grace()}
 						</CardDescription>
 					</CardHeader>
 					<CardContent className="space-y-4 text-center">
 						<p className="text-sm text-muted-foreground">
-							{m.approval_needed_message({ name: user.name || user.email })}
+							{m.stock_sea_racoon_glow({ name: user.name || user.email })}
 						</p>
 						<div className="flex justify-center gap-4">
 							<Button
@@ -58,7 +58,7 @@ function ApprovalNeeded() {
 								onClick={() => window.location.reload()}
 							>
 								<RefreshCwIcon className="mr-2 h-4 w-4" />
-								{m.approval_needed_check_again()}
+								{m.upper_teary_sawfish_amaze()}
 							</Button>
 						</div>
 					</CardContent>

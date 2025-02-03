@@ -41,7 +41,7 @@ export function SettingsBasicInfoForm() {
 				onSubmit={handleSubmit((data) => updateNameMutation.mutate({ data }))}
 			>
 				<CardHeader>
-					<H2>{m.settings_title()}</H2>
+					<H2>{m.round_silly_cowfish_pride()}</H2>
 				</CardHeader>
 				<CardContent className="p-6">
 					<div className="flex items-start space-x-6">
@@ -51,11 +51,11 @@ export function SettingsBasicInfoForm() {
 						</Avatar>
 						<div className="flex-grow space-y-4">
 							<div className="space-y-1">
-								<Label htmlFor="email">{m.email()}</Label>
+								<Label htmlFor="email">{m.green_such_alligator_commend()}</Label>
 								<Input id="email" value={user.email} disabled />
 							</div>
 							<div className="space-y-1">
-								<Label htmlFor="name">{m.onboarding_name_label()}</Label>
+								<Label htmlFor="name">{m.silly_wide_cod_absorb()}</Label>
 								<Input
 									id="name"
 									{...register('name')}
@@ -73,7 +73,7 @@ export function SettingsBasicInfoForm() {
 						loading={isPending}
 						className="ml-auto"
 					>
-						{m.save_changes()}
+						{m.pink_spry_snake_hike()}
 					</LoadingButton>
 				</CardFooter>
 			</form>

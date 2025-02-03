@@ -121,7 +121,7 @@ export default function DashboardLayout() {
 								</div>
 								<div className="grid flex-1 text-left text-sm leading-tight">
 									<span className="truncate font-semibold">
-										{m.dashboard_title()}
+										{m.super_tired_kestrel_grip()}
 									</span>
 								</div>
 							</SidebarMenuButton>
@@ -130,10 +130,10 @@ export default function DashboardLayout() {
 				</SidebarHeader>
 				<SidebarContent>
 					<SidebarGroup>
-						<SidebarGroupLabel>{m.nav_main()}</SidebarGroupLabel>
+						<SidebarGroupLabel>{m.cozy_candid_beetle_grasp()}</SidebarGroupLabel>
 						<SidebarMenu>
 							<SidebarMenuItem>
-								<SidebarMenuButton tooltip={m.nav_dashboard()} asChild>
+								<SidebarMenuButton tooltip={m.moving_jumpy_hedgehog_empower()} asChild>
 									<NavLink
 										to="/dashboard"
 										activeOptions={{
@@ -141,7 +141,7 @@ export default function DashboardLayout() {
 										}}
 									>
 										<HomeIcon />
-										<span>{m.nav_dashboard()}</span>
+										<span>{m.moving_jumpy_hedgehog_empower()}</span>
 									</NavLink>
 								</SidebarMenuButton>
 							</SidebarMenuItem>
@@ -149,21 +149,21 @@ export default function DashboardLayout() {
 					</SidebarGroup>
 					<AdminOnly>
 						<SidebarGroup>
-							<SidebarGroupLabel>{m.nav_admin()}</SidebarGroupLabel>
+							<SidebarGroupLabel>{m.crazy_round_samuel_endure()}</SidebarGroupLabel>
 							<SidebarMenu>
 								<SidebarMenuItem>
-									<SidebarMenuButton tooltip={m.nav_users()} asChild>
+									<SidebarMenuButton tooltip={m.level_topical_bumblebee_mop()} asChild>
 										<NavLink to="/dashboard/admin/users">
 											<UsersIcon />
-											<span>{m.nav_users()}</span>
+											<span>{m.level_topical_bumblebee_mop()}</span>
 										</NavLink>
 									</SidebarMenuButton>
 								</SidebarMenuItem>
 								<SidebarMenuItem>
-									<SidebarMenuButton tooltip={m.nav_uploads()} asChild>
+									<SidebarMenuButton tooltip={m.lime_light_mare_earn()} asChild>
 										<NavLink to="/dashboard/admin/uploads">
 											<UploadIcon />
-											<span>{m.nav_uploads()}</span>
+											<span>{m.lime_light_mare_earn()}</span>
 										</NavLink>
 									</SidebarMenuButton>
 								</SidebarMenuItem>
@@ -189,26 +189,26 @@ export default function DashboardLayout() {
 				</main>
 				<footer className="flex w-full shrink-0 flex-col items-center gap-2 border-t px-4 py-6 sm:flex-row md:px-6">
 					<p className="text-xs text-muted-foreground">
-						{m.footer_copyright({
+						{m.these_tiny_oryx_nurture({
 							year: new Date().getFullYear(),
 							companyName: 'Company Name',
 						})}
 					</p>
 					<nav className="mr-4 flex items-center gap-4 sm:ml-auto sm:mr-6 sm:gap-6">
 						<Link to="/" className="text-xs underline-offset-4 hover:underline">
-							{m.footer_home()}
+							{m.arable_key_gibbon_work()}
 						</Link>
 						<Link
 							className="text-xs underline-offset-4 hover:underline"
 							to="/terms"
 						>
-							{m.terms_of_service()}
+							{m.fresh_sea_marten_flop()}
 						</Link>
 						<Link
 							className="text-xs underline-offset-4 hover:underline"
 							to="/privacy"
 						>
-							{m.privacy_policy()}
+							{m.lazy_stale_bobcat_flip()}
 						</Link>
 					</nav>
 					<ThemeToggle />
@@ -283,7 +283,7 @@ function UserMenu() {
 							<DropdownMenuItem asChild>
 								<Link to="/dashboard/settings">
 									<Settings />
-									{m.nav_settings()}
+									{m.slimy_mushy_crab_read()}
 								</Link>
 							</DropdownMenuItem>
 						</DropdownMenuGroup>
@@ -295,7 +295,7 @@ function UserMenu() {
 							}}
 						>
 							<LogOut />
-							{m.sign_out()}
+							{m.long_born_sparrow_spin()}
 						</DropdownMenuItem>
 					</DropdownMenuContent>
 				</DropdownMenu>

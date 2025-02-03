@@ -8,7 +8,7 @@ export const Route = createFileRoute('/dashboard/settings/')({
 	head: () => ({
 		meta: [
 			{
-				title: m.settings_title() + ' - eCommerce Dashboard',
+				title: m.round_silly_cowfish_pride() + ' - eCommerce Dashboard',
 			},
 		],
 	}),

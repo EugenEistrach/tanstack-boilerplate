@@ -48,7 +48,7 @@ function PaginationControl<TData>({ table }: { table: Table<TData> }) {
 					'disabled:pointer-events-none disabled:opacity-50',
 				)}
 			>
-				<span className="sr-only">{m.previous()}</span>
+				<span className="sr-only">{m.chunky_bright_earthworm_belong()}</span>
 				<ChevronLeft className="h-4 w-4" />
 			</button>
 
@@ -64,14 +64,14 @@ function PaginationControl<TData>({ table }: { table: Table<TData> }) {
 				<SelectContent>
 					{Array.from({ length: totalPages }, (_, i) => (
 						<SelectItem key={i} value={i.toString()}>
-							{m.page_number({ number: (i + 1).toString() })}
+							{m.elegant_just_turkey_snap({ number: (i + 1).toString() })}
 						</SelectItem>
 					))}
 				</SelectContent>
 			</Select>
 
 			<div className="text-sm text-muted-foreground">
-				{m.page_of_total({ total: totalPages.toString() })}
+				{m.warm_cool_thrush_aspire({ total: totalPages.toString() })}
 			</div>
 
 			<button
@@ -83,7 +83,7 @@ function PaginationControl<TData>({ table }: { table: Table<TData> }) {
 					'disabled:pointer-events-none disabled:opacity-50',
 				)}
 			>
-				<span className="sr-only">{m.next()}</span>
+				<span className="sr-only">{m.mean_lofty_pelican_rest()}</span>
 				<ChevronRight className="h-4 w-4" />
 			</button>
 		</div>
@@ -155,7 +155,7 @@ export function DataTable<TData, TValue>({
 									colSpan={columns.length}
 									className="h-24 text-center"
 								>
-									{m.no_results()}
+									{m.mellow_house_mule_buzz()}
 								</TableCell>
 							</TableRow>
 						)}
@@ -165,7 +165,7 @@ export function DataTable<TData, TValue>({
 			<div className="flex items-center justify-between py-4">
 				<div className="flex items-center gap-2 text-sm text-muted-foreground">
 					<div className="flex items-center gap-1">
-						<span>{m.page_size()}</span>
+						<span>{m.simple_plain_shrike_type()}</span>
 						<Select
 							value={pageSize.toString()}
 							onValueChange={(value) => {
@@ -185,7 +185,7 @@ export function DataTable<TData, TValue>({
 						</Select>
 					</div>
 					<div>
-						{m.showing_results({
+						{m.proof_real_beaver_list({
 							from: (pageIndex * pageSize + 1).toString(),
 							to: Math.min(
 								(pageIndex + 1) * pageSize,

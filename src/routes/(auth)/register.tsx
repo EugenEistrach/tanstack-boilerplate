@@ -29,23 +29,23 @@ function Register() {
 							<DatabaseZap />
 						</div>
 						<CardTitle className="text-center text-2xl font-bold">
-							{m.register_title()}
+							{m.soft_ago_pelican_hush()}
 						</CardTitle>
 					</CardHeader>
 					<CardContent className="space-y-4">
 						<p className="text-center text-sm text-muted-foreground">
-							{m.register_subtitle()}
+							{m.smug_many_capybara_affirm()}
 						</p>
 						<RegisterForm />
 						<div className="text-center text-sm">
 							<span className="text-muted-foreground">
-								{m.register_login_prompt()}{' '}
+								{m.level_every_marten_spark()}{' '}
 							</span>
 							<Link
 								to="/login"
 								className="font-medium text-primary hover:underline"
 							>
-								{m.register_login_link()}
+								{m.noble_acidic_niklas_tend()}
 							</Link>
 						</div>
 					</CardContent>

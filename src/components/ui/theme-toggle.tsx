@@ -41,18 +41,18 @@ export function ThemeToggle({ className }: { className?: string }) {
 				<Button variant="outline" size="icon" className={cn(className)}>
 					<Sun className="h-4 w-4" />
 					<Moon className="absolute h-4 w-4" />
-					<span className="sr-only">{m.toggle_theme()}</span>
+					<span className="sr-only">{m.brave_tidy_mouse_create()}</span>
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent align="end">
 				<DropdownMenuItem onClick={() => setTheme('light')}>
-					{m.theme_light()}
+					{m.glad_odd_bat_chop()}
 				</DropdownMenuItem>
 				<DropdownMenuItem onClick={() => setTheme('dark')}>
-					{m.theme_dark()}
+					{m.spry_crazy_eagle_propel()}
 				</DropdownMenuItem>
 				<DropdownMenuItem onClick={() => setTheme('system')}>
-					{m.theme_system()}
+					{m.keen_helpful_coyote_urge()}
 				</DropdownMenuItem>
 			</DropdownMenuContent>
 		</DropdownMenu>

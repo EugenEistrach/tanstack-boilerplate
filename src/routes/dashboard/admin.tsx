@@ -9,7 +9,7 @@ export const Route = createFileRoute('/dashboard/admin')({
 	},
 	loader: async () => {
 		return {
-			crumb: m.nav_admin(),
+			crumb: m.crazy_round_samuel_endure(),
 		}
 	},
 })

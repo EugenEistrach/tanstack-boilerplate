@@ -5,13 +5,13 @@ export const NotFound = () => (
 	<div className="flex min-h-screen flex-col items-center justify-center bg-background">
 		<h1 className="mb-4 text-6xl font-bold text-foreground">404</h1>
 		<p className="mb-8 text-xl text-muted-foreground">
-			{m.equal_blue_boar_tickle()}
+			{m.simple_born_pig_achieve()}
 		</p>
 		<Link
 			to="/"
 			className="rounded-lg bg-primary px-6 py-3 text-primary-foreground transition-colors hover:bg-primary/90"
 		>
-			{m.male_brave_alligator_type()}
+			{m.frail_wild_monkey_trip()}
 		</Link>
 	</div>
 )

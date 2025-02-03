@@ -39,11 +39,11 @@ export function LoginForm() {
 			onError: () => {
 				form.setError('email', {
 					type: 'manual',
-					message: m.password_or_username_incorrect(),
+					message: m.weary_civil_bird_aid(),
 				})
 				form.setError('password', {
 					type: 'manual',
-					message: m.password_or_username_incorrect(),
+					message: m.weary_civil_bird_aid(),
 				})
 			},
 		})
@@ -57,7 +57,7 @@ export function LoginForm() {
 				</div>
 				<div className="relative flex justify-center text-sm">
 					<span className="bg-card px-2 text-muted-foreground">
-						{m.login_form_divider()}
+						{m.cozy_icy_lark_dance()}
 					</span>
 				</div>
 			</div>
@@ -67,18 +67,18 @@ export function LoginForm() {
 					name="email"
 					render={({ field, fieldState }) => (
 						<FormItem>
-							<FormLabel>{m.login_username_label()}</FormLabel>
+							<FormLabel>{m.proof_gaudy_turtle_climb()}</FormLabel>
 							<FormControl>
 								<Input
 									type="email"
-									placeholder={m.login_username_placeholder()}
+									placeholder={m.lime_lazy_shrike_strive()}
 									{...field}
 								/>
 							</FormControl>
 							<FormMessage>
 								{fieldState.error?.type === 'manual'
 									? fieldState.error.message
-									: m.validation_required()}
+									: m.gray_brief_pug_jump()}
 							</FormMessage>
 						</FormItem>
 					)}
@@ -89,41 +89,41 @@ export function LoginForm() {
 					render={({ field, fieldState }) => (
 						<FormItem>
 							<div className="flex items-center justify-between">
-								<FormLabel>{m.login_password_label()}</FormLabel>
+								<FormLabel>{m.zany_fit_owl_learn()}</FormLabel>
 								<Link
 									to="/reset-password"
 									className="text-sm font-medium text-primary hover:underline"
 								>
-									{m.forgot_password_link()}
+									{m.polite_safe_bear_hint()}
 								</Link>
 							</div>
 							<FormControl>
 								<PasswordInput
-									placeholder={m.login_password_placeholder()}
+									placeholder={m.alert_grassy_moose_absorb()}
 									{...field}
 								/>
 							</FormControl>
 							<FormMessage>
 								{fieldState.error?.type === 'manual'
 									? fieldState.error.message
-									: m.validation_required()}
+									: m.gray_brief_pug_jump()}
 							</FormMessage>
 						</FormItem>
 					)}
 				/>
 				<div className="space-y-4 pt-4">
 					<LoadingButton type="submit" className="w-full" loading={false}>
-						{m.login_button()}
+						{m.jumpy_spry_snake_scoop()}
 					</LoadingButton>
 					<div className="text-center text-sm">
 						<span className="text-muted-foreground">
-							{m.login_register_prompt()}{' '}
+							{m.kind_polite_moth_assure()}{' '}
 						</span>
 						<Link
 							to="/register"
 							className="font-medium text-primary hover:underline"
 						>
-							{m.register_button()}
+							{m.least_raw_zebra_dine()}
 						</Link>
 					</div>
 				</div>

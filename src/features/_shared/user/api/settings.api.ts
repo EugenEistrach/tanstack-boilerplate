@@ -13,7 +13,7 @@ export const useUpdateNameMutation = () => {
 		mutationFn: $updateName,
 		onSuccess: async () => {
 			await router.invalidate()
-			toast.success(m.profile_update_success())
+			toast.success(m.main_heavy_donkey_win())
 		},
 	})
 }

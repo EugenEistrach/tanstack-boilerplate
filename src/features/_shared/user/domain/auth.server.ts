@@ -38,7 +38,7 @@ export const authServer = betterAuth({
 
 			await sendEmail({
 				to: user.email,
-				subject: m.email_forgot_password_subject(),
+				subject: m.aqua_great_swan_blink(),
 				react: createForgotPasswordEmail({
 					resetLink: url,
 					userEmail: user.email,
