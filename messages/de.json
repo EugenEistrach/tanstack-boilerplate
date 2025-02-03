@@ -12,7 +12,6 @@
 	"glad_odd_bat_chop": "Hell",
 	"spry_crazy_eagle_propel": "Dunkel",
 	"keen_helpful_coyote_urge": "System",
-	"minor_trick_buzzard_foster": "Melde dich an",
 	"aloof_direct_worm_trim": "Mit GitHub anmelden",
 	"long_born_sparrow_spin": "Abmelden",
 	"green_such_alligator_commend": "E-Mail",
@@ -110,6 +109,7 @@
 	"wild_major_jannes_surge": "Tag löschen",
 	"vexed_east_gorilla_stir": "Zum Bestätigen klicken",
 	"cozy_icy_lark_dance": "Oder melde dich mit E-Mail und Passwort an",
+	"minor_trick_buzzard_foster": "Anmelden",
 	"proof_gaudy_turtle_climb": "E-Mail",
 	"lime_lazy_shrike_strive": "Gib deine E-Mail ein",
 	"zany_fit_owl_learn": "Passwort",
@@ -117,7 +117,6 @@
 	"jumpy_spry_snake_scoop": "Mit Passwort anmelden",
 	"kind_polite_moth_assure": "Noch kein Konto?",
 	"soft_ago_pelican_hush": "Konto erstellen",
-	"smug_many_capybara_affirm": "Registriere dich, um loszulegen",
 	"giant_awake_crow_forgive": "Vollständiger Name",
 	"civil_late_poodle_race": "Gib deinen vollständigen Namen ein",
 	"tame_next_lobster_succeed": "E-Mail",
@@ -157,5 +156,6 @@
 	"dirty_quick_vole_flow": "Neues Passwort erstellen",
 	"cozy_funny_nils_revive": "Bitte gib unten dein neues Passwort ein.",
 	"slow_mad_donkey_ripple": "Passwort zurücksetzen",
-	"weary_civil_bird_aid": "Ungültige E-Mail oder Passwort"
+	"weary_civil_bird_aid": "Ungültige E-Mail oder Passwort",
+	"warm_quick_mole_stare": "Oder erstelle ein Konto mit E-Mail"
 }
