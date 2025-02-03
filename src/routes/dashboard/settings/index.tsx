@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 
-import { SettingsBasicInfoForm } from '@/features/settings/ui/settings-basic-info-form'
+import { SettingsBasicInfoForm } from '@/features/_shared/user/ui/settings-basic-info-form'
 
 import * as m from '@/lib/paraglide/messages'
 

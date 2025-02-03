@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/card'
 import { LocaleSwitcher } from '@/components/ui/locale-switcher'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
-import { useAuth } from '@/lib/client/auth.client'
+import { useAuth } from '@/features/_shared/user/api/auth.api'
 import * as m from '@/lib/paraglide/messages'
 
 export const Route = createFileRoute('/(auth)/approval-needed')({

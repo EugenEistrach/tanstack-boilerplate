@@ -1,5 +1,5 @@
 import { createAPIFileRoute } from '@tanstack/start/api'
-import { authServer } from '@/lib/server/auth.server'
+import { authServer } from '@/features/_shared/user/domain/auth.server'
 
 export const APIRoute = createAPIFileRoute('/api/auth/$')({
 	GET: async ({ request }) => {

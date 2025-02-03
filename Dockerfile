@@ -59,4 +59,4 @@ EXPOSE 3000
 ENV LOCAL_DATABASE_PATH="/data/sqlite.db"
 
 # Change to "start" in real production
-CMD [ "pnpm", "run", "start-with-clean-db" ]
+CMD [ "pnpm", "run", "start" ]

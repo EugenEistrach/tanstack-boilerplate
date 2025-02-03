@@ -1,10 +1,18 @@
 import { redirect, useMatch, useRouter } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/start'
+
 import { getWebRequest } from '@tanstack/start/server'
+import { type } from 'arktype'
 import { createAuthClient } from 'better-auth/client'
 import { adminClient, organizationClient } from 'better-auth/client/plugins'
+import {
+	authServer,
+	getOnboardingInfo,
+	isEmailAvailable,
+	requireAuthSession,
+} from '@/features/_shared/user/domain/auth.server'
 
-import { authServer, requireAuthSession } from '@/lib/server/auth.server'
+import { env } from '@/lib/server/env.server'
 
 export const authClient = createAuthClient({
 	plugins: [adminClient(), organizationClient()],
@@ -42,13 +50,41 @@ export const $getSession = createServerFn({ method: 'GET' }).handler(
 			const session = await authServer.api.getSession({
 				headers: request.headers,
 			})
-			return session
+
+			if (!session || !session.user) {
+				return null
+			}
+
+			const hasAccess = env.ENABLE_ADMIN_APPROVAL
+				? session.user.role === 'admin' || session.user.hasAccess
+				: true
+
+			const onboardingInfo = await getOnboardingInfo(session.user.id)
+
+			return {
+				...session,
+				user: {
+					...session.user,
+					hasAccess,
+					onboardingInfo,
+				},
+			}
 		} catch (error) {
 			console.error(error)
 			return null
 		}
 	},
 )
+
+export const $isEmailAvailable = createServerFn({ method: 'GET' })
+	.validator(
+		type({
+			'email?': 'string',
+		}),
+	)
+	.handler(async ({ data }) => {
+		return data.email && isEmailAvailable(data.email)
+	})
 
 export const $requireAuthSession = createServerFn({ method: 'GET' }).handler(
 	async () => {

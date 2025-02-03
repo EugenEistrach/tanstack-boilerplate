@@ -11,7 +11,6 @@ import {
 	UsersIcon,
 } from 'lucide-react'
 import { useState } from 'react'
-import { AdminOnly } from '@/components/ui/admin-only'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Breadcrumbs } from '@/components/ui/breadcrumbs'
 import {
@@ -45,8 +44,8 @@ import {
 } from '@/components/ui/sidebar'
 
 import { ThemeToggle } from '@/components/ui/theme-toggle'
-import { getOnboardingInfoQueryOptions } from '@/features/onboarding/api/onboarding.api'
-import { useAuth, $logout } from '@/lib/client/auth.client'
+import { useAuth, $logout } from '@/features/_shared/user/api/auth.api'
+import { AdminOnly } from '@/features/_shared/user/ui/admin-only'
 import * as m from '@/lib/paraglide/messages'
 import { sidebarOpenCookie } from '@/lib/server/session.server'
 
@@ -77,12 +76,9 @@ export const Route = createFileRoute('/dashboard')({
 			})
 		}
 
-		const [sidebarOpen, onboardingInfo] = await Promise.all([
-			$getSidebarState(),
-			context.queryClient.ensureQueryData(getOnboardingInfoQueryOptions()),
-		])
+		const [sidebarOpen] = await Promise.all([$getSidebarState()])
 
-		if (!onboardingInfo) {
+		if (!context.auth.user.onboardingInfo) {
 			throw redirect({
 				to: '/onboarding',
 				search: { redirectTo: location.pathname },
@@ -238,6 +234,7 @@ function UserMenu() {
 		.toUpperCase()
 
 	const logout = useServerFn($logout)
+
 	return (
 		<SidebarMenu>
 			<SidebarMenuItem>
@@ -292,7 +289,11 @@ function UserMenu() {
 						</DropdownMenuGroup>
 
 						<DropdownMenuSeparator />
-						<DropdownMenuItem onClick={() => logout()}>
+						<DropdownMenuItem
+							onClick={() => {
+								void logout()
+							}}
+						>
 							<LogOut />
 							{m.sign_out()}
 						</DropdownMenuItem>

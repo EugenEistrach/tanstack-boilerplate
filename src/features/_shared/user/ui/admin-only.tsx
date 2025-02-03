@@ -1,4 +1,4 @@
-import { useAuth } from '@/lib/client/auth.client'
+import { useAuth } from '@/features/_shared/user/api/auth.api'
 
 export function AdminOnly({ children }: { children: React.ReactNode }) {
 	const { user } = useAuth()

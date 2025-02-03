@@ -1,40 +1,17 @@
-import {
-	queryOptions,
-	useMutation,
-	useQueryClient,
-} from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 import { redirect } from '@tanstack/react-router'
 import { createServerFn, useServerFn } from '@tanstack/start'
 import { type } from 'arktype'
 import {
 	completeOnboarding,
-	getOnboardingInfo,
-} from '@/features/onboarding/domain/onboarding.server'
-import { requireAuthSession } from '@/lib/server/auth.server'
-
-export const getOnboardingInfoQueryOptions = () =>
-	queryOptions({
-		queryKey: ['onboardingInfo'],
-		queryFn: () => $getOnboardingInfo(),
-	})
+	requireAuthSession,
+} from '@/features/_shared/user/domain/auth.server'
 
 export const useCompleteOnboardingMutation = () => {
-	const queryClient = useQueryClient()
-
 	return useMutation({
 		mutationFn: useServerFn($completeOnboarding),
-		onSuccess: async () => {
-			await queryClient.invalidateQueries(getOnboardingInfoQueryOptions())
-		},
 	})
 }
-
-const $getOnboardingInfo = createServerFn({ method: 'GET' }).handler(
-	async () => {
-		const { user } = await requireAuthSession()
-		return getOnboardingInfo(user.id)
-	},
-)
 
 const $completeOnboarding = createServerFn({ method: 'POST' })
 	.validator(

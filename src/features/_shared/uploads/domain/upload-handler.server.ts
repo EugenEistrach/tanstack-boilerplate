@@ -1,7 +1,7 @@
 import { parseFormData, type FileUpload } from '@mjackson/form-data-parser'
-import { SQLiteFileStorage } from './file-storage.server'
 import { AcceptedFileTypes } from '@/features/_shared/uploads/constants'
-import { type authServer } from '@/lib/server/auth.server'
+import { SQLiteFileStorage } from '@/features/_shared/uploads/domain/file-storage.server'
+import { type authServer } from '@/features/_shared/user/domain/auth.server'
 import { logger } from '@/lib/server/logger.server'
 
 type Auth = Awaited<ReturnType<typeof authServer.api.getSession>>

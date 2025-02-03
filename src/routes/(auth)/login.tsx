@@ -5,7 +5,8 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { LocaleSwitcher } from '@/components/ui/locale-switcher'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
-import { authClient } from '@/lib/client/auth.client'
+import { authClient } from '@/features/_shared/user/api/auth.api'
+import { LoginForm } from '@/features/_shared/user/ui/login-form'
 import * as m from '@/lib/paraglide/messages'
 
 const searchSchema = type({
@@ -70,6 +71,7 @@ function Login() {
 								{m.sign_in_github()}
 							</span>
 						</Button>
+						<LoginForm />
 					</CardContent>
 				</Card>
 			</main>

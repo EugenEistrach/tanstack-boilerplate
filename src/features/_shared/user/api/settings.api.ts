@@ -3,9 +3,9 @@ import { useRouter } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/start'
 import { type } from 'arktype'
 import { toast } from 'sonner'
-import { updateName } from '@/features/settings/domain/settings.server'
+import { requireAuthSession } from '@/features/_shared/user/domain/auth.server'
+import { updateName } from '@/features/_shared/user/domain/settings.server'
 import * as m from '@/lib/paraglide/messages'
-import { requireAuthSession } from '@/lib/server/auth.server'
 
 export const useUpdateNameMutation = () => {
 	const router = useRouter()
