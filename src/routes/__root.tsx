@@ -1,10 +1,6 @@
 import { type QueryClient } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import {
-	createRootRouteWithContext,
-	Outlet,
-	ScrollRestoration,
-} from '@tanstack/react-router'
+import { createRootRouteWithContext, Outlet } from '@tanstack/react-router'
 import { Meta, Scripts } from '@tanstack/start'
 
 import filePondCss from 'filepond/dist/filepond.min.css?url'
@@ -122,7 +118,6 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 						<Toaster />
 					</TooltipProvider>
 				</TimezoneContext.Provider>
-				<ScrollRestoration />
 				<TanStackRouterDevtools position="bottom-right" />
 				<ReactQueryDevtools buttonPosition="bottom-right" />
 				<Scripts />

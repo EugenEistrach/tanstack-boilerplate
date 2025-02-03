@@ -13,17 +13,20 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as DashboardImport } from './routes/dashboard'
 import { Route as MarketingImport } from './routes/_marketing'
+import { Route as AuthImport } from './routes/_auth'
 import { Route as DashboardIndexImport } from './routes/dashboard/index'
 import { Route as MarketingIndexImport } from './routes/_marketing/index'
 import { Route as DashboardSettingsImport } from './routes/dashboard/settings'
 import { Route as DashboardAdminImport } from './routes/dashboard/admin'
 import { Route as MarketingTermsImport } from './routes/_marketing/terms'
 import { Route as MarketingPrivacyImport } from './routes/_marketing/privacy'
-import { Route as authResetPasswordImport } from './routes/(auth)/reset-password'
-import { Route as authRegisterImport } from './routes/(auth)/register'
-import { Route as authOnboardingImport } from './routes/(auth)/onboarding'
-import { Route as authLoginImport } from './routes/(auth)/login'
-import { Route as authApprovalNeededImport } from './routes/(auth)/approval-needed'
+import { Route as AuthVerifyEmailImport } from './routes/_auth/verify-email'
+import { Route as AuthVerificationSuccessImport } from './routes/_auth/verification-success'
+import { Route as AuthResetPasswordImport } from './routes/_auth/reset-password'
+import { Route as AuthRegisterImport } from './routes/_auth/register'
+import { Route as AuthOnboardingImport } from './routes/_auth/onboarding'
+import { Route as AuthLoginImport } from './routes/_auth/login'
+import { Route as AuthApprovalNeededImport } from './routes/_auth/approval-needed'
 import { Route as DashboardSettingsIndexImport } from './routes/dashboard/settings/index'
 import { Route as DashboardAdminUsersImport } from './routes/dashboard/admin/users'
 import { Route as DashboardAdminUploadsImport } from './routes/dashboard/admin/uploads'
@@ -38,6 +41,11 @@ const DashboardRoute = DashboardImport.update({
 
 const MarketingRoute = MarketingImport.update({
   id: '/_marketing',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AuthRoute = AuthImport.update({
+  id: '/_auth',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -77,34 +85,46 @@ const MarketingPrivacyRoute = MarketingPrivacyImport.update({
   getParentRoute: () => MarketingRoute,
 } as any)
 
-const authResetPasswordRoute = authResetPasswordImport.update({
-  id: '/(auth)/reset-password',
+const AuthVerifyEmailRoute = AuthVerifyEmailImport.update({
+  id: '/verify-email',
+  path: '/verify-email',
+  getParentRoute: () => AuthRoute,
+} as any)
+
+const AuthVerificationSuccessRoute = AuthVerificationSuccessImport.update({
+  id: '/verification-success',
+  path: '/verification-success',
+  getParentRoute: () => AuthRoute,
+} as any)
+
+const AuthResetPasswordRoute = AuthResetPasswordImport.update({
+  id: '/reset-password',
   path: '/reset-password',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => AuthRoute,
 } as any)
 
-const authRegisterRoute = authRegisterImport.update({
-  id: '/(auth)/register',
+const AuthRegisterRoute = AuthRegisterImport.update({
+  id: '/register',
   path: '/register',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => AuthRoute,
 } as any)
 
-const authOnboardingRoute = authOnboardingImport.update({
-  id: '/(auth)/onboarding',
+const AuthOnboardingRoute = AuthOnboardingImport.update({
+  id: '/onboarding',
   path: '/onboarding',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => AuthRoute,
 } as any)
 
-const authLoginRoute = authLoginImport.update({
-  id: '/(auth)/login',
+const AuthLoginRoute = AuthLoginImport.update({
+  id: '/login',
   path: '/login',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => AuthRoute,
 } as any)
 
-const authApprovalNeededRoute = authApprovalNeededImport.update({
-  id: '/(auth)/approval-needed',
+const AuthApprovalNeededRoute = AuthApprovalNeededImport.update({
+  id: '/approval-needed',
   path: '/approval-needed',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => AuthRoute,
 } as any)
 
 const DashboardSettingsIndexRoute = DashboardSettingsIndexImport.update({
@@ -129,6 +149,13 @@ const DashboardAdminUploadsRoute = DashboardAdminUploadsImport.update({
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/_auth': {
+      id: '/_auth'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthImport
+      parentRoute: typeof rootRoute
+    }
     '/_marketing': {
       id: '/_marketing'
       path: ''
@@ -143,40 +170,54 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardImport
       parentRoute: typeof rootRoute
     }
-    '/(auth)/approval-needed': {
-      id: '/(auth)/approval-needed'
+    '/_auth/approval-needed': {
+      id: '/_auth/approval-needed'
       path: '/approval-needed'
       fullPath: '/approval-needed'
-      preLoaderRoute: typeof authApprovalNeededImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof AuthApprovalNeededImport
+      parentRoute: typeof AuthImport
     }
-    '/(auth)/login': {
-      id: '/(auth)/login'
+    '/_auth/login': {
+      id: '/_auth/login'
       path: '/login'
       fullPath: '/login'
-      preLoaderRoute: typeof authLoginImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof AuthLoginImport
+      parentRoute: typeof AuthImport
     }
-    '/(auth)/onboarding': {
-      id: '/(auth)/onboarding'
+    '/_auth/onboarding': {
+      id: '/_auth/onboarding'
       path: '/onboarding'
       fullPath: '/onboarding'
-      preLoaderRoute: typeof authOnboardingImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof AuthOnboardingImport
+      parentRoute: typeof AuthImport
     }
-    '/(auth)/register': {
-      id: '/(auth)/register'
+    '/_auth/register': {
+      id: '/_auth/register'
       path: '/register'
       fullPath: '/register'
-      preLoaderRoute: typeof authRegisterImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof AuthRegisterImport
+      parentRoute: typeof AuthImport
     }
-    '/(auth)/reset-password': {
-      id: '/(auth)/reset-password'
+    '/_auth/reset-password': {
+      id: '/_auth/reset-password'
       path: '/reset-password'
       fullPath: '/reset-password'
-      preLoaderRoute: typeof authResetPasswordImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof AuthResetPasswordImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/verification-success': {
+      id: '/_auth/verification-success'
+      path: '/verification-success'
+      fullPath: '/verification-success'
+      preLoaderRoute: typeof AuthVerificationSuccessImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/verify-email': {
+      id: '/_auth/verify-email'
+      path: '/verify-email'
+      fullPath: '/verify-email'
+      preLoaderRoute: typeof AuthVerifyEmailImport
+      parentRoute: typeof AuthImport
     }
     '/_marketing/privacy': {
       id: '/_marketing/privacy'
@@ -246,6 +287,28 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 
+interface AuthRouteChildren {
+  AuthApprovalNeededRoute: typeof AuthApprovalNeededRoute
+  AuthLoginRoute: typeof AuthLoginRoute
+  AuthOnboardingRoute: typeof AuthOnboardingRoute
+  AuthRegisterRoute: typeof AuthRegisterRoute
+  AuthResetPasswordRoute: typeof AuthResetPasswordRoute
+  AuthVerificationSuccessRoute: typeof AuthVerificationSuccessRoute
+  AuthVerifyEmailRoute: typeof AuthVerifyEmailRoute
+}
+
+const AuthRouteChildren: AuthRouteChildren = {
+  AuthApprovalNeededRoute: AuthApprovalNeededRoute,
+  AuthLoginRoute: AuthLoginRoute,
+  AuthOnboardingRoute: AuthOnboardingRoute,
+  AuthRegisterRoute: AuthRegisterRoute,
+  AuthResetPasswordRoute: AuthResetPasswordRoute,
+  AuthVerificationSuccessRoute: AuthVerificationSuccessRoute,
+  AuthVerifyEmailRoute: AuthVerifyEmailRoute,
+}
+
+const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
+
 interface MarketingRouteChildren {
   MarketingPrivacyRoute: typeof MarketingPrivacyRoute
   MarketingTermsRoute: typeof MarketingTermsRoute
@@ -306,11 +369,13 @@ const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
 export interface FileRoutesByFullPath {
   '': typeof MarketingRouteWithChildren
   '/dashboard': typeof DashboardRouteWithChildren
-  '/approval-needed': typeof authApprovalNeededRoute
-  '/login': typeof authLoginRoute
-  '/onboarding': typeof authOnboardingRoute
-  '/register': typeof authRegisterRoute
-  '/reset-password': typeof authResetPasswordRoute
+  '/approval-needed': typeof AuthApprovalNeededRoute
+  '/login': typeof AuthLoginRoute
+  '/onboarding': typeof AuthOnboardingRoute
+  '/register': typeof AuthRegisterRoute
+  '/reset-password': typeof AuthResetPasswordRoute
+  '/verification-success': typeof AuthVerificationSuccessRoute
+  '/verify-email': typeof AuthVerifyEmailRoute
   '/privacy': typeof MarketingPrivacyRoute
   '/terms': typeof MarketingTermsRoute
   '/dashboard/admin': typeof DashboardAdminRouteWithChildren
@@ -323,11 +388,14 @@ export interface FileRoutesByFullPath {
 }
 
 export interface FileRoutesByTo {
-  '/approval-needed': typeof authApprovalNeededRoute
-  '/login': typeof authLoginRoute
-  '/onboarding': typeof authOnboardingRoute
-  '/register': typeof authRegisterRoute
-  '/reset-password': typeof authResetPasswordRoute
+  '': typeof AuthRouteWithChildren
+  '/approval-needed': typeof AuthApprovalNeededRoute
+  '/login': typeof AuthLoginRoute
+  '/onboarding': typeof AuthOnboardingRoute
+  '/register': typeof AuthRegisterRoute
+  '/reset-password': typeof AuthResetPasswordRoute
+  '/verification-success': typeof AuthVerificationSuccessRoute
+  '/verify-email': typeof AuthVerifyEmailRoute
   '/privacy': typeof MarketingPrivacyRoute
   '/terms': typeof MarketingTermsRoute
   '/dashboard/admin': typeof DashboardAdminRouteWithChildren
@@ -340,13 +408,16 @@ export interface FileRoutesByTo {
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
+  '/_auth': typeof AuthRouteWithChildren
   '/_marketing': typeof MarketingRouteWithChildren
   '/dashboard': typeof DashboardRouteWithChildren
-  '/(auth)/approval-needed': typeof authApprovalNeededRoute
-  '/(auth)/login': typeof authLoginRoute
-  '/(auth)/onboarding': typeof authOnboardingRoute
-  '/(auth)/register': typeof authRegisterRoute
-  '/(auth)/reset-password': typeof authResetPasswordRoute
+  '/_auth/approval-needed': typeof AuthApprovalNeededRoute
+  '/_auth/login': typeof AuthLoginRoute
+  '/_auth/onboarding': typeof AuthOnboardingRoute
+  '/_auth/register': typeof AuthRegisterRoute
+  '/_auth/reset-password': typeof AuthResetPasswordRoute
+  '/_auth/verification-success': typeof AuthVerificationSuccessRoute
+  '/_auth/verify-email': typeof AuthVerifyEmailRoute
   '/_marketing/privacy': typeof MarketingPrivacyRoute
   '/_marketing/terms': typeof MarketingTermsRoute
   '/dashboard/admin': typeof DashboardAdminRouteWithChildren
@@ -368,6 +439,8 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/register'
     | '/reset-password'
+    | '/verification-success'
+    | '/verify-email'
     | '/privacy'
     | '/terms'
     | '/dashboard/admin'
@@ -379,11 +452,14 @@ export interface FileRouteTypes {
     | '/dashboard/settings/'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | ''
     | '/approval-needed'
     | '/login'
     | '/onboarding'
     | '/register'
     | '/reset-password'
+    | '/verification-success'
+    | '/verify-email'
     | '/privacy'
     | '/terms'
     | '/dashboard/admin'
@@ -394,13 +470,16 @@ export interface FileRouteTypes {
     | '/dashboard/settings'
   id:
     | '__root__'
+    | '/_auth'
     | '/_marketing'
     | '/dashboard'
-    | '/(auth)/approval-needed'
-    | '/(auth)/login'
-    | '/(auth)/onboarding'
-    | '/(auth)/register'
-    | '/(auth)/reset-password'
+    | '/_auth/approval-needed'
+    | '/_auth/login'
+    | '/_auth/onboarding'
+    | '/_auth/register'
+    | '/_auth/reset-password'
+    | '/_auth/verification-success'
+    | '/_auth/verify-email'
     | '/_marketing/privacy'
     | '/_marketing/terms'
     | '/dashboard/admin'
@@ -414,23 +493,15 @@ export interface FileRouteTypes {
 }
 
 export interface RootRouteChildren {
+  AuthRoute: typeof AuthRouteWithChildren
   MarketingRoute: typeof MarketingRouteWithChildren
   DashboardRoute: typeof DashboardRouteWithChildren
-  authApprovalNeededRoute: typeof authApprovalNeededRoute
-  authLoginRoute: typeof authLoginRoute
-  authOnboardingRoute: typeof authOnboardingRoute
-  authRegisterRoute: typeof authRegisterRoute
-  authResetPasswordRoute: typeof authResetPasswordRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
+  AuthRoute: AuthRouteWithChildren,
   MarketingRoute: MarketingRouteWithChildren,
   DashboardRoute: DashboardRouteWithChildren,
-  authApprovalNeededRoute: authApprovalNeededRoute,
-  authLoginRoute: authLoginRoute,
-  authOnboardingRoute: authOnboardingRoute,
-  authRegisterRoute: authRegisterRoute,
-  authResetPasswordRoute: authResetPasswordRoute,
 }
 
 export const routeTree = rootRoute
@@ -443,13 +514,21 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
+        "/_auth",
         "/_marketing",
-        "/dashboard",
-        "/(auth)/approval-needed",
-        "/(auth)/login",
-        "/(auth)/onboarding",
-        "/(auth)/register",
-        "/(auth)/reset-password"
+        "/dashboard"
+      ]
+    },
+    "/_auth": {
+      "filePath": "_auth.tsx",
+      "children": [
+        "/_auth/approval-needed",
+        "/_auth/login",
+        "/_auth/onboarding",
+        "/_auth/register",
+        "/_auth/reset-password",
+        "/_auth/verification-success",
+        "/_auth/verify-email"
       ]
     },
     "/_marketing": {
@@ -468,20 +547,33 @@ export const routeTree = rootRoute
         "/dashboard/"
       ]
     },
-    "/(auth)/approval-needed": {
-      "filePath": "(auth)/approval-needed.tsx"
+    "/_auth/approval-needed": {
+      "filePath": "_auth/approval-needed.tsx",
+      "parent": "/_auth"
     },
-    "/(auth)/login": {
-      "filePath": "(auth)/login.tsx"
+    "/_auth/login": {
+      "filePath": "_auth/login.tsx",
+      "parent": "/_auth"
     },
-    "/(auth)/onboarding": {
-      "filePath": "(auth)/onboarding.tsx"
+    "/_auth/onboarding": {
+      "filePath": "_auth/onboarding.tsx",
+      "parent": "/_auth"
     },
-    "/(auth)/register": {
-      "filePath": "(auth)/register.tsx"
+    "/_auth/register": {
+      "filePath": "_auth/register.tsx",
+      "parent": "/_auth"
     },
-    "/(auth)/reset-password": {
-      "filePath": "(auth)/reset-password.tsx"
+    "/_auth/reset-password": {
+      "filePath": "_auth/reset-password.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/verification-success": {
+      "filePath": "_auth/verification-success.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/verify-email": {
+      "filePath": "_auth/verify-email.tsx",
+      "parent": "/_auth"
     },
     "/_marketing/privacy": {
       "filePath": "_marketing/privacy.tsx",

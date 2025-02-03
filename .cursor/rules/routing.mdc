@@ -7,7 +7,7 @@ globs: src/routes/**/*
 ## Route Types
 
 - **Public Routes** (`src/routes/_marketing/`): Marketing/public pages
-- **Auth Routes** (`src/routes/(auth)/`): Authentication-related pages
+- **Auth Routes** (`src/routes/_auth/`): Authentication-related pages
 - **Dashboard Routes** (`src/routes/dashboard/`): Protected pages requiring authentication
 - **Admin Routes** (`src/routes/dashboard/admin/`): Protected pages requiring admin role
 
@@ -19,7 +19,7 @@ globs: src/routes/**/*
 
 2. **Create route file**
    - Public route: Create in `src/routes/_marketing/`
-   - Auth route: Create in `src/routes/(auth)/`
+   - Auth route: Create in `src/routes/_auth/`
    - Dashboard route: Create in `src/routes/dashboard/`
    - Admin route: Create in `src/routes/dashboard/admin/`
 

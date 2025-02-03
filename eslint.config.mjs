@@ -18,7 +18,6 @@ export default [
 	...defaultConfig,
 	{
 		files: ['**/*.{js,jsx,ts,tsx}'],
-		ignores: ['src/email/**/*'],
 		...i18next.configs['flat/recommended'],
 		rules: {
 			'i18next/no-literal-string': 'warn',
@@ -104,11 +103,6 @@ export default [
 				},
 				{
 					mode: 'full',
-					type: 'email',
-					pattern: ['src/email/**/*'],
-				},
-				{
-					mode: 'full',
 					type: 'neverImport',
 					pattern: ['src/*'],
 				},
@@ -142,23 +136,18 @@ export default [
 						},
 						{
 							from: ['shared'],
-							allow: ['shared', 'email'],
+							allow: ['shared'],
 						},
 						{
 							from: ['feature'],
 							allow: [
 								'shared',
 								['feature', { featureName: '${from.featureName}' }],
-								'email',
 							],
 						},
 						{
 							from: ['routes', 'neverImport', 'trigger'],
 							allow: ['shared', 'feature'],
-						},
-						{
-							from: ['email'],
-							allow: ['email', 'shared'],
 						},
 						{
 							from: ['routes'],

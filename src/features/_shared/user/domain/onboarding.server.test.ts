@@ -4,7 +4,7 @@ import { UserTable } from '@/drizzle/schemas/_exports'
 import {
 	completeOnboarding,
 	getOnboardingInfo,
-} from '@/features/_shared/user/domain/auth.server'
+} from '@/features/_shared/user/domain/onboarding.server'
 
 import { mockEnvOverrides } from '@/tests/mocks/vitest.mocks'
 import { testDb } from '@/tests/setup/test-db'

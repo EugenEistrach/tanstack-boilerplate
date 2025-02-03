@@ -6,10 +6,11 @@ import { admin, organization } from 'better-auth/plugins'
 import { eq } from 'drizzle-orm'
 import { db } from '@/drizzle/db'
 import { UserTable } from '@/drizzle/schemas/auth-schema'
-import { OnboardingInfoTable } from '@/drizzle/schemas/onboarding-schema'
-import { sendEmail } from '@/email/email.server'
-import { createForgotPasswordEmail } from '@/email/templates/forgot-password'
+import { type OnboardingInfoTable } from '@/drizzle/schemas/onboarding-schema'
+import { ForgotPasswordEmail } from '@/features/_shared/user/emails/forgot-password.email'
+import { VerificationEmail } from '@/features/_shared/user/emails/verification.email'
 import * as m from '@/lib/paraglide/messages'
+import { sendEmail } from '@/lib/server/email.server'
 import { env } from '@/lib/server/env.server'
 import { applyLanguage } from '@/lib/server/i18n.server'
 
@@ -31,16 +32,37 @@ export const authServer = betterAuth({
 	}),
 	emailAndPassword: {
 		enabled: true,
+		requireEmailVerification: true,
+
 		maxPasswordLength: 128,
 		sendResetPassword: async ({ user, url }, request) => {
-			// seems the server handler does not scope the language properly for better auth. So we have to just do it again here for the emails to be localized
+			// Seems the server handler does not scope the language properly for better auth.
+			// So we have to just do it again here for the emails to be localized
 			applyLanguage(request)
 
 			await sendEmail({
 				to: user.email,
 				subject: m.aqua_great_swan_blink(),
-				react: createForgotPasswordEmail({
+				react: ForgotPasswordEmail({
 					resetLink: url,
+					userEmail: user.email,
+				}),
+			})
+		},
+	},
+	emailVerification: {
+		sendOnSignUp: true,
+		sendVerificationEmail: async ({ user, url }, request) => {
+			applyLanguage(request)
+
+			await sendEmail({
+				to: user.email,
+				subject: m.calm_rapid_panda_glow(),
+				react: VerificationEmail({
+					verificationLink: url.replace(
+						'callbackURL=/',
+						'callbackURL=/verification-success',
+					),
 					userEmail: user.email,
 				}),
 			})
@@ -83,6 +105,14 @@ export const requireAuthSession = async (server = authServer) => {
 	return auth
 }
 
+export const requireAdminSession = async (server = authServer) => {
+	const auth = await requireAuthSession(server)
+
+	if (auth.user.role !== 'admin') {
+		throw new Error('Unauthorized')
+	}
+}
+
 export async function requireApiKey(request: Request) {
 	if (!env.API_KEY) {
 		throw new Error('API key not set')
@@ -120,57 +150,4 @@ export async function isEmailAvailable(email: string) {
 		where: eq(UserTable.email, email),
 	})
 	return !user
-}
-
-export async function getOnboardingInfo(userId: string) {
-	return (
-		(await db
-			.select()
-			.from(OnboardingInfoTable)
-			.where(eq(OnboardingInfoTable.userId, userId))
-			.get()) || null
-	)
-}
-
-export function completeOnboarding({
-	userId,
-	favoriteColor,
-	name,
-}: {
-	userId: string
-	favoriteColor: string
-	name: string
-}) {
-	return db.transaction(async (tx) => {
-		const user = await tx
-			.select({
-				email: UserTable.email,
-			})
-			.from(UserTable)
-			.where(eq(UserTable.id, userId))
-			.get()
-
-		if (!user) {
-			throw new Error('User not found')
-		}
-
-		await tx
-			.update(UserTable)
-			.set({
-				name,
-				role: env.ADMIN_USER_EMAILS?.includes(user?.email ?? '')
-					? 'admin'
-					: 'user',
-			})
-			.where(eq(UserTable.id, userId))
-			.run()
-
-		await tx
-			.insert(OnboardingInfoTable)
-			.values({
-				userId,
-				favoriteColor,
-			})
-			.run()
-	})
 }

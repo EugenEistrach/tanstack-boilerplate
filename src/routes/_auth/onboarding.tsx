@@ -7,7 +7,7 @@ const searchSchema = type({
 	'redirectTo?': 'string',
 })
 
-export const Route = createFileRoute('/(auth)/onboarding')({
+export const Route = createFileRoute('/_auth/onboarding')({
 	validateSearch: searchSchema,
 	beforeLoad: async ({ context, search }) => {
 		if (!context.auth) {
@@ -31,10 +31,5 @@ export const Route = createFileRoute('/(auth)/onboarding')({
 			})
 		}
 	},
-	component: OnboardingPage,
+	component: OnboardingForm,
 })
-
-function OnboardingPage() {
-	const { redirectTo } = Route.useSearch()
-	return <OnboardingForm redirectTo={redirectTo} />
-}

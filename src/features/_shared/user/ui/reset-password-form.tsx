@@ -1,10 +1,9 @@
 import { arktypeResolver } from '@hookform/resolvers/arktype'
-import { useMutation } from '@tanstack/react-query'
 import { Link, useSearch } from '@tanstack/react-router'
 import { type } from 'arktype'
 import { CheckCircle2, DatabaseZap, KeyRound } from 'lucide-react'
 import { useForm } from 'react-hook-form'
-import { toast } from 'sonner'
+import { useSpinDelay } from 'spin-delay'
 import { Button, LoadingButton } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
@@ -16,7 +15,10 @@ import {
 	FormMessage,
 } from '@/components/ui/form'
 import PasswordInput, { Input } from '@/components/ui/input'
-import { authClient } from '@/features/_shared/user/api/auth.api'
+import {
+	usePasswordReset,
+	usePasswordResetRequest,
+} from '@/features/_shared/user/api/auth.api'
 import * as m from '@/lib/paraglide/messages'
 
 function ResetPasswordSuccess() {
@@ -61,27 +63,19 @@ function NewPasswordForm({ token }: { token: string }) {
 		},
 	})
 
-	const resetPasswordMutation = useMutation({
-		mutationFn: async (values: { password: string }) => {
-			const result = await authClient.resetPassword({
-				token,
-				newPassword: values.password,
-			})
-			if (result.error) {
-				throw result.error
-			}
-			return result
-		},
-		onError: (error) => {
-			toast.error(error.message || m.few_bland_rooster_trip())
-		},
-	})
+	const {
+		mutate: resetPassword,
+		isPending,
+		isSuccess: isResetPasswordSuccess,
+	} = usePasswordReset()
+
+	const isResetPasswordPending = useSpinDelay(isPending)
 
 	async function onSubmit(values: { password: string }) {
-		resetPasswordMutation.mutate(values)
+		resetPassword({ token, password: values.password })
 	}
 
-	if (resetPasswordMutation.isSuccess) {
+	if (isResetPasswordSuccess) {
 		return (
 			<Card className="w-full max-w-md">
 				<CardHeader>
@@ -143,7 +137,7 @@ function NewPasswordForm({ token }: { token: string }) {
 							<LoadingButton
 								type="submit"
 								className="w-full"
-								loading={resetPasswordMutation.isPending}
+								loading={isResetPasswordPending}
 							>
 								{m.slow_mad_donkey_ripple()}
 							</LoadingButton>
@@ -156,7 +150,7 @@ function NewPasswordForm({ token }: { token: string }) {
 }
 
 export function ResetPasswordForm() {
-	const search = useSearch({ from: '/(auth)/reset-password' })
+	const search = useSearch({ from: '/_auth/reset-password' })
 
 	const form = useForm({
 		resolver: arktypeResolver(resetPasswordSchema),
@@ -165,31 +159,23 @@ export function ResetPasswordForm() {
 		},
 	})
 
-	const resetPasswordMutation = useMutation({
-		mutationFn: async (values: { email: string }) => {
-			const result = await authClient.forgetPassword({
-				email: values.email,
-				redirectTo: '/reset-password',
-			})
-			if (result.error) {
-				throw result.error
-			}
-			return result
-		},
-		onError: (error) => {
-			toast.error(error.message || m.few_bland_rooster_trip())
-		},
-	})
+	const {
+		mutate: requestPasswordReset,
+		isPending,
+		isSuccess: isRequestPasswordResetSuccess,
+	} = usePasswordResetRequest()
+
+	const isRequestPasswordResetPending = useSpinDelay(isPending)
 
 	async function onSubmit(values: { email: string }) {
-		resetPasswordMutation.mutate(values)
+		requestPasswordReset(values)
 	}
 
 	if (search.token) {
 		return <NewPasswordForm token={search.token} />
 	}
 
-	if (resetPasswordMutation.isSuccess) {
+	if (isRequestPasswordResetSuccess) {
 		return <ResetPasswordSuccess />
 	}
 
@@ -230,7 +216,7 @@ export function ResetPasswordForm() {
 							<LoadingButton
 								type="submit"
 								className="w-full"
-								loading={resetPasswordMutation.isPending}
+								loading={isRequestPasswordResetPending}
 							>
 								{m.house_arable_haddock_rest()}
 							</LoadingButton>

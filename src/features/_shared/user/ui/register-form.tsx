@@ -1,9 +1,9 @@
 import { arktypeResolver } from '@hookform/resolvers/arktype'
-import { useNavigate, Link } from '@tanstack/react-router'
+import { Link } from '@tanstack/react-router'
 import { type } from 'arktype'
 import { DatabaseZap } from 'lucide-react'
 import { useForm } from 'react-hook-form'
-import { toast } from 'sonner'
+import { useSpinDelay } from 'spin-delay'
 import { Button, LoadingButton } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
@@ -16,8 +16,9 @@ import {
 } from '@/components/ui/form'
 import PasswordInput, { Input } from '@/components/ui/input'
 import {
-	$isEmailAvailable,
-	authClient,
+	useEmailSignUp,
+	useSocialSignIn,
+	EmailNotAvailableError,
 } from '@/features/_shared/user/api/auth.api'
 import * as m from '@/lib/paraglide/messages'
 
@@ -37,29 +38,23 @@ export function RegisterForm() {
 		},
 	})
 
-	const navigate = useNavigate()
+	const { mutate: signUp, isPending: isEmailSignUpPending } = useEmailSignUp()
+	const { mutate: signInWithSocial, isPending: isSocialSignInPending } =
+		useSocialSignIn()
 
-	async function onSubmit(values: {
-		name: string
-		email: string
-		password: string
-	}) {
-		const isAvailable = await $isEmailAvailable({
-			data: { email: values.email },
-		})
-		if (!isAvailable) {
-			form.setError('email', { type: 'already_used' })
-			return
-		}
-		await authClient.signUp.email(values, {
-			onSuccess: () => {
-				void navigate({ to: '/onboarding' })
-			},
-			onError: () => {
-				toast.error(m.fair_pink_martin_nurture())
+	function onSubmit(values: { name: string; email: string; password: string }) {
+		void signUp(values, {
+			onSuccess: ([expectedError]) => {
+				if (expectedError === EmailNotAvailableError) {
+					form.setError('email', { type: EmailNotAvailableError })
+				}
 			},
 		})
 	}
+
+	const isAnySignInPending = useSpinDelay(
+		isEmailSignUpPending || isSocialSignInPending,
+	)
 
 	return (
 		<Card className="w-full max-w-md">
@@ -88,8 +83,9 @@ export function RegisterForm() {
 				<Button
 					variant="outline"
 					className="w-full"
+					disabled={isAnySignInPending}
 					onClick={async () => {
-						await authClient.signIn.social({
+						signInWithSocial({
 							provider: 'github',
 							callbackURL: '/dashboard',
 						})
@@ -157,7 +153,7 @@ export function RegisterForm() {
 										/>
 									</FormControl>
 									<FormMessage>
-										{fieldState.error?.type === 'already_used'
+										{fieldState.error?.type === EmailNotAvailableError
 											? m.wise_green_jackdaw_prosper()
 											: m.patchy_direct_ocelot_burn()}
 									</FormMessage>
@@ -186,7 +182,7 @@ export function RegisterForm() {
 							<LoadingButton
 								type="submit"
 								className="w-full"
-								loading={form.formState.isSubmitting}
+								loading={isAnySignInPending}
 							>
 								<span className="flex items-center">
 									{m.least_raw_zebra_dine()}

@@ -3,6 +3,7 @@ import { Link, useNavigate, useSearch } from '@tanstack/react-router'
 import { type } from 'arktype'
 import { DatabaseZap } from 'lucide-react'
 import { useForm } from 'react-hook-form'
+import { useSpinDelay } from 'spin-delay'
 import { LoadingButton, Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
@@ -14,7 +15,10 @@ import {
 	FormMessage,
 } from '@/components/ui/form'
 import PasswordInput, { Input } from '@/components/ui/input'
-import { authClient } from '@/features/_shared/user/api/auth.api'
+import {
+	useEmailSignIn,
+	useSocialSignIn,
+} from '@/features/_shared/user/api/auth.api'
 import * as m from '@/lib/paraglide/messages'
 
 const loginFormSchema = type({
@@ -32,12 +36,20 @@ export function LoginForm() {
 	})
 
 	const navigate = useNavigate()
-	const { redirectTo } = useSearch({ from: '/(auth)/login' })
+	const { redirectTo } = useSearch({ from: '/_auth/login' })
+	const { mutate: signIn, isPending: isEmailSignInPending } = useEmailSignIn()
+	const { mutate: signInWithSocial, isPending: isSocialSignInPending } =
+		useSocialSignIn()
 
 	function onSubmit(values: { email: string; password: string }) {
-		void authClient.signIn.email(values, {
-			onSuccess: () => {
-				void navigate({ to: '/dashboard' })
+		void signIn(values, {
+			onSuccess: ([expectedError]) => {
+				if (expectedError === 'verification_required') {
+					void navigate({
+						to: '/verify-email',
+						search: { email: values.email },
+					})
+				}
 			},
 			onError: () => {
 				form.setError('email', {
@@ -51,6 +63,10 @@ export function LoginForm() {
 			},
 		})
 	}
+
+	const isAnySignInPending = useSpinDelay(
+		isEmailSignInPending || isSocialSignInPending,
+	)
 
 	return (
 		<Card className="w-full max-w-md">
@@ -77,8 +93,9 @@ export function LoginForm() {
 				<Button
 					variant="outline"
 					className="w-full"
+					disabled={isAnySignInPending}
 					onClick={async () => {
-						await authClient.signIn.social({
+						signInWithSocial({
 							provider: 'github',
 							callbackURL: redirectTo ?? '/dashboard',
 						})
@@ -165,7 +182,7 @@ export function LoginForm() {
 								variant="default"
 								type="submit"
 								className="w-full"
-								loading={false}
+								loading={isAnySignInPending}
 							>
 								{m.jumpy_spry_snake_scoop()}
 							</LoadingButton>

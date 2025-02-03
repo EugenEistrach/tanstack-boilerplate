@@ -8,19 +8,18 @@ globs: *
 src/
 ├── components/     # Shared UI components
 ├── drizzle/       # Database schemas and migrations
-├── email/        # Email templates (react-email)
 ├── features/      # Feature-specific code
 │   ├── _shared/     # Shared features that can be imported by any feature
 │   │   └── shared-feature-name/
-│   │       ├── domain/     # Business logic + DB operations
 │   │       ├── api/        # API layer (server functions + React Query)
-│   │       ├── ui/         # UI components
-│   │       └── templates/  # Templates
+│   │       ├── domain/     # Business logic + DB operations
+│   │       ├── emails/     # Email templates (react-email)
+│   │       └── ui/         # UI components
 │   └── feature-name/
-│       ├── domain/     # Business logic + DB operations
 │       ├── api/        # API layer (server functions + React Query)
-│       ├── ui/         # UI components
-│       └── templates/  # Templates
+│       ├── domain/     # Business logic + DB operations
+│       ├── emails/     # Email templates (react-email)
+│       └── ui/         # UI components
 ├── hooks/         # Shared React hooks
 ├── lib/           # Shared utilities
 │   ├── client/     # Client-side core functionality

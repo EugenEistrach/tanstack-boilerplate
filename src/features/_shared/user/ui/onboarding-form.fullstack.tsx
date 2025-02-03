@@ -1,4 +1,5 @@
 import { arktypeResolver } from '@hookform/resolvers/arktype'
+import { useSearch } from '@tanstack/react-router'
 import { type } from 'arktype'
 import { useForm } from 'react-hook-form'
 import { useSpinDelay } from 'spin-delay'
@@ -32,8 +33,9 @@ const onboardingFormSchema = type({
 	'redirectTo?': 'string | undefined',
 })
 
-export function OnboardingForm({ redirectTo }: { redirectTo?: string }) {
+export function OnboardingForm() {
 	const auth = useAuth()
+	const { redirectTo } = useSearch({ from: '/_auth/onboarding' })
 
 	const form = useForm({
 		resolver: arktypeResolver(onboardingFormSchema),
@@ -49,69 +51,67 @@ export function OnboardingForm({ redirectTo }: { redirectTo?: string }) {
 	const isPending = useSpinDelay(completeOnboardingMutation.isPending)
 
 	return (
-		<div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-primary/20 to-secondary/20">
-			<Card className="w-full max-w-md">
-				<CardHeader>
-					<CardTitle className="text-center text-2xl font-bold">
-						{m.full_house_lion_zoom()}
-					</CardTitle>
-					<CardDescription className="text-center">
-						{m.weird_every_snail_hope()}
-					</CardDescription>
-				</CardHeader>
-				<Form {...form}>
-					<form
-						onSubmit={form.handleSubmit((values) => {
-							void completeOnboardingMutation.mutateAsync({ data: values })
-						})}
-						className="space-y-8"
-					>
-						<CardContent className="space-y-4">
-							<FormField
-								control={form.control}
-								name="name"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>{m.silly_wide_cod_absorb()}</FormLabel>
-										<FormControl>
-											<Input
-												placeholder={m.quick_whole_shell_bubble()}
-												{...field}
-											/>
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-							<FormField
-								control={form.control}
-								name="favoriteColor"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>{m.equal_small_yak_approve()}</FormLabel>
-										<FormControl>
-											<Input
-												placeholder={m.wild_sweet_elephant_roar()}
-												{...field}
-											/>
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-							<CardFooter>
-								<LoadingButton
-									type="submit"
-									className="w-full"
-									loading={isPending}
-								>
-									{m.key_full_swallow_fry()}
-								</LoadingButton>
-							</CardFooter>
-						</CardContent>
-					</form>
-				</Form>
-			</Card>
-		</div>
+		<Card className="w-full max-w-md">
+			<CardHeader>
+				<CardTitle className="text-center text-2xl font-bold">
+					{m.full_house_lion_zoom()}
+				</CardTitle>
+				<CardDescription className="text-center">
+					{m.weird_every_snail_hope()}
+				</CardDescription>
+			</CardHeader>
+			<Form {...form}>
+				<form
+					onSubmit={form.handleSubmit((values) => {
+						void completeOnboardingMutation.mutateAsync({ data: values })
+					})}
+					className="space-y-8"
+				>
+					<CardContent className="space-y-4">
+						<FormField
+							control={form.control}
+							name="name"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>{m.silly_wide_cod_absorb()}</FormLabel>
+									<FormControl>
+										<Input
+											placeholder={m.quick_whole_shell_bubble()}
+											{...field}
+										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name="favoriteColor"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>{m.equal_small_yak_approve()}</FormLabel>
+									<FormControl>
+										<Input
+											placeholder={m.wild_sweet_elephant_roar()}
+											{...field}
+										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<CardFooter>
+							<LoadingButton
+								type="submit"
+								className="w-full"
+								loading={isPending}
+							>
+								{m.key_full_swallow_fry()}
+							</LoadingButton>
+						</CardFooter>
+					</CardContent>
+				</form>
+			</Form>
+		</Card>
 	)
 }

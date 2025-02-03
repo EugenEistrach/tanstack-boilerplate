@@ -112,12 +112,3 @@ export const ForgotPasswordEmail = ({
 		</Html>
 	)
 }
-
-export const createForgotPasswordEmail = ({
-	resetLink,
-	userEmail,
-}: ForgotPasswordEmailProps) => {
-	return <ForgotPasswordEmail resetLink={resetLink} userEmail={userEmail} />
-}
-
-export default ForgotPasswordEmail

@@ -1,13 +1,11 @@
 ---
-description: MANDATORY: Internationalization guidelines for managing translations and language support
+description: MANDATORY: How to add localized texts (i18n)
 globs: *.tsx
 ---
 # Internationalization (i18n) Guidelines
 
-## Adding Translations
-
-1. Search for existing translations json files. They are in our ./messages directory
-2. Add translations to ALL files (**use human readable random generated IDs**) e.g:
+<detailed-steps>
+1. Add **NEW** texts to [en.json](mdc:messages/en.json) (**use human readable random generated IDs**) e.g:
    ```json
    // ./messages/en.json
    {
@@ -20,12 +18,12 @@ globs: *.tsx
    }
    ```
 
-3. Compile translations !IMPORTANT:
+2. Compile translations !IMPORTANT:
    ```bash
    pnpm build:paraglide
    ```
 
-4. Use in components:
+3. Use in components:
    ```tsx
    import * as m from '@/lib/paraglide/messages'
 
@@ -65,12 +63,10 @@ globs: *.tsx
      )
    }
    ```
+</detailed-steps>
 
-## Steps 
-
-1. Search for existing translations json files inside **./messages** directory
-2. Add translations to **ALL** files with **RANDOM_HUMAN_READABLE_ID**
-3. Run `pnpm build:paraglide` to compile translations
-4. Add to components
+1. Add **NEW** translations to [en.json](mdc:messages/en.json) files with **RANDOM_HUMAN_READABLE_ID**
+2. Run `pnpm build:paraglide` to compile translations
+3. Now you can use those translations in components
 
 
