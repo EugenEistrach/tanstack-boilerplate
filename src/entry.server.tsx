@@ -10,9 +10,8 @@ import { migrate } from 'drizzle-orm/libsql/migrator'
 
 import { db } from './drizzle/db'
 import { createRouter } from './router'
-import { setLanguageTag } from '@/lib/paraglide/runtime'
 import { env } from '@/lib/server/env.server'
-import { detectLanguage } from '@/lib/server/i18n.server'
+import { applyLanguage } from '@/lib/server/i18n.server'
 import { logger } from '@/lib/server/logger.server'
 
 import '@/lib/server/middleware.server'
@@ -39,14 +38,14 @@ const handler = createStartHandler({
 	createRouter,
 	getRouterManifest,
 })((ctx) => {
-	const language = detectLanguage(ctx.request)
+	const language = applyLanguage(ctx.request)
+
 	logger.debug(
 		{ language, url: ctx.request.url },
 		'Language detected for request',
 	)
 
 	const responseHeaders = new Headers(ctx.responseHeaders)
-	setLanguageTag(() => language)
 	responseHeaders.append('Set-Cookie', `lang=${language}; Path=/;`)
 
 	logger.trace(

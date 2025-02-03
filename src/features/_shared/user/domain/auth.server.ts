@@ -7,7 +7,11 @@ import { eq } from 'drizzle-orm'
 import { db } from '@/drizzle/db'
 import { UserTable } from '@/drizzle/schemas/auth-schema'
 import { OnboardingInfoTable } from '@/drizzle/schemas/onboarding-schema'
+import { sendEmail } from '@/email/email.server'
+import { createForgotPasswordEmail } from '@/email/templates/forgot-password'
+import * as m from '@/lib/paraglide/messages'
 import { env } from '@/lib/server/env.server'
+import { applyLanguage } from '@/lib/server/i18n.server'
 
 export type OnboardingInfo = typeof OnboardingInfoTable.$inferSelect
 
@@ -28,6 +32,19 @@ export const authServer = betterAuth({
 	emailAndPassword: {
 		enabled: true,
 		maxPasswordLength: 128,
+		sendResetPassword: async ({ user, url }, request) => {
+			// seems the server handler does not scope the language properly for better auth. So we have to just do it again here for the emails to be localized
+			applyLanguage(request)
+
+			await sendEmail({
+				to: user.email,
+				subject: m.email_forgot_password_subject(),
+				react: createForgotPasswordEmail({
+					resetLink: url,
+					userEmail: user.email,
+				}),
+			})
+		},
 	},
 	socialProviders: {
 		...(github && { github }),
