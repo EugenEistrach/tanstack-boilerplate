@@ -115,6 +115,7 @@
 	"login_password_label": "Passwort",
 	"login_password_placeholder": "Geben Sie Ihr Passwort ein",
 	"login_button": "Mit Passwort anmelden",
+	"login_register_prompt": "Noch kein Konto?",
 	"register_title": "Konto erstellen",
 	"register_subtitle": "Registrieren Sie sich, um loszulegen",
 	"register_name_label": "Vollständiger Name",
