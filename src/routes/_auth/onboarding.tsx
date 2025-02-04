@@ -1,7 +1,7 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
 import { type } from 'arktype'
 
-import { OnboardingForm } from '@/features/_shared/user/ui/onboarding-form.fullstack'
+import { OnboardingForm } from '@/features/_shared/user/ui/auth/onboarding-form.fullstack'
 
 const searchSchema = type({
 	'redirectTo?': 'string',

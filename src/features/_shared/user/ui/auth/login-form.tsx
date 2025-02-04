@@ -1,10 +1,10 @@
 import { arktypeResolver } from '@hookform/resolvers/arktype'
-import { Link } from '@tanstack/react-router'
+import { Link, useNavigate, useSearch } from '@tanstack/react-router'
 import { type } from 'arktype'
 import { DatabaseZap } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { useSpinDelay } from 'spin-delay'
-import { Button, LoadingButton } from '@/components/ui/button'
+import { LoadingButton, Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
 	Form,
@@ -16,68 +16,79 @@ import {
 } from '@/components/ui/form'
 import PasswordInput, { Input } from '@/components/ui/input'
 import {
-	useEmailSignUp,
-	useSocialSignIn,
-	EmailNotAvailableError,
+	useEmailSignInMutation,
+	useSocialSignInMutation,
 } from '@/features/_shared/user/api/auth.api'
 import * as m from '@/lib/paraglide/messages'
 
-const registerFormSchema = type({
-	name: 'string >= 1',
-	email: 'string.email >= 1',
-	password: 'string >= 8',
+const loginFormSchema = type({
+	email: 'string >= 1 & string.email',
+	password: 'string >= 1',
 })
 
-export function RegisterForm() {
+export function LoginForm() {
 	const form = useForm({
-		resolver: arktypeResolver(registerFormSchema),
+		resolver: arktypeResolver(loginFormSchema),
 		defaultValues: {
-			name: '',
 			email: '',
 			password: '',
 		},
 	})
 
-	const { mutate: signUp, isPending: isEmailSignUpPending } = useEmailSignUp()
+	const navigate = useNavigate()
+	const { redirectTo } = useSearch({ from: '/_auth/login' })
+	const { mutate: signIn, isPending: isEmailSignInPending } =
+		useEmailSignInMutation()
 	const { mutate: signInWithSocial, isPending: isSocialSignInPending } =
-		useSocialSignIn()
+		useSocialSignInMutation()
 
-	function onSubmit(values: { name: string; email: string; password: string }) {
-		void signUp(values, {
+	function onSubmit(values: { email: string; password: string }) {
+		void signIn(values, {
 			onSuccess: ([expectedError]) => {
-				if (expectedError === EmailNotAvailableError) {
-					form.setError('email', { type: EmailNotAvailableError })
+				if (expectedError === 'verification_required') {
+					void navigate({
+						to: '/verify-email',
+						search: { email: values.email },
+					})
 				}
+			},
+			onError: () => {
+				form.setError('email', {
+					type: 'manual',
+					message: m.weary_civil_bird_aid(),
+				})
+				form.setError('password', {
+					type: 'manual',
+					message: m.weary_civil_bird_aid(),
+				})
 			},
 		})
 	}
 
 	const isAnySignInPending = useSpinDelay(
-		isEmailSignUpPending || isSocialSignInPending,
+		isEmailSignInPending || isSocialSignInPending,
 	)
 
 	return (
 		<Card className="w-full max-w-md">
 			<CardHeader>
-				<div className="mx-auto mb-4 flex flex-col items-center justify-center gap-2">
-					<div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
-						<DatabaseZap />
-					</div>
+				<div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
+					<DatabaseZap />
 				</div>
 				<CardTitle className="text-center text-2xl font-bold">
-					{m.soft_ago_pelican_hush()}
+					{m.minor_trick_buzzard_foster()}
 				</CardTitle>
 			</CardHeader>
 			<CardContent className="space-y-4">
 				<div className="text-center text-sm">
 					<span className="text-muted-foreground">
-						{m.level_every_marten_spark()}{' '}
+						{m.kind_polite_moth_assure()}{' '}
 					</span>
 					<Link
-						to="/login"
+						to="/register"
 						className="font-medium text-primary hover:underline"
 					>
-						{m.noble_acidic_niklas_tend()}
+						{m.least_raw_zebra_dine()}
 					</Link>
 				</div>
 				<Button
@@ -87,7 +98,7 @@ export function RegisterForm() {
 					onClick={async () => {
 						signInWithSocial({
 							provider: 'github',
-							callbackURL: '/dashboard',
+							callbackURL: redirectTo ?? '/dashboard',
 						})
 					}}
 				>
@@ -106,7 +117,6 @@ export function RegisterForm() {
 						{m.aloof_direct_worm_trim()}
 					</span>
 				</Button>
-
 				<Form {...form}>
 					<div className="relative my-6">
 						<div className="absolute inset-0 flex items-center">
@@ -114,48 +124,28 @@ export function RegisterForm() {
 						</div>
 						<div className="relative flex justify-center text-sm">
 							<span className="bg-card px-2 text-muted-foreground">
-								{m.warm_quick_mole_stare()}
+								{m.cozy_icy_lark_dance()}
 							</span>
 						</div>
 					</div>
-					<form
-						onSubmit={form.handleSubmit(onSubmit)}
-						className="space-y-4"
-						noValidate
-					>
-						<FormField
-							control={form.control}
-							name="name"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>{m.giant_awake_crow_forgive()}</FormLabel>
-									<FormControl>
-										<Input
-											placeholder={m.civil_late_poodle_race()}
-											{...field}
-										/>
-									</FormControl>
-									<FormMessage>{m.gray_brief_pug_jump()}</FormMessage>
-								</FormItem>
-							)}
-						/>
+					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
 						<FormField
 							control={form.control}
 							name="email"
 							render={({ field, fieldState }) => (
 								<FormItem>
-									<FormLabel>{m.tame_next_lobster_succeed()}</FormLabel>
+									<FormLabel>{m.proof_gaudy_turtle_climb()}</FormLabel>
 									<FormControl>
 										<Input
 											type="email"
-											placeholder={m.curly_fair_racoon_honor()}
+											placeholder={m.lime_lazy_shrike_strive()}
 											{...field}
 										/>
 									</FormControl>
 									<FormMessage>
-										{fieldState.error?.type === EmailNotAvailableError
-											? m.wise_green_jackdaw_prosper()
-											: m.patchy_direct_ocelot_burn()}
+										{fieldState.error?.type === 'manual'
+											? fieldState.error.message
+											: m.gray_brief_pug_jump()}
 									</FormMessage>
 								</FormItem>
 							)}
@@ -163,30 +153,39 @@ export function RegisterForm() {
 						<FormField
 							control={form.control}
 							name="password"
-							render={({ field }) => (
+							render={({ field, fieldState }) => (
 								<FormItem>
-									<FormLabel>{m.bald_brief_otter_swim()}</FormLabel>
+									<div className="flex items-center justify-between">
+										<FormLabel>{m.zany_fit_owl_learn()}</FormLabel>
+										<Link
+											to="/reset-password"
+											className="text-sm font-medium text-primary hover:underline"
+										>
+											{m.polite_safe_bear_hint()}
+										</Link>
+									</div>
 									<FormControl>
 										<PasswordInput
-											placeholder={m.factual_bold_lamb_arise()}
+											placeholder={m.alert_grassy_moose_absorb()}
 											{...field}
 										/>
 									</FormControl>
 									<FormMessage>
-										{m.close_mild_lemur_scoop({ length: 8 })}
+										{fieldState.error?.type === 'manual'
+											? fieldState.error.message
+											: m.gray_brief_pug_jump()}
 									</FormMessage>
 								</FormItem>
 							)}
 						/>
-						<div className="pt-4">
+						<div className="space-y-4 pt-4">
 							<LoadingButton
+								variant="default"
 								type="submit"
 								className="w-full"
 								loading={isAnySignInPending}
 							>
-								<span className="flex items-center">
-									{m.least_raw_zebra_dine()}
-								</span>
+								{m.jumpy_spry_snake_scoop()}
 							</LoadingButton>
 						</div>
 					</form>

@@ -1,6 +1,6 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
 import { type } from 'arktype'
-import { ResetPasswordForm } from '@/features/_shared/user/ui/reset-password-form'
+import { ResetPasswordForm } from '@/features/_shared/user/ui/auth/reset-password-form'
 
 const searchSchema = type({
 	'token?': 'string',

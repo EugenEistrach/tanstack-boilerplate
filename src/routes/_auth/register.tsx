@@ -1,5 +1,5 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
-import { RegisterForm } from '@/features/_shared/user/ui/register-form'
+import { RegisterForm } from '@/features/_shared/user/ui/auth/register-form'
 
 export const Route = createFileRoute('/_auth/register')({
 	beforeLoad: ({ context }) => {

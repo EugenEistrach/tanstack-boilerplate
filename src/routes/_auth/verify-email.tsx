@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { type } from 'arktype'
-import { VerificationRequiredCard } from '@/features/_shared/user/ui/verification-required-card'
+import { VerificationRequiredCard } from '@/features/_shared/user/ui/auth/verification-required-card'
 
 const searchType = type({
 	email: 'string.email',

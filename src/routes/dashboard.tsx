@@ -130,10 +130,15 @@ export default function DashboardLayout() {
 				</SidebarHeader>
 				<SidebarContent>
 					<SidebarGroup>
-						<SidebarGroupLabel>{m.cozy_candid_beetle_grasp()}</SidebarGroupLabel>
+						<SidebarGroupLabel>
+							{m.cozy_candid_beetle_grasp()}
+						</SidebarGroupLabel>
 						<SidebarMenu>
 							<SidebarMenuItem>
-								<SidebarMenuButton tooltip={m.moving_jumpy_hedgehog_empower()} asChild>
+								<SidebarMenuButton
+									tooltip={m.moving_jumpy_hedgehog_empower()}
+									asChild
+								>
 									<NavLink
 										to="/dashboard"
 										activeOptions={{
@@ -149,10 +154,15 @@ export default function DashboardLayout() {
 					</SidebarGroup>
 					<AdminOnly>
 						<SidebarGroup>
-							<SidebarGroupLabel>{m.crazy_round_samuel_endure()}</SidebarGroupLabel>
+							<SidebarGroupLabel>
+								{m.crazy_round_samuel_endure()}
+							</SidebarGroupLabel>
 							<SidebarMenu>
 								<SidebarMenuItem>
-									<SidebarMenuButton tooltip={m.level_topical_bumblebee_mop()} asChild>
+									<SidebarMenuButton
+										tooltip={m.level_topical_bumblebee_mop()}
+										asChild
+									>
 										<NavLink to="/dashboard/admin/users">
 											<UsersIcon />
 											<span>{m.level_topical_bumblebee_mop()}</span>

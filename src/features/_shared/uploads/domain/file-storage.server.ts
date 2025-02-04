@@ -1,4 +1,4 @@
-import { type FileStorage } from '@mjackson/file-storage'
+import { type FileStorage, type ListResult } from '@mjackson/file-storage'
 import { eq } from 'drizzle-orm'
 import { db } from '@/drizzle/db'
 import { FileTable } from '@/drizzle/schemas/files-schema'
@@ -76,6 +76,10 @@ export class SQLiteFileStorage implements FileStorage {
 		if (!result) {
 			throw new Error('File not found')
 		}
+	}
+
+	async list(_opts: any): Promise<ListResult<any>> {
+		throw new Error('Not implemented')
 	}
 
 	generateKey(): string {

@@ -3,10 +3,11 @@ import { getWebRequest } from '@tanstack/start/server'
 import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 import { admin, organization } from 'better-auth/plugins'
-import { eq } from 'drizzle-orm'
+import { and, eq } from 'drizzle-orm'
 import { db } from '@/drizzle/db'
-import { UserTable } from '@/drizzle/schemas/auth-schema'
+import { AccountTable, UserTable } from '@/drizzle/schemas/auth-schema'
 import { type OnboardingInfoTable } from '@/drizzle/schemas/onboarding-schema'
+import { getOnboardingInfo } from '@/features/_shared/user/domain/onboarding.server'
 import { ForgotPasswordEmail } from '@/features/_shared/user/emails/forgot-password.email'
 import { VerificationEmail } from '@/features/_shared/user/emails/verification.email'
 import * as m from '@/lib/paraglide/messages'
@@ -82,6 +83,44 @@ export const authServer = betterAuth({
 	},
 })
 
+export const getSession = async () => {
+	try {
+		const request = getWebRequest()
+
+		if (!request) {
+			throw new Error('Request not found')
+		}
+
+		const session = await authServer.api.getSession({
+			headers: request.headers,
+		})
+
+		if (!session || !session.user) {
+			return null
+		}
+
+		const hasAccess = env.ENABLE_ADMIN_APPROVAL
+			? session.user.role === 'admin' || session.user.hasAccess
+			: true
+
+		const onboardingInfo = await getOnboardingInfo(session.user.id)
+		const hasPassword = await userHasPassword(session.user.id)
+
+		return {
+			...session,
+			user: {
+				...session.user,
+				hasAccess,
+				onboardingInfo,
+				hasPassword,
+			},
+		}
+	} catch (error) {
+		console.error(error)
+		return null
+	}
+}
+
 export const requireAuthSession = async (server = authServer) => {
 	const request = getWebRequest()
 
@@ -150,4 +189,41 @@ export async function isEmailAvailable(email: string) {
 		where: eq(UserTable.email, email),
 	})
 	return !user
+}
+
+export async function userHasPassword(userId: string) {
+	const account = await db.query.account.findFirst({
+		where: and(
+			eq(AccountTable.userId, userId),
+			eq(AccountTable.providerId, 'credential'),
+		),
+	})
+	return !!account
+}
+
+export async function setUserPassword({
+	newPassword,
+}: {
+	newPassword: string
+}) {
+	const request = getWebRequest()
+
+	if (!request) {
+		throw new Error('Request not found')
+	}
+
+	const auth = await requireAuthSessionApi(authServer)
+
+	const hasPassword = await userHasPassword(auth.user.id)
+
+	if (hasPassword) {
+		throw new Error('User already has a password. Can not set a new one.')
+	}
+
+	return authServer.api.setPassword({
+		headers: request.headers,
+		body: {
+			newPassword,
+		},
+	})
 }

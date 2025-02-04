@@ -1,6 +1,6 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
 import { type } from 'arktype'
-import { LoginForm } from '@/features/_shared/user/ui/login-form'
+import { LoginForm } from '@/features/_shared/user/ui/auth/login-form'
 
 const searchSchema = type({
 	'redirectTo?': 'string',

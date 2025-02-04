@@ -16,8 +16,8 @@ import {
 } from '@/components/ui/form'
 import PasswordInput, { Input } from '@/components/ui/input'
 import {
-	usePasswordReset,
-	usePasswordResetRequest,
+	usePasswordResetMutation,
+	usePasswordResetRequestMutation,
 } from '@/features/_shared/user/api/auth.api'
 import * as m from '@/lib/paraglide/messages'
 
@@ -67,7 +67,7 @@ function NewPasswordForm({ token }: { token: string }) {
 		mutate: resetPassword,
 		isPending,
 		isSuccess: isResetPasswordSuccess,
-	} = usePasswordReset()
+	} = usePasswordResetMutation()
 
 	const isResetPasswordPending = useSpinDelay(isPending)
 
@@ -163,7 +163,7 @@ export function ResetPasswordForm() {
 		mutate: requestPasswordReset,
 		isPending,
 		isSuccess: isRequestPasswordResetSuccess,
-	} = usePasswordResetRequest()
+	} = usePasswordResetRequestMutation()
 
 	const isRequestPasswordResetPending = useSpinDelay(isPending)
 

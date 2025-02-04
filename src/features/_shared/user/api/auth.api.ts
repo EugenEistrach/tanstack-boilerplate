@@ -1,17 +1,26 @@
-import { useMutation } from '@tanstack/react-query'
-import { redirect, useMatch, useNavigate } from '@tanstack/react-router'
+import {
+	queryOptions,
+	useMutation,
+	useQueryClient,
+} from '@tanstack/react-query'
+import {
+	redirect,
+	useMatch,
+	useNavigate,
+	useRouter,
+} from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/start'
 import { getWebRequest } from '@tanstack/start/server'
 import { type } from 'arktype'
 import { createAuthClient } from 'better-auth/client'
 import { adminClient, organizationClient } from 'better-auth/client/plugins'
+
 import {
 	authServer,
+	getSession,
 	isEmailAvailable,
+	setUserPassword,
 } from '@/features/_shared/user/domain/auth.server'
-
-import { getOnboardingInfo } from '@/features/_shared/user/domain/onboarding.server'
-import { env } from '@/lib/server/env.server'
 
 export const authClient = createAuthClient({
 	plugins: [adminClient(), organizationClient()],
@@ -34,7 +43,21 @@ export const useOptionalAuth = () => {
 	return loaderData?.auth
 }
 
-export const useEmailSignIn = () => {
+export const activeSessionsQueryOptions = () =>
+	queryOptions({
+		queryKey: ['activeSessions'],
+		queryFn: async () => {
+			const result = await authClient.listSessions()
+
+			if (result.error) {
+				throw new Error(result.error.message, { cause: result.error })
+			}
+
+			return result.data
+		},
+	})
+
+export const useEmailSignInMutation = () => {
 	const navigate = useNavigate()
 	return useMutation({
 		mutationFn: async (values: { email: string; password: string }) => {
@@ -57,7 +80,7 @@ export const useEmailSignIn = () => {
 	})
 }
 
-export const useSocialSignIn = () => {
+export const useSocialSignInMutation = () => {
 	return useMutation({
 		mutationFn: async (options: {
 			provider: 'github'
@@ -76,7 +99,7 @@ export const useSocialSignIn = () => {
 
 export const EmailNotAvailableError = 'email_not_available' as const
 
-export const useEmailSignUp = () => {
+export const useEmailSignUpMutation = () => {
 	const navigate = useNavigate()
 	return useMutation({
 		mutationFn: async (values: {
@@ -116,7 +139,19 @@ export const useEmailSignUp = () => {
 	})
 }
 
-export const usePasswordReset = () => {
+export const usePasswordResetRequestMutation = () => {
+	return useMutation({
+		mutationFn: async (values: { email: string }) => {
+			const result = await authClient.forgetPassword(values)
+			if (result.error) {
+				throw new Error(result.error.message, { cause: result.error })
+			}
+			return [null] as const
+		},
+	})
+}
+
+export const usePasswordResetMutation = () => {
 	return useMutation({
 		mutationFn: async (values: { token: string; password: string }) => {
 			const result = await authClient.resetPassword({
@@ -131,19 +166,42 @@ export const usePasswordReset = () => {
 	})
 }
 
-export const usePasswordResetRequest = () => {
+export const usePasswordSetRequestMutation = () => {
+	const router = useRouter()
 	return useMutation({
-		mutationFn: async (values: { email: string }) => {
-			const result = await authClient.forgetPassword(values)
+		mutationFn: async (values: { newPassword: string }) => {
+			return $setUserPassword({
+				data: {
+					newPassword: values.newPassword,
+				},
+			})
+		},
+		onSuccess: () => {
+			void router.invalidate()
+		},
+	})
+}
+
+export const usePasswordUpdateMutation = () => {
+	const router = useRouter()
+	return useMutation({
+		mutationFn: async (values: {
+			currentPassword: string
+			newPassword: string
+		}) => {
+			const result = await authClient.changePassword(values)
 			if (result.error) {
 				throw new Error(result.error.message, { cause: result.error })
 			}
 			return [null] as const
 		},
+		onSuccess: () => {
+			void router.invalidate()
+		},
 	})
 }
 
-export const useEmailVerification = () => {
+export const useEmailVerificationMutation = () => {
 	return useMutation({
 		mutationFn: async (values: { email: string }) => {
 			const result = await authClient.sendVerificationEmail({
@@ -159,41 +217,23 @@ export const useEmailVerification = () => {
 	})
 }
 
+export const useSessionRevokeMutation = () => {
+	const queryClient = useQueryClient()
+	const router = useRouter()
+	return useMutation({
+		mutationFn: async (values: { token: string }) => {
+			return authClient.revokeSession({ token: values.token })
+		},
+		onSuccess: () => {
+			void queryClient.invalidateQueries({ queryKey: ['activeSessions'] })
+			void router.invalidate()
+		},
+	})
+}
+
 export const $getSession = createServerFn({ method: 'GET' }).handler(
 	async () => {
-		try {
-			const request = getWebRequest()
-
-			if (!request) {
-				throw new Error('Request not found')
-			}
-
-			const session = await authServer.api.getSession({
-				headers: request.headers,
-			})
-
-			if (!session || !session.user) {
-				return null
-			}
-
-			const hasAccess = env.ENABLE_ADMIN_APPROVAL
-				? session.user.role === 'admin' || session.user.hasAccess
-				: true
-
-			const onboardingInfo = await getOnboardingInfo(session.user.id)
-
-			return {
-				...session,
-				user: {
-					...session.user,
-					hasAccess,
-					onboardingInfo,
-				},
-			}
-		} catch (error) {
-			console.error(error)
-			return null
-		}
+		return getSession()
 	},
 )
 
@@ -217,3 +257,13 @@ export const $logout = createServerFn({ method: 'POST' }).handler(async () => {
 	await authServer.api.signOut({ headers: request.headers })
 	throw redirect({ to: '/login' })
 })
+
+const $setUserPassword = createServerFn({ method: 'POST' })
+	.validator(
+		type({
+			newPassword: 'string >= 8',
+		}),
+	)
+	.handler(async ({ data }) => {
+		return setUserPassword(data)
+	})

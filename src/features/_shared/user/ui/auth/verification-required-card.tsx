@@ -3,7 +3,7 @@ import { CheckCircle2, MailIcon } from 'lucide-react'
 import { useSpinDelay } from 'spin-delay'
 import { Button, LoadingButton } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { useEmailVerification } from '@/features/_shared/user/api/auth.api'
+import { useEmailVerificationMutation } from '@/features/_shared/user/api/auth.api'
 import * as m from '@/lib/paraglide/messages'
 
 function ResendSuccess() {
@@ -39,7 +39,7 @@ export function VerificationRequiredCard() {
 		mutate: resendVerification,
 		isPending,
 		isSuccess: isResendVerificationSuccess,
-	} = useEmailVerification()
+	} = useEmailVerificationMutation()
 
 	const isResendVerificationPending = useSpinDelay(isPending)
 
