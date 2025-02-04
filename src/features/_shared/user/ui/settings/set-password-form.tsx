@@ -48,6 +48,7 @@ export function SetPasswordForm() {
 			<CardContent>
 				<Form {...form}>
 					<form
+						id="set-password-form"
 						onSubmit={form.handleSubmit((values) =>
 							passwordSetMutation.mutate(values),
 						)}
@@ -72,11 +73,7 @@ export function SetPasswordForm() {
 			<CardFooter className="flex justify-end bg-muted/50 pt-6">
 				<LoadingButton
 					type="submit"
-					form={
-						form.formState.defaultValues
-							? form.formState.defaultValues.toString()
-							: undefined
-					}
+					form="set-password-form"
 					disabled={form.formState.isValidating || isPending}
 					loading={isPending}
 				>

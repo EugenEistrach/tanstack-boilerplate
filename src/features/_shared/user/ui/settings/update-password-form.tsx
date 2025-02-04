@@ -50,6 +50,7 @@ export function UpdatePasswordForm() {
 			<CardContent>
 				<Form {...form}>
 					<form
+						id="update-password-form"
 						onSubmit={form.handleSubmit((values) =>
 							passwordUpdateMutation.mutate(values),
 						)}
@@ -87,11 +88,7 @@ export function UpdatePasswordForm() {
 			<CardFooter className="flex justify-end bg-muted/50 pt-6">
 				<LoadingButton
 					type="submit"
-					form={
-						form.formState.defaultValues
-							? form.formState.defaultValues.toString()
-							: undefined
-					}
+					form="update-password-form"
 					disabled={form.formState.isValidating || isPending}
 					loading={isPending}
 				>
