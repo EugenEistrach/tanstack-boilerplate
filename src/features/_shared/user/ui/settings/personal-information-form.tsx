@@ -42,6 +42,7 @@ export function PersonalInformationForm() {
 
 	const updateNameMutation = useUpdateNameMutation()
 	const isPending = useSpinDelay(updateNameMutation.isPending)
+
 	return (
 		<Card>
 			<CardHeader>
@@ -51,6 +52,7 @@ export function PersonalInformationForm() {
 			<CardContent>
 				<Form {...form}>
 					<form
+						id="personal-information-form"
 						onSubmit={form.handleSubmit((values) =>
 							updateNameMutation.mutate({ data: values }),
 						)}
@@ -91,12 +93,8 @@ export function PersonalInformationForm() {
 			</CardContent>
 			<CardFooter className="flex justify-end bg-muted/50 pt-6">
 				<LoadingButton
+					form="personal-information-form"
 					type="submit"
-					form={
-						form.formState.defaultValues
-							? form.formState.defaultValues.toString()
-							: undefined
-					}
 					disabled={form.formState.isValidating || isPending}
 					loading={isPending}
 				>
