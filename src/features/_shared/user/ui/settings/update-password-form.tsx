@@ -1,5 +1,6 @@
 import { arktypeResolver } from '@hookform/resolvers/arktype'
 import { type } from 'arktype'
+import { Save } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { useSpinDelay } from 'spin-delay'
 import { LoadingButton } from '@/components/ui/button'
@@ -91,6 +92,7 @@ export function UpdatePasswordForm() {
 					form="update-password-form"
 					disabled={form.formState.isValidating || isPending}
 					loading={isPending}
+					Icon={Save}
 				>
 					{m.pink_spry_snake_hike()}
 				</LoadingButton>

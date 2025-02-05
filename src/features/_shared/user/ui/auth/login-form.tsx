@@ -1,7 +1,7 @@
 import { arktypeResolver } from '@hookform/resolvers/arktype'
 import { Link, useNavigate, useSearch } from '@tanstack/react-router'
 import { type } from 'arktype'
-import { DatabaseZap } from 'lucide-react'
+import { DatabaseZap, LockKeyholeOpen } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { useSpinDelay } from 'spin-delay'
 import { LoadingButton, Button } from '@/components/ui/button'
@@ -180,10 +180,11 @@ export function LoginForm() {
 						/>
 						<div className="space-y-4 pt-4">
 							<LoadingButton
-								variant="default"
 								type="submit"
 								className="w-full"
 								loading={isAnySignInPending}
+								Icon={LockKeyholeOpen}
+								iconPosition="right"
 							>
 								{m.jumpy_spry_snake_scoop()}
 							</LoadingButton>

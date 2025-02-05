@@ -1,7 +1,7 @@
 import { arktypeResolver } from '@hookform/resolvers/arktype'
 import { Link, useSearch } from '@tanstack/react-router'
 import { type } from 'arktype'
-import { CheckCircle2, DatabaseZap, KeyRound } from 'lucide-react'
+import { CheckCircle2, DatabaseZap, KeyRound, Send } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { useSpinDelay } from 'spin-delay'
 import { Button, LoadingButton } from '@/components/ui/button'
@@ -138,6 +138,7 @@ function NewPasswordForm({ token }: { token: string }) {
 								type="submit"
 								className="w-full"
 								loading={isResetPasswordPending}
+								Icon={Send}
 							>
 								{m.slow_mad_donkey_ripple()}
 							</LoadingButton>
@@ -217,6 +218,7 @@ export function ResetPasswordForm() {
 								type="submit"
 								className="w-full"
 								loading={isRequestPasswordResetPending}
+								Icon={KeyRound}
 							>
 								{m.house_arable_haddock_rest()}
 							</LoadingButton>

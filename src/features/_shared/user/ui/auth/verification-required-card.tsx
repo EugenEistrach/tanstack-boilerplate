@@ -1,5 +1,5 @@
 import { Link, useSearch } from '@tanstack/react-router'
-import { CheckCircle2, MailIcon } from 'lucide-react'
+import { CheckCircle2, MailIcon, RefreshCw } from 'lucide-react'
 import { useSpinDelay } from 'spin-delay'
 import { Button, LoadingButton } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -69,6 +69,7 @@ export function VerificationRequiredCard() {
 						variant="default"
 						onClick={() => resendVerification({ email })}
 						loading={isResendVerificationPending}
+						Icon={RefreshCw}
 					>
 						{m.neat_hot_sheep_hum()}
 					</LoadingButton>

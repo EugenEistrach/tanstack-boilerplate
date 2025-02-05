@@ -143,11 +143,12 @@ export function ActiveSessionsCard() {
 										</TableCell>
 										<TableCell className="text-right">
 											<TooltipProvider>
-												<Tooltip>
+												<Tooltip delayDuration={50}>
 													<TooltipTrigger asChild>
 														<LoadingButton
 															variant="ghost"
 															size="icon"
+															className="text-destructive"
 															onClick={() =>
 																sessionRevokeMutation.mutate({
 																	token: session.token,
@@ -159,9 +160,8 @@ export function ActiveSessionsCard() {
 																sessionRevokeMutation.variables?.token ===
 																	session.token
 															}
-														>
-															<XCircle className="h-5 w-5 text-destructive" />
-														</LoadingButton>
+															Icon={XCircle}
+														></LoadingButton>
 													</TooltipTrigger>
 													<TooltipContent>
 														{m.warm_rapid_snake_swim()}

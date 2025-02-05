@@ -142,7 +142,10 @@ export const useEmailSignUpMutation = () => {
 export const usePasswordResetRequestMutation = () => {
 	return useMutation({
 		mutationFn: async (values: { email: string }) => {
-			const result = await authClient.forgetPassword(values)
+			const result = await authClient.forgetPassword({
+				email: values.email,
+				redirectTo: '/reset-password',
+			})
 			if (result.error) {
 				throw new Error(result.error.message, { cause: result.error })
 			}

@@ -14,8 +14,8 @@ function AuthLayout() {
 			</main>
 			<footer className="absolute bottom-0 right-0 p-4">
 				<div className="flex items-center gap-2">
-					<LocaleSwitcher />
 					<ThemeToggle />
+					<LocaleSwitcher />
 				</div>
 			</footer>
 		</div>

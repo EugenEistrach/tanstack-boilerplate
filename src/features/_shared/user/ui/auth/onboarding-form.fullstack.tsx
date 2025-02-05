@@ -1,6 +1,7 @@
 import { arktypeResolver } from '@hookform/resolvers/arktype'
 import { useSearch } from '@tanstack/react-router'
 import { type } from 'arktype'
+import { CircleArrowRight } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { useSpinDelay } from 'spin-delay'
 import { LoadingButton } from '@/components/ui/button'
@@ -105,6 +106,8 @@ export function OnboardingForm() {
 								type="submit"
 								className="w-full"
 								loading={isPending}
+								Icon={CircleArrowRight}
+								iconPosition="right"
 							>
 								{m.key_full_swallow_fry()}
 							</LoadingButton>

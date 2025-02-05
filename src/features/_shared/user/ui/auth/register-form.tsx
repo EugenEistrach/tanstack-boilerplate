@@ -1,7 +1,7 @@
 import { arktypeResolver } from '@hookform/resolvers/arktype'
 import { Link } from '@tanstack/react-router'
 import { type } from 'arktype'
-import { DatabaseZap } from 'lucide-react'
+import { CirclePlus, DatabaseZap } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { useSpinDelay } from 'spin-delay'
 import { Button, LoadingButton } from '@/components/ui/button'
@@ -184,6 +184,8 @@ export function RegisterForm() {
 								type="submit"
 								className="w-full"
 								loading={isAnySignInPending}
+								Icon={CirclePlus}
+								iconPosition="right"
 							>
 								<span className="flex items-center">
 									{m.least_raw_zebra_dine()}
