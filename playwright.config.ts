@@ -19,6 +19,16 @@ if (!process.env['TEST_DB_PATH']) {
 // Determine which server to start based on the test project
 const isStorybookTest = process.env['TEST_PROJECT'] === 'storybook'
 
+// Configure Storybook server command based on environment
+const getStorybookCommand = () => {
+	if (env.CI) {
+		// In CI, we serve the pre-built Storybook
+		return `pnpm dlx http-server storybook-static -p ${storybookPort}`
+	}
+	// In development, we start the Storybook dev server
+	return 'pnpm storybook'
+}
+
 export default defineConfig({
 	// Centralize all test outputs and screenshots in one folder
 	outputDir: './test-results',
@@ -67,9 +77,9 @@ export default defineConfig({
 	// Configure the appropriate web server based on the test project
 	webServer: isStorybookTest
 		? {
-				command: 'pnpm run storybook',
+				command: getStorybookCommand(),
 				port: Number(storybookPort),
-				reuseExistingServer: true,
+				reuseExistingServer: !env.CI, // Don't reuse server in CI
 				stdout: 'pipe',
 				stderr: 'pipe',
 			}

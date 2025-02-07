@@ -21,6 +21,20 @@ interface StorybookIndex {
 	entries: Record<string, StorybookStory>
 }
 
+// Get platform-specific suffix for screenshots
+const getPlatformSuffix = () => {
+	switch (process.platform) {
+		case 'linux':
+			return 'linux'
+		case 'darwin':
+			return 'darwin'
+		case 'win32':
+			return 'windows'
+		default:
+			return process.platform
+	}
+}
+
 // Build Storybook if needed before any tests run
 test.beforeAll(async () => {
 	const indexPath = path.join(process.cwd(), 'storybook-static', 'index.json')
@@ -86,7 +100,7 @@ for (const story of stories) {
 	if (parameters?.noScreenshot) continue
 
 	test(`${title} - ${name}`, async ({ page }) => {
-		const storybookUrl = 'http://localhost:6006'
+		const storybookUrl = process.env['STORYBOOK_URL'] || 'http://localhost:6006'
 
 		// Disable CSS animations if requested by the story
 		if (parameters?.disableAnimations) {
@@ -118,12 +132,18 @@ for (const story of stories) {
 			await page.waitForTimeout(1000)
 		}
 
+		// Platform-specific screenshot name
+		const screenshotName = `${title}-${name}-storybook-${getPlatformSuffix()}.png`
+
 		// Capture screenshot for visual regression
-		await expect(page).toHaveScreenshot(`${title}-${name}.png`, {
-			threshold: 0.2,
-			animations: 'disabled', // Playwright's built-in animation handling
+		await expect(page).toHaveScreenshot(screenshotName, {
+			threshold: 0.2, // 20% threshold for pixel differences
+			animations: 'disabled',
 			// Increase timeout for stories with loading states
 			timeout: parameters?.waitForLoadingState ? 10000 : 5000,
+			// Ensure consistent screenshot size
+			fullPage: false,
+			scale: 'device',
 		})
 	})
 }

@@ -29,3 +29,5 @@ unhandled-requests/
 
 *storybook.log
 storybook-static/
+src/tests/storybook/**/*-snapshots/*
+!src/tests/storybook/**/*-snapshots/*-linux.png
