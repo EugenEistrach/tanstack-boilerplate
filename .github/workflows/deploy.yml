@@ -127,16 +127,21 @@ jobs:
       - name: 🗃️ Setup Database
         run: pnpm db:reset
 
+      - name: 📚 Build Storybook
+        run: pnpm build-storybook
+
+      - name: 🏗️ Build app
+        run: pnpm build
+
       - name: 🎭 Run E2E Tests
         run: pnpm test:e2e:run
         env:
-          TEST_PROJECT: e2e
+          CI: true
 
       - name: 🎭 Run Storybook Tests
         run: pnpm test:storybook
         env:
           CI: true
-
       - name: 📊 Upload test results
         if: always()
         uses: actions/upload-artifact@v4
