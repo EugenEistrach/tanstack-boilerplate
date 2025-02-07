@@ -1,8 +1,9 @@
 import { Link, useSearch } from '@tanstack/react-router'
 import { CheckCircle2, MailIcon, RefreshCw } from 'lucide-react'
 import { useSpinDelay } from 'spin-delay'
-import { Button, LoadingButton } from '@/components/ui/button'
+import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { LoadingButton } from '@/components/ui/loading-button'
 import { useEmailVerificationMutation } from '@/features/_shared/user/api/auth.api'
 import * as m from '@/lib/paraglide/messages'
 

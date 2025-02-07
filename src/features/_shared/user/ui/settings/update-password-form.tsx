@@ -3,7 +3,6 @@ import { type } from 'arktype'
 import { Save } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { useSpinDelay } from 'spin-delay'
-import { LoadingButton } from '@/components/ui/button'
 import {
 	Card,
 	CardHeader,
@@ -21,6 +20,7 @@ import {
 	FormMessage,
 } from '@/components/ui/form'
 import PasswordInput from '@/components/ui/input'
+import { LoadingButton } from '@/components/ui/loading-button'
 
 import { usePasswordUpdateMutation } from '@/features/_shared/user/api/auth.api'
 import * as m from '@/lib/paraglide/messages'

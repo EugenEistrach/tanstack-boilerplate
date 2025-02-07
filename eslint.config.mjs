@@ -18,6 +18,7 @@ export default [
 	...defaultConfig,
 	{
 		files: ['**/*.{js,jsx,ts,tsx}'],
+		ignores: ['**/stories/**/*', '**/*.stories.tsx'],
 		...i18next.configs['flat/recommended'],
 		rules: {
 			'i18next/no-literal-string': 'warn',
@@ -116,6 +117,11 @@ export default [
 					type: 'tests',
 					pattern: ['src/tests/**/*'],
 				},
+				{
+					mode: 'full',
+					type: 'stories',
+					pattern: ['src/stories/**/*'],
+				},
 			],
 		},
 		rules: {
@@ -155,6 +161,10 @@ export default [
 						},
 						{
 							from: ['tests'],
+							allow: ['*'],
+						},
+						{
+							from: ['stories'],
 							allow: ['*'],
 						},
 						{

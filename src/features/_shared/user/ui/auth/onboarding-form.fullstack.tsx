@@ -4,7 +4,6 @@ import { type } from 'arktype'
 import { CircleArrowRight } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { useSpinDelay } from 'spin-delay'
-import { LoadingButton } from '@/components/ui/button'
 import {
 	Card,
 	CardContent,
@@ -22,6 +21,7 @@ import {
 	Form,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { LoadingButton } from '@/components/ui/loading-button'
 
 import { useAuth } from '@/features/_shared/user/api/auth.api'
 import { useCompleteOnboardingMutation } from '@/features/_shared/user/api/onboarding.api'

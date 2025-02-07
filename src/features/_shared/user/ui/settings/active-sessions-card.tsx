@@ -2,7 +2,6 @@ import { useQuery } from '@tanstack/react-query'
 import { XCircle } from 'lucide-react'
 import { useSpinDelay } from 'spin-delay'
 import { UAParser } from 'ua-parser-js'
-import { LoadingButton } from '@/components/ui/button'
 import {
 	Card,
 	CardHeader,
@@ -10,6 +9,7 @@ import {
 	CardDescription,
 	CardContent,
 } from '@/components/ui/card'
+import { LoadingButton } from '@/components/ui/loading-button'
 import { Skeleton } from '@/components/ui/skeleton'
 import {
 	Table,

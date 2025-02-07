@@ -4,7 +4,7 @@ import { type } from 'arktype'
 import { CheckCircle2, DatabaseZap, KeyRound, Send } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { useSpinDelay } from 'spin-delay'
-import { Button, LoadingButton } from '@/components/ui/button'
+import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
 	Form,
@@ -15,6 +15,7 @@ import {
 	FormMessage,
 } from '@/components/ui/form'
 import PasswordInput, { Input } from '@/components/ui/input'
+import { LoadingButton } from '@/components/ui/loading-button'
 import {
 	usePasswordResetMutation,
 	usePasswordResetRequestMutation,

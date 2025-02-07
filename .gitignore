@@ -26,3 +26,6 @@ unhandled-requests/
 .trigger
 
 .test-app/
+
+*storybook.log
+storybook-static/

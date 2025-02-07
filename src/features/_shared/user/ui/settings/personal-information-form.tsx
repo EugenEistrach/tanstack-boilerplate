@@ -4,7 +4,6 @@ import { Save } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { useSpinDelay } from 'spin-delay'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { LoadingButton } from '@/components/ui/button'
 import {
 	Card,
 	CardHeader,
@@ -22,6 +21,7 @@ import {
 	FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { LoadingButton } from '@/components/ui/loading-button'
 
 import { useAuth } from '@/features/_shared/user/api/auth.api'
 import { useUpdateNameMutation } from '@/features/_shared/user/api/settings.api'

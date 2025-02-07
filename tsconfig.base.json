@@ -1,7 +1,6 @@
 {
 	"compilerOptions": {
 		"allowJs": true,
-		"noEmit": true,
 		"jsx": "react-jsx",
 		"moduleResolution": "Bundler",
 		"module": "ESNext",
@@ -15,35 +14,8 @@
 		"noImplicitReturns": true,
 		"esModuleInterop": true,
 		"forceConsistentCasingInFileNames": true,
-		"baseUrl": ".",
-		"paths": {
-			"@/*": ["./src/*"]
-		}
-	},
-	"include": [
-		"src/**/*",
-		".storybook/**/*",
-		"lint-rules/**/*",
-		"scripts/**/*",
-		"*.ts",
-		"*.tsx",
-		"*.js",
-		"*.jsx",
-		"*.mjs",
-		"*.cjs"
-	],
-	"exclude": [
-		"node_modules",
-		".output",
-		".vinxi",
-		"coverage",
-		"playwright-report",
-		"test-results",
-		".history",
-		".trigger",
-		".cursor",
-		"dist",
-		"build",
-		"packages"
-	]
+		"declaration": true,
+		"declarationMap": true,
+		"sourceMap": true
+	}
 }
