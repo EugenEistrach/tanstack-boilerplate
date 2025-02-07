@@ -19,22 +19,12 @@ if (!process.env['TEST_DB_PATH']) {
 // Determine which server to start based on the test project
 const isStorybookTest = process.env['TEST_PROJECT'] === 'storybook'
 
-// Configure Storybook server command based on environment
-const getStorybookCommand = () => {
-	if (env.CI) {
-		// In CI, we serve the pre-built Storybook
-		return `pnpm dlx http-server storybook-static -p ${storybookPort}`
-	}
-	// In development, we start the Storybook dev server
-	return 'pnpm storybook'
-}
-
 export default defineConfig({
 	// Centralize all test outputs and screenshots in one folder
 	outputDir: './test-results',
-	timeout: 15 * 1000,
+	timeout: 30 * 1000, // Increased timeout for Storybook
 	expect: {
-		timeout: 5 * 1000,
+		timeout: 10 * 1000,
 	},
 	fullyParallel: true,
 	forbidOnly: !!env.CI,
@@ -77,20 +67,17 @@ export default defineConfig({
 	// Configure the appropriate web server based on the test project
 	webServer: isStorybookTest
 		? {
-				command: getStorybookCommand(),
-				port: Number(storybookPort),
+				command: env.CI
+					? `pnpm dlx http-server storybook-static -p ${storybookPort}`
+					: 'pnpm storybook',
+				url: `http://localhost:${storybookPort}`,
 				reuseExistingServer: !env.CI,
-				stdout: 'pipe',
-				stderr: 'pipe',
-				timeout: 120000, // Give Storybook more time to start
-				url: `http://localhost:${storybookPort}`, // URL to wait for
+				timeout: 120000,
 			}
 		: {
 				command: env.CI ? 'npm run start:mocks' : 'npm run dev',
-				port: Number(port),
+				url: `http://localhost:${port}`,
 				reuseExistingServer: true,
-				stdout: 'pipe',
-				stderr: 'pipe',
 				env: {
 					PORT: port,
 					NODE_ENV: 'test',

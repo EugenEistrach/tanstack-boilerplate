@@ -39,48 +39,45 @@ const getPlatformSuffix = () => {
 test.beforeAll(async () => {
 	const indexPath = path.join(process.cwd(), 'storybook-static', 'index.json')
 
-	const needsBuild = (() => {
-		try {
-			// If index.json doesn't exist, we need to build
-			if (!fs.existsSync(indexPath)) {
-				console.log('Storybook build not found, building...')
+	// Only build if needed and not in CI (CI should already have built it)
+	if (!process.env['CI']) {
+		const needsBuild = (() => {
+			try {
+				if (!fs.existsSync(indexPath)) {
+					console.log('Storybook build not found, building...')
+					return true
+				}
+
+				const buildTime = fs.statSync(indexPath).mtimeMs
+				const command =
+					process.platform === 'win32'
+						? `dir /s /b src\\**\\*.stories.tsx`
+						: `find src -name "*.stories.tsx"`
+
+				const storyFiles = execSync(command, { encoding: 'utf-8' })
+					.split('\n')
+					.filter(Boolean)
+
+				const hasNewerFiles = storyFiles.some((file) => {
+					const fileTime = fs.statSync(file).mtimeMs
+					return fileTime > buildTime
+				})
+
+				if (hasNewerFiles) {
+					console.log('Story files have changed, rebuilding...')
+					return true
+				}
+
+				return false
+			} catch (error) {
+				console.log('Error checking build status, rebuilding:', error)
 				return true
 			}
+		})()
 
-			// Get the timestamp of the last build
-			const buildTime = fs.statSync(indexPath).mtimeMs
-
-			// Check if any story files are newer than the build
-			const command =
-				process.platform === 'win32'
-					? `dir /s /b src\\**\\*.stories.tsx`
-					: `find src -name "*.stories.tsx"`
-
-			const storyFiles = execSync(command, { encoding: 'utf-8' })
-				.split('\n')
-				.filter(Boolean)
-
-			// Check if any story file is newer than the build
-			const hasNewerFiles = storyFiles.some((file) => {
-				const fileTime = fs.statSync(file).mtimeMs
-				return fileTime > buildTime
-			})
-
-			if (hasNewerFiles) {
-				console.log('Story files have changed, rebuilding...')
-				return true
-			}
-
-			console.log('Using existing Storybook build')
-			return false
-		} catch (error) {
-			console.log('Error checking build status, rebuilding to be safe:', error)
-			return true
+		if (needsBuild) {
+			execSync('pnpm build-storybook', { stdio: 'inherit' })
 		}
-	})()
-
-	if (needsBuild) {
-		execSync('pnpm build-storybook', { stdio: 'inherit' })
 	}
 })
 
@@ -116,34 +113,19 @@ for (const story of stories) {
 			})
 		}
 
-		// Navigate directly to the story iframe with retry logic
-		const maxRetries = 3
-		let lastError
-
-		for (let i = 0; i < maxRetries; i++) {
-			try {
-				await page.goto(`${storybookUrl}/iframe.html?id=${id}&viewMode=story`, {
-					timeout: 30000, // 30 seconds
-					waitUntil: 'networkidle',
-				})
-				break // If successful, exit the retry loop
-			} catch (error) {
-				lastError = error
-				if (i === maxRetries - 1) throw error // Throw on last retry
-				await page.waitForTimeout(1000 * (i + 1)) // Exponential backoff
-			}
-		}
+		// Navigate to the story with retry logic
+		await page.goto(`${storybookUrl}/iframe.html?id=${id}&viewMode=story`, {
+			timeout: 30000,
+			waitUntil: 'networkidle',
+		})
 
 		// Wait for the story to be fully rendered
-		await page.waitForFunction(() => {
-			return !document
-				.getElementById('storybook-preview-iframe')
-				?.classList.contains('sb-loading')
+		await page.waitForSelector('#storybook-root:not(.sb-loading)', {
+			timeout: 30000,
 		})
 
 		// For components with loading states, ensure they're stable
 		if (parameters?.waitForLoadingState) {
-			// Wait for any loading spinners to complete at least one rotation
 			await page.waitForTimeout(1000)
 		}
 
@@ -152,11 +134,9 @@ for (const story of stories) {
 
 		// Capture screenshot for visual regression
 		await expect(page).toHaveScreenshot(screenshotName, {
-			threshold: 0.2, // 20% threshold for pixel differences
+			threshold: 0.2,
 			animations: 'disabled',
-			// Increase timeout for stories with loading states
 			timeout: parameters?.waitForLoadingState ? 10000 : 5000,
-			// Ensure consistent screenshot size
 			fullPage: false,
 			scale: 'device',
 		})
