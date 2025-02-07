@@ -116,8 +116,23 @@ for (const story of stories) {
 			})
 		}
 
-		// Navigate directly to the story iframe
-		await page.goto(`${storybookUrl}/iframe.html?id=${id}&viewMode=story`)
+		// Navigate directly to the story iframe with retry logic
+		const maxRetries = 3
+		let lastError
+
+		for (let i = 0; i < maxRetries; i++) {
+			try {
+				await page.goto(`${storybookUrl}/iframe.html?id=${id}&viewMode=story`, {
+					timeout: 30000, // 30 seconds
+					waitUntil: 'networkidle',
+				})
+				break // If successful, exit the retry loop
+			} catch (error) {
+				lastError = error
+				if (i === maxRetries - 1) throw error // Throw on last retry
+				await page.waitForTimeout(1000 * (i + 1)) // Exponential backoff
+			}
+		}
 
 		// Wait for the story to be fully rendered
 		await page.waitForFunction(() => {

@@ -79,9 +79,11 @@ export default defineConfig({
 		? {
 				command: getStorybookCommand(),
 				port: Number(storybookPort),
-				reuseExistingServer: !env.CI, // Don't reuse server in CI
+				reuseExistingServer: !env.CI,
 				stdout: 'pipe',
 				stderr: 'pipe',
+				timeout: 120000, // Give Storybook more time to start
+				url: `http://localhost:${storybookPort}`, // URL to wait for
 			}
 		: {
 				command: env.CI ? 'npm run start:mocks' : 'npm run dev',
