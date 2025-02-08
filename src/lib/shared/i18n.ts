@@ -20,7 +20,7 @@ export const isSupportedLanguage = (
 
 export const normalizeLanguage = (
 	language: string | null | undefined,
-): AvailableLanguageTag => {
+) => {
 	if (!language) return availableLanguageTags[0]
 
 	if (availableLanguageTags.includes(language as any)) {

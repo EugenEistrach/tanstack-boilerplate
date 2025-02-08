@@ -16,9 +16,7 @@ interface MessageFileContent {
 	[key: string]: string
 }
 
-async function loadMessageFiles(): Promise<{
-	[filepath: string]: MessageFileContent
-}> {
+async function loadMessageFiles() {
 	const messageFiles = await glob('./messages/*.json')
 	const contents: { [filepath: string]: MessageFileContent } = {}
 
@@ -30,7 +28,7 @@ async function loadMessageFiles(): Promise<{
 	return contents
 }
 
-function generateKeyMap(messages: MessageFileContent): MessageKeyMap[] {
+function generateKeyMap(messages: MessageFileContent) {
 	const keyMap: MessageKeyMap[] = []
 
 	for (const oldKey of Object.keys(messages)) {
@@ -47,7 +45,7 @@ function generateKeyMap(messages: MessageFileContent): MessageKeyMap[] {
 	return keyMap
 }
 
-async function findKeyUsages(keyMap: MessageKeyMap[]): Promise<void> {
+async function findKeyUsages(keyMap: MessageKeyMap[]) {
 	const files = await glob('src/**/*.{ts,tsx}')
 
 	for (const file of files) {
@@ -74,7 +72,7 @@ async function findKeyUsages(keyMap: MessageKeyMap[]): Promise<void> {
 async function updateMessageFiles(
 	messageFiles: { [filepath: string]: MessageFileContent },
 	keyMap: MessageKeyMap[],
-): Promise<void> {
+) {
 	for (const [filepath, content] of Object.entries(messageFiles)) {
 		const newContent: MessageFileContent = {}
 
@@ -92,7 +90,7 @@ async function updateMessageFiles(
 	}
 }
 
-async function updateSourceFiles(keyMap: MessageKeyMap[]): Promise<void> {
+async function updateSourceFiles(keyMap: MessageKeyMap[]) {
 	for (const mapping of keyMap) {
 		for (const file of mapping.files) {
 			let content = fs.readFileSync(file, 'utf-8')

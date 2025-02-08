@@ -20,7 +20,7 @@ const projectName = `test-app-${randomSuffix}`
 let isCleaningUp = false
 
 // Find a free port in the range 3001-3999
-async function findFreePort(): Promise<number> {
+async function findFreePort() {
 	return new Promise((resolve, reject) => {
 		const server = net.createServer()
 		server.unref()
@@ -84,7 +84,7 @@ async function cleanup(devServer?: ExecaChildProcess, port?: number) {
 async function waitForServer(
 	url: string,
 	maxAttempts = 30,
-): Promise<{ ready: boolean; title?: string }> {
+) {
 	for (let i = 0; i < maxAttempts; i++) {
 		try {
 			const response = await fetch(url)

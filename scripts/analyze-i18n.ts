@@ -22,7 +22,7 @@ interface MessageFileBackup {
 	content: string
 }
 
-async function findMessageUsages(): Promise<MessageAnalysis> {
+async function findMessageUsages() {
 	// Read messages file
 	const messagesPath = path.join(process.cwd(), 'messages', 'en.json')
 	const messages = JSON.parse(fs.readFileSync(messagesPath, 'utf-8'))
@@ -118,7 +118,7 @@ function printReport(analysis: MessageAnalysis, showUsed = false) {
 	}
 }
 
-async function backupMessageFiles(): Promise<MessageFileBackup[]> {
+async function backupMessageFiles() {
 	const messageFiles = await glob('messages/*.json')
 	return messageFiles.map((path) => ({
 		path,
@@ -169,7 +169,7 @@ async function cleanUnusedKeys(analysis: MessageAnalysis) {
 	return totalRemoved > 0
 }
 
-async function verifyChanges(): Promise<boolean> {
+async function verifyChanges() {
 	try {
 		// Run paraglide compile
 		console.log(chalk.blue('\nCompiling translations...'))

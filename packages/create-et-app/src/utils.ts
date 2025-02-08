@@ -15,7 +15,7 @@ export async function waitForAutomatedAction<T>({
 	waitingMessage,
 	successMessage,
 	errorMessage,
-}: WaitForActionParams<T>): Promise<T> {
+}: WaitForActionParams<T>) {
 	try {
 		s.start(waitingMessage)
 		const result = await action()
@@ -35,7 +35,7 @@ export async function waitForCheck({
 	waitingMessage,
 	successMessage,
 	errorMessage,
-}: WaitForActionParams<boolean>): Promise<boolean> {
+}: WaitForActionParams<boolean>) {
 	try {
 		s.start(waitingMessage)
 		const result = await action()

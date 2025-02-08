@@ -56,10 +56,7 @@ async function getDatabaseInfo() {
 	}
 }
 
-function topologicalSort(
-	tables: string[],
-	foreignKeys: ForeignKey[],
-): string[] {
+function topologicalSort(tables: string[], foreignKeys: ForeignKey[]) {
 	const graph = new Map<string, Set<string>>()
 
 	// Initialize graph
@@ -106,10 +103,7 @@ function topologicalSort(
 	return sorted
 }
 
-async function dumpTableData(
-	table: string,
-	writeStream: WriteStream,
-): Promise<void> {
+async function dumpTableData(table: string, writeStream: WriteStream) {
 	return new Promise((resolve, reject) => {
 		const sqlite = spawn('sqlite3', [TEMP_DB_PATH, `.dump ${table}`])
 		let buffer = ''
@@ -133,7 +127,7 @@ async function dumpTableData(
 				if (statements) {
 					writeStream.write(statements + '\n')
 				}
-				resolve()
+				resolve(void 0)
 			} else {
 				reject(
 					new Error(

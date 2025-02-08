@@ -31,13 +31,7 @@ import {
 } from '@/features/_shared/user/api/auth.api'
 import * as m from '@/lib/paraglide/messages'
 
-interface UserAgentInfo {
-	browser: string
-	device: string
-	raw: string
-}
-
-function parseUserAgent(userAgent: string | null | undefined): UserAgentInfo {
+function parseUserAgent(userAgent: string | null | undefined) {
 	if (!userAgent) {
 		return {
 			browser: m.blue_rapid_fox_dance(),

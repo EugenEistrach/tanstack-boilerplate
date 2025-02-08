@@ -131,7 +131,7 @@ export async function createUserAndSession(options: UserOptions = {}) {
 	})
 }
 
-export const delayed = async <T>(callback: () => Promise<T>): Promise<T> => {
+export const delayed = async <T>(callback: () => Promise<T>) => {
 	await wait(250)
 	return callback()
 }
