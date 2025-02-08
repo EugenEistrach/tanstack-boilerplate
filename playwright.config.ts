@@ -71,7 +71,7 @@ export default defineConfig({
 					? `pnpm dlx http-server storybook-static -p ${storybookPort}`
 					: 'pnpm storybook',
 				url: `http://localhost:${storybookPort}`,
-				reuseExistingServer: !env.CI,
+				reuseExistingServer: true,
 				timeout: 120000,
 			}
 		: {
